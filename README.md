@@ -7,7 +7,7 @@
 To make it easy for you to get started with GitLab, here's a list of recommended next steps.
 
 
-## Integrate with your tools
+## Membres du groupe
 1. BLATEAU Indi
     - indi.blateau@etu.iut-tlse3.fr
     - BLN5170A
