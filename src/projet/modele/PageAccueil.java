@@ -1,19 +1,25 @@
 package projet.modele;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.GridLayout;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.image.BufferedImage;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.border.LineBorder;
+
+import projet.ihm.Charte;
+import projet.ihm.ResizedImage;
 
 public class PageAccueil {
 
 	private JFrame frame;
+	private JLabel logo;
+	private BufferedImage logoImage;
 
 	/**
 	 * Launch the application.
@@ -43,40 +49,29 @@ public class PageAccueil {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		// Initialisation du JFrame
 		this.frame = new JFrame();
 		this.frame.setBounds(100, 100, 450, 300);
+		this.frame.getContentPane().setBackground(Charte.FOND.getCouleur());
 		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		JScrollPane scrollPane = new JScrollPane();
-		this.frame.getContentPane().add(scrollPane, BorderLayout.WEST);
-
-		JPanel panel = new JPanel();
-		this.frame.getContentPane().add(panel, BorderLayout.CENTER);
-		panel.setLayout(new GridLayout(0, 2, 0, 0));
-
-		JButton btnNewButton_1 = new JButton("New button");
-		panel.add(btnNewButton_1);
-
-		JButton btnNewButton_2 = new JButton("New button");
-		panel.add(btnNewButton_2);
-
-		JButton btnNewButton_3 = new JButton("New button");
-		panel.add(btnNewButton_3);
-
-		JButton btnNewButton_4 = new JButton("New button");
-		panel.add(btnNewButton_4);
-
+		// Panel d'entête pour le logo et le nom de l'appli
 		JPanel entete = new JPanel();
 		this.frame.getContentPane().add(entete, BorderLayout.NORTH);
 		entete.setLayout(new BorderLayout(0, 0));
 
-		JLabel immolink = new JLabel("");
-		immolink.setIcon(new ImageIcon(PageAccueil.class.getResource("/ressources/images/nom_appli.png")));
-		entete.add(immolink, BorderLayout.CENTER);
+		entete.setBackground(Charte.ENTETE.getCouleur());
+		entete.setBorder(new LineBorder(Color.BLACK, 2));
+		// Label pour le logo (Image)
+		this.logo = new JLabel("");
+		entete.add(this.logo, BorderLayout.WEST);
+		this.frame.addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentResized(ComponentEvent e) {
+				ResizedImage.resizeImage("/ressources/images/logo+nom.png", PageAccueil.this.frame,
+						PageAccueil.this.logo, 3, 8);
+			}
+		});
 
-		JLabel logo = new JLabel("");
-		logo.setIcon(new ImageIcon(PageAccueil.class.getResource("/ressources/images/logo_appli.png")));
-		entete.add(logo, BorderLayout.WEST);
 	}
-
 }
