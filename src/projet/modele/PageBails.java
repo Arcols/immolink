@@ -18,7 +18,7 @@ import javax.swing.border.LineBorder;
 import projet.ihm.Charte;
 import projet.ihm.ResizedImage;
 
-public class PageLocataire {
+public class PageBails {
 
 	private JFrame frame;
 	private JLabel logo;
@@ -31,7 +31,7 @@ public class PageLocataire {
 			@Override
 			public void run() {
 				try {
-					PageLocataire window = new PageLocataire();
+					PageBails window = new PageBails();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -43,7 +43,7 @@ public class PageLocataire {
 	/**
 	 * Create the application.
 	 */
-	public PageLocataire() {
+	public PageBails() {
 		this.initialize();
 	}
 
@@ -51,20 +51,22 @@ public class PageLocataire {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		// Initialisation du JFrame
 		this.frame = new JFrame();
 		this.frame.setBounds(100, 100, 750, 400);
+		this.frame.getContentPane().setBackground(Charte.FOND.getCouleur());
 		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		// Panel d'entête pour le logo et le nom de l'appli
 		JPanel entete = new JPanel();
 		this.frame.getContentPane().add(entete, BorderLayout.NORTH);
 		entete.setLayout(new BorderLayout(0, 0));
-		this.frame.getContentPane().setBackground(Charte.FOND.getCouleur());
 
 		entete.setBackground(Charte.ENTETE.getCouleur());
 		entete.setBorder(new LineBorder(Color.BLACK, 2));
-
+		// Label pour le logo (Image)
 		this.logo = new JLabel("");
 		entete.add(this.logo, BorderLayout.WEST);
-
 		JPanel menu_bouttons = new JPanel();
 
 		entete.add(menu_bouttons, BorderLayout.CENTER);
@@ -104,14 +106,13 @@ public class PageLocataire {
 		b_biens.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		menu_bouttons.add(b_biens);
 		menu_bouttons.add(b_biens);
-
 		this.frame.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {
-				ResizedImage.resizeImage("/ressources/images/logo+nom.png", PageLocataire.this.frame,
-						PageLocataire.this.logo, 3, 8);
-				int frameWidth = PageLocataire.this.frame.getWidth();
-				int frameHeight = PageLocataire.this.frame.getHeight();
+				ResizedImage.resizeImage("/ressources/images/logo+nom.png", PageBails.this.frame, PageBails.this.logo,
+						3, 8);
+				int frameWidth = PageBails.this.frame.getWidth();
+				int frameHeight = PageBails.this.frame.getHeight();
 
 				int newFontSize = Math.min(frameWidth, frameHeight) / 30;
 
@@ -124,6 +125,6 @@ public class PageLocataire {
 				b_biens.setFont(resizedFont);
 			}
 		});
-	}
 
+	}
 }
