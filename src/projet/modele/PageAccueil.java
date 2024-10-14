@@ -1,16 +1,15 @@
-package java.modele;
+package projet.modele;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-import java.awt.Font;
 import java.awt.GridLayout;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
 
 public class PageAccueil {
 
@@ -51,11 +50,6 @@ public class PageAccueil {
 		JScrollPane scrollPane = new JScrollPane();
 		this.frame.getContentPane().add(scrollPane, BorderLayout.WEST);
 
-		JLabel lblNewLabel = new JLabel("Bienvenue");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setFont(new Font("Arial", Font.PLAIN, 20));
-		this.frame.getContentPane().add(lblNewLabel, BorderLayout.NORTH);
-
 		JPanel panel = new JPanel();
 		this.frame.getContentPane().add(panel, BorderLayout.CENTER);
 		panel.setLayout(new GridLayout(0, 2, 0, 0));
@@ -71,6 +65,18 @@ public class PageAccueil {
 
 		JButton btnNewButton_4 = new JButton("New button");
 		panel.add(btnNewButton_4);
+
+		JPanel entete = new JPanel();
+		this.frame.getContentPane().add(entete, BorderLayout.NORTH);
+		entete.setLayout(new BorderLayout(0, 0));
+
+		JLabel immolink = new JLabel("");
+		immolink.setIcon(new ImageIcon(PageAccueil.class.getResource("/ressources/images/nom_appli.png")));
+		entete.add(immolink, BorderLayout.CENTER);
+
+		JLabel logo = new JLabel("");
+		logo.setIcon(new ImageIcon(PageAccueil.class.getResource("/ressources/images/logo_appli.png")));
+		entete.add(logo, BorderLayout.WEST);
 	}
 
 }
