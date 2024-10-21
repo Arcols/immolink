@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.border.LineBorder;
 
 import projet.ihm.Charte;
@@ -22,6 +23,8 @@ public class PageBail {
 
 	private JFrame frame;
 	private JLabel logo;
+	private JPanel donnees_loca;
+	private JTable table_loca;
 
 	/**
 	 * Launch the application.
@@ -106,6 +109,16 @@ public class PageBail {
 		b_biens.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		menu_bouttons.add(b_biens);
 		menu_bouttons.add(b_biens);
+
+		this.donnees_loca = new JPanel();
+		this.frame.getContentPane().add(this.donnees_loca, BorderLayout.CENTER);
+		this.donnees_loca.setLayout(new BorderLayout(0, 0));
+
+		this.table_loca = new JTable();
+		this.donnees_loca.add(this.table_loca, BorderLayout.CENTER);
+
+		JLabel img_loca = new JLabel("");
+		this.donnees_loca.add(img_loca, BorderLayout.WEST);
 		this.frame.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {

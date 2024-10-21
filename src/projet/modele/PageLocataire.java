@@ -105,6 +105,10 @@ public class PageLocataire {
 		menu_bouttons.add(b_biens);
 		menu_bouttons.add(b_biens);
 
+		JPanel donnees_loca = new JPanel();
+		this.frame.getContentPane().add(donnees_loca, BorderLayout.CENTER);
+		donnees_loca.setLayout(new BorderLayout(0, 0));
+
 		this.frame.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {

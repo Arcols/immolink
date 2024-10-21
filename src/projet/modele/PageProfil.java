@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
 import projet.ihm.Charte;
@@ -67,6 +68,7 @@ public class PageProfil {
 		// Label pour le logo (Image)
 		this.logo = new JLabel("");
 		entete.add(this.logo, BorderLayout.WEST);
+
 		JPanel menu_bouttons = new JPanel();
 
 		entete.add(menu_bouttons, BorderLayout.CENTER);
@@ -106,6 +108,57 @@ public class PageProfil {
 		b_biens.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		menu_bouttons.add(b_biens);
 		menu_bouttons.add(b_biens);
+
+		JLabel titrepage_1 = new JLabel("Mes bails");
+		titrepage_1.setVerticalAlignment(SwingConstants.TOP);
+		titrepage_1.setHorizontalAlignment(SwingConstants.CENTER);
+		this.frame.getContentPane().add(titrepage_1, BorderLayout.CENTER);
+
+		JPanel panel_gauche = new JPanel();
+		this.frame.getContentPane().add(panel_gauche, BorderLayout.WEST);
+		panel_gauche.setLayout(new BorderLayout(0, 0));
+
+		JPanel panel_profil = new JPanel();
+		panel_profil.setBackground(new Color(248, 235, 224));
+		panel_gauche.add(panel_profil, BorderLayout.NORTH);
+		panel_profil.setLayout(new GridLayout(0, 2, 0, 0));
+
+		JLabel imgprofil = new JLabel("");
+		imgprofil.setVerticalAlignment(SwingConstants.TOP);
+		imgprofil.setHorizontalAlignment(SwingConstants.LEFT);
+		panel_profil.add(imgprofil);
+
+		JLabel nom_proprio = new JLabel("Larry Bambelle");
+		panel_profil.add(nom_proprio);
+
+		JPanel panel_contact = new JPanel();
+		panel_gauche.add(panel_contact, BorderLayout.CENTER);
+		panel_contact.setLayout(new BorderLayout(0, 0));
+		panel_contact.setBackground(Charte.FOND.getCouleur());
+
+		JPanel sous_panel_contact = new JPanel();
+		panel_contact.add(sous_panel_contact, BorderLayout.NORTH);
+		sous_panel_contact.setLayout(new GridLayout(0, 1, 0, 0));
+		sous_panel_contact.setBackground(Charte.FOND.getCouleur());
+
+		JLabel lblEmail = new JLabel("Email");
+		lblEmail.setFont(new Font("Tahoma", Font.BOLD, 10));
+		lblEmail.setToolTipText("");
+		sous_panel_contact.add(lblEmail);
+
+		JLabel exemple_mail = new JLabel("· exemple@mail.fr");
+		sous_panel_contact.add(exemple_mail);
+
+		JLabel lblTelephone = new JLabel("Télélphone");
+		lblTelephone.setFont(new Font("Tahoma", Font.BOLD, 10));
+		sous_panel_contact.add(lblTelephone);
+
+		JLabel exemple_tel = new JLabel("· 0678954236");
+		exemple_tel.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		sous_panel_contact.add(exemple_tel);
+
+		JButton btnNewButton = new JButton("New button");
+		panel_gauche.add(btnNewButton, BorderLayout.SOUTH);
 		this.frame.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {
