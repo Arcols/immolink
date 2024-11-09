@@ -1,4 +1,4 @@
-package classes;
+package projet.classes;
 
 public class Facture {
 

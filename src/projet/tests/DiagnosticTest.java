@@ -1,9 +1,10 @@
-package tests;
+package projet.tests;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
 
-import classes.Diagnostic;
+import projet.classes.*;
+
 
 import org.junit.Before;
 import java.io.File;

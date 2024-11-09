@@ -1,4 +1,4 @@
-package classes;
+package projet.classes;
 
 import java.awt.Desktop;
 import java.io.File;
@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 
 public class Diagnostic {
-
+	
     private String reference;
     private byte[] pdf_data;
 
@@ -54,5 +54,5 @@ public class Diagnostic {
             System.out.println("L'ouverture par le bureau n'est pas supportée.");
         }
     }
-
+    
 }

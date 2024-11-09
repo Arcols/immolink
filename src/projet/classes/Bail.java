@@ -1,4 +1,4 @@
-package classes;
+package projet.classes;
 public class Bail {
 
     public Bail(boolean solde_de_compte, BienLouable bien_louable, Colocation colocation) {
