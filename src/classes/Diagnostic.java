@@ -15,6 +15,22 @@ public class Diagnostic {
         this.reference = reference;
         this.pdf_data = loadFileAsBytes(pdf_chemin);
     }
+
+    /**
+     * In : Diagnostic
+     * Out : Void
+     * Remplace le pdf du diagnostic pris en paramètre
+     * Pour appliquer cette fonction il faut que les deux diagnostics aient la même référence
+     * @param diagnostic
+     */
+    public void miseAJourDiagnostic(Diagnostic diagnostic){
+        this.pdf_data=diagnostic.getPdfData();
+    }
+
+    public boolean isSameRef(Diagnostic diagnostic){
+        return this.reference.equals(diagnostic.getReference());
+    }
+
     /**
      * In : String, chemin du pdf 
      * Out : byte[], les données du pdf 
