@@ -2,46 +2,34 @@ package projet.modele;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.EventQueue;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-
+import projet.ihm.Charte;
+import projet.ihm.ResizedImage;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.LineBorder;
-
-import projet.ihm.Charte;
-import projet.ihm.ResizedImage;
-import javax.swing.BoxLayout;
-import java.awt.Component;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import com.jgoodies.forms.layout.FormSpecs;
-import net.miginfocom.swing.MigLayout;
-import java.awt.FlowLayout;
-import javax.swing.JTable;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
-import java.awt.CardLayout;
-import javax.swing.SpringLayout;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
 
 public class PageBienImmobilier {
 
 	private JFrame frame;
 	private JLabel logo;
-	private JTable table;
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField choix_ville;
+	private JTextField choix_adresse;
+	private JTextField choix_complement_adresse;
 
 	/**
 	 * Launch the application.
@@ -126,67 +114,88 @@ public class PageBienImmobilier {
 		b_biens.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		menu_bouttons.add(b_biens);
 		menu_bouttons.add(b_biens);
-		
+
 		JPanel body = new JPanel();
 		frame.getContentPane().add(body, BorderLayout.CENTER);
 		body.setLayout(new BorderLayout(0, 0));
-		
+
 		JPanel titre = new JPanel();
 		FlowLayout fl_titre = (FlowLayout) titre.getLayout();
 		body.add(titre, BorderLayout.NORTH);
-		
+
 		JLabel titrePage = new JLabel("Mon Bien Immobilier");
 		titrePage.setAlignmentY(0.0f);
 		titrePage.setAlignmentX(0.5f);
 		titre.add(titrePage);
-		
-		JPanel panel_1 = new JPanel();
-		body.add(panel_1, BorderLayout.CENTER);
-		panel_1.setLayout(new GridLayout(1, 2, 0, 0));
-		
-		JPanel panel_2 = new JPanel();
-		panel_1.add(panel_2);
-		GridBagLayout gbl_panel_2 = new GridBagLayout();
-		gbl_panel_2.columnWidths = new int[]{184, 184, 0};
-		gbl_panel_2.rowHeights = new int[]{315, 0};
-		gbl_panel_2.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
-		gbl_panel_2.rowWeights = new double[]{0.0, Double.MIN_VALUE};
-		panel_2.setLayout(gbl_panel_2);
-		
-		JPanel panel_3 = new JPanel();
-		
-		JLabel lblNewLabel = new JLabel("New label");
-		panel_3.add(lblNewLabel);
-		
-		textField = new JTextField();
-		panel_3.add(textField);
-		textField.setColumns(10);
-		GridBagConstraints gbc_panel_3 = new GridBagConstraints();
-		gbc_panel_3.fill = GridBagConstraints.BOTH;
-		gbc_panel_3.insets = new Insets(0, 0, 0, 5);
-		gbc_panel_3.gridx = 0;
-		gbc_panel_3.gridy = 0;
-		panel_2.add(panel_3, gbc_panel_3);
-		
-		JPanel panel_4 = new JPanel();
-		
-		JLabel lblNewLabel_1 = new JLabel("New label");
-		panel_4.add(lblNewLabel_1);
-		
-		textField_1 = new JTextField();
-		panel_4.add(textField_1);
-		textField_1.setColumns(1);
-		GridBagConstraints gbc_panel_4 = new GridBagConstraints();
-		gbc_panel_4.fill = GridBagConstraints.BOTH;
-		gbc_panel_4.gridx = 1;
-		gbc_panel_4.gridy = 0;
-		panel_2.add(panel_4, gbc_panel_4);
-		
-		JPanel panel = new JPanel();
-		panel_1.add(panel);
-		
-		table = new JTable();
-		panel.add(table);
+
+		JPanel contenu = new JPanel();
+		body.add(contenu, BorderLayout.CENTER);
+		contenu.setLayout(new GridLayout(1, 2, 0, 0));
+
+		JPanel panel_caracteristique = new JPanel();
+		contenu.add(panel_caracteristique);
+		panel_caracteristique.setLayout(new GridLayout(7, 2, 0, 0));
+
+		JLabel type_de_bien = new JLabel("Type de bien");
+		panel_caracteristique.add(type_de_bien);
+		JComboBox choix_type_de_bien = new JComboBox();
+		panel_caracteristique.add(choix_type_de_bien);
+
+		JLabel ville = new JLabel("Ville");
+		panel_caracteristique.add(ville);
+
+		choix_ville = new JTextField();
+		panel_caracteristique.add(choix_ville);
+		choix_ville.setColumns(10);
+
+		JLabel adresse = new JLabel("Adresse");
+		panel_caracteristique.add(adresse);
+
+		choix_adresse = new JTextField();
+		panel_caracteristique.add(choix_adresse);
+		choix_adresse.setColumns(10);
+
+		JLabel complement_adresse = new JLabel("Complément d'adresse");
+		panel_caracteristique.add(complement_adresse);
+
+		choix_complement_adresse = new JTextField();
+		choix_complement_adresse.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+		choix_complement_adresse.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		panel_caracteristique.add(choix_complement_adresse);
+		choix_complement_adresse.setColumns(10);
+
+		JLabel surface = new JLabel("Surface habitable");
+		panel_caracteristique.add(surface);
+
+		JSpinner choix_surface = new JSpinner();
+		choix_surface.setModel(new SpinnerNumberModel(Double.valueOf(9), Double.valueOf(9), null, Double.valueOf(0.5)));
+		JSpinner.NumberEditor editor = new JSpinner.NumberEditor(choix_surface, "#0.## 'm²'");
+		editor.setAlignmentY(1.0f);
+		editor.setAlignmentX(1.0f);
+		choix_surface.setEditor(editor);
+		choix_surface.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+		choix_surface.setAlignmentX(Component.RIGHT_ALIGNMENT);
+
+		panel_caracteristique.add(choix_surface);
+
+		JLabel nombre_piece = new JLabel("Nombre de pièces");
+		panel_caracteristique.add(nombre_piece);
+
+		JSpinner choix_nb_piece = new JSpinner();
+		choix_nb_piece.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+		choix_nb_piece.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		choix_nb_piece
+				.setModel(new SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
+		panel_caracteristique.add(choix_nb_piece);
+
+		JPanel panel_diagnostic = new JPanel();
+		contenu.add(panel_diagnostic);
+		panel_diagnostic.setLayout(new BorderLayout(0, 0));
+		JLabel diagnostics = new JLabel("Diagnostics");
+		diagnostics.setHorizontalAlignment(SwingConstants.CENTER);
+		panel_diagnostic.add(diagnostics, BorderLayout.NORTH);
+		JPanel bas_de_page = new JPanel();
+		frame.getContentPane().add(bas_de_page, BorderLayout.SOUTH);
 		this.frame.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {
