@@ -127,13 +127,14 @@ public class PageNouveauLocataire {
 		body.add(panelTitre, BorderLayout.NORTH);
 		
 		JLabel labelTitre = new JLabel("Nouveau locataire");
+		labelTitre.setFont(new Font("Tahoma", Font.BOLD, 15));
 		panelTitre.add(labelTitre);
 		labelTitre.setHorizontalAlignment(SwingConstants.CENTER);
 
 		JPanel donnees_loca = new JPanel();
 		body.add(donnees_loca);
 		GridBagLayout gbl_donnees_loca = new GridBagLayout();
-		gbl_donnees_loca.rowHeights = new int[] {40, 40, 40, 40, 0, 0};
+		gbl_donnees_loca.rowHeights = new int[] {40, 40, 40, 40, 30, 20};
 		gbl_donnees_loca.columnWidths = new int[] {30, 0, 0, 100, 0, 0, 0};
 		gbl_donnees_loca.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 		gbl_donnees_loca.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
