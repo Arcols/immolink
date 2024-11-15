@@ -6,7 +6,7 @@ import org.junit.Test;
 <<<<<<< Updated upstream:src/tests/DiagnosticTest.java
 import classes.Diagnostic;
 =======
-import projet.classes.*;
+import classes.*;
 >>>>>>> Stashed changes:src/projet/tests/DiagnosticTest.java
 
 import org.junit.Before;
