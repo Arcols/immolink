@@ -78,4 +78,43 @@ public class DiagnosticTest {
 
         assertArrayEquals("New PDF Data".getBytes(), diagnostic1.getPdfData());
     }
+    
+    @Test
+    public void testConstructeurAvecDateInvalidite() throws IOException {
+        // Crée une date d'invalidité pour aujourd'hui
+        Date dateInvalidite = new Date(System.currentTimeMillis());
+        Diagnostic diagnostic = new Diagnostic("RéfTest", tempFile.getAbsolutePath(), dateInvalidite);
+
+        assertEquals("RéfTest", diagnostic.getReference());
+        assertArrayEquals("Test PDF Data".getBytes(), diagnostic.getPdfData());
+        assertEquals(dateInvalidite, diagnostic.getDateInvalidite());
+    }
+
+    @Test
+    public void testEstExpireSansDateInvalidite() throws IOException {
+        Diagnostic diagnostic = new Diagnostic("RéfTest", tempFile.getAbsolutePath());
+        assertFalse(diagnostic.estExpire()); // Diagnostic sans date d'invalidité ne peut pas être expiré
+    }
+
+    @Test
+    public void testEstExpireAvecDateInvaliditeNonExpiree() throws IOException {
+        // Crée une date d'invalidité future
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH, 5); // 5 jours dans le futur
+        Date dateInvalidite = new Date(calendar.getTimeInMillis());
+
+        Diagnostic diagnostic = new Diagnostic("RéfTest", tempFile.getAbsolutePath(), dateInvalidite);
+        assertFalse(diagnostic.estExpire()); // Ne doit pas être expiré
+    }
+
+    @Test
+    public void testEstExpireAvecDateInvaliditeExpiree() throws IOException {
+        // Crée une date d'invalidité passée
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH, -5); // 5 jours dans le passé
+        Date dateInvalidite = new Date(calendar.getTimeInMillis());
+
+        Diagnostic diagnostic = new Diagnostic("RéfTest", tempFile.getAbsolutePath(), dateInvalidite);
+        assertTrue(diagnostic.estExpire()); // Doit être expiré
+    }
 }

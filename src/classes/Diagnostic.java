@@ -5,15 +5,26 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Date;
 
 public class Diagnostic {
 
     private String reference;
     private byte[] pdf_data;
+    private Date date_invalidite;
 
+    // Constructeur si il n'y a pas de date d'invalidite présent
     public Diagnostic(String reference, String pdf_chemin) throws IOException {
         this.reference = reference;
         this.pdf_data = loadFileAsBytes(pdf_chemin);
+        this.date_invalidite=null;
+    }
+
+    // Constructeur si il y a une date d'invalidite 
+    public Diagnostic(String reference, String pdf_chemin,Date date_invalidite) throws IOException {
+        this.reference = reference;
+        this.pdf_data = loadFileAsBytes(pdf_chemin);
+        this.date_invalidite=date_invalidite;
     }
 
     /**
@@ -41,11 +52,23 @@ public class Diagnostic {
     }
 
     public byte[] getPdfData() {
-        return pdf_data;
+        return this.pdf_data;
     }
 
     public String getReference() {
-        return reference;
+        return this.reference;
+    }
+
+    public Date getDateInvalidite(){
+        return this.date_invalidite;
+    }
+    
+    public boolean estExpire() {
+        if (this.date_invalidite == null) {
+            return false; // Si la date d'invalidité est null, le diagnostic n'a pas d'expiration
+        }
+        java.util.Date currentDate = new java.util.Date();
+        return currentDate.after(this.date_invalidite); // Renvoie true si la date actuelle est après la date d'invalidité
     }
     
     /**
