@@ -11,7 +11,10 @@ public class BienLouable extends BienImmobilier {
     public List<Devis> travaux;
     public List<Diagnostic> diagnostic;
 
-    public BienLouable(String numero_fiscal, String complement_adresse, Batiment batiment, List<Diagnostic> diagnostic) {
+    public BienLouable(String numero_fiscal, String complement_adresse, Batiment batiment, List<Diagnostic> diagnostic)throws IllegalArgumentException {
+        if(numero_fiscal.length()!=12){
+            throw new IllegalArgumentException("Numéro fiscal invalide");
+        }
         this.numero_fiscal = numero_fiscal;
         this.complement_adresse = complement_adresse;
         this.batiment = batiment;
@@ -43,7 +46,6 @@ public class BienLouable extends BienImmobilier {
         this.travaux.add(devis);
     }
     
-
     // pas sur que ça serve ?
     /**
      * In : Diagnostic

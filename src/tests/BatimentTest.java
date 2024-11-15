@@ -1,10 +1,10 @@
-package projet.tests;
+package tests;
 
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import projet.classes.*;
+import classes.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ public class BatimentTest {
         batiment = new Batiment("123 Rue de la Paix", "75001", "Paris");
 
         // création d'un bien louable pour le test de la fonction ajout
-        bien_louable = new BienLouable("987654", "Appartement 101", batiment, new ArrayList<>());
+        bien_louable = new BienLouable("123456789101", "Appartement 101", batiment, new ArrayList<>());
     }
 
     @Test

@@ -1,10 +1,10 @@
-package projet.tests;
+package tests;
 
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import projet.classes.Devis;
+import classes.Devis;
 
 public class DevisTest {
 

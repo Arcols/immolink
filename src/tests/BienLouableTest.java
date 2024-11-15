@@ -1,16 +1,17 @@
-package projet.tests;
+package tests;
 
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import projet.classes.*;
+import classes.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class BienLouableTest {
 
@@ -38,12 +39,12 @@ public class BienLouableTest {
         diagnostics.add(diagnostic1);
 
         batiment = new Batiment("123 Rue de la Paix", "75001", "Paris");
-        bien_louable = new BienLouable("123456", "Appartement 12B", batiment, diagnostics);
+        bien_louable = new BienLouable("123456789101", "Appartement 12B", batiment, diagnostics);
     }
 
     @Test
     public void testConstructeurEtGetters() {
-        assertEquals("123456", bien_louable.getNumero_fiscal());
+        assertEquals("123456789101", bien_louable.getNumero_fiscal());
         assertEquals("Appartement 12B", bien_louable.getComplement_adresse());
         assertEquals(batiment, bien_louable.getBatiment());
         assertEquals(1, bien_louable.getDiagnostic().size());
@@ -94,4 +95,11 @@ public class BienLouableTest {
         assertEquals(devis, bien_louable.getTravaux().get(0));
     }
     
+    @Test(expected = IllegalArgumentException.class)
+    public void testNumeroFiscalInvalide() {
+        List<Diagnostic> diagnostics = new ArrayList<>();
+        diagnostics.add(diagnostic1);
+
+        new BienLouable("123456", "Appartement 12B", batiment, diagnostics);
+    }
 }
