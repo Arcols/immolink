@@ -10,18 +10,25 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+
 import projet.ihm.Charte;
 import projet.ihm.ResizedImage;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
 
 public class PageBienImmobilier {
 
@@ -30,6 +37,16 @@ public class PageBienImmobilier {
 	private JTextField choix_ville;
 	private JTextField choix_adresse;
 	private JTextField choix_complement_adresse;
+	private JButton valider;
+
+	private void checkFields() {
+		// Vérification si tous les champs sont remplis
+		boolean isFilled = !choix_ville.getText().trim().isEmpty() && !choix_adresse.getText().trim().isEmpty()
+				&& !choix_complement_adresse.getText().trim().isEmpty();
+
+		// Active ou désactive le bouton "Valider"
+		valider.setEnabled(isFilled);
+	}
 
 	/**
 	 * Launch the application.
@@ -123,7 +140,7 @@ public class PageBienImmobilier {
 		FlowLayout fl_titre = (FlowLayout) titre.getLayout();
 		body.add(titre, BorderLayout.NORTH);
 
-		JLabel titrePage = new JLabel("Mon Bien Immobilier");
+		JLabel titrePage = new JLabel("Nouveau bien immobilier");
 		titrePage.setAlignmentY(0.0f);
 		titrePage.setAlignmentX(0.5f);
 		titre.add(titrePage);
@@ -139,6 +156,7 @@ public class PageBienImmobilier {
 		JLabel type_de_bien = new JLabel("Type de bien");
 		panel_caracteristique.add(type_de_bien);
 		JComboBox choix_type_de_bien = new JComboBox();
+		choix_type_de_bien.setModel(new DefaultComboBoxModel(new String[] { "Appartement", "Bâtiment", "Garage" }));
 		panel_caracteristique.add(choix_type_de_bien);
 
 		JLabel ville = new JLabel("Ville");
@@ -194,9 +212,28 @@ public class PageBienImmobilier {
 		JLabel diagnostics = new JLabel("Diagnostics");
 		diagnostics.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_diagnostic.add(diagnostics, BorderLayout.NORTH);
+
+		JTable tableau_diagnostic = new JTable();
+		tableau_diagnostic.setModel(new DefaultTableModel(new Object[][] {}, new String[] {}));
+		DefaultTableModel model = (DefaultTableModel) tableau_diagnostic.getModel();
+		model.setColumnIdentifiers(new String[] { "Libellé", "Fichier PDF" });
+		JButton bouton_telechargement = new JButton();
+
+		panel_diagnostic.add(new JScrollPane(tableau_diagnostic), BorderLayout.CENTER);
+
 		JPanel bas_de_page = new JPanel();
 		frame.getContentPane().add(bas_de_page, BorderLayout.SOUTH);
+		bas_de_page.setLayout(new BorderLayout(0, 0));
+
+		this.valider = new JButton("Valider");
+		this.valider.setEnabled(false);
+		this.valider.setHorizontalTextPosition(SwingConstants.LEFT);
+		this.valider.setVerticalTextPosition(SwingConstants.TOP);
+		this.valider.setVerticalAlignment(SwingConstants.BOTTOM);
+		bas_de_page.add(this.valider, BorderLayout.EAST);
+
 		this.frame.addComponentListener(new ComponentAdapter() {
+
 			@Override
 			public void componentResized(ComponentEvent e) {
 				ResizedImage.resizeImage("/ressources/images/logo+nom.png", PageBienImmobilier.this.frame,
@@ -216,5 +253,28 @@ public class PageBienImmobilier {
 			}
 		});
 
+		DocumentListener textListener = new DocumentListener() {
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				checkFields();
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				checkFields();
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				checkFields();
+			}
+		};
+
+		// Ajout des listeners sur chaque champ de texte
+		choix_ville.getDocument().addDocumentListener(textListener);
+		choix_adresse.getDocument().addDocumentListener(textListener);
+		choix_complement_adresse.getDocument().addDocumentListener(textListener);
+
 	}
+
 }
