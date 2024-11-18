@@ -29,6 +29,9 @@ import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 
 public class PageBienImmobilier {
 
@@ -151,60 +154,130 @@ public class PageBienImmobilier {
 
 		JPanel panel_caracteristique = new JPanel();
 		contenu.add(panel_caracteristique);
-		panel_caracteristique.setLayout(new GridLayout(7, 2, 0, 0));
-
-		JLabel type_de_bien = new JLabel("Type de bien");
-		panel_caracteristique.add(type_de_bien);
-		JComboBox choix_type_de_bien = new JComboBox();
-		choix_type_de_bien.setModel(new DefaultComboBoxModel(new String[] { "Appartement", "Bâtiment", "Garage" }));
-		panel_caracteristique.add(choix_type_de_bien);
-
-		JLabel ville = new JLabel("Ville");
-		panel_caracteristique.add(ville);
-
-		choix_ville = new JTextField();
-		panel_caracteristique.add(choix_ville);
-		choix_ville.setColumns(10);
-
-		JLabel adresse = new JLabel("Adresse");
-		panel_caracteristique.add(adresse);
-
-		choix_adresse = new JTextField();
-		panel_caracteristique.add(choix_adresse);
-		choix_adresse.setColumns(10);
-
-		JLabel complement_adresse = new JLabel("Complément d'adresse");
-		panel_caracteristique.add(complement_adresse);
-
-		choix_complement_adresse = new JTextField();
-		choix_complement_adresse.setAlignmentY(Component.BOTTOM_ALIGNMENT);
-		choix_complement_adresse.setAlignmentX(Component.RIGHT_ALIGNMENT);
-		panel_caracteristique.add(choix_complement_adresse);
-		choix_complement_adresse.setColumns(10);
-
-		JLabel surface = new JLabel("Surface habitable");
-		panel_caracteristique.add(surface);
-
-		JSpinner choix_surface = new JSpinner();
-		choix_surface.setModel(new SpinnerNumberModel(Double.valueOf(9), Double.valueOf(9), null, Double.valueOf(0.5)));
-		JSpinner.NumberEditor editor = new JSpinner.NumberEditor(choix_surface, "#0.## 'm²'");
-		editor.setAlignmentY(1.0f);
-		editor.setAlignmentX(1.0f);
-		choix_surface.setEditor(editor);
-		choix_surface.setAlignmentY(Component.BOTTOM_ALIGNMENT);
-		choix_surface.setAlignmentX(Component.RIGHT_ALIGNMENT);
-
-		panel_caracteristique.add(choix_surface);
-
-		JLabel nombre_piece = new JLabel("Nombre de pièces");
-		panel_caracteristique.add(nombre_piece);
-
-		JSpinner choix_nb_piece = new JSpinner();
-		choix_nb_piece.setAlignmentY(Component.BOTTOM_ALIGNMENT);
-		choix_nb_piece.setAlignmentX(Component.RIGHT_ALIGNMENT);
-		choix_nb_piece
-				.setModel(new SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
-		panel_caracteristique.add(choix_nb_piece);
+		GridBagLayout gbl_panel_caracteristique = new GridBagLayout();
+		gbl_panel_caracteristique.columnWidths = new int[] {0};
+		gbl_panel_caracteristique.rowHeights = new int[] {40, 40, 40, 40, 40, 40};
+		gbl_panel_caracteristique.columnWeights = new double[]{0.0, 0.0};
+		gbl_panel_caracteristique.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+		panel_caracteristique.setLayout(gbl_panel_caracteristique);
+						
+								JLabel type_de_bien = new JLabel("Type de bien");
+								GridBagConstraints gbc_type_de_bien = new GridBagConstraints();
+								gbc_type_de_bien.fill = GridBagConstraints.BOTH;
+								gbc_type_de_bien.insets = new Insets(0, 0, 5, 5);
+								gbc_type_de_bien.gridx = 0;
+								gbc_type_de_bien.gridy = 0;
+								panel_caracteristique.add(type_de_bien, gbc_type_de_bien);
+						JComboBox choix_type_de_bien = new JComboBox();
+						choix_type_de_bien.setModel(new DefaultComboBoxModel(new String[] { "Appartement", "Bâtiment", "Garage" }));
+						GridBagConstraints gbc_choix_type_de_bien = new GridBagConstraints();
+						gbc_choix_type_de_bien.fill = GridBagConstraints.HORIZONTAL;
+						gbc_choix_type_de_bien.insets = new Insets(0, 0, 5, 0);
+						gbc_choix_type_de_bien.gridx = 1;
+						gbc_choix_type_de_bien.gridy = 0;
+						panel_caracteristique.add(choix_type_de_bien, gbc_choix_type_de_bien);
+										
+												JLabel ville = new JLabel("Ville");
+												GridBagConstraints gbc_ville = new GridBagConstraints();
+												gbc_ville.fill = GridBagConstraints.BOTH;
+												gbc_ville.insets = new Insets(0, 0, 5, 5);
+												gbc_ville.gridx = 0;
+												gbc_ville.gridy = 1;
+												panel_caracteristique.add(ville, gbc_ville);
+								
+										choix_ville = new JTextField();
+										GridBagConstraints gbc_choix_ville = new GridBagConstraints();
+										gbc_choix_ville.fill = GridBagConstraints.HORIZONTAL;
+										gbc_choix_ville.insets = new Insets(0, 0, 5, 0);
+										gbc_choix_ville.gridx = 1;
+										gbc_choix_ville.gridy = 1;
+										panel_caracteristique.add(choix_ville, gbc_choix_ville);
+										choix_ville.setColumns(10);
+										
+												// Ajout des listeners sur chaque champ de texte
+												choix_ville.getDocument().addDocumentListener(textListener);
+						
+								JLabel adresse = new JLabel("Adresse");
+								GridBagConstraints gbc_adresse = new GridBagConstraints();
+								gbc_adresse.fill = GridBagConstraints.BOTH;
+								gbc_adresse.insets = new Insets(0, 0, 5, 5);
+								gbc_adresse.gridx = 0;
+								gbc_adresse.gridy = 2;
+								panel_caracteristique.add(adresse, gbc_adresse);
+										
+												choix_adresse = new JTextField();
+												GridBagConstraints gbc_choix_adresse = new GridBagConstraints();
+												gbc_choix_adresse.fill = GridBagConstraints.HORIZONTAL;
+												gbc_choix_adresse.insets = new Insets(0, 0, 5, 0);
+												gbc_choix_adresse.gridx = 1;
+												gbc_choix_adresse.gridy = 2;
+												panel_caracteristique.add(choix_adresse, gbc_choix_adresse);
+												choix_adresse.setColumns(10);
+												choix_adresse.getDocument().addDocumentListener(textListener);
+												
+														JLabel complement_adresse = new JLabel("Complément d'adresse");
+														GridBagConstraints gbc_complement_adresse = new GridBagConstraints();
+														gbc_complement_adresse.fill = GridBagConstraints.BOTH;
+														gbc_complement_adresse.insets = new Insets(0, 0, 5, 5);
+														gbc_complement_adresse.gridx = 0;
+														gbc_complement_adresse.gridy = 3;
+														panel_caracteristique.add(complement_adresse, gbc_complement_adresse);
+										
+												choix_complement_adresse = new JTextField();
+												choix_complement_adresse.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+												choix_complement_adresse.setAlignmentX(Component.RIGHT_ALIGNMENT);
+												GridBagConstraints gbc_choix_complement_adresse = new GridBagConstraints();
+												gbc_choix_complement_adresse.fill = GridBagConstraints.HORIZONTAL;
+												gbc_choix_complement_adresse.insets = new Insets(0, 0, 5, 0);
+												gbc_choix_complement_adresse.gridx = 1;
+												gbc_choix_complement_adresse.gridy = 3;
+												panel_caracteristique.add(choix_complement_adresse, gbc_choix_complement_adresse);
+												choix_complement_adresse.setColumns(10);
+												choix_complement_adresse.getDocument().addDocumentListener(textListener);
+						
+								JLabel surface = new JLabel("Surface habitable");
+								GridBagConstraints gbc_surface = new GridBagConstraints();
+								gbc_surface.fill = GridBagConstraints.BOTH;
+								gbc_surface.insets = new Insets(0, 0, 5, 5);
+								gbc_surface.gridx = 0;
+								gbc_surface.gridy = 4;
+								panel_caracteristique.add(surface, gbc_surface);
+				
+						JSpinner choix_surface = new JSpinner();
+						choix_surface.setModel(new SpinnerNumberModel(Double.valueOf(9), Double.valueOf(9), null, Double.valueOf(0.5)));
+						JSpinner.NumberEditor editor = new JSpinner.NumberEditor(choix_surface, "#0.## 'm²'");
+						editor.setAlignmentY(1.0f);
+						editor.setAlignmentX(1.0f);
+						choix_surface.setEditor(editor);
+						choix_surface.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+						choix_surface.setAlignmentX(Component.RIGHT_ALIGNMENT);
+						
+								GridBagConstraints gbc_choix_surface = new GridBagConstraints();
+								gbc_choix_surface.fill = GridBagConstraints.HORIZONTAL;
+								gbc_choix_surface.insets = new Insets(0, 0, 5, 0);
+								gbc_choix_surface.gridx = 1;
+								gbc_choix_surface.gridy = 4;
+								panel_caracteristique.add(choix_surface, gbc_choix_surface);
+				
+						JLabel nombre_piece = new JLabel("Nombre de pièces");
+						GridBagConstraints gbc_nombre_piece = new GridBagConstraints();
+						gbc_nombre_piece.fill = GridBagConstraints.BOTH;
+						gbc_nombre_piece.insets = new Insets(0, 0, 5, 5);
+						gbc_nombre_piece.gridx = 0;
+						gbc_nombre_piece.gridy = 5;
+						panel_caracteristique.add(nombre_piece, gbc_nombre_piece);
+				
+						JSpinner choix_nb_piece = new JSpinner();
+						choix_nb_piece.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+						choix_nb_piece.setAlignmentX(Component.RIGHT_ALIGNMENT);
+						choix_nb_piece
+								.setModel(new SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
+						GridBagConstraints gbc_choix_nb_piece = new GridBagConstraints();
+						gbc_choix_nb_piece.insets = new Insets(0, 0, 5, 0);
+						gbc_choix_nb_piece.fill = GridBagConstraints.HORIZONTAL;
+						gbc_choix_nb_piece.gridx = 1;
+						gbc_choix_nb_piece.gridy = 5;
+						panel_caracteristique.add(choix_nb_piece, gbc_choix_nb_piece);
 
 		JPanel panel_diagnostic = new JPanel();
 		contenu.add(panel_diagnostic);
@@ -269,11 +342,6 @@ public class PageBienImmobilier {
 				checkFields();
 			}
 		};
-
-		// Ajout des listeners sur chaque champ de texte
-		choix_ville.getDocument().addDocumentListener(textListener);
-		choix_adresse.getDocument().addDocumentListener(textListener);
-		choix_complement_adresse.getDocument().addDocumentListener(textListener);
 
 	}
 
