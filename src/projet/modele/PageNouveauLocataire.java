@@ -5,14 +5,22 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -286,7 +294,9 @@ public class PageNouveauLocataire {
 		dateValeur.setColumns(10);
 
 		this.enregistrerButton = new JButton("Enregistrer");
+		this.enregistrerButton.setEnabled(false);
 		enregistrerButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
@@ -330,24 +340,6 @@ public class PageNouveauLocataire {
 			@Override
 			public void changedUpdate(DocumentEvent e) {
 				checkFields();
-			}
-
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				// TODO Auto-generated method stub
-				throw new UnsupportedOperationException("Unimplemented method 'insertUpdate'");
-			}
-
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				// TODO Auto-generated method stub
-				throw new UnsupportedOperationException("Unimplemented method 'removeUpdate'");
-			}
-
-			@Override
-			public void changedUpdate(DocumentEvent e) {
-				// TODO Auto-generated method stub
-				throw new UnsupportedOperationException("Unimplemented method 'changedUpdate'");
 			}
 		};
 
