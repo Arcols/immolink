@@ -13,7 +13,7 @@ public class ConnectionDB {
             Class.forName("com.mysql.cj.jdbc.Driver");
             // Establish the connection
             cn = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/imolink", // Database URL
+                "jdbc:mysql://localhost:3306/imolink", // DB URL
                 "root", // Username
                 "" // Password
             );
@@ -22,19 +22,17 @@ public class ConnectionDB {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            throw e; // Rethrow the exception to inform the caller
+            throw e; 
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             throw new SQLException("MySQL JDBC Driver not found.", e);
         }
     }
 
-    // Method to get the connection
     public Connection getConnection() {
         return this.cn;
     }
 
-    // Method to close the connection
     public void closeConnection() throws SQLException {
         if (cn != null && !cn.isClosed()) {
             cn.close();
