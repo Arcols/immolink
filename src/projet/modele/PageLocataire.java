@@ -20,6 +20,10 @@ import projet.ihm.ResizedImage;
 
 public class PageLocataire {
 
+	public JFrame getFrame() {
+		return this.frame;
+	}
+
 	private JFrame frame;
 	private JLabel logo;
 

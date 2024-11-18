@@ -40,6 +40,10 @@ public class PageBails {
 		});
 	}
 
+	public JFrame getFrame() {
+		return this.frame;
+	}
+
 	/**
 	 * Create the application.
 	 */

@@ -7,12 +7,13 @@ import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
-import projet.ihm.Charte;
-import projet.ihm.ResizedImage;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -21,17 +22,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.table.DefaultTableModel;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
+
+import projet.ihm.Charte;
+import projet.ihm.ResizedImage;
 
 public class PageBienImmobilier {
 
@@ -40,11 +39,27 @@ public class PageBienImmobilier {
 	private JTextField choix_num_fiscal;
 	private JTextField choix_complement_adresse;
 	private JButton valider;
+	private JTextField texte_ville = new JTextField();
+	private JTextField texte_adresse = new JTextField();
+	private JComboBox choix_type_de_bien;
 
 	private void checkFields() {
-		// Vérification si tous les champs sont remplis
-		boolean isFilled = !choix_complement_adresse.getText().trim().isEmpty()
-				&& !choix_num_fiscal.getText().trim().isEmpty();
+		// Vérifier le type de bien sélectionné
+		String selectedType = (String) choix_type_de_bien.getSelectedItem();
+
+		// Définir les critères de validation en fonction du type sélectionné
+		boolean isFilled;
+
+		if ("Bâtiment".equals(selectedType)) {
+			// Critères pour "Bâtiment" : vérifier que texte_ville et texte_adresse sont
+			// remplis
+			isFilled = !texte_ville.getText().trim().isEmpty() && !texte_adresse.getText().trim().isEmpty();
+		} else {
+			// Critères pour les autres types de bien : vérifier choix_complement_adresse et
+			// choix_num_fiscal
+			isFilled = !choix_complement_adresse.getText().trim().isEmpty()
+					&& !choix_num_fiscal.getText().trim().isEmpty();
+		}
 
 		// Active ou désactive le bouton "Valider"
 		valider.setEnabled(isFilled);
@@ -150,16 +165,16 @@ public class PageBienImmobilier {
 		JPanel contenu = new JPanel();
 		body.add(contenu, BorderLayout.CENTER);
 		contenu.setLayout(new GridLayout(1, 2, 0, 0));
-		
+
 		JPanel panel_caracteristique = new JPanel();
 		contenu.add(panel_caracteristique);
 		GridBagLayout gbl_panel_caracteristique = new GridBagLayout();
-		gbl_panel_caracteristique.columnWidths = new int[] {0};
-		gbl_panel_caracteristique.rowHeights = new int[] {0, 0, 0, 0, 0, 0, 0};
-		gbl_panel_caracteristique.columnWeights = new double[]{0.0, 0.0};
-		gbl_panel_caracteristique.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+		gbl_panel_caracteristique.columnWidths = new int[] { 0 };
+		gbl_panel_caracteristique.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0 };
+		gbl_panel_caracteristique.columnWeights = new double[] { 0.0, 0.0 };
+		gbl_panel_caracteristique.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 		panel_caracteristique.setLayout(gbl_panel_caracteristique);
-		
+
 		JLabel type_de_bien = new JLabel("Type de bien");
 		GridBagConstraints gbc_type_de_bien = new GridBagConstraints();
 		gbc_type_de_bien.fill = GridBagConstraints.BOTH;
@@ -167,7 +182,7 @@ public class PageBienImmobilier {
 		gbc_type_de_bien.gridx = 0;
 		gbc_type_de_bien.gridy = 0;
 		panel_caracteristique.add(type_de_bien, gbc_type_de_bien);
-		JComboBox choix_type_de_bien = new JComboBox();
+		choix_type_de_bien = new JComboBox();
 		choix_type_de_bien.setModel(new DefaultComboBoxModel(new String[] { "Appartement", "Bâtiment", "Garage" }));
 		GridBagConstraints gbc_choix_type_de_bien = new GridBagConstraints();
 		gbc_choix_type_de_bien.fill = GridBagConstraints.HORIZONTAL;
@@ -175,7 +190,8 @@ public class PageBienImmobilier {
 		gbc_choix_type_de_bien.gridx = 1;
 		gbc_choix_type_de_bien.gridy = 0;
 		panel_caracteristique.add(choix_type_de_bien, gbc_choix_type_de_bien);
-		
+		choix_type_de_bien.addActionListener(e -> checkFields());
+
 		JLabel num_fiscal = new JLabel("Numéro Fiscal");
 		GridBagConstraints gbc_num_fiscal = new GridBagConstraints();
 		gbc_num_fiscal.fill = GridBagConstraints.BOTH;
@@ -183,7 +199,7 @@ public class PageBienImmobilier {
 		gbc_num_fiscal.gridx = 0;
 		gbc_num_fiscal.gridy = 1;
 		panel_caracteristique.add(num_fiscal, gbc_num_fiscal);
-		
+
 		choix_num_fiscal = new JTextField();
 		GridBagConstraints gbc_choix_num_fiscal = new GridBagConstraints();
 		gbc_choix_num_fiscal.fill = GridBagConstraints.HORIZONTAL;
@@ -192,9 +208,9 @@ public class PageBienImmobilier {
 		gbc_choix_num_fiscal.gridy = 1;
 		panel_caracteristique.add(choix_num_fiscal, gbc_choix_num_fiscal);
 		choix_num_fiscal.setColumns(10);
-		
+
 		// Ajout des listeners sur chaque champ de texte
-		
+
 		JLabel ville = new JLabel("Ville");
 		GridBagConstraints gbc_ville = new GridBagConstraints();
 		gbc_ville.fill = GridBagConstraints.BOTH;
@@ -202,7 +218,7 @@ public class PageBienImmobilier {
 		gbc_ville.gridx = 0;
 		gbc_ville.gridy = 2;
 		panel_caracteristique.add(ville, gbc_ville);
-		
+
 		JComboBox choix_ville = new JComboBox();
 		GridBagConstraints gbc_choix_ville = new GridBagConstraints();
 		gbc_choix_ville.fill = GridBagConstraints.HORIZONTAL;
@@ -211,7 +227,7 @@ public class PageBienImmobilier {
 		gbc_choix_ville.gridy = 2;
 		panel_caracteristique.add(choix_ville, gbc_choix_ville);
 		choix_ville.setModel(new DefaultComboBoxModel());
-		
+
 		JLabel adresse = new JLabel("Adresse");
 		GridBagConstraints gbc_adresse = new GridBagConstraints();
 		gbc_adresse.fill = GridBagConstraints.BOTH;
@@ -219,7 +235,7 @@ public class PageBienImmobilier {
 		gbc_adresse.gridx = 0;
 		gbc_adresse.gridy = 3;
 		panel_caracteristique.add(adresse, gbc_adresse);
-		
+
 		JComboBox choix_adresse = new JComboBox();
 		GridBagConstraints gbc_choix_adresse = new GridBagConstraints();
 		gbc_choix_adresse.fill = GridBagConstraints.HORIZONTAL;
@@ -228,7 +244,7 @@ public class PageBienImmobilier {
 		gbc_choix_adresse.gridy = 3;
 		panel_caracteristique.add(choix_adresse, gbc_choix_adresse);
 		choix_adresse.setModel(new DefaultComboBoxModel());
-		
+
 		JLabel complement_adresse = new JLabel("Complément d'adresse");
 		GridBagConstraints gbc_complement_adresse = new GridBagConstraints();
 		gbc_complement_adresse.fill = GridBagConstraints.BOTH;
@@ -236,7 +252,7 @@ public class PageBienImmobilier {
 		gbc_complement_adresse.gridx = 0;
 		gbc_complement_adresse.gridy = 4;
 		panel_caracteristique.add(complement_adresse, gbc_complement_adresse);
-		
+
 		choix_complement_adresse = new JTextField();
 		GridBagConstraints gbc_choix_complement_adresse = new GridBagConstraints();
 		gbc_choix_complement_adresse.fill = GridBagConstraints.HORIZONTAL;
@@ -247,7 +263,7 @@ public class PageBienImmobilier {
 		choix_complement_adresse.setAlignmentY(Component.BOTTOM_ALIGNMENT);
 		choix_complement_adresse.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		choix_complement_adresse.setColumns(10);
-		
+
 		JLabel surface = new JLabel("Surface habitable");
 		GridBagConstraints gbc_surface = new GridBagConstraints();
 		gbc_surface.fill = GridBagConstraints.BOTH;
@@ -255,7 +271,7 @@ public class PageBienImmobilier {
 		gbc_surface.gridx = 0;
 		gbc_surface.gridy = 5;
 		panel_caracteristique.add(surface, gbc_surface);
-		
+
 		JSpinner choix_surface = new JSpinner();
 		GridBagConstraints gbc_choix_surface = new GridBagConstraints();
 		gbc_choix_surface.fill = GridBagConstraints.HORIZONTAL;
@@ -270,7 +286,7 @@ public class PageBienImmobilier {
 		choix_surface.setEditor(editor);
 		choix_surface.setAlignmentY(Component.BOTTOM_ALIGNMENT);
 		choix_surface.setAlignmentX(Component.RIGHT_ALIGNMENT);
-		
+
 		JLabel nombre_piece = new JLabel("Nombre de pièces");
 		GridBagConstraints gbc_nombre_piece = new GridBagConstraints();
 		gbc_nombre_piece.fill = GridBagConstraints.BOTH;
@@ -278,7 +294,7 @@ public class PageBienImmobilier {
 		gbc_nombre_piece.gridx = 0;
 		gbc_nombre_piece.gridy = 6;
 		panel_caracteristique.add(nombre_piece, gbc_nombre_piece);
-		
+
 		JSpinner choix_nb_piece = new JSpinner();
 		GridBagConstraints gbc_choix_nb_piece = new GridBagConstraints();
 		gbc_choix_nb_piece.fill = GridBagConstraints.HORIZONTAL;
@@ -297,13 +313,39 @@ public class PageBienImmobilier {
 		diagnostics.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_diagnostic.add(diagnostics, BorderLayout.NORTH);
 
-		JTable tableau_diagnostic = new JTable();
-		tableau_diagnostic.setModel(new DefaultTableModel(new Object[][] {}, new String[] {}));
-		DefaultTableModel model = (DefaultTableModel) tableau_diagnostic.getModel();
-		model.setColumnIdentifiers(new String[] { "Libellé", "Fichier PDF" });
-		JButton bouton_telechargement = new JButton();
+		String[] diagnostics1 = { "Certificat de surface habitable", "Diagnostique de performance énergétique",
+				"Dossier amiante parties privatives", "Constat de risque d'exposition au plomb avant location",
+				"État des risques, pollutions et des nuisances sonores aériennes",
+				"Diagnostique de l'état de l'installation d'électricité" };
 
-		panel_diagnostic.add(new JScrollPane(tableau_diagnostic), BorderLayout.CENTER);
+		// Panel principal (avec un défilement si nécessaire)
+		JPanel tableau_diagnostic = new JPanel(new GridBagLayout()); // Remplacer GridLayout par GridBagLayout
+
+		// Créer un GridBagConstraints pour gérer le placement des composants
+		GridBagConstraints gbc_diag = new GridBagConstraints();
+		gbc_diag.fill = GridBagConstraints.HORIZONTAL;
+		gbc_diag.insets = new Insets(5, 5, 5, 5); // Espacement entre les composants
+
+		int row = 0; // Initialiser le compteur de ligne pour GridBagLayout
+
+		for (String diagnostic : diagnostics1) {
+			// Créer le label pour chaque diagnostic
+			JLabel label = new JLabel(diagnostic);
+			gbc_diag.gridx = 0; // Première colonne pour le label
+			gbc_diag.gridy = row;
+			tableau_diagnostic.add(label, gbc_diag);
+
+			// Créer le bouton "Télécharger" pour chaque diagnostic
+			JButton bouton = new JButton("Télécharger");
+			bouton.addActionListener(e -> System.out.println("Téléchargement demandé pour : " + diagnostic));
+			gbc_diag.gridx = 1; // Deuxième colonne pour le bouton
+			tableau_diagnostic.add(bouton, gbc_diag);
+
+			row++; // Incrémenter la ligne pour le prochain diagnostic
+		}
+
+		JScrollPane scrollPane = new JScrollPane(tableau_diagnostic);
+		panel_diagnostic.add(scrollPane, BorderLayout.CENTER);
 
 		JPanel bas_de_page = new JPanel();
 		frame.getContentPane().add(bas_de_page, BorderLayout.SOUTH);
@@ -355,23 +397,60 @@ public class PageBienImmobilier {
 		};
 		choix_num_fiscal.getDocument().addDocumentListener(textListener);
 		choix_complement_adresse.getDocument().addDocumentListener(textListener);
+		texte_ville.getDocument().addDocumentListener(textListener);
+		texte_adresse.getDocument().addDocumentListener(textListener);
 
 		choix_type_de_bien.addActionListener(e -> {
 			String selectedType = (String) choix_type_de_bien.getSelectedItem();
 			boolean isAppartement = "Appartement".equals(selectedType);
+			boolean isBatiment = "Bâtiment".equals(selectedType);
 
 			// Gérer la visibilité des composants
+			diagnostics.setVisible(isAppartement);
 			tableau_diagnostic.setVisible(isAppartement);
 			surface.setVisible(isAppartement);
 			choix_surface.setVisible(isAppartement);
 			nombre_piece.setVisible(isAppartement);
 			choix_nb_piece.setVisible(isAppartement);
+			complement_adresse.setVisible(!isBatiment);
+			choix_complement_adresse.setVisible(!isBatiment);
+			num_fiscal.setVisible(!isBatiment);
+			choix_num_fiscal.setVisible(!isBatiment);
+
+			// Remplacer les JComboBox par JTextField pour "Bâtiment"
+			GridBagConstraints gbc = new GridBagConstraints();
+			gbc.fill = GridBagConstraints.HORIZONTAL;
+			gbc.insets = new Insets(0, 0, 5, 0);
+
+			// Ville
+			if (isBatiment) {
+				panel_caracteristique.remove(choix_ville);
+				gbc.gridx = 1;
+				gbc.gridy = 2;
+				panel_caracteristique.add(texte_ville, gbc);
+			} else {
+				panel_caracteristique.remove(texte_ville);
+				gbc.gridx = 1;
+				gbc.gridy = 2;
+				panel_caracteristique.add(choix_ville, gbc);
+			}
+
+			// Adresse
+			if (isBatiment) {
+				panel_caracteristique.remove(choix_adresse);
+				gbc.gridx = 1;
+				gbc.gridy = 3;
+				panel_caracteristique.add(texte_adresse, gbc);
+			} else {
+				panel_caracteristique.remove(texte_adresse);
+				gbc.gridx = 1;
+				gbc.gridy = 3;
+				panel_caracteristique.add(choix_adresse, gbc);
+			}
 
 			// Rafraîchir l'interface
 			panel_caracteristique.revalidate();
 			panel_caracteristique.repaint();
-			panel_diagnostic.revalidate();
-			panel_diagnostic.repaint();
 		});
 
 	}
