@@ -20,17 +20,18 @@ public class Locataire {
 
     public List<Bail> bails = new ArrayList<Bail> ();
 
-    public List<Charge> charges = new ArrayList<Charge> ();
+    public List<Charge> charges;
 
-    public Locataire(String nom, String prénom, String téléphone, String mail,Date dateArrivee,String genre) throws SQLException {
+    public Locataire(String nom, String prénom, String téléphone, String mail,Date date_arrivee,String genre) throws SQLException {
         this.nom = nom;
         this.prénom = prénom;
         this.téléphone = téléphone;
         this.genre = genre;
         //this.bails.add(bail);
+        this.charges = new ArrayList<Charge>();
         this.mail=mail;
-        this.date_arrive=dateArrivee;
-        insertIntoTable(nom, prénom, téléphone, dateArrivee,mail,genre);
+        this.date_arrive=date_arrivee;
+        insertIntoTable(nom, prénom, téléphone, date_arrivee,mail,genre);
     }
     public Locataire(String nom, String prénom, String téléphone,Date date_arrive,String genre) throws SQLException {
         this.nom = nom;
