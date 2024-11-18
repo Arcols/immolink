@@ -13,7 +13,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -27,6 +32,7 @@ import javax.swing.event.DocumentListener;
 
 import org.w3c.dom.events.MouseEvent;
 
+import projet.classes.Locataire;
 import projet.ihm.Charte;
 import projet.ihm.ResizedImage;
 import java.awt.GridBagLayout;
@@ -147,9 +153,7 @@ public class PageNouveauLocataire {
 		b_biens.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				PageBienImmobilier page = new PageBienImmobilier();
-				PageBienImmobilier.getFrame().setVisible(true);
-				dispose();
+				
 			}
 		});
 
@@ -170,7 +174,7 @@ public class PageNouveauLocataire {
 		GridBagLayout gbl_donnees_loca = new GridBagLayout();
 		gbl_donnees_loca.rowHeights = new int[] { 40, 40, 40, 40, 30, 20 };
 		gbl_donnees_loca.columnWidths = new int[] { 30, 0, 0, 100, 0, 0, 0 };
-		gbl_donnees_loca.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+		gbl_donnees_loca.columnWeights = new double[] { 0.0, 0.0, 1.0, 0.0, 0.0, 0.0 };
 		gbl_donnees_loca.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 		donnees_loca.setLayout(gbl_donnees_loca);
 
@@ -280,7 +284,7 @@ public class PageNouveauLocataire {
 		gbc_labelMail.gridx = 1;
 		gbc_labelMail.gridy = 3;
 		donnees_loca.add(labelMail, gbc_labelMail);
-
+		
 		mailValeur = new JTextField();
 		GridBagConstraints gbc_mailValeur = new GridBagConstraints();
 		gbc_mailValeur.anchor = GridBagConstraints.WEST;
@@ -290,6 +294,14 @@ public class PageNouveauLocataire {
 		donnees_loca.add(mailValeur, gbc_mailValeur);
 		mailValeur.setColumns(10);
 
+		JLabel labelGenre = new JLabel("Genre");
+		GridBagConstraints gbc_labelGenre = new GridBagConstraints();
+		gbc_labelGenre.anchor = GridBagConstraints.EAST;
+		gbc_labelGenre.insets = new Insets(0, 0, 5, 5);
+		gbc_labelGenre.gridx = 1;
+		gbc_labelGenre.gridy = 4;
+		donnees_loca.add(labelGenre, gbc_labelGenre);
+		
 		JLabel labelDate = new JLabel("Date arrivée");
 		GridBagConstraints gbc_labelDate = new GridBagConstraints();
 		gbc_labelDate.anchor = GridBagConstraints.WEST;
@@ -309,11 +321,15 @@ public class PageNouveauLocataire {
 
 		this.enregistrerButton = new JButton("Enregistrer");
 		this.enregistrerButton.setEnabled(false);
-		enregistrerButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		
+		JComboBox genreValeur = new JComboBox();
+		genreValeur.setModel(new DefaultComboBoxModel(new String[] { "H", "F","O" }));
+		GridBagConstraints gbc_genreValeur = new GridBagConstraints();
+		gbc_genreValeur.insets = new Insets(0, 0, 5, 5);
+		gbc_genreValeur.gridx = 2;
+		gbc_genreValeur.gridy = 4;
+		donnees_loca.add(genreValeur, gbc_genreValeur);
+		
 		GridBagConstraints gbc_enregistrerButton = new GridBagConstraints();
 		gbc_enregistrerButton.insets = new Insets(0, 0, 0, 5);
 		gbc_enregistrerButton.gridx = 5;
@@ -362,6 +378,20 @@ public class PageNouveauLocataire {
 		prenomValeur.getDocument().addDocumentListener(textListener);
 		telephoneValeur.getDocument().addDocumentListener(textListener);
 		dateValeur.getDocument().addDocumentListener(textListener);
-	}
+		
 
+		enregistrerButton.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		    	java.sql.Date sqlDate = java.sql.Date.valueOf(dateValeur.getText());
+		        try {
+					Locataire l = new Locataire(nomValeur.getText(), prenomValeur.getText(), telephoneValeur.getText(), mailValeur.getText(), sqlDate, (String)genreValeur.getSelectedItem());
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+		        
+		    }
+		});
+	}
 }
