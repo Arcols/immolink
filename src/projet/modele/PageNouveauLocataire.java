@@ -172,9 +172,9 @@ public class PageNouveauLocataire {
 		JPanel donnees_loca = new JPanel();
 		body.add(donnees_loca);
 		GridBagLayout gbl_donnees_loca = new GridBagLayout();
-		gbl_donnees_loca.rowHeights = new int[] { 40, 40, 40, 40, 30, 20 };
-		gbl_donnees_loca.columnWidths = new int[] { 30, 0, 0, 100, 0, 0, 0 };
-		gbl_donnees_loca.columnWeights = new double[] { 0.0, 0.0, 1.0, 0.0, 0.0, 0.0 };
+		gbl_donnees_loca.columnWidths = new int[] {40, 0, 0, 40, 0, 0, 0};
+		gbl_donnees_loca.rowHeights = new int[] {40, 40, 40, 40, 40, 0};
+		gbl_donnees_loca.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 		gbl_donnees_loca.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 		donnees_loca.setLayout(gbl_donnees_loca);
 
@@ -185,31 +185,34 @@ public class PageNouveauLocataire {
 		gbc_labelNom.gridx = 1;
 		gbc_labelNom.gridy = 0;
 		donnees_loca.add(labelNom, gbc_labelNom);
-
-		nomValeur = new JTextField();
-		GridBagConstraints gbc_nomValeur = new GridBagConstraints();
-		gbc_nomValeur.anchor = GridBagConstraints.WEST;
-		gbc_nomValeur.insets = new Insets(0, 0, 5, 5);
-		gbc_nomValeur.gridx = 2;
-		gbc_nomValeur.gridy = 0;
-		donnees_loca.add(nomValeur, gbc_nomValeur);
-		nomValeur.setColumns(10);
-
-		JLabel labelVille = new JLabel("Ville");
-		GridBagConstraints gbc_labelVille = new GridBagConstraints();
-		gbc_labelVille.anchor = GridBagConstraints.WEST;
-		gbc_labelVille.insets = new Insets(0, 0, 5, 5);
-		gbc_labelVille.gridx = 4;
-		gbc_labelVille.gridy = 0;
-		donnees_loca.add(labelVille, gbc_labelVille);
-
-		JComboBox villeValeur = new JComboBox();
-		GridBagConstraints gbc_villeValeur = new GridBagConstraints();
-		gbc_villeValeur.fill = GridBagConstraints.HORIZONTAL;
-		gbc_villeValeur.insets = new Insets(0, 0, 5, 5);
-		gbc_villeValeur.gridx = 5;
-		gbc_villeValeur.gridy = 0;
-		donnees_loca.add(villeValeur, gbc_villeValeur);
+		
+				nomValeur = new JTextField();
+				GridBagConstraints gbc_nomValeur = new GridBagConstraints();
+				gbc_nomValeur.anchor = GridBagConstraints.WEST;
+				gbc_nomValeur.insets = new Insets(0, 0, 5, 5);
+				gbc_nomValeur.gridx = 2;
+				gbc_nomValeur.gridy = 0;
+				donnees_loca.add(nomValeur, gbc_nomValeur);
+				nomValeur.setColumns(10);
+				
+						// Ajout des listeners sur chaque champ de texte
+						
+				
+						JLabel labelVille = new JLabel("Ville");
+						GridBagConstraints gbc_labelVille = new GridBagConstraints();
+						gbc_labelVille.anchor = GridBagConstraints.WEST;
+						gbc_labelVille.insets = new Insets(0, 0, 5, 5);
+						gbc_labelVille.gridx = 4;
+						gbc_labelVille.gridy = 0;
+						donnees_loca.add(labelVille, gbc_labelVille);
+		
+				JComboBox villeValeur = new JComboBox();
+				GridBagConstraints gbc_villeValeur = new GridBagConstraints();
+				gbc_villeValeur.fill = GridBagConstraints.HORIZONTAL;
+				gbc_villeValeur.insets = new Insets(0, 0, 5, 5);
+				gbc_villeValeur.gridx = 5;
+				gbc_villeValeur.gridy = 0;
+				donnees_loca.add(villeValeur, gbc_villeValeur);
 
 		JLabel labelPrenom = new JLabel("Prénom");
 		GridBagConstraints gbc_labelPrenom = new GridBagConstraints();
@@ -218,31 +221,32 @@ public class PageNouveauLocataire {
 		gbc_labelPrenom.gridx = 1;
 		gbc_labelPrenom.gridy = 1;
 		donnees_loca.add(labelPrenom, gbc_labelPrenom);
-
-		prenomValeur = new JTextField();
-		GridBagConstraints gbc_prenomValeur = new GridBagConstraints();
-		gbc_prenomValeur.anchor = GridBagConstraints.WEST;
-		gbc_prenomValeur.insets = new Insets(0, 0, 5, 5);
-		gbc_prenomValeur.gridx = 2;
-		gbc_prenomValeur.gridy = 1;
-		donnees_loca.add(prenomValeur, gbc_prenomValeur);
-		prenomValeur.setColumns(10);
-
-		JLabel labelAdresse = new JLabel("Adresse");
-		GridBagConstraints gbc_labelAdresse = new GridBagConstraints();
-		gbc_labelAdresse.anchor = GridBagConstraints.WEST;
-		gbc_labelAdresse.insets = new Insets(0, 0, 5, 5);
-		gbc_labelAdresse.gridx = 4;
-		gbc_labelAdresse.gridy = 1;
-		donnees_loca.add(labelAdresse, gbc_labelAdresse);
-
-		JComboBox adresseValeur = new JComboBox();
-		GridBagConstraints gbc_adresseValeur = new GridBagConstraints();
-		gbc_adresseValeur.fill = GridBagConstraints.HORIZONTAL;
-		gbc_adresseValeur.insets = new Insets(0, 0, 5, 5);
-		gbc_adresseValeur.gridx = 5;
-		gbc_adresseValeur.gridy = 1;
-		donnees_loca.add(adresseValeur, gbc_adresseValeur);
+		
+				prenomValeur = new JTextField();
+				GridBagConstraints gbc_prenomValeur = new GridBagConstraints();
+				gbc_prenomValeur.anchor = GridBagConstraints.WEST;
+				gbc_prenomValeur.insets = new Insets(0, 0, 5, 5);
+				gbc_prenomValeur.gridx = 2;
+				gbc_prenomValeur.gridy = 1;
+				donnees_loca.add(prenomValeur, gbc_prenomValeur);
+				prenomValeur.setColumns(10);
+				
+				
+						JLabel labelAdresse = new JLabel("Adresse");
+						GridBagConstraints gbc_labelAdresse = new GridBagConstraints();
+						gbc_labelAdresse.anchor = GridBagConstraints.WEST;
+						gbc_labelAdresse.insets = new Insets(0, 0, 5, 5);
+						gbc_labelAdresse.gridx = 4;
+						gbc_labelAdresse.gridy = 1;
+						donnees_loca.add(labelAdresse, gbc_labelAdresse);
+		
+				JComboBox adresseValeur = new JComboBox();
+				GridBagConstraints gbc_adresseValeur = new GridBagConstraints();
+				gbc_adresseValeur.fill = GridBagConstraints.HORIZONTAL;
+				gbc_adresseValeur.insets = new Insets(0, 0, 5, 5);
+				gbc_adresseValeur.gridx = 5;
+				gbc_adresseValeur.gridy = 1;
+				donnees_loca.add(adresseValeur, gbc_adresseValeur);
 
 		JLabel labelTelephone = new JLabel("Téléphone");
 		GridBagConstraints gbc_labelTelephone = new GridBagConstraints();
@@ -251,31 +255,32 @@ public class PageNouveauLocataire {
 		gbc_labelTelephone.gridx = 1;
 		gbc_labelTelephone.gridy = 2;
 		donnees_loca.add(labelTelephone, gbc_labelTelephone);
-
-		telephoneValeur = new JTextField();
-		GridBagConstraints gbc_telephoneValeur = new GridBagConstraints();
-		gbc_telephoneValeur.anchor = GridBagConstraints.WEST;
-		gbc_telephoneValeur.insets = new Insets(0, 0, 5, 5);
-		gbc_telephoneValeur.gridx = 2;
-		gbc_telephoneValeur.gridy = 2;
-		donnees_loca.add(telephoneValeur, gbc_telephoneValeur);
-		telephoneValeur.setColumns(10);
-
-		JLabel labelComplement = new JLabel("Complément");
-		GridBagConstraints gbc_labelComplement = new GridBagConstraints();
-		gbc_labelComplement.anchor = GridBagConstraints.WEST;
-		gbc_labelComplement.insets = new Insets(0, 0, 5, 5);
-		gbc_labelComplement.gridx = 4;
-		gbc_labelComplement.gridy = 2;
-		donnees_loca.add(labelComplement, gbc_labelComplement);
-
-		JComboBox complementValeur = new JComboBox();
-		GridBagConstraints gbc_complementValeur = new GridBagConstraints();
-		gbc_complementValeur.fill = GridBagConstraints.HORIZONTAL;
-		gbc_complementValeur.insets = new Insets(0, 0, 5, 5);
-		gbc_complementValeur.gridx = 5;
-		gbc_complementValeur.gridy = 2;
-		donnees_loca.add(complementValeur, gbc_complementValeur);
+		
+				telephoneValeur = new JTextField();
+				GridBagConstraints gbc_telephoneValeur = new GridBagConstraints();
+				gbc_telephoneValeur.anchor = GridBagConstraints.WEST;
+				gbc_telephoneValeur.insets = new Insets(0, 0, 5, 5);
+				gbc_telephoneValeur.gridx = 2;
+				gbc_telephoneValeur.gridy = 2;
+				donnees_loca.add(telephoneValeur, gbc_telephoneValeur);
+				telephoneValeur.setColumns(10);
+				
+				
+						JLabel labelComplement = new JLabel("Complément");
+						GridBagConstraints gbc_labelComplement = new GridBagConstraints();
+						gbc_labelComplement.anchor = GridBagConstraints.WEST;
+						gbc_labelComplement.insets = new Insets(0, 0, 5, 5);
+						gbc_labelComplement.gridx = 4;
+						gbc_labelComplement.gridy = 2;
+						donnees_loca.add(labelComplement, gbc_labelComplement);
+		
+				JComboBox complementValeur = new JComboBox();
+				GridBagConstraints gbc_complementValeur = new GridBagConstraints();
+				gbc_complementValeur.fill = GridBagConstraints.HORIZONTAL;
+				gbc_complementValeur.insets = new Insets(0, 0, 5, 5);
+				gbc_complementValeur.gridx = 5;
+				gbc_complementValeur.gridy = 2;
+				donnees_loca.add(complementValeur, gbc_complementValeur);
 
 		JLabel labelMail = new JLabel("Mail");
 		GridBagConstraints gbc_labelMail = new GridBagConstraints();
@@ -293,48 +298,64 @@ public class PageNouveauLocataire {
 		gbc_mailValeur.gridy = 3;
 		donnees_loca.add(mailValeur, gbc_mailValeur);
 		mailValeur.setColumns(10);
+				
+				JLabel labelDate = new JLabel("Date arrivée");
+				GridBagConstraints gbc_labelDate = new GridBagConstraints();
+				gbc_labelDate.anchor = GridBagConstraints.WEST;
+				gbc_labelDate.insets = new Insets(0, 0, 5, 5);
+				gbc_labelDate.gridx = 4;
+				gbc_labelDate.gridy = 3;
+				donnees_loca.add(labelDate, gbc_labelDate);
+		
+				dateValeur = new JTextField();
+				GridBagConstraints gbc_dateValeur = new GridBagConstraints();
+				gbc_dateValeur.fill = GridBagConstraints.HORIZONTAL;
+				gbc_dateValeur.insets = new Insets(0, 0, 5, 5);
+				gbc_dateValeur.gridx = 5;
+				gbc_dateValeur.gridy = 3;
+				donnees_loca.add(dateValeur, gbc_dateValeur);
+				dateValeur.setColumns(10);
+				
 
 		JLabel labelGenre = new JLabel("Genre");
 		GridBagConstraints gbc_labelGenre = new GridBagConstraints();
-		gbc_labelGenre.anchor = GridBagConstraints.EAST;
+		gbc_labelGenre.anchor = GridBagConstraints.WEST;
 		gbc_labelGenre.insets = new Insets(0, 0, 5, 5);
 		gbc_labelGenre.gridx = 1;
 		gbc_labelGenre.gridy = 4;
 		donnees_loca.add(labelGenre, gbc_labelGenre);
 		
-		JLabel labelDate = new JLabel("Date arrivée");
-		GridBagConstraints gbc_labelDate = new GridBagConstraints();
-		gbc_labelDate.anchor = GridBagConstraints.WEST;
-		gbc_labelDate.insets = new Insets(0, 0, 5, 5);
-		gbc_labelDate.gridx = 4;
-		gbc_labelDate.gridy = 3;
-		donnees_loca.add(labelDate, gbc_labelDate);
-
-		dateValeur = new JTextField();
-		GridBagConstraints gbc_dateValeur = new GridBagConstraints();
-		gbc_dateValeur.fill = GridBagConstraints.HORIZONTAL;
-		gbc_dateValeur.insets = new Insets(0, 0, 5, 5);
-		gbc_dateValeur.gridx = 5;
-		gbc_dateValeur.gridy = 3;
-		donnees_loca.add(dateValeur, gbc_dateValeur);
-		dateValeur.setColumns(10);
-
-		this.enregistrerButton = new JButton("Enregistrer");
-		this.enregistrerButton.setEnabled(false);
-		
 		JComboBox genreValeur = new JComboBox();
 		genreValeur.setModel(new DefaultComboBoxModel(new String[] { "H", "F","O" }));
 		GridBagConstraints gbc_genreValeur = new GridBagConstraints();
+		gbc_genreValeur.fill = GridBagConstraints.HORIZONTAL;
 		gbc_genreValeur.insets = new Insets(0, 0, 5, 5);
 		gbc_genreValeur.gridx = 2;
 		gbc_genreValeur.gridy = 4;
 		donnees_loca.add(genreValeur, gbc_genreValeur);
-		
-		GridBagConstraints gbc_enregistrerButton = new GridBagConstraints();
-		gbc_enregistrerButton.insets = new Insets(0, 0, 0, 5);
-		gbc_enregistrerButton.gridx = 5;
-		gbc_enregistrerButton.gridy = 5;
-		donnees_loca.add(enregistrerButton, gbc_enregistrerButton);
+								
+										this.enregistrerButton = new JButton("Enregistrer");
+										this.enregistrerButton.setEnabled(false);
+										
+										GridBagConstraints gbc_enregistrerButton = new GridBagConstraints();
+										gbc_enregistrerButton.gridx = 6;
+										gbc_enregistrerButton.gridy = 5;
+										donnees_loca.add(enregistrerButton, gbc_enregistrerButton);
+				
+
+				enregistrerButton.addActionListener(new ActionListener() {
+				    @Override
+				    public void actionPerformed(ActionEvent e) {
+				    	java.sql.Date sqlDate = java.sql.Date.valueOf(dateValeur.getText());
+				        try {
+							Locataire l = new Locataire(nomValeur.getText(), prenomValeur.getText(), telephoneValeur.getText(), mailValeur.getText(), sqlDate, (String)genreValeur.getSelectedItem());
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+				        
+				    }
+				});
 
 		this.frame.addComponentListener(new ComponentAdapter() {
 			@Override
@@ -356,42 +377,6 @@ public class PageNouveauLocataire {
 			}
 		});
 
-		DocumentListener textListener = new DocumentListener() {
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				checkFields();
-			}
-
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				checkFields();
-			}
-
-			@Override
-			public void changedUpdate(DocumentEvent e) {
-				checkFields();
-			}
-		};
-
-		// Ajout des listeners sur chaque champ de texte
-		nomValeur.getDocument().addDocumentListener(textListener);
-		prenomValeur.getDocument().addDocumentListener(textListener);
-		telephoneValeur.getDocument().addDocumentListener(textListener);
-		dateValeur.getDocument().addDocumentListener(textListener);
 		
-
-		enregistrerButton.addActionListener(new ActionListener() {
-		    @Override
-		    public void actionPerformed(ActionEvent e) {
-		    	java.sql.Date sqlDate = java.sql.Date.valueOf(dateValeur.getText());
-		        try {
-					Locataire l = new Locataire(nomValeur.getText(), prenomValeur.getText(), telephoneValeur.getText(), mailValeur.getText(), sqlDate, (String)genreValeur.getSelectedItem());
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-		        
-		    }
-		});
 	}
 }
