@@ -25,6 +25,8 @@ import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import org.w3c.dom.events.MouseEvent;
+
 import projet.ihm.Charte;
 import projet.ihm.ResizedImage;
 import java.awt.GridBagLayout;
@@ -72,6 +74,10 @@ public class PageNouveauLocataire {
 				}
 			}
 		});
+	}
+
+	public JFrame getFrame() {
+		return frame;
 	}
 
 	/**
@@ -138,6 +144,14 @@ public class PageNouveauLocataire {
 		b_biens.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		menu_bouttons.add(b_biens);
 		menu_bouttons.add(b_biens);
+		b_biens.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				PageBienImmobilier page = new PageBienImmobilier();
+				PageBienImmobilier.getFrame().setVisible(true);
+				dispose();
+			}
+		});
 
 		JPanel body = new JPanel();
 		frame.getContentPane().add(body, BorderLayout.CENTER);

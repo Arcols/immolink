@@ -55,6 +55,10 @@ public class PageBienImmobilier {
 		});
 	}
 
+	public JFrame getFrame() {
+		return this.frame;
+	}
+
 	/**
 	 * Create the application.
 	 */
@@ -121,38 +125,38 @@ public class PageBienImmobilier {
 		b_biens.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		menu_bouttons.add(b_biens);
 		menu_bouttons.add(b_biens);
-		
+
 		JPanel body = new JPanel();
 		frame.getContentPane().add(body, BorderLayout.CENTER);
 		body.setLayout(new BorderLayout(0, 0));
-		
+
 		JPanel titre = new JPanel();
 		FlowLayout fl_titre = (FlowLayout) titre.getLayout();
 		body.add(titre, BorderLayout.NORTH);
-		
+
 		JLabel titrePage = new JLabel("Mon Bien Immobilier");
 		titrePage.setAlignmentY(0.0f);
 		titrePage.setAlignmentX(0.5f);
 		titre.add(titrePage);
-		
+
 		JPanel panel_1 = new JPanel();
 		body.add(panel_1, BorderLayout.CENTER);
 		panel_1.setLayout(new GridLayout(1, 2, 0, 0));
-		
+
 		JPanel panel_2 = new JPanel();
 		panel_1.add(panel_2);
 		GridBagLayout gbl_panel_2 = new GridBagLayout();
-		gbl_panel_2.columnWidths = new int[]{184, 184, 0};
-		gbl_panel_2.rowHeights = new int[]{315, 0};
-		gbl_panel_2.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
-		gbl_panel_2.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		gbl_panel_2.columnWidths = new int[] { 184, 184, 0 };
+		gbl_panel_2.rowHeights = new int[] { 315, 0 };
+		gbl_panel_2.columnWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
+		gbl_panel_2.rowWeights = new double[] { 0.0, Double.MIN_VALUE };
 		panel_2.setLayout(gbl_panel_2);
-		
+
 		JPanel panel_3 = new JPanel();
-		
+
 		JLabel lblNewLabel = new JLabel("New label");
 		panel_3.add(lblNewLabel);
-		
+
 		textField = new JTextField();
 		panel_3.add(textField);
 		textField.setColumns(10);
@@ -162,12 +166,12 @@ public class PageBienImmobilier {
 		gbc_panel_3.gridx = 0;
 		gbc_panel_3.gridy = 0;
 		panel_2.add(panel_3, gbc_panel_3);
-		
+
 		JPanel panel_4 = new JPanel();
-		
+
 		JLabel lblNewLabel_1 = new JLabel("New label");
 		panel_4.add(lblNewLabel_1);
-		
+
 		textField_1 = new JTextField();
 		panel_4.add(textField_1);
 		textField_1.setColumns(1);
@@ -176,10 +180,10 @@ public class PageBienImmobilier {
 		gbc_panel_4.gridx = 1;
 		gbc_panel_4.gridy = 0;
 		panel_2.add(panel_4, gbc_panel_4);
-		
+
 		JPanel panel = new JPanel();
 		panel_1.add(panel);
-		
+
 		table = new JTable();
 		panel.add(table);
 		this.frame.addComponentListener(new ComponentAdapter() {
