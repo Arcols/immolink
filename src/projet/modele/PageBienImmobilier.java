@@ -34,15 +34,14 @@ public class PageBienImmobilier {
 
 	private JFrame frame;
 	private JLabel logo;
-	private JTextField choix_ville;
-	private JTextField choix_adresse;
+	private JTextField choix_num_fiscal;
 	private JTextField choix_complement_adresse;
 	private JButton valider;
 
 	private void checkFields() {
 		// Vérification si tous les champs sont remplis
-		boolean isFilled = !choix_ville.getText().trim().isEmpty() && !choix_adresse.getText().trim().isEmpty()
-				&& !choix_complement_adresse.getText().trim().isEmpty();
+		boolean isFilled = !choix_complement_adresse.getText().trim().isEmpty()
+				&& !choix_num_fiscal.getText().trim().isEmpty();
 
 		// Active ou désactive le bouton "Valider"
 		valider.setEnabled(isFilled);
@@ -151,7 +150,7 @@ public class PageBienImmobilier {
 
 		JPanel panel_caracteristique = new JPanel();
 		contenu.add(panel_caracteristique);
-		panel_caracteristique.setLayout(new GridLayout(7, 2, 0, 0));
+		panel_caracteristique.setLayout(new GridLayout(8, 2, 0, 0));
 
 		JLabel type_de_bien = new JLabel("Type de bien");
 		panel_caracteristique.add(type_de_bien);
@@ -159,19 +158,26 @@ public class PageBienImmobilier {
 		choix_type_de_bien.setModel(new DefaultComboBoxModel(new String[] { "Appartement", "Bâtiment", "Garage" }));
 		panel_caracteristique.add(choix_type_de_bien);
 
+		JLabel num_fiscal = new JLabel("Numéro Fiscal");
+		panel_caracteristique.add(num_fiscal);
+
+		choix_num_fiscal = new JTextField();
+		panel_caracteristique.add(choix_num_fiscal);
+		choix_num_fiscal.setColumns(10);
+
 		JLabel ville = new JLabel("Ville");
 		panel_caracteristique.add(ville);
 
-		choix_ville = new JTextField();
+		JComboBox choix_ville = new JComboBox();
+		choix_ville.setModel(new DefaultComboBoxModel());
 		panel_caracteristique.add(choix_ville);
-		choix_ville.setColumns(10);
 
 		JLabel adresse = new JLabel("Adresse");
 		panel_caracteristique.add(adresse);
 
-		choix_adresse = new JTextField();
+		JComboBox choix_adresse = new JComboBox();
+		choix_adresse.setModel(new DefaultComboBoxModel());
 		panel_caracteristique.add(choix_adresse);
-		choix_adresse.setColumns(10);
 
 		JLabel complement_adresse = new JLabel("Complément d'adresse");
 		panel_caracteristique.add(complement_adresse);
@@ -271,9 +277,26 @@ public class PageBienImmobilier {
 		};
 
 		// Ajout des listeners sur chaque champ de texte
-		choix_ville.getDocument().addDocumentListener(textListener);
-		choix_adresse.getDocument().addDocumentListener(textListener);
+		choix_num_fiscal.getDocument().addDocumentListener(textListener);
 		choix_complement_adresse.getDocument().addDocumentListener(textListener);
+
+		choix_type_de_bien.addActionListener(e -> {
+			String selectedType = (String) choix_type_de_bien.getSelectedItem();
+			boolean isAppartement = "Appartement".equals(selectedType);
+
+			// Gérer la visibilité des composants
+			tableau_diagnostic.setVisible(isAppartement);
+			surface.setVisible(isAppartement);
+			choix_surface.setVisible(isAppartement);
+			nombre_piece.setVisible(isAppartement);
+			choix_nb_piece.setVisible(isAppartement);
+
+			// Rafraîchir l'interface
+			panel_caracteristique.revalidate();
+			panel_caracteristique.repaint();
+			panel_diagnostic.revalidate();
+			panel_diagnostic.repaint();
+		});
 
 	}
 
