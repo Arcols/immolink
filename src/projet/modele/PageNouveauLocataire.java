@@ -14,6 +14,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import projet.ihm.Charte;
 import projet.ihm.ResizedImage;
@@ -36,6 +38,16 @@ public class PageNouveauLocataire {
 	private JTextField telephoneValeur;
 	private JTextField mailValeur;
 	private JTextField dateValeur;
+	private JButton enregistrerButton;
+
+	private void checkFields() {
+		// Vérification si tous les champs sont remplis
+		boolean isFilled = !nomValeur.getText().trim().isEmpty() && !prenomValeur.getText().trim().isEmpty()
+				&& !telephoneValeur.getText().trim().isEmpty() && !dateValeur.getText().trim().isEmpty();
+
+		// Active ou désactive le bouton "Valider"
+		enregistrerButton.setEnabled(isFilled);
+	}
 
 	/**
 	 * Launch the application.
@@ -118,14 +130,14 @@ public class PageNouveauLocataire {
 		b_biens.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		menu_bouttons.add(b_biens);
 		menu_bouttons.add(b_biens);
-		
+
 		JPanel body = new JPanel();
 		frame.getContentPane().add(body, BorderLayout.CENTER);
 		body.setLayout(new BorderLayout(0, 0));
-		
+
 		JPanel panelTitre = new JPanel();
 		body.add(panelTitre, BorderLayout.NORTH);
-		
+
 		JLabel labelTitre = new JLabel("Nouveau locataire");
 		labelTitre.setFont(new Font("Tahoma", Font.BOLD, 15));
 		panelTitre.add(labelTitre);
@@ -134,12 +146,12 @@ public class PageNouveauLocataire {
 		JPanel donnees_loca = new JPanel();
 		body.add(donnees_loca);
 		GridBagLayout gbl_donnees_loca = new GridBagLayout();
-		gbl_donnees_loca.rowHeights = new int[] {40, 40, 40, 40, 30, 20};
-		gbl_donnees_loca.columnWidths = new int[] {30, 0, 0, 100, 0, 0, 0};
-		gbl_donnees_loca.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-		gbl_donnees_loca.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+		gbl_donnees_loca.rowHeights = new int[] { 40, 40, 40, 40, 30, 20 };
+		gbl_donnees_loca.columnWidths = new int[] { 30, 0, 0, 100, 0, 0, 0 };
+		gbl_donnees_loca.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+		gbl_donnees_loca.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
 		donnees_loca.setLayout(gbl_donnees_loca);
-		
+
 		JLabel labelNom = new JLabel("Nom");
 		GridBagConstraints gbc_labelNom = new GridBagConstraints();
 		gbc_labelNom.anchor = GridBagConstraints.WEST;
@@ -147,7 +159,7 @@ public class PageNouveauLocataire {
 		gbc_labelNom.gridx = 1;
 		gbc_labelNom.gridy = 0;
 		donnees_loca.add(labelNom, gbc_labelNom);
-		
+
 		nomValeur = new JTextField();
 		GridBagConstraints gbc_nomValeur = new GridBagConstraints();
 		gbc_nomValeur.anchor = GridBagConstraints.WEST;
@@ -156,7 +168,7 @@ public class PageNouveauLocataire {
 		gbc_nomValeur.gridy = 0;
 		donnees_loca.add(nomValeur, gbc_nomValeur);
 		nomValeur.setColumns(10);
-		
+
 		JLabel labelVille = new JLabel("Ville");
 		GridBagConstraints gbc_labelVille = new GridBagConstraints();
 		gbc_labelVille.anchor = GridBagConstraints.WEST;
@@ -164,7 +176,7 @@ public class PageNouveauLocataire {
 		gbc_labelVille.gridx = 4;
 		gbc_labelVille.gridy = 0;
 		donnees_loca.add(labelVille, gbc_labelVille);
-		
+
 		JComboBox villeValeur = new JComboBox();
 		GridBagConstraints gbc_villeValeur = new GridBagConstraints();
 		gbc_villeValeur.fill = GridBagConstraints.HORIZONTAL;
@@ -172,7 +184,7 @@ public class PageNouveauLocataire {
 		gbc_villeValeur.gridx = 5;
 		gbc_villeValeur.gridy = 0;
 		donnees_loca.add(villeValeur, gbc_villeValeur);
-		
+
 		JLabel labelPrenom = new JLabel("Prénom");
 		GridBagConstraints gbc_labelPrenom = new GridBagConstraints();
 		gbc_labelPrenom.anchor = GridBagConstraints.WEST;
@@ -180,7 +192,7 @@ public class PageNouveauLocataire {
 		gbc_labelPrenom.gridx = 1;
 		gbc_labelPrenom.gridy = 1;
 		donnees_loca.add(labelPrenom, gbc_labelPrenom);
-		
+
 		prenomValeur = new JTextField();
 		GridBagConstraints gbc_prenomValeur = new GridBagConstraints();
 		gbc_prenomValeur.anchor = GridBagConstraints.WEST;
@@ -189,7 +201,7 @@ public class PageNouveauLocataire {
 		gbc_prenomValeur.gridy = 1;
 		donnees_loca.add(prenomValeur, gbc_prenomValeur);
 		prenomValeur.setColumns(10);
-		
+
 		JLabel labelAdresse = new JLabel("Adresse");
 		GridBagConstraints gbc_labelAdresse = new GridBagConstraints();
 		gbc_labelAdresse.anchor = GridBagConstraints.WEST;
@@ -197,7 +209,7 @@ public class PageNouveauLocataire {
 		gbc_labelAdresse.gridx = 4;
 		gbc_labelAdresse.gridy = 1;
 		donnees_loca.add(labelAdresse, gbc_labelAdresse);
-		
+
 		JComboBox adresseValeur = new JComboBox();
 		GridBagConstraints gbc_adresseValeur = new GridBagConstraints();
 		gbc_adresseValeur.fill = GridBagConstraints.HORIZONTAL;
@@ -205,7 +217,7 @@ public class PageNouveauLocataire {
 		gbc_adresseValeur.gridx = 5;
 		gbc_adresseValeur.gridy = 1;
 		donnees_loca.add(adresseValeur, gbc_adresseValeur);
-		
+
 		JLabel labelTelephone = new JLabel("Téléphone");
 		GridBagConstraints gbc_labelTelephone = new GridBagConstraints();
 		gbc_labelTelephone.anchor = GridBagConstraints.WEST;
@@ -213,7 +225,7 @@ public class PageNouveauLocataire {
 		gbc_labelTelephone.gridx = 1;
 		gbc_labelTelephone.gridy = 2;
 		donnees_loca.add(labelTelephone, gbc_labelTelephone);
-		
+
 		telephoneValeur = new JTextField();
 		GridBagConstraints gbc_telephoneValeur = new GridBagConstraints();
 		gbc_telephoneValeur.anchor = GridBagConstraints.WEST;
@@ -222,7 +234,7 @@ public class PageNouveauLocataire {
 		gbc_telephoneValeur.gridy = 2;
 		donnees_loca.add(telephoneValeur, gbc_telephoneValeur);
 		telephoneValeur.setColumns(10);
-		
+
 		JLabel labelComplement = new JLabel("Complément");
 		GridBagConstraints gbc_labelComplement = new GridBagConstraints();
 		gbc_labelComplement.anchor = GridBagConstraints.WEST;
@@ -230,7 +242,7 @@ public class PageNouveauLocataire {
 		gbc_labelComplement.gridx = 4;
 		gbc_labelComplement.gridy = 2;
 		donnees_loca.add(labelComplement, gbc_labelComplement);
-		
+
 		JComboBox complementValeur = new JComboBox();
 		GridBagConstraints gbc_complementValeur = new GridBagConstraints();
 		gbc_complementValeur.fill = GridBagConstraints.HORIZONTAL;
@@ -238,7 +250,7 @@ public class PageNouveauLocataire {
 		gbc_complementValeur.gridx = 5;
 		gbc_complementValeur.gridy = 2;
 		donnees_loca.add(complementValeur, gbc_complementValeur);
-		
+
 		JLabel labelMail = new JLabel("Mail");
 		GridBagConstraints gbc_labelMail = new GridBagConstraints();
 		gbc_labelMail.anchor = GridBagConstraints.WEST;
@@ -246,7 +258,7 @@ public class PageNouveauLocataire {
 		gbc_labelMail.gridx = 1;
 		gbc_labelMail.gridy = 3;
 		donnees_loca.add(labelMail, gbc_labelMail);
-		
+
 		mailValeur = new JTextField();
 		GridBagConstraints gbc_mailValeur = new GridBagConstraints();
 		gbc_mailValeur.anchor = GridBagConstraints.WEST;
@@ -255,7 +267,7 @@ public class PageNouveauLocataire {
 		gbc_mailValeur.gridy = 3;
 		donnees_loca.add(mailValeur, gbc_mailValeur);
 		mailValeur.setColumns(10);
-		
+
 		JLabel labelDate = new JLabel("Date arrivée");
 		GridBagConstraints gbc_labelDate = new GridBagConstraints();
 		gbc_labelDate.anchor = GridBagConstraints.WEST;
@@ -263,7 +275,7 @@ public class PageNouveauLocataire {
 		gbc_labelDate.gridx = 4;
 		gbc_labelDate.gridy = 3;
 		donnees_loca.add(labelDate, gbc_labelDate);
-		
+
 		dateValeur = new JTextField();
 		GridBagConstraints gbc_dateValeur = new GridBagConstraints();
 		gbc_dateValeur.fill = GridBagConstraints.HORIZONTAL;
@@ -272,8 +284,8 @@ public class PageNouveauLocataire {
 		gbc_dateValeur.gridy = 3;
 		donnees_loca.add(dateValeur, gbc_dateValeur);
 		dateValeur.setColumns(10);
-		
-		JButton enregistrerButton = new JButton("Enregistrer");
+
+		this.enregistrerButton = new JButton("Enregistrer");
 		enregistrerButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -303,6 +315,47 @@ public class PageNouveauLocataire {
 				b_biens.setFont(resizedFont);
 			}
 		});
+
+		DocumentListener textListener = new DocumentListener() {
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				checkFields();
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				checkFields();
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				checkFields();
+			}
+
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				// TODO Auto-generated method stub
+				throw new UnsupportedOperationException("Unimplemented method 'insertUpdate'");
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				// TODO Auto-generated method stub
+				throw new UnsupportedOperationException("Unimplemented method 'removeUpdate'");
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				// TODO Auto-generated method stub
+				throw new UnsupportedOperationException("Unimplemented method 'changedUpdate'");
+			}
+		};
+
+		// Ajout des listeners sur chaque champ de texte
+		nomValeur.getDocument().addDocumentListener(textListener);
+		prenomValeur.getDocument().addDocumentListener(textListener);
+		telephoneValeur.getDocument().addDocumentListener(textListener);
+		dateValeur.getDocument().addDocumentListener(textListener);
 	}
 
 }
