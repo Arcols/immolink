@@ -2,4 +2,4 @@
 
 *.class
 .metadata*
-*.class
+bin/

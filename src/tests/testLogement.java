@@ -9,13 +9,14 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import projet.classes.*;
+import classes.*;
 
 public class testLogement {
 	private File temp_file;
@@ -41,11 +42,11 @@ public class testLogement {
     }
 
     @Test
-    public void testLogementCreationAvecGarage() {
+    public void testLogementCreationAvecGarage() throws SQLException {
         // Les batiments et diagnostics sont vides car ils ne sont pas utiles dans nos tests
         List<Diagnostic> diagnostics = new ArrayList<>();
         Batiment batiment = new Batiment(null, null, null); 
-        Garage garage = new Garage("123456789100", null, batiment, diagnostics); 
+        Garage garage = new Garage("123456789100", null, batiment); 
 
         Logement logement = new Logement(3, 45.0f, garage, "123456789101", "Appartement 12B", batiment, diagnostics);
 

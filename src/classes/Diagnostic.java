@@ -5,7 +5,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Date;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import classes.ConnectionDB;
 
 public class Diagnostic {
 
@@ -14,17 +19,19 @@ public class Diagnostic {
     private Date date_invalidite;
 
     // Constructeur si il n'y a pas de date d'invalidite présent
-    public Diagnostic(String reference, String pdf_chemin) throws IOException {
+    public Diagnostic(String reference, String pdf_chemin) throws IOException, SQLException {
         this.reference = reference;
         this.pdf_data = loadFileAsBytes(pdf_chemin);
         this.date_invalidite=null;
+        //insertIntoTable(pdf_data,reference,date_invalidite);
     }
 
     // Constructeur si il y a une date d'invalidite 
-    public Diagnostic(String reference, String pdf_chemin,Date date_invalidite) throws IOException {
+    public Diagnostic(String reference, String pdf_chemin,Date date_invalidite) throws IOException, SQLException {
         this.reference = reference;
         this.pdf_data = loadFileAsBytes(pdf_chemin);
         this.date_invalidite=date_invalidite;
+        //insertIntoTable(pdf_data,reference,date_invalidite);
     }
 
     /**
@@ -67,7 +74,7 @@ public class Diagnostic {
         if (this.date_invalidite == null) {
             return false; // Si la date d'invalidité est null, le diagnostic n'a pas d'expiration
         }
-        java.util.Date currentDate = new java.util.Date();
+        Date currentDate = new Date(System.currentTimeMillis());
         return currentDate.after(this.date_invalidite); // Renvoie true si la date actuelle est après la date d'invalidité
     }
     
@@ -93,5 +100,15 @@ public class Diagnostic {
             System.out.println("L'ouverture par le bureau n'est pas supportée.");
         }
     }
-
+    private void insertIntoTable(byte[] pdf_data,String reference, Date date_expiration) throws SQLException{
+        ConnectionDB db = new ConnectionDB();
+		String query = "INSERT INTO diagnostiques (pdf_diag, type, date_expiration) VALUES (?, ?, ?)";
+		PreparedStatement pstmt = db.getConnection().prepareStatement(query);
+		pstmt.setBytes(1, pdf_data); 
+		pstmt.setString(2, reference); 
+        pstmt.setDate(3, date_expiration); 
+        pstmt.executeUpdate();
+        pstmt.close();
+        db.closeConnection(); 
+    }
 }
