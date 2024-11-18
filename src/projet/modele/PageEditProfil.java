@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
 import projet.ihm.Charte;
+import projet.ihm.Menu;
 import projet.ihm.ResizedImage;
 
 public class PageEditProfil {
@@ -73,6 +74,8 @@ public class PageEditProfil {
 		menu_bouttons.setLayout(new GridLayout(0, 5, 0, 0));
 		menu_bouttons.setBackground(Charte.ENTETE.getCouleur());
 
+		Menu m = new Menu(this.frame);
+
 		JButton b_accueil = new JButton("Accueil");
 		b_accueil.setBorderPainted(false);
 		b_accueil.setBackground(Charte.ENTETE.getCouleur());
@@ -85,13 +88,15 @@ public class PageEditProfil {
 		b_profil.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		menu_bouttons.add(b_profil);
 		menu_bouttons.add(b_profil);
+		b_profil.addActionListener(m);
 
-		JButton b_bails = new JButton("Mes bails");
-		b_bails.setBorderPainted(false);
-		b_bails.setBackground(Charte.ENTETE.getCouleur());
-		b_bails.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		menu_bouttons.add(b_bails);
-		menu_bouttons.add(b_bails);
+		JButton b_baux = new JButton("Mes baux");
+		b_baux.setBorderPainted(false);
+		b_baux.setBackground(Charte.ENTETE.getCouleur());
+		b_baux.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		menu_bouttons.add(b_baux);
+		menu_bouttons.add(b_baux);
+		b_baux.addActionListener(m);
 
 		JButton b_loca = new JButton("Locataires");
 		b_loca.setBorderPainted(false);
@@ -99,6 +104,7 @@ public class PageEditProfil {
 		b_loca.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		menu_bouttons.add(b_loca);
 		menu_bouttons.add(b_loca);
+		b_loca.addActionListener(m);
 
 		JButton b_biens = new JButton("Mes Biens");
 		b_biens.setBorderPainted(false);
@@ -106,6 +112,8 @@ public class PageEditProfil {
 		b_biens.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		menu_bouttons.add(b_biens);
 		menu_bouttons.add(b_biens);
+		b_biens.addActionListener(m);
+
 		this.frame.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {
@@ -119,7 +127,7 @@ public class PageEditProfil {
 				// Appliquer la nouvelle police au bouton
 				Font resizedFont = new Font("Arial", Font.PLAIN, newFontSize);
 				b_loca.setFont(resizedFont);
-				b_bails.setFont(resizedFont);
+				b_baux.setFont(resizedFont);
 				b_accueil.setFont(resizedFont);
 				b_profil.setFont(resizedFont);
 				b_biens.setFont(resizedFont);

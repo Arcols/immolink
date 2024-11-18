@@ -13,18 +13,16 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTable;
 import javax.swing.border.LineBorder;
 
 import projet.ihm.Charte;
+import projet.ihm.Menu;
 import projet.ihm.ResizedImage;
 
-public class PageBail {
+public class PageBaux {
 
 	private JFrame frame;
 	private JLabel logo;
-	private JPanel donnees_loca;
-	private JTable table_loca;
 
 	/**
 	 * Launch the application.
@@ -34,7 +32,7 @@ public class PageBail {
 			@Override
 			public void run() {
 				try {
-					PageBail window = new PageBail();
+					PageBaux window = new PageBaux();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -46,7 +44,7 @@ public class PageBail {
 	/**
 	 * Create the application.
 	 */
-	public PageBail() {
+	public PageBaux() {
 		this.initialize();
 	}
 
@@ -76,11 +74,14 @@ public class PageBail {
 		menu_bouttons.setLayout(new GridLayout(0, 5, 0, 0));
 		menu_bouttons.setBackground(Charte.ENTETE.getCouleur());
 
+		Menu m = new Menu(this.frame);
+
 		JButton b_accueil = new JButton("Accueil");
 		b_accueil.setBorderPainted(false);
 		b_accueil.setBackground(Charte.ENTETE.getCouleur());
 		b_accueil.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		menu_bouttons.add(b_accueil);
+		b_accueil.addActionListener(m);
 
 		JButton b_profil = new JButton("Profil");
 		b_profil.setBorderPainted(false);
@@ -88,13 +89,14 @@ public class PageBail {
 		b_profil.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		menu_bouttons.add(b_profil);
 		menu_bouttons.add(b_profil);
+		b_profil.addActionListener(m);
 
-		JButton b_bails = new JButton("Mes bails");
-		b_bails.setBorderPainted(false);
-		b_bails.setBackground(Charte.ENTETE.getCouleur());
-		b_bails.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		menu_bouttons.add(b_bails);
-		menu_bouttons.add(b_bails);
+		JButton b_baux = new JButton("Mes baux");
+		b_baux.setBorderPainted(false);
+		b_baux.setBackground(Charte.ENTETE.getCouleur());
+		b_baux.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		menu_bouttons.add(b_baux);
+		menu_bouttons.add(b_baux);
 
 		JButton b_loca = new JButton("Locataires");
 		b_loca.setBorderPainted(false);
@@ -102,6 +104,7 @@ public class PageBail {
 		b_loca.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		menu_bouttons.add(b_loca);
 		menu_bouttons.add(b_loca);
+		b_loca.addActionListener(m);
 
 		JButton b_biens = new JButton("Mes Biens");
 		b_biens.setBorderPainted(false);
@@ -109,30 +112,22 @@ public class PageBail {
 		b_biens.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		menu_bouttons.add(b_biens);
 		menu_bouttons.add(b_biens);
+		b_biens.addActionListener(m);
 
-		this.donnees_loca = new JPanel();
-		this.frame.getContentPane().add(this.donnees_loca, BorderLayout.CENTER);
-		this.donnees_loca.setLayout(new BorderLayout(0, 0));
-
-		this.table_loca = new JTable();
-		this.donnees_loca.add(this.table_loca, BorderLayout.CENTER);
-
-		JLabel img_loca = new JLabel("");
-		this.donnees_loca.add(img_loca, BorderLayout.WEST);
 		this.frame.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {
-				ResizedImage.resizeImage("/ressources/images/logo+nom.png", PageBail.this.frame, PageBail.this.logo, 3,
+				ResizedImage.resizeImage("/ressources/images/logo+nom.png", PageBaux.this.frame, PageBaux.this.logo, 3,
 						8);
-				int frameWidth = PageBail.this.frame.getWidth();
-				int frameHeight = PageBail.this.frame.getHeight();
+				int frameWidth = PageBaux.this.frame.getWidth();
+				int frameHeight = PageBaux.this.frame.getHeight();
 
 				int newFontSize = Math.min(frameWidth, frameHeight) / 30;
 
 				// Appliquer la nouvelle police au bouton
 				Font resizedFont = new Font("Arial", Font.PLAIN, newFontSize);
 				b_loca.setFont(resizedFont);
-				b_bails.setFont(resizedFont);
+				b_baux.setFont(resizedFont);
 				b_accueil.setFont(resizedFont);
 				b_profil.setFont(resizedFont);
 				b_biens.setFont(resizedFont);
