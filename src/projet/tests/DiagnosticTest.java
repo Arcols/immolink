@@ -10,6 +10,7 @@ import org.junit.Before;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.time.LocalDate;
 
 public class DiagnosticTest {
 
@@ -59,5 +60,21 @@ public class DiagnosticTest {
             // Le comportement attendu est une exception
             assertTrue(e.getMessage().contains("chemin_invalide"));
         }
+    }
+    @Test
+    public void testConstructeurAvecDatePeremption() throws IOException {
+        LocalDate datePeremption = LocalDate.of(2025, 12, 31);
+        Diagnostic diagnostic = new Diagnostic("RéfTest", tempFile.getAbsolutePath(), datePeremption);
+
+        // Vérifie que la date de péremption est correctement définie
+        assertEquals(datePeremption, diagnostic.getPeremptionDiagnostic());
+    }
+
+    @Test
+    public void testConstructeurSansDatePeremption() throws IOException {
+        Diagnostic diagnostic = new Diagnostic("RéfTest", tempFile.getAbsolutePath());
+
+        // Vérifie que la date de péremption est null lorsqu'elle n'est pas fournie
+        assertNull(diagnostic.getPeremptionDiagnostic());
     }
 }

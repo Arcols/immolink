@@ -5,15 +5,25 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.time.LocalDate;
+
 
 public class Diagnostic {
 	
     private String reference;
     private byte[] pdf_data;
+    private LocalDate peremption_diagnostic;
 
-    public Diagnostic(String reference, String pdf_chemin) throws IOException {
+     // Constructeur avec peremption_Diagnostic
+     public Diagnostic(String reference, String pdf_chemin, LocalDate peremption_diagnostic) throws IOException {
         this.reference = reference;
         this.pdf_data = loadFileAsBytes(pdf_chemin);
+        this.peremption_diagnostic = peremption_diagnostic;
+    }
+
+    // Constructeur sans peremption_Diagnostic, initialisé à null
+    public Diagnostic(String reference, String pdf_chemin) throws IOException {
+        this(reference, pdf_chemin, null);
     }
     /**
      * In : String, chemin du pdf 
@@ -26,6 +36,10 @@ public class Diagnostic {
 
     public byte[] getPdfData() {
         return pdf_data;
+    }
+
+    public LocalDate getPeremptionDiagnostic(){
+        return peremption_diagnostic;
     }
 
     public String getReference() {
