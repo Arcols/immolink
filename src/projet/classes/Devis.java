@@ -1,19 +1,38 @@
 package projet.classes;
 
 public class Devis {
+    private String num_devis;
 
-    public Devis(String num_devis, String montant, String nature, float montant_nondeductible) {
+    private float montant;
+
+    private String nature;
+
+    private float montant_nondeductible;
+    public Devis(String num_devis, float montant, String nature, float montant_nondeductible) {
         this.num_devis = num_devis;
         this.montant = montant;
         this.nature = nature;
         this.montant_nondeductible = montant_nondeductible;
     }
-    private String num_devis;
 
-    private String montant;
+    public String getNum_devis() {
+        return this.num_devis;
+    }
 
-    private String nature;
+    public float getMontant() {
+        return this.montant;
+    }
 
-    private float montant_nondeductible;
+    public String getNature() {
+        return this.nature;
+    }
+
+    public float getMontantNondeductible() {
+        return this.montant_nondeductible;
+    }
+
+    public float getMontantDeductible(){
+        return this.montant-this.montant_nondeductible;
+    }
 
 }

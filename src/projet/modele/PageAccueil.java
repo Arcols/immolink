@@ -18,6 +18,7 @@ import javax.swing.border.LineBorder;
 import projet.ihm.Charte;
 import projet.ihm.Menu;
 import projet.ihm.ResizedImage;
+import projet.modele.*;
 
 public class PageAccueil {
 

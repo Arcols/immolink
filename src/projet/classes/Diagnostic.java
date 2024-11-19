@@ -5,26 +5,50 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.time.LocalDate;
 
+import classes.ConnectionDB;
 
 public class Diagnostic {
 	
     private String reference;
     private byte[] pdf_data;
-    private LocalDate peremption_diagnostic;
+    private Date date_invalidite;
 
-     // Constructeur avec peremption_Diagnostic
-     public Diagnostic(String reference, String pdf_chemin, LocalDate peremption_diagnostic) throws IOException {
+    // Constructeur si il n'y a pas de date d'invalidite présent
+    public Diagnostic(String reference, String pdf_chemin) throws IOException, SQLException {
         this.reference = reference;
         this.pdf_data = loadFileAsBytes(pdf_chemin);
-        this.peremption_diagnostic = peremption_diagnostic;
+        this.date_invalidite=null;
+        //insertIntoTable(pdf_data,reference,date_invalidite);
     }
 
-    // Constructeur sans peremption_Diagnostic, initialisé à null
-    public Diagnostic(String reference, String pdf_chemin) throws IOException {
-        this(reference, pdf_chemin, null);
+    // Constructeur si il y a une date d'invalidite 
+    public Diagnostic(String reference, String pdf_chemin,Date date_invalidite) throws IOException, SQLException {
+        this.reference = reference;
+        this.pdf_data = loadFileAsBytes(pdf_chemin);
+        this.date_invalidite=date_invalidite;
+        //insertIntoTable(pdf_data,reference,date_invalidite);
     }
+
+    /**
+     * In : Diagnostic
+     * Out : Void
+     * Remplace le pdf du diagnostic pris en paramètre
+     * Pour appliquer cette fonction il faut que les deux diagnostics aient la même référence
+     * @param diagnostic
+     */
+    public void miseAJourDiagnostic(Diagnostic diagnostic){
+        this.pdf_data=diagnostic.getPdfData();
+    }
+
+    public boolean isSameRef(Diagnostic diagnostic){
+        return this.reference.equals(diagnostic.getReference());
+    }
+
     /**
      * In : String, chemin du pdf 
      * Out : byte[], les données du pdf 
@@ -35,7 +59,7 @@ public class Diagnostic {
     }
 
     public byte[] getPdfData() {
-        return pdf_data;
+        return this.pdf_data;
     }
 
     public LocalDate getPeremptionDiagnostic(){
@@ -43,7 +67,19 @@ public class Diagnostic {
     }
 
     public String getReference() {
-        return reference;
+        return this.reference;
+    }
+
+    public Date getDateInvalidite(){
+        return this.date_invalidite;
+    }
+    
+    public boolean estExpire() {
+        if (this.date_invalidite == null) {
+            return false; // Si la date d'invalidité est null, le diagnostic n'a pas d'expiration
+        }
+        Date currentDate = new Date(System.currentTimeMillis());
+        return currentDate.after(this.date_invalidite); // Renvoie true si la date actuelle est après la date d'invalidité
     }
     
     /**
@@ -68,5 +104,15 @@ public class Diagnostic {
             System.out.println("L'ouverture par le bureau n'est pas supportée.");
         }
     }
-    
+    private void insertIntoTable(byte[] pdf_data,String reference, Date date_expiration) throws SQLException{
+        ConnectionDB db = new ConnectionDB();
+		String query = "INSERT INTO diagnostiques (pdf_diag, type, date_expiration) VALUES (?, ?, ?)";
+		PreparedStatement pstmt = db.getConnection().prepareStatement(query);
+		pstmt.setBytes(1, pdf_data); 
+		pstmt.setString(2, reference); 
+        pstmt.setDate(3, date_expiration); 
+        pstmt.executeUpdate();
+        pstmt.close();
+        db.closeConnection(); 
+    }
 }
