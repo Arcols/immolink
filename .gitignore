@@ -3,3 +3,4 @@
 *.class
 .metadata*
 *.class
+bin/classes/*
