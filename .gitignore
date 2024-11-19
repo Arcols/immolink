@@ -4,3 +4,4 @@
 .metadata*
 *.class
 bin/classes/*
+bin/

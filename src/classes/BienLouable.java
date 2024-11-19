@@ -1,5 +1,8 @@
 package classes;
 
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +10,7 @@ public class BienLouable extends BienImmobilier {
     
     private String numero_fiscal;
     private String complement_adresse;
-    Batiment batiment;
+    private Batiment batiment;
     public List<Devis> travaux;
     public List<Diagnostic> diagnostic;
 
@@ -21,7 +24,7 @@ public class BienLouable extends BienImmobilier {
         this.diagnostic = diagnostic;
         this.travaux = new ArrayList<Devis> ();
     }
-
+    
     public String getNumero_fiscal() {
         return this.numero_fiscal;
     }
@@ -60,7 +63,23 @@ public class BienLouable extends BienImmobilier {
             }
         }
     }
-
     
+   
+    
+    
+    public enum TypeLogement {
+        AUTRES(0),
+        GARAGE(1);
+
+        private final int value;
+
+        TypeLogement(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
 
 }

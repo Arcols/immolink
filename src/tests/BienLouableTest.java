@@ -9,6 +9,7 @@ import classes.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class BienLouableTest {
     private Batiment batiment;
 
     @Before
-    public void setUp() throws IOException {
+    public void setUp() throws IOException, SQLException {
         // Création de fichiers temporaires pour les tests qui concerneront les diagnostics
         temp_file = File.createTempFile("testFile", ".pdf");
         Files.write(temp_file.toPath(), "Test PDF Data".getBytes());
@@ -61,7 +62,7 @@ public class BienLouableTest {
     }
 
     @Test
-    public void testModifierDiagnostic() throws IOException {
+    public void testModifierDiagnostic() throws IOException, SQLException {
         Diagnostic updated_diagnostic = new Diagnostic("RefDiag1", temp_file2.getAbsolutePath());
         bien_louable.modifierDiagnostic(updated_diagnostic);
 
@@ -70,7 +71,7 @@ public class BienLouableTest {
     }
 
     @Test
-    public void testModifierDiagnosticAucunChangement() throws IOException {
+    public void testModifierDiagnosticAucunChangement() throws IOException, SQLException {
         Diagnostic new_diagnostic = new Diagnostic("RefDiag3", temp_file2.getAbsolutePath());
         bien_louable.modifierDiagnostic(new_diagnostic);
 
