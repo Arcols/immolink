@@ -96,6 +96,7 @@ public class Diagnostic {
 		}
 	}
 
+	// probablement inutile
 	private void insertIntoTable(byte[] pdf_data, String reference, Date date_expiration) throws SQLException {
 		ConnectionDB db = new ConnectionDB();
 		String query = "INSERT INTO diagnostiques (pdf_diag, type, date_expiration) VALUES (?, ?, ?)";

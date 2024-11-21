@@ -27,7 +27,7 @@ public class testLogement {
     private Batiment batiment;
 
     @Test
-    public void testLogementCreationSansGarage() {
+    public void testLogementCreationSansGarage() throws IllegalArgumentException, SQLException {
         // Les batiments et diagnostics sont vides car ils ne sont pas utiles dans nos tests
         List<Diagnostic> diagnostics = new ArrayList<>(); 
         Batiment batiment = new Batiment(null, null, null); 
@@ -58,7 +58,7 @@ public class testLogement {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testLogementSurfaceMinimale() {
+    public void testLogementSurfaceMinimale() throws IllegalArgumentException, SQLException {
         List<Diagnostic> diagnostics = new ArrayList<>();
         Batiment batiment = new Batiment(null, null, null); 
 

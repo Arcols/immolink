@@ -8,21 +8,22 @@ import java.util.List;
 
 public class Garage extends BienLouable {
 
-    public Garage(String numero_fiscal, String complement_adresse, Batiment batiment) throws SQLException {
-        super(numero_fiscal, complement_adresse, batiment,null);
-        insertIntoTable(this.getNumero_fiscal(), this.getComplement_adresse());
+    public Garage(String numero_fiscal, String ville ,String adresse,String complement_adresse) throws SQLException {
+        super(numero_fiscal, ville,adresse, complement_adresse,null);
+        insertIntoTable(this.getNumero_fiscal(),this.getVille(),this.getAdresse(), this.getComplement_adresse());
     }
     
-    private void insertIntoTable(String numero_fiscal, String complement_adresse) throws SQLException{
+    private void insertIntoTable(String numero_fiscal,String ville,String adresse, String complement_adresse) throws SQLException{
         ConnectionDB db = new ConnectionDB();
-		String query = "INSERT INTO bienlouable (numero_fiscal, complement_adresse,type_logement) VALUES (?, ?, ?)";
+		String query = "INSERT INTO bienlouable (numero_fiscal, complement_adresse,type_logement,idBat) VALUES (?, ?, ?,?)";
 		PreparedStatement pstmt = db.getConnection().prepareStatement(query);
 		pstmt.setString(1, numero_fiscal); 
 		pstmt.setString(2, complement_adresse); 
         pstmt.setInt(3,TypeLogement.GARAGE.getValue()); 
+        pstmt.setInt(4, foundIDBatInDB(db, ville, adresse));
         pstmt.executeUpdate();
         pstmt.close();
-        
         db.closeConnection(); 
     }
+    
 }

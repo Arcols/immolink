@@ -11,6 +11,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.File;
@@ -18,6 +20,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -35,7 +39,8 @@ import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import projet.classes.Diagnostic;
+import projet.classes.*;
+import projet.classes.BienLouable.TypeLogement;
 import projet.ihm.Charte;
 import projet.ihm.Menu;
 import projet.ihm.ResizedImage;
@@ -51,7 +56,10 @@ public class PageBienImmobilier {
 	private JTextField texte_adresse = new JTextField();
 	private JComboBox choix_type_de_bien;
 	private List<Diagnostic> liste_diagnostic;
-
+	private Set<String> setVilles;
+	private Map<String, List<String>> mapVillesAdresses;
+	private double surface_minimale = 9;
+	
 	private void checkFields() {
 		// Vérifier le type de bien sélectionné
 		String selectedType = (String) choix_type_de_bien.getSelectedItem();
@@ -107,6 +115,12 @@ public class PageBienImmobilier {
 	 */
 	private void initialize() {
 		this.liste_diagnostic = new ArrayList<>();
+		try {
+			mapVillesAdresses=Batiment.searchAllBatiments();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		// Initialisation du JFrame
 		this.frame = new JFrame();
 		this.frame.setBounds(100, 100, 750, 400);
@@ -246,8 +260,9 @@ public class PageBienImmobilier {
 		gbc_choix_ville.gridx = 1;
 		gbc_choix_ville.gridy = 2;
 		panel_caracteristique.add(choix_ville, gbc_choix_ville);
-		choix_ville.setModel(new DefaultComboBoxModel());
-
+		setVilles = mapVillesAdresses.keySet();
+		choix_ville.setModel(new DefaultComboBoxModel(setVilles.toArray(new String[0])));
+		
 		JLabel adresse = new JLabel("Adresse");
 		GridBagConstraints gbc_adresse = new GridBagConstraints();
 		gbc_adresse.fill = GridBagConstraints.BOTH;
@@ -263,8 +278,17 @@ public class PageBienImmobilier {
 		gbc_choix_adresse.gridx = 1;
 		gbc_choix_adresse.gridy = 3;
 		panel_caracteristique.add(choix_adresse, gbc_choix_adresse);
-		choix_adresse.setModel(new DefaultComboBoxModel());
 
+		choix_adresse.setModel(new DefaultComboBoxModel(
+				mapVillesAdresses.get((String)choix_ville.getSelectedItem()).toArray(new String[0])));
+				choix_ville.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						choix_adresse.setModel(new DefaultComboBoxModel(
+								mapVillesAdresses.get((String)choix_ville.getSelectedItem()).toArray(new String[0])));
+					}
+				});
+				
 		JLabel complement_adresse = new JLabel("Complément d'adresse");
 		GridBagConstraints gbc_complement_adresse = new GridBagConstraints();
 		gbc_complement_adresse.fill = GridBagConstraints.BOTH;
@@ -402,6 +426,40 @@ public class PageBienImmobilier {
 		this.valider.setVerticalTextPosition(SwingConstants.TOP);
 		this.valider.setVerticalAlignment(SwingConstants.BOTTOM);
 		bas_de_page.add(this.valider, BorderLayout.EAST);
+		this.valider.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				switch(choix_type_de_bien.getSelectedIndex()) {
+					case TypeLogement.APPARTEMENT_VALUE :
+						// add logement avec un appart
+					try {
+						System.out.println(choix_surface.getComponentCount());
+						new Logement(choix_nb_piece.getComponentCount(),choix_surface.getComponentCount()+surface_minimale
+								,choix_num_fiscal.getText(),(String)choix_ville.getSelectedItem()
+								,(String)choix_adresse.getSelectedItem(),choix_complement_adresse.getText(),liste_diagnostic);
+					} catch (IllegalArgumentException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+						System.out.println(liste_diagnostic);
+						break;
+					case TypeLogement.GARAGE_VALUE :
+					try {
+						new Garage(choix_num_fiscal.getText(),(String)choix_ville.getSelectedItem(),(String)choix_adresse.getSelectedItem(),choix_complement_adresse.getText());
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+						break;
+					case TypeLogement.BATIMENT_VALUE :
+						new Batiment(choix_num_fiscal.getText(),texte_ville.getText(),texte_adresse.getText());
+						break;
+					}
+			}
+		});
 
 		this.frame.addComponentListener(new ComponentAdapter() {
 
@@ -459,8 +517,6 @@ public class PageBienImmobilier {
 			choix_nb_piece.setVisible(isAppartement);
 			complement_adresse.setVisible(!isBatiment);
 			choix_complement_adresse.setVisible(!isBatiment);
-			num_fiscal.setVisible(!isBatiment);
-			choix_num_fiscal.setVisible(!isBatiment);
 
 			// Remplacer les JComboBox par JTextField pour "Bâtiment"
 			GridBagConstraints gbc = new GridBagConstraints();
