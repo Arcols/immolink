@@ -1,1 +1,8 @@
+# Ignorer les fichiers de classe Java
+bin/**/*.class
 
+# Ignorer les fichiers de configuration Eclipse
+bin/.settings/
+bin/.project
+bin/.classpath
+.classpath

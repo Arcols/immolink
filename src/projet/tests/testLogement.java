@@ -1,4 +1,4 @@
-package tests;
+package projet.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -16,7 +16,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import classes.*;
+import projet.classes.*;
 
 public class testLogement {
 	private File temp_file;

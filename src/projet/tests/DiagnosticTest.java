@@ -15,7 +15,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import classes.ConnectionDB;
+import projet.classes.*;
 
 public class DiagnosticTest {
 
