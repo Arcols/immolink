@@ -6,3 +6,4 @@ bin/.settings/
 bin/.project
 bin/.classpath
 .classpath
+/bin
