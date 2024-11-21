@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 import projet.modele.PageAccueil;
 import projet.modele.PageBaux;
 import projet.modele.PageBienImmobilier;
-import projet.modele.PageLocataire;
+import projet.modele.PageNouveauLocataire;
 import projet.modele.PageProfil;
 
 public class Menu implements ActionListener {
@@ -40,8 +40,8 @@ public class Menu implements ActionListener {
 			break;
 		case "Locataires":
 			this.frame.dispose();
-			PageLocataire pageLocataire = new PageLocataire();
-			pageLocataire.main(null);
+			PageNouveauLocataire PageNouveauLocataire = new PageNouveauLocataire();
+			PageNouveauLocataire.main(null);
 			break;
 		case "Mes Biens":
 			this.frame.dispose();
