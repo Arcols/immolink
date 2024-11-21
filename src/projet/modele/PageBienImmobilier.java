@@ -13,10 +13,16 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.io.File;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -29,6 +35,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import projet.classes.Diagnostic;
 import projet.ihm.Charte;
 import projet.ihm.Menu;
 import projet.ihm.ResizedImage;
@@ -43,6 +50,7 @@ public class PageBienImmobilier {
 	private JTextField texte_ville = new JTextField();
 	private JTextField texte_adresse = new JTextField();
 	private JComboBox choix_type_de_bien;
+	private List<Diagnostic> liste_diagnostic;
 
 	private void checkFields() {
 		// Vérifier le type de bien sélectionné
@@ -98,6 +106,7 @@ public class PageBienImmobilier {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		this.liste_diagnostic = new ArrayList<>();
 		// Initialisation du JFrame
 		this.frame = new JFrame();
 		this.frame.setBounds(100, 100, 750, 400);
@@ -348,7 +357,32 @@ public class PageBienImmobilier {
 
 			// Créer le bouton "Télécharger" pour chaque diagnostic
 			JButton bouton = new JButton("Télécharger");
-			bouton.addActionListener(e -> System.out.println("Téléchargement demandé pour : " + diagnostic));
+			bouton.addActionListener(e -> {
+				// Créer un JFileChooser pour permettre de sélectionner un fichier
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setDialogTitle("Sélectionnez un fichier à associer au diagnostic");
+
+				// Ouvrir le dialogue de sélection de fichier
+				int returnValue = fileChooser.showOpenDialog(null);
+
+				if (returnValue == JFileChooser.APPROVE_OPTION) {
+					// Obtenir le fichier sélectionné
+					File selectedFile = fileChooser.getSelectedFile();
+					try {
+						this.liste_diagnostic
+								.add(new Diagnostic(diagnostic, fileChooser.getSelectedFile().getAbsolutePath()));
+						System.out.println("Rajouté !");
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				} else {
+					System.out.println("Aucun fichier sélectionné.");
+				}
+			});
 			gbc_diag.gridx = 1; // Deuxième colonne pour le bouton
 			tableau_diagnostic.add(bouton, gbc_diag);
 
