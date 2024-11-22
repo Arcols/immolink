@@ -11,28 +11,35 @@ public class Logement extends BienLouable {
 
 	// Constructeur si il n'y a pas de garage présent
 	public Logement(int nb_piece, double surface, String numero_fiscal, String ville ,String adresse,
-			String complement_adresse,List<Diagnostic> diagnostic) throws IllegalArgumentException, SQLException {
+			String complement_adresse,List<Diagnostic> diagnostic,Boolean haveGarage) throws IllegalArgumentException, SQLException {
 		super(numero_fiscal, ville,adresse,complement_adresse, diagnostic);
 		if (surface < 9.0F) {
 			throw new IllegalArgumentException(" Un logement fait au minimum 9m²");
 		}
 		this.nb_piece = nb_piece;
 		this.surface = surface;
-		insertIntoTable(nb_piece, surface, numero_fiscal, ville, adresse,complement_adresse, diagnostic);
+		insertIntoTable(nb_piece, surface, numero_fiscal, ville, adresse,complement_adresse, diagnostic,haveGarage);
 	}
 
 	private void insertIntoTable(int nb_piece, double surface, String numero_fiscal,String ville ,String adresse,
-			String complement_adresse, List<Diagnostic> diagnostics) throws SQLException {
+			String complement_adresse, List<Diagnostic> diagnostics,Boolean haveGarage) throws SQLException {
 		ConnectionDB db = new ConnectionDB();
-		String query = "INSERT INTO bienlouable (numero_fiscal, complement_adresse,type_logement,Nombre_pieces,Surface,garage_assoc,idBat) VALUES (?,?,?,?,?,?,?)";
+		String query;
+		if(haveGarage) {
+			query = "INSERT INTO bienlouable (numero_fiscal, complement_adresse,type_logement,Nombre_pieces,Surface,idBat,garage_assoc) VALUES (?,?,?,?,?,?,?)";
+		}else {
+			query = "INSERT INTO bienlouable (numero_fiscal, complement_adresse,type_logement,Nombre_pieces,Surface,idBat) VALUES (?,?,?,?,?,?)";
+		}
 		PreparedStatement pstmt = db.getConnection().prepareStatement(query);
 		pstmt.setString(1, numero_fiscal);
 		pstmt.setString(2, complement_adresse);
 		pstmt.setInt(3, TypeLogement.APPARTEMENT.getValue());
 		pstmt.setInt(4, nb_piece);
 		pstmt.setDouble(5, surface);
-		pstmt.setInt(6, getIdGarageAssocié(db, numero_fiscal));
-		pstmt.setInt(7, foundIDBatInDB(db,ville,adresse));
+		pstmt.setInt(6, foundIDBatInDB(db,ville,adresse));
+		if(haveGarage) {
+			pstmt.setInt(7, getIdGarageAssocié(db, numero_fiscal));
+		}
 		pstmt.executeUpdate();
 		pstmt.close();
 		int idBien = getIdBien(db, numero_fiscal);

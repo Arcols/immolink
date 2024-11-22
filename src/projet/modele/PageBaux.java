@@ -18,6 +18,7 @@ import javax.swing.border.LineBorder;
 import projet.ihm.Charte;
 import projet.ihm.Menu;
 import projet.ihm.ResizedImage;
+import javax.swing.JCheckBox;
 
 public class PageBaux {
 
@@ -116,6 +117,7 @@ public class PageBaux {
 		b_biens.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		menu_bouttons.add(b_biens);
 		menu_bouttons.add(b_biens);
+		
 		b_biens.addActionListener(m);
 
 		this.frame.addComponentListener(new ComponentAdapter() {
