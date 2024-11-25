@@ -4,6 +4,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import projet.DAO.db.ConnectionDB;
+
 public class Locataire {
 
     private String nom;

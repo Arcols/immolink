@@ -5,6 +5,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import projet.DAO.db.ConnectionDB;
+
 public class Logement extends BienLouable {
 	private int nb_piece;
 	private double surface;

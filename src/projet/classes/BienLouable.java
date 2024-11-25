@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import projet.DAO.db.ConnectionDB;
 import projet.classes.BienLouable.TypeLogement;
 
 public class BienLouable extends BienImmobilier {
