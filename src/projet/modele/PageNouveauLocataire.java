@@ -14,6 +14,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -27,6 +29,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import projet.classes.Batiment;
 import projet.classes.Locataire;
 import projet.ihm.Charte;
 import projet.ihm.Menu;
@@ -42,6 +45,7 @@ public class PageNouveauLocataire {
 	private JTextField mailValeur;
 	private JTextField dateValeur;
 	private JButton enregistrerButton;
+	private Map<String, List<String>> mapVillesAdresses;
 
 	private void checkFields() {
 		// Vérification si tous les champs sont remplis
@@ -84,6 +88,12 @@ public class PageNouveauLocataire {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		try {
+			mapVillesAdresses = Batiment.searchAllBatiments();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		this.frame = new JFrame();
 		this.frame.setBounds(100, 100, 750, 400);
 		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
