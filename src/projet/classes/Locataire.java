@@ -55,6 +55,14 @@ public class Locataire {
     public String getTéléphone() {
         return this.téléphone;
     }
+    
+    public String getMail() {
+    	return this.mail;
+    }
+    
+    public Date getDateArrive() {
+    	return this.date_arrive;
+    }
 
     public String getGenre() {
         return this.genre;
@@ -93,4 +101,31 @@ public class Locataire {
         st.close();
         db.closeConnection(); 
     }
+    public static List<Locataire> getAllLocataires() throws SQLException {
+        List<Locataire> locataires = new ArrayList<>();
+        ConnectionDB db = new ConnectionDB();
+
+        try (Connection conn = db.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT * FROM locataire")) {
+
+            while (rs.next()) {
+                String nom = rs.getString("nom");
+                String prénom = rs.getString("prenom");
+                String téléphone = rs.getString("téléphone");
+                String genre = rs.getString("genre");
+                String mail = rs.getString("mail");
+                Date date_arrive = rs.getDate("date_arrive");
+
+                Locataire locataire = new Locataire(nom, prénom, téléphone, mail, date_arrive, genre);
+                locataires.add(locataire);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return locataires;
+    }
+
 }

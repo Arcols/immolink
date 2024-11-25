@@ -8,22 +8,31 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.sql.SQLException;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableModel;
 
+import projet.classes.Locataire;
 import projet.ihm.Charte;
 import projet.ihm.Menu;
 import projet.ihm.ResizedImage;
 import projet.modele.*;
+import java.awt.GridBagLayout;
+import javax.swing.JTable;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 
 public class PageAccueil {
 
 	private JFrame frame;
 	private JLabel logo;
+	private JTable table;
 
 	/**
 	 * Launch the application.
@@ -112,6 +121,78 @@ public class PageAccueil {
 		b_biens.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		menu_bouttons.add(b_biens);
 		menu_bouttons.add(b_biens);
+		
+		JPanel body = new JPanel();
+		frame.getContentPane().add(body, BorderLayout.CENTER);
+		body.setLayout(new BorderLayout(0, 0));
+		
+		JPanel titre = new JPanel();
+		body.add(titre, BorderLayout.NORTH);
+		
+		JLabel labelLocataires = new JLabel("Locataires");
+		titre.add(labelLocataires);
+		
+		JPanel panel = new JPanel();
+		body.add(panel, BorderLayout.CENTER);
+		GridBagLayout gbl_panel = new GridBagLayout();
+		gbl_panel.columnWidths = new int[] {30, 0, 30};
+		gbl_panel.rowHeights = new int[] {30, 170, 40, 30};
+		gbl_panel.columnWeights = new double[]{0.0, 1.0};
+		gbl_panel.rowWeights = new double[]{0.0, 1.0, 1.0};
+		panel.setLayout(gbl_panel);
+		
+		table = new JTable();
+		GridBagConstraints gbc_table = new GridBagConstraints();
+		gbc_table.insets = new Insets(0, 0, 5, 0);
+		gbc_table.fill = GridBagConstraints.BOTH;
+		gbc_table.gridx = 1;
+		gbc_table.gridy = 1;
+		panel.add(table, gbc_table);
+		try {
+		    loadDataToTable();
+		} catch (SQLException e) {
+		    e.printStackTrace();
+		}
+		
+		JPanel panel_1 = new JPanel();
+		GridBagConstraints gbc_panel_1 = new GridBagConstraints();
+		gbc_panel_1.anchor = GridBagConstraints.SOUTH;
+		gbc_panel_1.gridx = 1;
+		gbc_panel_1.gridy = 2;
+		panel.add(panel_1, gbc_panel_1);
+		GridBagLayout gbl_panel_1 = new GridBagLayout();
+		gbl_panel_1.columnWidths = new int[] {0};
+		gbl_panel_1.rowHeights = new int[] {0};
+		gbl_panel_1.columnWeights = new double[]{0.0, 0.0, 0.0};
+		gbl_panel_1.rowWeights = new double[]{0.0, 0.0};
+		panel_1.setLayout(gbl_panel_1);
+		
+		JLabel labelRegime = new JLabel("Mon régime microfoncier");
+		GridBagConstraints gbc_labelRegime = new GridBagConstraints();
+		gbc_labelRegime.insets = new Insets(0, 0, 5, 5);
+		gbc_labelRegime.gridx = 1;
+		gbc_labelRegime.gridy = 0;
+		panel_1.add(labelRegime, gbc_labelRegime);
+		
+		JLabel labelDeclaFiscale = new JLabel("Déclaration fiscale");
+		GridBagConstraints gbc_labelDeclaFiscale = new GridBagConstraints();
+		gbc_labelDeclaFiscale.insets = new Insets(0, 0, 5, 0);
+		gbc_labelDeclaFiscale.gridx = 2;
+		gbc_labelDeclaFiscale.gridy = 0;
+		panel_1.add(labelDeclaFiscale, gbc_labelDeclaFiscale);
+		
+		JButton actualiserRegime = new JButton("Actualiser mon régime");
+		GridBagConstraints gbc_actualiserRegime = new GridBagConstraints();
+		gbc_actualiserRegime.insets = new Insets(0, 0, 0, 5);
+		gbc_actualiserRegime.gridx = 1;
+		gbc_actualiserRegime.gridy = 1;
+		panel_1.add(actualiserRegime, gbc_actualiserRegime);
+		
+		JButton genererDeclaFiscale = new JButton("Générer");
+		GridBagConstraints gbc_genererDeclaFiscale = new GridBagConstraints();
+		gbc_genererDeclaFiscale.gridx = 2;
+		gbc_genererDeclaFiscale.gridy = 1;
+		panel_1.add(genererDeclaFiscale, gbc_genererDeclaFiscale);
 		b_biens.addActionListener(m);
 
 		this.frame.addComponentListener(new ComponentAdapter() {
@@ -135,4 +216,32 @@ public class PageAccueil {
 		});
 
 	}
+	private void loadDataToTable() throws SQLException {
+	    // Liste des colonnes
+	    String[] columnNames = {"Nom", "Prénom", "Téléphone", "Mail", "Genre", "Date d'arrivée"};
+
+	    // Création du modèle de table
+	    DefaultTableModel model = new DefaultTableModel(columnNames, 0); // `0` pour aucune ligne au départ
+
+	    // Récupération des locataires
+	    List<Locataire> locataires = Locataire.getAllLocataires();
+
+	    // Remplissage du modèle avec les données des locataires
+	    for (Locataire locataire : locataires) {
+	        Object[] rowData = {
+	            locataire.getNom(),
+	            locataire.getPrénom(),
+	            locataire.getTéléphone(),
+	            locataire.getMail(),
+	            locataire.getGenre(),
+	            locataire.getDateArrive()
+	        };
+	        model.addRow(rowData); // Ajout de la ligne dans le modèle
+	    }
+
+	    // Attribution du modèle au JTable
+	    this.table.setModel(model);
+	}
+
+
 }
