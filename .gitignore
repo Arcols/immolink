@@ -29,3 +29,4 @@ bin/projet/classes/BienLouable.class
 bin/projet/classes/Batiment.class
 bin/projet/classes/Bail.class
 .classpath
+*.class
