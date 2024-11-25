@@ -30,7 +30,7 @@ public class BienLouable extends BienImmobilier {
         this.ville=ville;
         this.travaux = new ArrayList<Devis> ();
     }
-    
+
     public String getNumero_fiscal() {
         return this.numero_fiscal;
     }
