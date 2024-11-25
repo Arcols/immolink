@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -353,9 +354,10 @@ public class PageNouveauLocataire {
 		this.frame.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {
-				ResizedImage.resizeImage("/ressources/images/logo+nom.png", PageNouveauLocataire.this.frame,
-						PageNouveauLocataire.this.logo, 3, 8);
-				int frameWidth = PageNouveauLocataire.this.frame.getWidth();
+                ResizedImage res = new ResizedImage();
+                res.resizeImage("logo+nom.png", PageNouveauLocataire.this.frame,
+PageNouveauLocataire.this.logo, 3, 8);
+                int frameWidth = PageNouveauLocataire.this.frame.getWidth();
 				int frameHeight = PageNouveauLocataire.this.frame.getHeight();
 
 				int newFontSize = Math.min(frameWidth, frameHeight) / 30;

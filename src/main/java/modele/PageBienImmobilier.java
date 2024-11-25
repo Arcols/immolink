@@ -501,9 +501,10 @@ public class PageBienImmobilier {
 
 			@Override
 			public void componentResized(ComponentEvent e) {
-				ResizedImage.resizeImage("/ressources/images/logo+nom.png", PageBienImmobilier.this.frame,
-						PageBienImmobilier.this.logo, 3, 8);
-				int frameWidth = PageBienImmobilier.this.frame.getWidth();
+                ResizedImage res = new ResizedImage();
+                res.resizeImage("logo+nom.png", PageBienImmobilier.this.frame,
+PageBienImmobilier.this.logo, 3, 8);
+                int frameWidth = PageBienImmobilier.this.frame.getWidth();
 				int frameHeight = PageBienImmobilier.this.frame.getHeight();
 
 				int newFontSize = Math.min(frameWidth, frameHeight) / 30;
