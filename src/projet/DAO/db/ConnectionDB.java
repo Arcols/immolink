@@ -1,4 +1,4 @@
-package projet.classes;
+package projet.DAO.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -13,7 +13,7 @@ public class ConnectionDB {
             Class.forName("com.mysql.cj.jdbc.Driver");
             // Establish the connection
             cn = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/imolink", // DB URL
+                "jdbc:mysql://localhost:3306/immolink", // DB URL
                 "root", // Username
                 "" // Password
             );
