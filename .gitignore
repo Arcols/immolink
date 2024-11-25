@@ -1,32 +1,39 @@
-# Ignorer les fichiers de classe Java
-bin/**/*.class
-
-# Ignorer les fichiers de configuration Eclipse
-bin/.settings/
-bin/.project
-bin/.classpath
-.classpath
-/bin
-src/.project
-bin/projet/tests/DiagnosticTest.class
-bin/projet/modele/PageLocataire.class
-bin/projet/modele/PageLocataire$2.class
-bin/projet/modele/PageLocataire$1.class
-bin/projet/modele/PageBienImmobilier.class
-bin/projet/modele/PageBienImmobilier$2.class
-bin/projet/modele/PageBienImmobilier$1.class
-bin/projet/modele/PageAccueil.class
-bin/projet/modele/PageAccueil$2.class
-bin/projet/modele/PageAccueil$1.class
-bin/projet/classes/Propriétaire.class
-bin/projet/classes/Logement.class
-bin/projet/classes/Garage.class
-bin/projet/classes/Diagnostic.class
-bin/projet/classes/Devis.class
-bin/projet/classes/Colocation.class
-bin/projet/classes/Charge.class
-bin/projet/classes/BienLouable.class
-bin/projet/classes/Batiment.class
-bin/projet/classes/Bail.class
-.classpath
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
 *.class
+bin*
+### IntelliJ IDEA ###
+.idea/modules.xml
+.idea/jarRepositories.xml
+.idea/compiler.xml
+.idea/libraries/
+*.iws
+*.iml
+*.ipr
+
+### Eclipse ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+### Mac OS ###
+.DS_Store
