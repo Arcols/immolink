@@ -1,27 +1,17 @@
 package projet.DAO;
 
-import java.sql.SQLException;
 import java.util.List;
 
-import projet.classes.BienLouable;
-import projet.enumeration.TypeLogement;
+import projet.classes.Logement;
 
-/**
- * Interface définissant les opérations CRUD pour les objets BienLouable.
- */
-public interface BienLouableDAO {
-
+public interface LogementDAO {
 	/**
 	 * Crée un nouveau BienLouable dans la base de données.
 	 *
 	 * @param bien L'objet BienLouable à insérer
-	 * @throws DAOException             en cas d'erreur lors de la création du bien
-	 *                                  immobilier
-	 * @throws SQLException
-	 * @throws IllegalArgumentException
+	 * @throws DAOException en cas d'erreur lors de la création du bien immobilier
 	 */
-	void create(BienLouable bien, TypeLogement type, int nb_piece, double surface, boolean haveGarage)
-			throws DAOException, IllegalArgumentException, SQLException;
+	void create(Logement logement) throws DAOException;
 
 	/**
 	 * Récupère un BienLouable de la base de données en utilisant son identifiant.
@@ -30,7 +20,7 @@ public interface BienLouableDAO {
 	 * @return L'objet BienLouable trouvé, ou null si aucun bien n'est trouvé
 	 * @throws DAOException en cas d'erreur lors de la lecture du bien immobilier
 	 */
-	BienLouable read(int id) throws DAOException;
+	Logement read(int id) throws DAOException;
 
 	/**
 	 * Met à jour les informations d'un BienLouable existant dans la base de
@@ -40,7 +30,7 @@ public interface BienLouableDAO {
 	 * @throws DAOException en cas d'erreur lors de la mise à jour du bien
 	 *                      immobilier
 	 */
-	void update(BienLouable bien) throws DAOException;
+	void update(Logement logement) throws DAOException;
 
 	/**
 	 * Supprime un BienLouable de la base de données en utilisant son identifiant.
@@ -57,5 +47,6 @@ public interface BienLouableDAO {
 	 * @return Une liste de tous les objets BienLouable
 	 * @throws DAOException en cas d'erreur lors de la lecture des biens immobiliers
 	 */
-	List<BienLouable> findAll() throws DAOException;
+	List<Logement> findAll() throws DAOException;
+
 }
