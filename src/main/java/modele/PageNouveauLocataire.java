@@ -89,7 +89,8 @@ public class PageNouveauLocataire {
 	 */
 	private void initialize() {
 		try {
-			mapVillesAdresses = Batiment.searchAllBatiments();
+			DAO.jdbc.BatimentDAO tousBat = new DAO.jdbc.BatimentDAO();
+			mapVillesAdresses = tousBat.searchAllBatiments();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -121,7 +121,8 @@ public class PageBienImmobilier {
 	private void initialize() {
 		this.liste_diagnostic = new ArrayList<>();
 		try {
-			this.mapVillesAdresses = Batiment.searchAllBatiments();
+			DAO.jdbc.BatimentDAO tousBat = new DAO.jdbc.BatimentDAO();
+			this.mapVillesAdresses = tousBat.searchAllBatiments();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
