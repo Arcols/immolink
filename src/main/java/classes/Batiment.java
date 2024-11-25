@@ -1,5 +1,7 @@
 package classes;
 
+import DAO.BatimentDAO;
+import DAO.DAOException;
 import DAO.db.ConnectionDB;
 
 import java.sql.PreparedStatement;
@@ -9,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 public class Batiment extends BienImmobilier {
 	private String adresse;
@@ -31,12 +34,11 @@ public class Batiment extends BienImmobilier {
 		this.numero_fiscal = numero_fiscal;
 		this.bien_louable = new ArrayList<BienLouable>();
 		try {
-			this.insertIntoTable(numero_fiscal, ville, adresse);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+			this.insertIntoTable();
+		} catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 	public String getAdresse() {
 		return this.adresse;
@@ -66,40 +68,17 @@ public class Batiment extends BienImmobilier {
 
 	// search information about all batiments in the database
 	// Out : Map<String,List<String>> :
-	public static Map<String, List<String>> searchAllBatiments() throws SQLException {
-		Map<String, List<String>> batiments = new HashMap<>();
+	public Map<String, List<String>> getAllBatiments() throws SQLException {
+		DAO.jdbc.BatimentDAO res = new DAO.jdbc.BatimentDAO();
+        try {
+            return res.searchAllBatiments();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-		ConnectionDB db = new ConnectionDB();
-		String query = "SELECT adresse, ville FROM batiment";
-		try {
-			PreparedStatement pstmt = db.getConnection().prepareStatement(query);
-			ResultSet rs = pstmt.executeQuery();
-			while (rs.next()) {
-				String adresse = rs.getString("adresse");
-				String ville = rs.getString("ville");
-				batiments.putIfAbsent(ville, new ArrayList<>());
-				batiments.get(ville).add(adresse);
-			}
-			rs.close();
-			pstmt.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			db.closeConnection();
-		}
-		return batiments;
-	}
-
-	private void insertIntoTable(String numero_fiscal, String ville, String adresse) throws SQLException {
-		ConnectionDB db = new ConnectionDB();
-		String query = "INSERT INTO batiment (numero_fiscal,ville, adresse,code_postal) VALUES (?,?,?,?)";
-		PreparedStatement pstmt = db.getConnection().prepareStatement(query);
-		pstmt.setString(1, numero_fiscal);
-		pstmt.setString(2, ville);
-		pstmt.setString(3, adresse);
-		pstmt.setString(4, "31000");
-		pstmt.executeUpdate();
-		pstmt.close();
-		db.closeConnection();
+	private void insertIntoTable() throws DAOException {
+		DAO.jdbc.BatimentDAO insert = new DAO.jdbc.BatimentDAO();
+		insert.create(this);
 	}
 }

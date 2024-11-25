@@ -6,7 +6,7 @@ import java.util.List;
 import classes.Garage;
 
 public interface GarageDAO {
-	/**
+	/*
 	 * Crée un nouveau Garage dans la base de données.
 	 *
 	 * @param bien L'objet Garage à insérer
@@ -17,7 +17,7 @@ public interface GarageDAO {
 	 */
 	void create(Garage garage) throws DAOException;
 
-	/**
+	/*
 	 * Récupère un Garage de la base de données en utilisant son identifiant.
 	 *
 	 * @param id L'identifiant unique du bien immobilier
@@ -26,7 +26,7 @@ public interface GarageDAO {
 	 */
 	Garage read(int id) throws DAOException;
 
-	/**
+	/*
 	 * Met à jour les informations d'un Garage existant dans la base de données.
 	 *
 	 * @param bien L'objet Garage avec les informations mises à jour
@@ -35,7 +35,7 @@ public interface GarageDAO {
 	 */
 	void update(Garage bien) throws DAOException;
 
-	/**
+	/*
 	 * Supprime un Garage de la base de données en utilisant son identifiant.
 	 *
 	 * @param id L'identifiant unique du bien immobilier à supprimer
@@ -44,7 +44,7 @@ public interface GarageDAO {
 	 */
 	void delete(int id) throws DAOException;
 
-	/**
+	/*
 	 * Récupère tous les biens immobiliers de la base de données.
 	 *
 	 * @return Une liste de tous les objets Garage

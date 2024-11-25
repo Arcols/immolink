@@ -36,21 +36,50 @@ public class BatimentDAO implements DAO.BatimentDAO {
 	}
 
 	@Override
-	public Batiment read(int id) throws DAOException {
+	public Batiment read(String num_fisc) throws DAOException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void update(Batiment batiment) throws DAOException {
-		// TODO Auto-generated method stub
+		ConnectionDB cn;
+		try {
+			cn = new ConnectionDB();
+			String query = "UPDATE batiment SET (?,?,?,?) WHERE numero_fiscal = ?";
+			PreparedStatement pstmt = cn.getConnection().prepareStatement(query);
+			pstmt.setString(1, batiment.getNumeroFiscal());
+			pstmt.setString(2, batiment.getVille());
+			pstmt.setString(3, batiment.getAdresse());
+			pstmt.setString(4, "31000");
+			pstmt.setString(5,batiment.getNumeroFiscal());
+			pstmt.executeUpdate();
+			pstmt.close();
+			cn.closeConnection();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
 	@Override
-	public void delete(int id) throws DAOException {
-		// TODO Auto-generated method stub
+	public void delete(String num_fisc) throws DAOException {
+		ConnectionDB cn;
+		try {
+			cn = new ConnectionDB();
+			String query = "DELETE FROM batiment WHERE numero_fiscal = ?";
+			PreparedStatement pstmt = cn.getConnection().prepareStatement(query);
+			pstmt.setString(1, num_fisc);
+			pstmt.executeUpdate();
+			pstmt.close();
+			cn.closeConnection();
 
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
