@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import projet.DAO.db.ConnectionDB;
 import projet.classes.BienLouable.TypeLogement;
 
 public class Batiment extends BienImmobilier {

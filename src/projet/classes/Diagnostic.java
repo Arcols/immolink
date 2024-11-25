@@ -9,6 +9,8 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import projet.DAO.db.ConnectionDB;
+
 public class Diagnostic {
 
 	private String reference;
