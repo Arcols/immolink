@@ -4,7 +4,9 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,12 +14,17 @@ public class BatimentTest {
 
     private Batiment batiment;
     private BienLouable bienLouable;
+    private File tempFile;
 
     @Before
     public void setUp() throws IOException {
+        // Create a temporary file for testing
+        tempFile = File.createTempFile("testFile", ".pdf");
+        Files.write(tempFile.toPath(), "Test PDF Data".getBytes());
+
         batiment = new Batiment("123456789101", "Paris", "123 Rue de la Paix");
         List<Diagnostic> diagnostics = new ArrayList<>();
-        diagnostics.add(new Diagnostic("RefDiag1", "path/to/diagnostic1.pdf"));
+        diagnostics.add(new Diagnostic("RefDiag1", tempFile.getAbsolutePath()));
         bienLouable = new BienLouable("123456789102", "Paris", "123 Rue de la Paix", "Appartement 12B", diagnostics);
     }
 
