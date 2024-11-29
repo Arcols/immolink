@@ -20,7 +20,7 @@ public interface BienLouableDAO {
 	 * @throws SQLException
 	 * @throws IllegalArgumentException
 	 */
-	void create(BienLouable bien, TypeLogement type, int nb_piece, double surface, boolean haveGarage)
+	public void create(BienLouable bien, TypeLogement type, int nb_piece, double surface,Integer id_garage_assoc)
 			throws DAOException, IllegalArgumentException, SQLException;
 
 	/*
@@ -30,7 +30,11 @@ public interface BienLouableDAO {
 	 * @return L'objet BienLouable trouvé, ou null si aucun bien n'est trouvé
 	 * @throws DAOException en cas d'erreur lors de la lecture du bien immobilier
 	 */
-	BienLouable read(int id) throws DAOException;
+
+	BienLouable readFisc(String num_fiscal) throws DAOException;
+
+
+	Integer getId(String num_fiscal) throws DAOException;
 
 	/*
 	 * Met à jour les informations d'un BienLouable existant dans la base de
