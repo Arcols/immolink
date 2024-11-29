@@ -22,11 +22,8 @@ public class LogementDAO implements DAO.LogementDAO {
 			pstmt.setInt(3, 0);
 			pstmt.setInt(4, appart.getNbPiece());
 			pstmt.setDouble(5, appart.getSurface());
-			if (appart.getGarage()) {
-				pstmt.setInt(6, 1);
-			} else {
-				pstmt.setInt(6, 0);
-			}
+			pstmt.setInt(6, 1);
+
 			BatimentDAO bat = new BatimentDAO();
 			pstmt.setInt(7, bat.getIdBat(appart.getVille(), appart.getAdresse()));
 			pstmt.executeUpdate();
