@@ -38,4 +38,20 @@ public class ConnectionDB {
             cn.close();
         }
     }
+
+    public void setAutoCommit(boolean b) {
+        try {
+            cn.setAutoCommit(b);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void rollback() {
+        try {
+            cn.rollback();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

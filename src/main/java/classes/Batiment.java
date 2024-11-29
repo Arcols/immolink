@@ -21,9 +21,10 @@ public class Batiment extends BienImmobilier {
 		}
 		this.adresse = adresse;
 		// this.code_postal = code_postal;
-		this.ville = ville;
-		this.numero_fiscal = numero_fiscal;
-		this.bien_louable = new ArrayList<BienLouable>();
+		setAdresse(adresse);
+		setBien_louable(new ArrayList<>());
+		setNumero_fiscal(numero_fiscal);
+		setVille(ville);
 	}
 
 	public String getAdresse() {
@@ -50,6 +51,19 @@ public class Batiment extends BienImmobilier {
 
 	public void supprimerBienLouable(BienLouable bien_louable) {
 		this.bien_louable.remove(bien_louable);
+	}
+
+	public void setVille(String lyon) {
+		this.ville=ville;
+	}
+	public void setAdresse(String s) {
+		this.adresse=adresse;
+	}
+	public void setNumero_fiscal(String s) {
+		this.numero_fiscal=numero_fiscal;
+	}
+	public void setBien_louable(List<BienLouable> bien_louable) {
+		this.bien_louable=bien_louable;
 	}
 
 }
