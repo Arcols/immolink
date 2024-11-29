@@ -1,8 +1,8 @@
+package classes;
+
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
-
-import classes.*;
 
 import java.io.IOException;
 import java.util.ArrayList;

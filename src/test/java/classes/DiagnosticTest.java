@@ -1,3 +1,5 @@
+package classes;
+
 import static org.junit.Assert.*;
 
 import java.io.File;
@@ -13,8 +15,6 @@ import DAO.db.ConnectionDB;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import classes.*;
 
 public class DiagnosticTest {
 
