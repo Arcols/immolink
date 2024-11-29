@@ -1,16 +1,7 @@
 package classes;
 
-import DAO.BatimentDAO;
-import DAO.DAOException;
-import DAO.db.ConnectionDB;
-
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 public class Batiment extends BienImmobilier {
@@ -33,12 +24,7 @@ public class Batiment extends BienImmobilier {
 		this.ville = ville;
 		this.numero_fiscal = numero_fiscal;
 		this.bien_louable = new ArrayList<BienLouable>();
-		try {
-			this.insertIntoTable();
-		} catch (DAOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+	}
 
 	public String getAdresse() {
 		return this.adresse;
@@ -66,19 +52,4 @@ public class Batiment extends BienImmobilier {
 		this.bien_louable.remove(bien_louable);
 	}
 
-	// search information about all batiments in the database
-	// Out : Map<String,List<String>> :
-	public Map<String, List<String>> getAllBatiments() throws SQLException {
-		DAO.jdbc.BatimentDAO res = new DAO.jdbc.BatimentDAO();
-        try {
-            return res.searchAllBatiments();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-	private void insertIntoTable() throws DAOException {
-		DAO.jdbc.BatimentDAO insert = new DAO.jdbc.BatimentDAO();
-		insert.create(this);
-	}
 }

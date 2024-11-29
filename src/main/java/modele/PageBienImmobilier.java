@@ -40,6 +40,8 @@ import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import DAO.DAOException;
+import DAO.jdbc.BatimentDAO;
 import classes.Batiment;
 import classes.Diagnostic;
 import classes.Garage;
@@ -49,6 +51,8 @@ import ihm.Charte;
 import ihm.Menu;
 import ihm.ModelePageBienImmobilier;
 import ihm.ResizedImage;
+import DAO.jdbc.BatimentDAO;
+
 
 public class PageBienImmobilier {
 
