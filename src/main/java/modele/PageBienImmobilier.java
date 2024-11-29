@@ -414,19 +414,15 @@ public class PageBienImmobilier {
 				if (returnValue == JFileChooser.APPROVE_OPTION) {
 					// Obtenir le fichier sélectionné
 					File selectedFile = fileChooser.getSelectedFile();
-					try {
-						this.liste_diagnostic
-								.add(new Diagnostic(diagnostic, fileChooser.getSelectedFile().getAbsolutePath()));
-						System.out.println("Rajouté !");
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				} else {
-					System.out.println("Aucun fichier sélectionné.");
+                    try {
+                        this.liste_diagnostic
+                                .add(new Diagnostic(diagnostic, fileChooser.getSelectedFile().getAbsolutePath()));
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    System.out.println("Rajouté !");
+					} else {
+					System.out.println("Annulé !");
 				}
 			});
 			gbc_diag.gridx = 1; // Deuxième colonne pour le bouton

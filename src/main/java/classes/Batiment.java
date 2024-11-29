@@ -30,12 +30,6 @@ public class Batiment extends BienImmobilier {
 		this.ville = ville;
 		this.numero_fiscal = numero_fiscal;
 		this.bien_louable = new ArrayList<BienLouable>();
-		try {
-			this.insertIntoTable(numero_fiscal, ville, adresse);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	public String getAdresse() {
@@ -90,16 +84,4 @@ public class Batiment extends BienImmobilier {
 		return batiments;
 	}
 
-	private void insertIntoTable(String numero_fiscal, String ville, String adresse) throws SQLException {
-		ConnectionDB db = new ConnectionDB();
-		String query = "INSERT INTO batiment (numero_fiscal,ville, adresse,code_postal) VALUES (?,?,?,?)";
-		PreparedStatement pstmt = db.getConnection().prepareStatement(query);
-		pstmt.setString(1, numero_fiscal);
-		pstmt.setString(2, ville);
-		pstmt.setString(3, adresse);
-		pstmt.setString(4, "31000");
-		pstmt.executeUpdate();
-		pstmt.close();
-		db.closeConnection();
-	}
 }
