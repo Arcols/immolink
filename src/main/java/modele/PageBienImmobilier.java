@@ -11,12 +11,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.io.File;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +23,6 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -37,21 +32,12 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
+import javax.tools.Diagnostic;
 
-import DAO.DAOException;
-import DAO.jdbc.BatimentDAO;
-import classes.Batiment;
-import classes.Diagnostic;
-import classes.Garage;
-import classes.Logement;
-import enumeration.TypeLogement;
 import ihm.Charte;
 import ihm.Menu;
 import ihm.ModelePageBienImmobilier;
 import ihm.ResizedImage;
-import DAO.jdbc.BatimentDAO;
 
 
 public class PageBienImmobilier {

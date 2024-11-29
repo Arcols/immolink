@@ -21,6 +21,9 @@ public class Batiment extends BienImmobilier {
 		}
 		this.adresse = adresse;
 		// this.code_postal = code_postal;
+		this.ville = ville;
+		this.numero_fiscal = numero_fiscal;
+		this.bien_louable = new ArrayList<BienLouable>();
 		setAdresse(adresse);
 		setBien_louable(new ArrayList<>());
 		setNumero_fiscal(numero_fiscal);
