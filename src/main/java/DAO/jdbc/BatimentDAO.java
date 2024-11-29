@@ -36,9 +36,29 @@ public class BatimentDAO implements DAO.BatimentDAO {
 	}
 
 	@Override
-	public Batiment read(String num_fisc) throws DAOException {
-		// TODO Auto-generated method stub
-		return null;
+	public Batiment read(String num_fiscal) throws DAOException {
+		ConnectionDB cn;
+		Batiment batiment = null;
+		try {
+			cn = new ConnectionDB();
+			String query = "SELECT adresse, code_postal, ville FROM Batiment WHERE numero_fiscal = ?";
+			PreparedStatement pstmt = cn.getConnection().prepareStatement(query);
+			pstmt.setString(1, num_fiscal);
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()){
+				String adresse = rs.getString("adresse");
+				String code_postal = rs.getString("code_postal");
+				String ville = rs.getString("ville");
+				batiment = new Batiment(num_fiscal,adresse,ville);
+			}
+			pstmt.close();
+			cn.closeConnection();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return batiment;
 	}
 
 	@Override
