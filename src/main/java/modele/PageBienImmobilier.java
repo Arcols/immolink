@@ -388,32 +388,7 @@ public class PageBienImmobilier {
 
 			// Créer le bouton "Télécharger" pour chaque diagnostic
 			JButton bouton = new JButton("Télécharger");
-			bouton.addActionListener(e -> {
-				// Créer un JFileChooser pour permettre de sélectionner un fichier
-				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setDialogTitle("Sélectionnez un fichier à associer au diagnostic");
-
-				// Ouvrir le dialogue de sélection de fichier
-				int returnValue = fileChooser.showOpenDialog(null);
-
-				if (returnValue == JFileChooser.APPROVE_OPTION) {
-					// Obtenir le fichier sélectionné
-					File selectedFile = fileChooser.getSelectedFile();
-					try {
-						this.liste_diagnostic
-								.add(new Diagnostic(diagnostic, fileChooser.getSelectedFile().getAbsolutePath()));
-						System.out.println("Rajouté !");
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				} else {
-					System.out.println("Aucun fichier sélectionné.");
-				}
-			});
+			bouton.addActionListener(modele.getTelechargerPDFButton(diagnostic));
 			gbc_diag.gridx = 1; // Deuxième colonne pour le bouton
 			this.tableau_diagnostic.add(bouton, gbc_diag);
 
