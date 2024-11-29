@@ -189,31 +189,7 @@ public class PageMesBiens {
         });
 
     }
-//    private void loadDataBienImmoToTable() throws SQLException {
-//        // Liste des colonnes pour les biens immobiliers
-//        String[] columnNames = {"Numéro Fiscal", "Adresse", "Ville", "Complément Adresse"};
-//
-//        // Création du modèle de table
-//        DefaultTableModel model = new DefaultTableModel(columnNames, 0); // `0` pour aucune ligne au départ
-//
-//        // Récupération des biens immobiliers
-//        BienLouableDAO bienDAO = new BienLouableDAOImpl(); // Implémentation fictive
-//        List<BienLouable> biens = bienDAO.findAll();
-//
-//        // Remplissage du modèle avec les données des biens
-//        for (BienLouable bien : biens) {
-//            Object[] rowData = {
-//                    bien.getNumero_fiscal(),
-//                    bien.getAdresse(),
-//                    bien.getVille(),
-//                    bien.getComplement_adresse()
-//            };
-//            model.addRow(rowData); // Ajout de la ligne dans le modèle
-//        }
-//
-//        // Attribution du modèle au JTable
-//        this.table.setModel(model);
-//    }
+
 
 
 

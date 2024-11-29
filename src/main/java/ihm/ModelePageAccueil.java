@@ -1,4 +1,4 @@
-package modele;
+package ihm;
 
 import classes.Locataire;
 import javax.swing.table.DefaultTableModel;
@@ -21,7 +21,8 @@ public class ModelePageAccueil {
         DefaultTableModel model = new DefaultTableModel(columnNames, 0); // `0` pour aucune ligne au départ
 
         // Récupération des locataires
-        List<Locataire> locataires = Locataire.getAllLocataires();
+        LocataireDAO locataireDAO = new LocataireDAO();
+        List<Locataire> locataires = locataireDAO.getAllLocataires();
 
         // Remplissage du modèle avec les données des locataires
         for (Locataire locataire : locataires) {
