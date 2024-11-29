@@ -40,6 +40,8 @@ import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import DAO.DAOException;
+import DAO.jdbc.BatimentDAO;
 import classes.Batiment;
 import classes.Diagnostic;
 import classes.Garage;
@@ -48,6 +50,8 @@ import enumeration.TypeLogement;
 import ihm.Charte;
 import ihm.Menu;
 import ihm.ResizedImage;
+import DAO.jdbc.BatimentDAO;
+
 
 public class PageBienImmobilier {
 
@@ -484,17 +488,26 @@ public class PageBienImmobilier {
 						new Garage(PageBienImmobilier.this.choix_num_fiscal.getText(),
 								(String) choix_ville.getSelectedItem(), (String) choix_adresse.getSelectedItem(),
 								PageBienImmobilier.this.choix_complement_adresse.getText());
+
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 					break;
 				case BATIMENT:
-					new Batiment(PageBienImmobilier.this.choix_num_fiscal.getText(),
+					Batiment batiment = new Batiment(PageBienImmobilier.this.choix_num_fiscal.getText(),
 							PageBienImmobilier.this.texte_ville.getText(),
 							PageBienImmobilier.this.texte_adresse.getText());
-					break;
-				}
+					BatimentDAO batDAO = new BatimentDAO();
+                    try {
+                        batDAO.create(batiment);
+                    } catch (DAOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    break;
+                    default:
+                        throw new IllegalStateException("Unexpected value: " + selectedType);
+                }
 			}
 		});
 

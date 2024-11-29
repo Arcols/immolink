@@ -14,7 +14,6 @@ import java.util.Map;
 
 public class BatimentDAO implements DAO.BatimentDAO {
 
-	@Override
 	public void create(Batiment batiment) throws DAOException {
 		ConnectionDB cn;
 		try {
@@ -28,7 +27,6 @@ public class BatimentDAO implements DAO.BatimentDAO {
 			pstmt.executeUpdate();
 			pstmt.close();
 			cn.closeConnection();
-
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
