@@ -18,6 +18,9 @@ public interface BatimentDAO {
 	 */
 	void create(Batiment batiment) throws DAOException;
 
+
+	Batiment readFisc(String num_fisc) throws DAOException;
+
 	/*
 	 * Récupère un Batiment de la base de données en utilisant son identifiant.
 	 *
@@ -25,7 +28,7 @@ public interface BatimentDAO {
 	 * @return L'objet Batiment trouvé, ou null si aucun bien n'est trouvé
 	 * @throws DAOException en cas d'erreur lors de la lecture du bien immobilier
 	 */
-	Batiment read(String num_fisc) throws DAOException;
+	Batiment readId(int id) throws DAOException;
 
 	/*
 	 * Met à jour les informations d'un Batiment existant dans la base de données.

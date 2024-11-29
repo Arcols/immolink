@@ -34,7 +34,7 @@ public class BatimentDAO implements DAO.BatimentDAO {
 	}
 
 	@Override
-	public Batiment read(String num_fiscal) throws DAOException {
+	public Batiment readFisc(String num_fiscal) throws DAOException {
 		ConnectionDB cn;
 		Batiment batiment = null;
 		try {
@@ -48,6 +48,32 @@ public class BatimentDAO implements DAO.BatimentDAO {
 				String code_postal = rs.getString("code_postal");
 				String ville = rs.getString("ville");
 				batiment = new Batiment(num_fiscal,adresse,ville);
+			}
+			pstmt.close();
+			cn.closeConnection();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return batiment;
+	}
+	@Override
+	public Batiment readId(int id) throws DAOException {
+		ConnectionDB cn;
+		Batiment batiment = null;
+		try {
+			cn = new ConnectionDB();
+			String query = "SELECT numero_fiscal, adresse, code_postal, ville FROM Batiment WHERE id = ?";
+			PreparedStatement pstmt = cn.getConnection().prepareStatement(query);
+			pstmt.setInt(1, id);
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()){
+				String num_fisc = rs.getString("numero_ficscal");
+				String adresse = rs.getString("adresse");
+				String code_postal = rs.getString("code_postal");
+				String ville = rs.getString("ville");
+				batiment = new Batiment(num_fisc,adresse,ville);
 			}
 			pstmt.close();
 			cn.closeConnection();
