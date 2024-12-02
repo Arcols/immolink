@@ -191,5 +191,43 @@ public class PageAccueil {
 					"Erreur", JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
+
+		JPanel boutonsPanel = new JPanel();
+		bodyPanel.add(boutonsPanel, BorderLayout.SOUTH);
+		GridBagLayout gbl_boutonsPanel = new GridBagLayout();
+		gbl_boutonsPanel.columnWidths = new int[] {0};
+		gbl_boutonsPanel.rowHeights = new int[] {0};
+		gbl_boutonsPanel.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0};
+		gbl_boutonsPanel.rowWeights = new double[]{0.0};
+		boutonsPanel.setLayout(gbl_boutonsPanel);
+
+		JPanel regimePanel = new JPanel();
+		GridBagConstraints gbc_regimePanel = new GridBagConstraints();
+		gbc_regimePanel.anchor = GridBagConstraints.NORTHWEST;
+		gbc_regimePanel.insets = new Insets(0, 0, 0, 5);
+		gbc_regimePanel.gridx = 1;
+		gbc_regimePanel.gridy = 0;
+		boutonsPanel.add(regimePanel, gbc_regimePanel);
+		regimePanel.setLayout(new GridLayout(2, 1, 0, 0));
+
+		JLabel regimeLabel = new JLabel("Mon régime microfoncier");
+		regimePanel.add(regimeLabel);
+
+		JButton btnNewButton = new JButton("Actualiser");
+		regimePanel.add(btnNewButton);
+
+		JPanel declaFidscalePanel = new JPanel();
+		GridBagConstraints gbc_declaFidscalePanel = new GridBagConstraints();
+		gbc_declaFidscalePanel.anchor = GridBagConstraints.NORTHWEST;
+		gbc_declaFidscalePanel.gridx = 3;
+		gbc_declaFidscalePanel.gridy = 0;
+		boutonsPanel.add(declaFidscalePanel, gbc_declaFidscalePanel);
+		declaFidscalePanel.setLayout(new GridLayout(0, 1, 0, 0));
+
+		JLabel declaFiscaleLabel = new JLabel("Déclaration fiscale");
+		declaFidscalePanel.add(declaFiscaleLabel);
+
+		JButton declaFiscaleButton = new JButton("Générer");
+		declaFidscalePanel.add(declaFiscaleButton);
 	}
 }
