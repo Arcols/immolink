@@ -42,15 +42,14 @@ import javax.swing.event.DocumentListener;
 
 import DAO.DAOException;
 import DAO.jdbc.BatimentDAO;
-import classes.Batiment;
-import classes.Diagnostic;
-import classes.Garage;
-import classes.Logement;
+import DAO.jdbc.LogementDAO;
+import classes.*;
 import enumeration.TypeLogement;
 import ihm.Charte;
 import ihm.Menu;
 import ihm.ResizedImage;
 import DAO.jdbc.BatimentDAO;
+import DAO.jdbc.BienLouableDAO;
 
 
 public class PageBienImmobilier {
@@ -463,28 +462,32 @@ public class PageBienImmobilier {
 							new Garage(PageBienImmobilier.this.choix_num_fiscal.getText(),
 									(String) choix_ville.getSelectedItem(), (String) choix_adresse.getSelectedItem(),
 									PageBienImmobilier.this.choix_complement_adresse.getText());
+							//create garage dao
 						}
-						;
-						new Logement(choix_nb_piece.getComponentCount(),
-								choix_surface.getComponentCount() + PageBienImmobilier.this.surface_minimale,
+						double valeurSurface = (Double) choix_surface.getValue();
+						Logement logement = new Logement(choix_nb_piece.getComponentCount(),
+								valeurSurface,
 								PageBienImmobilier.this.choix_num_fiscal.getText(),
 								(String) choix_ville.getSelectedItem(), (String) choix_adresse.getSelectedItem(),
 								PageBienImmobilier.this.choix_complement_adresse.getText(),
 								PageBienImmobilier.this.liste_diagnostic, bool);
+						LogementDAO logementDAO = new LogementDAO();
+						logementDAO.create(logement);
+
 					} catch (IllegalArgumentException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
-					}
-					break;
+					} catch (DAOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    break;
 				case GARAGE:
 					try {
 						new Garage(PageBienImmobilier.this.choix_num_fiscal.getText(),
 								(String) choix_ville.getSelectedItem(), (String) choix_adresse.getSelectedItem(),
 								PageBienImmobilier.this.choix_complement_adresse.getText());
-
+								//create garage dao
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();

@@ -5,11 +5,14 @@ import DAO.db.ConnectionDB;
 import classes.Batiment;
 import classes.Diagnostic;
 import classes.Logement;
+import enumeration.TypeLogement;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+
+import static java.lang.reflect.Array.setInt;
 
 public class LogementDAO implements DAO.LogementDAO {
 
@@ -18,14 +21,14 @@ public class LogementDAO implements DAO.LogementDAO {
 		ConnectionDB cn;
 		try {
 			cn = new ConnectionDB();
-			String requete = "INSERT INTO Logement bienlouable VALUES (?,?,?,?,?,?,?)";
+			String requete = "INSERT INTO bienlouable(numero_fiscal,complement_adresse,type_logement,nombre_pieces,surface,garage_assoc,idBat) VALUES (?,?,?,?,?,?,?)";
 			PreparedStatement pstmt = cn.getConnection().prepareStatement(requete);
 			pstmt.setString(1, appart.getNumero_fiscal());
 			pstmt.setString(2, appart.getComplement_adresse());
-			pstmt.setInt(3, 0);
+			pstmt.setInt(3, TypeLogement.APPARTEMENT.ordinal());
 			pstmt.setInt(4, appart.getNbPiece());
 			pstmt.setDouble(5, appart.getSurface());
-			pstmt.setInt(6, 1);
+			pstmt.setNull(6, java.sql.Types.INTEGER); // garage associé ?
 			BatimentDAO bat = new BatimentDAO();
 			pstmt.setInt(7, bat.getIdBat(appart.getVille(), appart.getAdresse()));
 			pstmt.executeUpdate();
