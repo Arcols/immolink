@@ -29,6 +29,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import DAO.jdbc.LocataireDAO;
 import classes.Batiment;
 import classes.Locataire;
 import ihm.Charte;
@@ -46,6 +47,7 @@ public class PageNouveauLocataire {
 	private JTextField dateValeur;
 	private JButton enregistrerButton;
 	private Map<String, List<String>> mapVillesAdresses;
+	private LocataireDAO daoLoc;
 
 	private void checkFields() {
 		// Vérification si tous les champs sont remplis
@@ -89,7 +91,8 @@ public class PageNouveauLocataire {
 	 */
 	private void initialize() {
 		try {
-			mapVillesAdresses = Batiment.searchAllBatiments();
+			DAO.jdbc.BatimentDAO tousBat = new DAO.jdbc.BatimentDAO();
+			mapVillesAdresses = tousBat.searchAllBatiments();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -339,15 +342,11 @@ public class PageNouveauLocataire {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				java.sql.Date sqlDate = java.sql.Date.valueOf(dateValeur.getText());
-				try {
-					Locataire l = new Locataire(nomValeur.getText(), prenomValeur.getText(), telephoneValeur.getText(),
-							mailValeur.getText(), sqlDate, (String) genreValeur.getSelectedItem());
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+                daoLoc = new LocataireDAO();
+                Locataire l = new Locataire(nomValeur.getText(), prenomValeur.getText(), telephoneValeur.getText(),
+                        mailValeur.getText(), sqlDate, (String) genreValeur.getSelectedItem(), daoLoc.getLastIdLocataire()+1);
 
-			}
+            }
 		});
 
 		this.frame.addComponentListener(new ComponentAdapter() {

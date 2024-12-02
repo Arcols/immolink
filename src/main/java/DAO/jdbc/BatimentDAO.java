@@ -14,7 +14,6 @@ import java.util.Map;
 
 public class BatimentDAO implements DAO.BatimentDAO {
 
-	@Override
 	public void create(Batiment batiment) throws DAOException {
 		ConnectionDB cn;
 		try {
@@ -28,7 +27,6 @@ public class BatimentDAO implements DAO.BatimentDAO {
 			pstmt.executeUpdate();
 			pstmt.close();
 			cn.closeConnection();
-
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -36,21 +34,95 @@ public class BatimentDAO implements DAO.BatimentDAO {
 	}
 
 	@Override
-	public Batiment read(int id) throws DAOException {
-		// TODO Auto-generated method stub
-		return null;
+	public Batiment readFisc(String num_fiscal) throws DAOException {
+		ConnectionDB cn;
+		Batiment batiment = null;
+		try {
+			cn = new ConnectionDB();
+			String query = "SELECT adresse, code_postal, ville FROM Batiment WHERE numero_fiscal = ?";
+			PreparedStatement pstmt = cn.getConnection().prepareStatement(query);
+			pstmt.setString(1, num_fiscal);
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()){
+				String adresse = rs.getString("adresse");
+				String code_postal = rs.getString("code_postal");
+				String ville = rs.getString("ville");
+				batiment = new Batiment(num_fiscal,ville,adresse);
+			}
+			pstmt.close();
+			cn.closeConnection();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return batiment;
+	}
+	@Override
+	public Batiment readId(int id) throws DAOException {
+		ConnectionDB cn;
+		Batiment batiment = null;
+		try {
+			cn = new ConnectionDB();
+			String query = "SELECT numero_fiscal, adresse, code_postal, ville FROM Batiment WHERE id = ?";
+			PreparedStatement pstmt = cn.getConnection().prepareStatement(query);
+			pstmt.setInt(1, id);
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()){
+				String num_fisc = rs.getString("numero_fiscal");
+				String adresse = rs.getString("adresse");
+				String code_postal = rs.getString("code_postal");
+				String ville = rs.getString("ville");
+				batiment = new Batiment(num_fisc,ville,adresse);
+			}
+			pstmt.close();
+			cn.closeConnection();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return batiment;
 	}
 
 	@Override
 	public void update(Batiment batiment) throws DAOException {
-		// TODO Auto-generated method stub
+		ConnectionDB cn;
+		try {
+			cn = new ConnectionDB();
+			String query = "UPDATE batiment SET ville = ?, adresse = ?, code_postal = ? WHERE numero_fiscal = ?";
+			PreparedStatement pstmt = cn.getConnection().prepareStatement(query);
+			pstmt.setString(1, batiment.getVille());
+			pstmt.setString(2, batiment.getAdresse());
+			pstmt.setString(3, "31000");
+			pstmt.setString(4, batiment.getNumeroFiscal());
+			pstmt.executeUpdate();
+			pstmt.close();
+			cn.closeConnection();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
 	@Override
-	public void delete(int id) throws DAOException {
-		// TODO Auto-generated method stub
+	public void delete(String num_fisc) throws DAOException {
+		ConnectionDB cn;
+		try {
+			cn = new ConnectionDB();
+			String query = "DELETE FROM batiment WHERE numero_fiscal = ?";
+			PreparedStatement pstmt = cn.getConnection().prepareStatement(query);
+			pstmt.setString(1, num_fisc);
+			pstmt.executeUpdate();
+			pstmt.close();
+			cn.closeConnection();
 
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override

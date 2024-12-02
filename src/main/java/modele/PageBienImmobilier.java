@@ -40,6 +40,8 @@ import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import DAO.DAOException;
+import DAO.jdbc.BatimentDAO;
 import classes.Batiment;
 import classes.Diagnostic;
 import classes.Garage;
@@ -48,6 +50,8 @@ import enumeration.TypeLogement;
 import ihm.Charte;
 import ihm.Menu;
 import ihm.ResizedImage;
+import DAO.jdbc.BatimentDAO;
+
 
 public class PageBienImmobilier {
 
@@ -121,7 +125,8 @@ public class PageBienImmobilier {
 	private void initialize() {
 		this.liste_diagnostic = new ArrayList<>();
 		try {
-			this.mapVillesAdresses = Batiment.searchAllBatiments();
+			DAO.jdbc.BatimentDAO tousBat = new DAO.jdbc.BatimentDAO();
+			this.mapVillesAdresses = tousBat.searchAllBatiments();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -414,19 +419,15 @@ public class PageBienImmobilier {
 				if (returnValue == JFileChooser.APPROVE_OPTION) {
 					// Obtenir le fichier sélectionné
 					File selectedFile = fileChooser.getSelectedFile();
-					try {
-						this.liste_diagnostic
-								.add(new Diagnostic(diagnostic, fileChooser.getSelectedFile().getAbsolutePath()));
-						System.out.println("Rajouté !");
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				} else {
-					System.out.println("Aucun fichier sélectionné.");
+                    try {
+                        this.liste_diagnostic
+                                .add(new Diagnostic(diagnostic, fileChooser.getSelectedFile().getAbsolutePath()));
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    System.out.println("Rajouté !");
+					} else {
+					System.out.println("Annulé !");
 				}
 			});
 			gbc_diag.gridx = 1; // Deuxième colonne pour le bouton
@@ -483,17 +484,26 @@ public class PageBienImmobilier {
 						new Garage(PageBienImmobilier.this.choix_num_fiscal.getText(),
 								(String) choix_ville.getSelectedItem(), (String) choix_adresse.getSelectedItem(),
 								PageBienImmobilier.this.choix_complement_adresse.getText());
+
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 					break;
 				case BATIMENT:
-					new Batiment(PageBienImmobilier.this.choix_num_fiscal.getText(),
+					Batiment batiment = new Batiment(PageBienImmobilier.this.choix_num_fiscal.getText(),
 							PageBienImmobilier.this.texte_ville.getText(),
 							PageBienImmobilier.this.texte_adresse.getText());
-					break;
-				}
+					BatimentDAO batDAO = new BatimentDAO();
+                    try {
+                        batDAO.create(batiment);
+                    } catch (DAOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    break;
+                    default:
+                        throw new IllegalStateException("Unexpected value: " + selectedType);
+                }
 			}
 		});
 

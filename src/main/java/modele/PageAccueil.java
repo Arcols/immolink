@@ -15,11 +15,11 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
+import DAO.jdbc.LocataireDAO;
 import classes.Locataire;
 import ihm.Charte;
 import ihm.Menu;
 import ihm.ResizedImage;
-import modele.*;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -29,6 +29,7 @@ public class PageAccueil {
 	private JFrame frame;
 	private JLabel logo;
 	private JTable table;
+	private LocataireDAO daoLoc;
 
 	/**
 	 * Lance l'application.
@@ -75,6 +76,34 @@ public class PageAccueil {
 				ResizedImage.resizeImage("/ressources/images/logo+nom.png", frame, logo, 3, 8);
 			}
 		});
+
+	}
+	private void loadDataToTable() throws SQLException {
+	    // Liste des colonnes
+	    String[] columnNames = {"Nom", "Prénom", "Téléphone", "Mail", "Genre", "Date d'arrivée"};
+
+	    // Création du modèle de table
+	    DefaultTableModel model = new DefaultTableModel(columnNames, 0); // `0` pour aucune ligne au départ
+
+	    // Récupération des locataires
+		daoLoc = new LocataireDAO();
+	    List<Locataire> locataires = daoLoc.getAllLocataire();
+
+	    // Remplissage du modèle avec les données des locataires
+	    for (Locataire locataire : locataires) {
+	        Object[] rowData = {
+	            locataire.getNom(),
+	            locataire.getPrénom(),
+	            locataire.getTéléphone(),
+	            locataire.getMail(),
+	            locataire.getGenre(),
+	            locataire.getDateArrive()
+	        };
+	        model.addRow(rowData); // Ajout de la ligne dans le modèle
+	    }
+
+	    // Attribution du modèle au JTable
+	    this.table.setModel(model);
 	}
 
 	/**

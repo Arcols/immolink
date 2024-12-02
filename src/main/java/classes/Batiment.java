@@ -1,23 +1,12 @@
 package classes;
 
-import DAO.db.ConnectionDB;
-
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Batiment extends BienImmobilier {
 	private String adresse;
-
 	private String numero_fiscal;
-	// private String code_postal;
-
 	private String ville;
-
 	public List<BienLouable> bien_louable;
 
 	// Un batiment est initialisé sans bien louable
@@ -25,24 +14,15 @@ public class Batiment extends BienImmobilier {
 		if (numero_fiscal.length() != 12) {
 			throw new IllegalArgumentException("Numéro fiscal invalide");
 		}
-		this.adresse = adresse;
-		// this.code_postal = code_postal;
-		this.ville = ville;
-		this.numero_fiscal = numero_fiscal;
-		this.bien_louable = new ArrayList<BienLouable>();
-		try {
-			this.insertIntoTable(numero_fiscal, ville, adresse);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		setNumero_fiscal(numero_fiscal);
+		setVille(ville);
+		setAdresse(adresse);
+		setBien_louable(new ArrayList<>());
 	}
 
 	public String getAdresse() {
 		return this.adresse;
 	}
-
-	// public String getCode_postal() {return this.code_postal;}
 
 	public String getVille() {
 		return this.ville;
@@ -64,42 +44,19 @@ public class Batiment extends BienImmobilier {
 		this.bien_louable.remove(bien_louable);
 	}
 
-	// search information about all batiments in the database
-	// Out : Map<String,List<String>> :
-	public static Map<String, List<String>> searchAllBatiments() throws SQLException {
-		Map<String, List<String>> batiments = new HashMap<>();
-
-		ConnectionDB db = new ConnectionDB();
-		String query = "SELECT adresse, ville FROM batiment";
-		try {
-			PreparedStatement pstmt = db.getConnection().prepareStatement(query);
-			ResultSet rs = pstmt.executeQuery();
-			while (rs.next()) {
-				String adresse = rs.getString("adresse");
-				String ville = rs.getString("ville");
-				batiments.putIfAbsent(ville, new ArrayList<>());
-				batiments.get(ville).add(adresse);
-			}
-			rs.close();
-			pstmt.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			db.closeConnection();
-		}
-		return batiments;
+	public void setVille(String ville) {
+		this.ville = ville;
 	}
 
-	private void insertIntoTable(String numero_fiscal, String ville, String adresse) throws SQLException {
-		ConnectionDB db = new ConnectionDB();
-		String query = "INSERT INTO batiment (numero_fiscal,ville, adresse,code_postal) VALUES (?,?,?,?)";
-		PreparedStatement pstmt = db.getConnection().prepareStatement(query);
-		pstmt.setString(1, numero_fiscal);
-		pstmt.setString(2, ville);
-		pstmt.setString(3, adresse);
-		pstmt.setString(4, "31000");
-		pstmt.executeUpdate();
-		pstmt.close();
-		db.closeConnection();
+	public void setAdresse(String adresse) {
+		this.adresse = adresse;
+	}
+
+	public void setNumero_fiscal(String numero_fiscal) {
+		this.numero_fiscal = numero_fiscal;
+	}
+
+	public void setBien_louable(List<BienLouable> bien_louable) {
+		this.bien_louable = bien_louable;
 	}
 }
