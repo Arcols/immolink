@@ -5,7 +5,8 @@ import classes.Diagnostic;
 import classes.Garage;
 import classes.Logement;
 import enumeration.TypeLogement;
-import modele.PageNouveauBienImmobilier;
+import modele.PageBienImmobilier;
+import modele.PageNouveauLocataire;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
