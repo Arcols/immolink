@@ -69,11 +69,11 @@ public class BatimentDAO implements DAO.BatimentDAO {
 			pstmt.setInt(1, id);
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()){
-				String num_fisc = rs.getString("numero_ficscal");
+				String num_fisc = rs.getString("numero_fiscal");
 				String adresse = rs.getString("adresse");
 				String code_postal = rs.getString("code_postal");
 				String ville = rs.getString("ville");
-				batiment = new Batiment(num_fisc,adresse,ville);
+				batiment = new Batiment(num_fisc,ville,adresse);
 			}
 			pstmt.close();
 			cn.closeConnection();
