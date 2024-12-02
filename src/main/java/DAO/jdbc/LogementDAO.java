@@ -12,6 +12,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.reflect.Array.setInt;
+
 public class LogementDAO implements DAO.LogementDAO {
 
 	public void create(Logement appart) throws DAOException {

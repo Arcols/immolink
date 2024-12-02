@@ -16,11 +16,8 @@ public interface BienLouableDAO {
 	/*
 	 * Crée un nouveau BienLouable dans la base de données.
 	 *
-	 * @param bien L'objet BienLouable à insérer
-	 * @throws DAOException             en cas d'erreur lors de la création du bien
-	 *                                  immobilier
-	 * @throws SQLException
-	 * @throws IllegalArgumentException
+	 * @param bien L'objet BienLouable à créer
+	 * @throws DAOException en cas d'erreur lors de la création du bien immobilier
 	 */
 	public void create(BienLouable bien, TypeLogement type, int nb_piece, double surface)
 			throws DAOException, IllegalArgumentException, SQLException;

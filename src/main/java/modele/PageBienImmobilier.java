@@ -412,8 +412,6 @@ public class PageBienImmobilier {
 		this.valider.setVerticalTextPosition(SwingConstants.TOP);
 		this.valider.setVerticalAlignment(SwingConstants.BOTTOM);
 		bas_de_page.add(this.valider, BorderLayout.EAST);
-
-
 		this.valider.addActionListener(modele.getValidateActionListener());
 		this.frame.addComponentListener(new ComponentAdapter() {
 			@Override
