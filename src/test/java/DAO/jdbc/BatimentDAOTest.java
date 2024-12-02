@@ -43,7 +43,7 @@ public class BatimentDAOTest {
     }
 
     @Test
-    public void testRead() throws SQLException, DAOException {
+    public void testReadFisc() throws SQLException, DAOException {
         Batiment batiment = new Batiment("123456789101", "Paris", "123 Rue de la Paix");
         batimentDAO.create(batiment);
 
@@ -98,7 +98,7 @@ public class BatimentDAOTest {
         assertTrue(id > 0);
     }
 
-    /*
+
     @Test
     public void testReadId() throws SQLException, DAOException {
         Batiment batiment = new Batiment("123456789101", "Paris", "123 Rue de la Paix");
@@ -111,5 +111,5 @@ public class BatimentDAOTest {
         assertEquals("123456789101", batimentRecupere.getNumeroFiscal());
         assertEquals("Paris", batimentRecupere.getVille());
         assertEquals("123 Rue de la Paix", batimentRecupere.getAdresse());
-    }*/
+    }
 }
