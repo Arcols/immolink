@@ -47,7 +47,7 @@ public class BatimentDAO implements DAO.BatimentDAO {
 				String adresse = rs.getString("adresse");
 				String code_postal = rs.getString("code_postal");
 				String ville = rs.getString("ville");
-				batiment = new Batiment(num_fiscal,adresse,ville);
+				batiment = new Batiment(num_fiscal,ville,adresse);
 			}
 			pstmt.close();
 			cn.closeConnection();
@@ -69,11 +69,11 @@ public class BatimentDAO implements DAO.BatimentDAO {
 			pstmt.setInt(1, id);
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()){
-				String num_fisc = rs.getString("numero_ficscal");
+				String num_fisc = rs.getString("numero_fiscal");
 				String adresse = rs.getString("adresse");
 				String code_postal = rs.getString("code_postal");
 				String ville = rs.getString("ville");
-				batiment = new Batiment(num_fisc,adresse,ville);
+				batiment = new Batiment(num_fisc,ville,adresse);
 			}
 			pstmt.close();
 			cn.closeConnection();
@@ -90,13 +90,12 @@ public class BatimentDAO implements DAO.BatimentDAO {
 		ConnectionDB cn;
 		try {
 			cn = new ConnectionDB();
-			String query = "UPDATE batiment SET (?,?,?,?) WHERE numero_fiscal = ?";
+			String query = "UPDATE batiment SET ville = ?, adresse = ?, code_postal = ? WHERE numero_fiscal = ?";
 			PreparedStatement pstmt = cn.getConnection().prepareStatement(query);
-			pstmt.setString(1, batiment.getNumeroFiscal());
-			pstmt.setString(2, batiment.getVille());
-			pstmt.setString(3, batiment.getAdresse());
-			pstmt.setString(4, "31000");
-			pstmt.setString(5,batiment.getNumeroFiscal());
+			pstmt.setString(1, batiment.getVille());
+			pstmt.setString(2, batiment.getAdresse());
+			pstmt.setString(3, "31000");
+			pstmt.setString(4, batiment.getNumeroFiscal());
 			pstmt.executeUpdate();
 			pstmt.close();
 			cn.closeConnection();
