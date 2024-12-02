@@ -20,8 +20,8 @@ public class BatimentDAOTest {
 
     @Before
     public void setUp() throws SQLException {
-        connection = new ConnectionDB(); // Initialize the connection
-        connection.getConnection().setAutoCommit(false);
+        connection = new ConnectionDB();
+        connection.setAutoCommit(false);
         batimentDAO = new BatimentDAO();
     }
 
@@ -97,7 +97,6 @@ public class BatimentDAOTest {
         int id = batimentDAO.getIdBat("Paris", "123 Rue de la Paix");
         assertTrue(id > 0);
     }
-
 
     @Test
     public void testReadId() throws SQLException, DAOException {

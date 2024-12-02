@@ -13,7 +13,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -28,10 +27,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
-import classes.Batiment;
+import DAO.jdbc.LocataireDAO;
 import classes.Locataire;
 import ihm.Charte;
 import ihm.Menu;
@@ -52,6 +49,7 @@ public class PageNouveauLocataire {
 	private JComboBox adresseValeur;
 	private JButton enregistrerButton;
 	private Map<String, List<String>> mapVillesAdresses;
+	private LocataireDAO daoLoc;
 	private Set<String> setVilles;
 
 	/**
@@ -347,6 +345,17 @@ public class PageNouveauLocataire {
 		gbc_enregistrerButton.gridx = 6;
 		gbc_enregistrerButton.gridy = 5;
 		donnees_loca.add(enregistrerButton, gbc_enregistrerButton);
+
+		enregistrerButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				java.sql.Date sqlDate = java.sql.Date.valueOf(dateValeur.getText());
+                daoLoc = new LocataireDAO();
+                Locataire l = new Locataire(nomValeur.getText(), prenomValeur.getText(), telephoneValeur.getText(),
+                        mailValeur.getText(), sqlDate, (String) genreValeur.getSelectedItem(), daoLoc.getLastIdLocataire()+1);
+
+            }
+		});
 
 		this.frame.addComponentListener(new ComponentAdapter() {
 			@Override
