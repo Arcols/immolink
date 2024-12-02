@@ -6,6 +6,7 @@ import classes.Garage;
 import classes.Logement;
 import enumeration.TypeLogement;
 import modele.PageBienImmobilier;
+import modele.PageNouveauLocataire;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -66,6 +67,15 @@ public class ModelePageBienImmobilier {
 								pageBienImmobilier.getChoix_complement_adresse().getText(),
 								pageBienImmobilier.getListe_diagnostic(),
 								pageBienImmobilier.getCheck_garage().isSelected());
+						JOptionPane.showMessageDialog(null,"Le bien a été ajouté !", "Succès",JOptionPane.INFORMATION_MESSAGE);
+
+						// Fermer l'ancienne page
+						JFrame ancienneFenetre = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
+						ancienneFenetre.dispose();
+
+						// Ouvrir une nouvelle instance de la même page
+						PageBienImmobilier nouvellePage = new PageBienImmobilier(); // Remplacez par le constructeur de votre page
+						nouvellePage.getFrame().setVisible(true);
 					} catch (Exception ex) {
 						JOptionPane.showMessageDialog(null, "Une erreur est survenue lors de la création du logement.", "Erreur", JOptionPane.ERROR_MESSAGE);
 					}
