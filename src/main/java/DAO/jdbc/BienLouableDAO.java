@@ -7,6 +7,8 @@ import classes.BienLouable;
 import classes.Diagnostic;
 import enumeration.TypeLogement;
 
+import java.io.IOException;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -110,8 +112,29 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
 
     @Override
     public List<BienLouable> findAll() throws DAOException {
-        // TODO Auto-generated method stub
-        return null;
+        ConnectionDB cn;
+        List<BienLouable> Allbien = null;
+        try {
+            cn = new ConnectionDB();
+            String query = "SELECT * FROM bienlouable";
+            PreparedStatement pstmt = cn.getConnection().prepareStatement(query);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()){
+                String num_fisc = rs.getString("numero_fiscal");
+                String compl = rs.getString("complement_adresse");
+                String ville = new BatimentDAO().readFisc(num_fisc).getVille();
+                String adresse = new BatimentDAO().readFisc(num_fisc).getAdresse();
+                List<Diagnostic> lDiags = new DiagnosticDAO().readAllDiag(num_fisc);
+                Allbien.add(new BienLouable(num_fisc,ville,adresse,compl,lDiags));
+            }
+            pstmt.close();
+            cn.closeConnection();
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return Allbien;
     }
 }
 
