@@ -41,4 +41,9 @@ public interface LocataireDAO {
      */
     public void deleteLocataire(int id);
 
+    /**
+     * Récupère l'identifiant du dernier locataire ajouté à la base de données
+     * @return L'identifiant du dernier locataire ajouté
+     */
+    public int getLastIdLocataire();
 }
