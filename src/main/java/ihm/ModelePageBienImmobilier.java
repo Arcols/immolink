@@ -1,5 +1,6 @@
 package ihm;
 
+import DAO.DAOException;
 import DAO.jdbc.BienLouableDAO;
 import classes.BienLouable;
 import javax.swing.table.DefaultTableModel;
@@ -16,10 +17,14 @@ public class ModelePageBienImmobilier {
 		DefaultTableModel model = new DefaultTableModel(columnNames, 0); // `0` pour aucune ligne au départ
 
 		// Récupération des biens immobiliers
-		BienLouableDAO allBiens = new BienLouableDAO();
-		List<BienLouable> biens = allBiens.findAll();
-
-		// Remplissage du modèle avec les données des biens
+		BienLouableDAO biensDAO = new BienLouableDAO();
+        List<BienLouable> biens = null;
+        try {
+            biens = biensDAO.findAll();
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
+        // Remplissage du modèle avec les données des biens
 		for (BienLouable bien2 : biens) {
 			Object[] rowData = {
 					bien2.getNumero_fiscal(),

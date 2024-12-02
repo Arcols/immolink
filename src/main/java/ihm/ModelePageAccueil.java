@@ -1,5 +1,6 @@
 package ihm;
 
+import DAO.jdbc.LocataireDAO;
 import classes.Locataire;
 import javax.swing.table.DefaultTableModel;
 import java.sql.SQLException;
@@ -22,7 +23,7 @@ public class ModelePageAccueil {
 
         // Récupération des locataires
         LocataireDAO locataireDAO = new LocataireDAO();
-        List<Locataire> locataires = locataireDAO.getAllLocataires();
+        List<Locataire> locataires = locataireDAO.getAllLocataire();
 
         // Remplissage du modèle avec les données des locataires
         for (Locataire locataire : locataires) {

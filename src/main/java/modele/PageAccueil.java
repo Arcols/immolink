@@ -10,6 +10,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.sql.SQLException;
 import java.util.List;
+import ihm.ModelePageAccueil;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -168,7 +169,7 @@ public class PageAccueil {
 
 		// Chargement des données dans le tableau
 		try {
-			DefaultTableModel model = modele.ModelePageAccueil.loadDataLocataireToTable();
+			DefaultTableModel model = ModelePageAccueil.loadDataLocataireToTable();
 			table.setModel(model);
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(frame, "Erreur lors du chargement des données : " + e.getMessage(),
