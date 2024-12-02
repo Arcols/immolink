@@ -95,33 +95,6 @@ public class PageAccueil {
 		});
 
 	}
-	private void loadDataToTable() throws SQLException {
-	    // Liste des colonnes
-	    String[] columnNames = {"Nom", "Prénom", "Téléphone", "Mail", "Genre", "Date d'arrivée"};
-
-	    // Création du modèle de table
-	    DefaultTableModel model = new DefaultTableModel(columnNames, 0); // `0` pour aucune ligne au départ
-
-	    // Récupération des locataires
-		daoLoc = new LocataireDAO();
-	    List<Locataire> locataires = daoLoc.getAllLocataire();
-
-	    // Remplissage du modèle avec les données des locataires
-	    for (Locataire locataire : locataires) {
-	        Object[] rowData = {
-	            locataire.getNom(),
-	            locataire.getPrénom(),
-	            locataire.getTéléphone(),
-	            locataire.getMail(),
-	            locataire.getGenre(),
-	            locataire.getDateArrive()
-	        };
-	        model.addRow(rowData); // Ajout de la ligne dans le modèle
-	    }
-
-	    // Attribution du modèle au JTable
-	    this.table.setModel(model);
-	}
 
 	/**
 	 * Initialise l'entête contenant le logo et le menu de navigation.
