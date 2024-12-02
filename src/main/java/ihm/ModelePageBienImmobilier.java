@@ -9,7 +9,7 @@ import java.util.List;
 
 public class ModelePageBienImmobilier {
 
-	private static DefaultTableModel loadDataBienImmoToTable() throws SQLException {
+	public static DefaultTableModel loadDataBienImmoToTable() throws SQLException, DAOException {
 		// Liste des colonnes pour les biens immobiliers
 		String[] columnNames = {"Numéro Fiscal", "Adresse", "Ville", "Complément Adresse"};
 
@@ -17,20 +17,16 @@ public class ModelePageBienImmobilier {
 		DefaultTableModel model = new DefaultTableModel(columnNames, 0); // `0` pour aucune ligne au départ
 
 		// Récupération des biens immobiliers
-		BienLouableDAO biensDAO = new BienLouableDAO();
-        List<BienLouable> biens = null;
-        try {
-            biens = biensDAO.findAll();
-        } catch (DAOException e) {
-            throw new RuntimeException(e);
-        }
+		BienLouableDAO biensDAO=new BienLouableDAO();
+        List<BienLouable> biens = biensDAO.findAll();
+
         // Remplissage du modèle avec les données des biens
-		for (BienLouable bien2 : biens) {
+		for (BienLouable bien : biens) {
 			Object[] rowData = {
-					bien2.getNumero_fiscal(),
-					bien2.getAdresse(),
-					bien2.getVille(),
-					bien2.getComplement_adresse()
+					bien.getNumero_fiscal(),
+					bien.getAdresse(),
+					bien.getVille(),
+					bien.getComplement_adresse()
 			};
 			model.addRow(rowData); // Ajout de la ligne dans le modèle
 		}

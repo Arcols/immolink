@@ -17,14 +17,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -341,12 +334,38 @@ public class PageNouveauLocataire {
 		enregistrerButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				java.sql.Date sqlDate = java.sql.Date.valueOf(dateValeur.getText());
-                daoLoc = new LocataireDAO();
-                Locataire l = new Locataire(nomValeur.getText(), prenomValeur.getText(), telephoneValeur.getText(),
-                        mailValeur.getText(), sqlDate, (String) genreValeur.getSelectedItem(), daoLoc.getLastIdLocataire()+1);
+				try {
+					// Conversion de la date
+					java.sql.Date sqlDate = java.sql.Date.valueOf(dateValeur.getText());
 
-            }
+					// Création de l'objet Locataire
+					daoLoc = new LocataireDAO();
+					Locataire l = new Locataire(nomValeur.getText(),prenomValeur.getText(),
+							telephoneValeur.getText(),mailValeur.getText(),sqlDate,(String) genreValeur.getSelectedItem(),
+							daoLoc.getLastIdLocataire() + 1
+					);
+
+					// Ajout du locataire dans la base de données
+					LocataireDAO locataireDAO = new LocataireDAO();
+					locataireDAO.addLocataire(l);
+
+					// Message de confirmation
+					JOptionPane.showMessageDialog(
+							null,"Le locataire a bien été ajouté !","Succès",JOptionPane.INFORMATION_MESSAGE
+					);
+
+					// Rouvrir la même page
+					JFrame ancienneFenetre = (JFrame) SwingUtilities.getWindowAncestor(enregistrerButton);
+					ancienneFenetre.dispose(); // Fermer l'ancienne fenêtre
+					PageNouveauLocataire nouvellePage = new PageNouveauLocataire(); // Créer une nouvelle instance de la page
+					nouvellePage.frame.setVisible(true); // Afficher la nouvelle instance
+
+				} catch (Exception ex) {
+					// Gestion des erreurs
+					JOptionPane.showMessageDialog(null,"Erreur lors de l'ajout du locataire : " + ex.getMessage(),"Erreur",JOptionPane.ERROR_MESSAGE);
+					ex.printStackTrace();
+				}
+			}
 		});
 
 		this.frame.addComponentListener(new ComponentAdapter() {

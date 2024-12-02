@@ -11,23 +11,20 @@ import java.awt.event.ComponentEvent;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 import DAO.BienLouableDAO;
+import DAO.DAOException;
 import classes.Locataire;
-import ihm.Charte;
-import ihm.Menu;
-import ihm.ResizedImage;
+import ihm.*;
 import modele.*;
 import java.awt.GridBagLayout;
-import javax.swing.JTable;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+
+import static ihm.ModelePageBienImmobilier.loadDataBienImmoToTable;
 
 public class PageMesBiens {
 
@@ -149,12 +146,14 @@ public class PageMesBiens {
         gbc_table.gridx = 1;
         gbc_table.gridy = 1;
         panel.add(table, gbc_table);
-//        try {
-//            loadDataBienImmoToTable();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-
+        try {
+            DefaultTableModel model = ModelePageBienImmobilier.loadDataBienImmoToTable();
+            table.setModel(model);
+        } catch (SQLException | DAOException e) {
+            JOptionPane.showMessageDialog(frame, "Erreur lors du chargement des données : " + e.getMessage(),
+                    "Erreur", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
         JPanel panel_1 = new JPanel();
         GridBagConstraints gbc_panel_1 = new GridBagConstraints();
         gbc_panel_1.anchor = GridBagConstraints.SOUTH;

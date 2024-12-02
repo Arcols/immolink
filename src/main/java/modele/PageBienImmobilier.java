@@ -23,19 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
-import javax.swing.JTextField;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -451,62 +439,77 @@ public class PageBienImmobilier {
 		this.valider.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				TypeLogement selectedType = TypeLogement.values()[PageBienImmobilier.this.choix_type_de_bien.getSelectedIndex()];
+				try {
+					TypeLogement selectedType = TypeLogement.values()[PageBienImmobilier.this.choix_type_de_bien.getSelectedIndex()];
 
-			    switch (selectedType) {
-				case APPARTEMENT:
-					Boolean bool = false;
-					try {
-						if (check_garage.isSelected()) {
-							bool = true;
-							new Garage(PageBienImmobilier.this.choix_num_fiscal.getText(),
-									(String) choix_ville.getSelectedItem(), (String) choix_adresse.getSelectedItem(),
-									PageBienImmobilier.this.choix_complement_adresse.getText());
-							//create garage dao
-						}
-						double valeurSurface = (Double) choix_surface.getValue();
-						Logement logement = new Logement(choix_nb_piece.getComponentCount(),
-								valeurSurface,
-								PageBienImmobilier.this.choix_num_fiscal.getText(),
-								(String) choix_ville.getSelectedItem(), (String) choix_adresse.getSelectedItem(),
-								PageBienImmobilier.this.choix_complement_adresse.getText(),
-								PageBienImmobilier.this.liste_diagnostic, bool);
-						LogementDAO logementDAO = new LogementDAO();
-						logementDAO.create(logement);
+					switch (selectedType) {
+						case APPARTEMENT:
+							Boolean bool = false;
+							try {
+								if (check_garage.isSelected()) {
+									bool = true;
+									new Garage(PageBienImmobilier.this.choix_num_fiscal.getText(),
+											(String) choix_ville.getSelectedItem(), (String) choix_adresse.getSelectedItem(),
+											PageBienImmobilier.this.choix_complement_adresse.getText());
+									//create garage dao
+								}
+								double valeurSurface = (Double) choix_surface.getValue();
+								Logement logement = new Logement(choix_nb_piece.getComponentCount(),
+										valeurSurface,
+										PageBienImmobilier.this.choix_num_fiscal.getText(),
+										(String) choix_ville.getSelectedItem(), (String) choix_adresse.getSelectedItem(),
+										PageBienImmobilier.this.choix_complement_adresse.getText(),
+										PageBienImmobilier.this.liste_diagnostic, bool);
+								LogementDAO logementDAO = new LogementDAO();
+								logementDAO.create(logement);
 
-					} catch (IllegalArgumentException e1) {
-						e1.printStackTrace();
-					} catch (SQLException e1) {
-						e1.printStackTrace();
-					} catch (DAOException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                    break;
-				case GARAGE:
-					try {
-						new Garage(PageBienImmobilier.this.choix_num_fiscal.getText(),
-								(String) choix_ville.getSelectedItem(), (String) choix_adresse.getSelectedItem(),
-								PageBienImmobilier.this.choix_complement_adresse.getText());
+							} catch (IllegalArgumentException e1) {
+								e1.printStackTrace();
+							} catch (SQLException e1) {
+								e1.printStackTrace();
+							} catch (DAOException ex) {
+								throw new RuntimeException(ex);
+							}
+							break;
+						case GARAGE:
+							try {
+								new Garage(PageBienImmobilier.this.choix_num_fiscal.getText(),
+										(String) choix_ville.getSelectedItem(), (String) choix_adresse.getSelectedItem(),
+										PageBienImmobilier.this.choix_complement_adresse.getText());
 								//create garage dao
-					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+							} catch (SQLException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+							break;
+						case BATIMENT:
+							Batiment batiment = new Batiment(PageBienImmobilier.this.choix_num_fiscal.getText(),
+									PageBienImmobilier.this.texte_ville.getText(),
+									PageBienImmobilier.this.texte_adresse.getText());
+							BatimentDAO batDAO = new BatimentDAO();
+							try {
+								batDAO.create(batiment);
+							} catch (DAOException ex) {
+								throw new RuntimeException(ex);
+							}
+							break;
+						default:
+							throw new IllegalStateException("Unexpected value: " + selectedType);
 					}
-					break;
-				case BATIMENT:
-					Batiment batiment = new Batiment(PageBienImmobilier.this.choix_num_fiscal.getText(),
-							PageBienImmobilier.this.texte_ville.getText(),
-							PageBienImmobilier.this.texte_adresse.getText());
-					BatimentDAO batDAO = new BatimentDAO();
-                    try {
-                        batDAO.create(batiment);
-                    } catch (DAOException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                    break;
-                    default:
-                        throw new IllegalStateException("Unexpected value: " + selectedType);
-                }
+					JOptionPane.showMessageDialog(
+							null,"Le bien a été ajouté !","Succès",JOptionPane.INFORMATION_MESSAGE
+					);
+
+					// Rouvrir la même page
+					JFrame ancienneFenetre = (JFrame) SwingUtilities.getWindowAncestor(valider);
+					ancienneFenetre.dispose(); // Fermer l'ancienne fenêtre
+					PageBienImmobilier nouvellePage = new PageBienImmobilier(); // Créer une nouvelle instance de la page
+					nouvellePage.frame.setVisible(true); // Afficher la nouvelle instance
+
+				} catch (Exception ex){
+					JOptionPane.showMessageDialog(null,"Erreur lors de l'ajout du bien : " + ex.getMessage(),"Erreur",JOptionPane.ERROR_MESSAGE);
+					ex.printStackTrace();
+				}
 			}
 		});
 
