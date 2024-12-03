@@ -17,7 +17,7 @@ public class BatimentDAO implements DAO.BatimentDAO {
 	public void create(Batiment batiment) throws DAOException {
 		ConnectionDB cn;
 		try {
-			cn = new ConnectionDB();
+			cn = ConnectionDB.getInstance();
 			String query = "INSERT INTO batiment (numero_fiscal,ville, adresse,code_postal) VALUES (?,?,?,?)";
 			PreparedStatement pstmt = cn.getConnection().prepareStatement(query);
 			pstmt.setString(1, batiment.getNumeroFiscal());
@@ -38,7 +38,7 @@ public class BatimentDAO implements DAO.BatimentDAO {
 		ConnectionDB cn;
 		Batiment batiment = null;
 		try {
-			cn = new ConnectionDB();
+			cn = ConnectionDB.getInstance();
 			String query = "SELECT adresse, code_postal, ville FROM Batiment WHERE numero_fiscal = ?";
 			PreparedStatement pstmt = cn.getConnection().prepareStatement(query);
 			pstmt.setString(1, num_fiscal);
@@ -63,7 +63,7 @@ public class BatimentDAO implements DAO.BatimentDAO {
 		ConnectionDB cn;
 		Batiment batiment = null;
 		try {
-			cn = new ConnectionDB();
+			cn = ConnectionDB.getInstance();
 			String query = "SELECT numero_fiscal, adresse, code_postal, ville FROM Batiment WHERE id = ?";
 			PreparedStatement pstmt = cn.getConnection().prepareStatement(query);
 			pstmt.setInt(1, id);
@@ -89,7 +89,7 @@ public class BatimentDAO implements DAO.BatimentDAO {
 	public void update(Batiment batiment) throws DAOException {
 		ConnectionDB cn;
 		try {
-			cn = new ConnectionDB();
+			cn = ConnectionDB.getInstance();
 			String query = "UPDATE batiment SET ville = ?, adresse = ?, code_postal = ? WHERE numero_fiscal = ?";
 			PreparedStatement pstmt = cn.getConnection().prepareStatement(query);
 			pstmt.setString(1, batiment.getVille());
@@ -111,7 +111,7 @@ public class BatimentDAO implements DAO.BatimentDAO {
 	public void delete(String num_fisc) throws DAOException {
 		ConnectionDB cn;
 		try {
-			cn = new ConnectionDB();
+			cn = ConnectionDB.getInstance();
 			String query = "DELETE FROM batiment WHERE numero_fiscal = ?";
 			PreparedStatement pstmt = cn.getConnection().prepareStatement(query);
 			pstmt.setString(1, num_fisc);
@@ -128,7 +128,7 @@ public class BatimentDAO implements DAO.BatimentDAO {
 	@Override
 	public Map<String, List<String>> searchAllBatiments() throws SQLException {
 		Map<String, List<String>> batiments = new HashMap<>();
-		ConnectionDB db = new ConnectionDB();
+		ConnectionDB db = ConnectionDB.getInstance();
 		String query = "SELECT adresse, ville FROM batiment";
 		try {
 			PreparedStatement pstmt = db.getConnection().prepareStatement(query);
@@ -153,7 +153,7 @@ public class BatimentDAO implements DAO.BatimentDAO {
 	public int getIdBat(String ville, String adresse) throws DAOException {
 		ConnectionDB db;
 		try {
-			db = new ConnectionDB();
+			db = ConnectionDB.getInstance();
 			String query_id_batiment = "SELECT id FROM batiment WHERE adresse = ? AND ville = ?";
 			PreparedStatement pstmt_id_batiment = null;
 			ResultSet rs = null;

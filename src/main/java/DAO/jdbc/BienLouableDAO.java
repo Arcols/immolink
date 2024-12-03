@@ -20,7 +20,7 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
 
         ConnectionDB cn;
         try {
-            cn = new ConnectionDB();
+            cn = ConnectionDB.getInstance();
             String query = "INSERT INTO bienlouable VALUES (?,?,?,?,?,?,?)";
             PreparedStatement pstmt = cn.getConnection().prepareStatement(query);
             pstmt.setString(1, bien.getNumero_fiscal());
@@ -51,7 +51,7 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
         ConnectionDB cn;
         BienLouable bien = null;
         try {
-            cn = new ConnectionDB();
+            cn = ConnectionDB.getInstance();
             String query = "SELECT numero_fiscal, complement_adresse, type_logement, Nombre_pieces, surface, garage_assoc, idBat FROM Bienloable WHERE numero_fiscal = ? ";
             PreparedStatement pstmt = cn.getConnection().prepareStatement(query);
             pstmt.setString(1, num_fiscal);
@@ -81,7 +81,7 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
         ConnectionDB cn;
         Integer id = null;
         try {
-            cn = new ConnectionDB();
+            cn = ConnectionDB.getInstance();
             String query = "SELECT id FROM Bienloable WHERE numero_fiscal = ? ";
             PreparedStatement pstmt = cn.getConnection().prepareStatement(query);
             pstmt.setString(1, num_fiscal);
@@ -115,7 +115,7 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
         ConnectionDB cn;
         List<BienLouable> Allbien = null;
         try {
-            cn = new ConnectionDB();
+            cn = ConnectionDB.getInstance();
             String query = "SELECT * FROM bienlouable";
             PreparedStatement pstmt = cn.getConnection().prepareStatement(query);
             ResultSet rs = pstmt.executeQuery();

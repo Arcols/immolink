@@ -20,7 +20,7 @@ public class BatimentDAOTest {
 
     @Before
     public void setUp() throws SQLException {
-        connection = new ConnectionDB();
+        connection = ConnectionDB.getInstance();
         connection.setAutoCommit(false);
         batimentDAO = new BatimentDAO();
     }

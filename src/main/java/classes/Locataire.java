@@ -6,7 +6,6 @@ import java.util.List;
 
 public class Locataire {
 
-    private int idBDD;
     private String nom;
     private String prénom;
     private String téléphone;
@@ -16,25 +15,23 @@ public class Locataire {
     public List<Bail> beaux = new ArrayList<>();
     public List<Charge> charges;
 
-    public Locataire(String nom, String prénom, String téléphone, String mail, Date date_arrive, String genre, int idBDD) {
+    public Locataire(String nom, String prénom, String téléphone, String mail, Date date_arrive, String genre) {
         this.setNom(nom);
         this.setPrénom(prénom);
         this.setTéléphone(téléphone);
         this.setMail(mail);
         this.setDateArrive(date_arrive);
         this.setGenre(genre);
-        this.setId(idBDD);
         this.charges = new ArrayList<>();
         //this.beaux= new ArrayList<>();
     }
 
-    public Locataire(String nom, String prénom, String téléphone, Date date_arrive, String genre, int idBDD) {
+    public Locataire(String nom, String prénom, String téléphone, Date date_arrive, String genre) {
         this.setNom(nom);
         this.setPrénom(prénom);
         this.setTéléphone(téléphone);
         this.setDateArrive(date_arrive);
         this.setGenre(genre);
-        this.setId(idBDD);
         this.mail = null;
         this.charges = new ArrayList<>();
         //this.beaux= new ArrayList<>();
@@ -88,14 +85,6 @@ public class Locataire {
         this.genre = genre;
     }
 
-    public int getId() {
-        return this.idBDD;
-    }
-
-    public void setId(int idBDD) {
-        this.idBDD = idBDD;
-    }
-
     public List<Bail> getBeaux() {
         return this.beaux;
     }
@@ -115,7 +104,6 @@ public class Locataire {
     @Override
     public String toString() {
         return "Locataire{" +
-                "idBDD=" + idBDD +
                 ", nom='" + nom + '\'' +
                 ", prénom='" + prénom + '\'' +
                 ", téléphone='" + téléphone + '\'' +
