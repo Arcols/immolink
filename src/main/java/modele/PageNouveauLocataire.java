@@ -352,7 +352,7 @@ public class PageNouveauLocataire {
 				java.sql.Date sqlDate = java.sql.Date.valueOf(dateValeur.getText());
                 daoLoc = new LocataireDAO();
                 Locataire l = new Locataire(nomValeur.getText(), prenomValeur.getText(), telephoneValeur.getText(),
-                        mailValeur.getText(), sqlDate, (String) genreValeur.getSelectedItem(), daoLoc.getLastIdLocataire()+1);
+                        mailValeur.getText(), sqlDate, (String) genreValeur.getSelectedItem());
 
             }
 		});

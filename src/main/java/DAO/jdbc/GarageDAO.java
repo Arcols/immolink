@@ -13,7 +13,7 @@ public class GarageDAO implements DAO.GarageDAO {
 	@Override
 	public void create(Garage garage) throws DAOException {
 		try {
-			ConnectionDB cn = new ConnectionDB();
+			ConnectionDB cn = ConnectionDB.getInstance();
 			String requete = "INSERT INTO Logement bienlouable VALUES (?,?,?,?,?,?,?)";
 			PreparedStatement pstmt = cn.getConnection().prepareStatement(requete);
 			pstmt.setString(1, garage.getNumero_fiscal());

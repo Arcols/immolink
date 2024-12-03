@@ -19,7 +19,7 @@ public class DiagnosticDAO implements DAO.DiagnosticDAO{
         ConnectionDB cn;
        List<Diagnostic> lDiags = null;
         try {
-            cn = new ConnectionDB();
+            cn = ConnectionDB.getInstance();
             String query = "SELECT pdf_diag, type, date_expiration FROM diagnostiques WHERE id = ?";
             PreparedStatement pstmt = cn.getConnection().prepareStatement(query);
             pstmt.setInt(1, id);

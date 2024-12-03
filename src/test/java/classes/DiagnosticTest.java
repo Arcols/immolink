@@ -33,21 +33,6 @@ public class DiagnosticTest {
         tempFile2 = File.createTempFile("testFile2", ".pdf");
         Files.write(tempFile2.toPath(), "New PDF Data".getBytes());
 
-        // Initialize the connection and start a transaction
-        db = new ConnectionDB();
-        connection = db.getConnection();
-        Statement statement = connection.createStatement();
-        statement.execute("BEGIN;");
-        statement.close();
-    }
-
-    @After
-    public void tearDown() throws SQLException {
-        // Rollback all changes
-        Statement statement = connection.createStatement();
-        statement.execute("ROLLBACK;");
-        statement.close();
-        db.closeConnection();
     }
 
     @Test

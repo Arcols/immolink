@@ -6,6 +6,7 @@ import classes.Batiment;
 import classes.Diagnostic;
 import classes.Logement;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,11 +16,13 @@ public class LogementDAO implements DAO.LogementDAO {
 
 	@Override
 	public void create(Logement appart) throws DAOException {
-		ConnectionDB cn;
+		ConnectionDB db;
+		Connection cn;
 		try {
-			cn = new ConnectionDB();
+			db = ConnectionDB.getInstance();
+			cn = db.getConnection();
 			String requete = "INSERT INTO Logement bienlouable VALUES (?,?,?,?,?,?,?)";
-			PreparedStatement pstmt = cn.getConnection().prepareStatement(requete);
+			PreparedStatement pstmt = cn.prepareStatement(requete);
 			pstmt.setString(1, appart.getNumero_fiscal());
 			pstmt.setString(2, appart.getComplement_adresse());
 			pstmt.setInt(3, 0);
@@ -30,7 +33,7 @@ public class LogementDAO implements DAO.LogementDAO {
 			pstmt.setInt(7, bat.getIdBat(appart.getVille(), appart.getAdresse()));
 			pstmt.executeUpdate();
 			pstmt.close();
-			cn.closeConnection();
+			cn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -38,12 +41,14 @@ public class LogementDAO implements DAO.LogementDAO {
 
 	@Override
 	public Logement read(int id) throws DAOException {
-		ConnectionDB cn;
+		ConnectionDB db;
+		Connection cn = null;
 		Logement l = null;
 		try {
-			cn = new ConnectionDB();
+			db = ConnectionDB.getInstance();
+			cn = db.getConnection();
 			String requete = "SELECT numero_fical, complement_adresse, type_logement, Nombre_pieces, Surface, garage_assoc FROM bienlouable WHERE id = ?";
-			PreparedStatement pstmt = cn.getConnection().prepareStatement(requete);
+			PreparedStatement pstmt = cn.prepareStatement(requete);
 			pstmt.setInt(1,id);
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()){
@@ -60,7 +65,7 @@ public class LogementDAO implements DAO.LogementDAO {
 				l = new Logement(nb_pieces,surface,num_fisc,ville,adresse,compl,diags,haveG);
 			}
 			pstmt.close();
-			cn.closeConnection();
+			cn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
