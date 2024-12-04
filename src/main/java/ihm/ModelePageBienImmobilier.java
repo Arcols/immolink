@@ -5,8 +5,7 @@ import classes.Diagnostic;
 import classes.Garage;
 import classes.Logement;
 import enumeration.TypeLogement;
-import modele.PageBienImmobilier;
-import modele.PageNouveauLocataire;
+import modele.PageNouveauBienImmobilier;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -87,9 +86,9 @@ public class ModelePageBienImmobilier {
 						ancienneFenetre.dispose();
 
 						// Ouvrir une nouvelle instance de la même page
-						PageNouveauBienImmobilier nouvellePage = new PageNouveauBienImmobilier(); // Remplacez par le
-						// constructeur de votre
-						// page
+						PageBienImmobilier nouvellePage = new PageNouveauBienImmobilier(); // Remplacez par le
+																							// constructeur de votre
+																							// page
 						nouvellePage.getFrame().setVisible(true);
 					}catch(Exception ex){
 						JOptionPane.showMessageDialog(null, "Une erreur est survenue lors de la création du logement.",
