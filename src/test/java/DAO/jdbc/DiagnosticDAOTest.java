@@ -40,9 +40,9 @@ public class DiagnosticDAOTest {
         Batiment batiment = new Batiment("123456789101", "Paris", "123 Rue de la Paix","31000");
         batimentDAO.create(batiment);
         // créer un bien louable temporaire et on le met dans la bdd
-        BienLouable bienLouable = new BienLouable("123456789101", "Paris", "123 Rue de la Paix", "Apt 1", new ArrayList<>());
+        BienLouable bienLouable = new BienLouable("123456789101", "Paris", "123 Rue de la Paix", "Apt 1", new ArrayList<>(),null);
         bienLouableDAO = new BienLouableDAO();
-        bienLouableDAO.create(bienLouable, TypeLogement.APPARTEMENT, 3, 100.0, null);
+        bienLouableDAO.create(bienLouable, TypeLogement.APPARTEMENT, 3, 100.0);
         // Create a temporary file to use as a valid PDF path
         tempFilePath = Files.createTempFile("test", ".pdf");
     }

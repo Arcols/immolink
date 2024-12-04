@@ -1,6 +1,7 @@
 package DAO;
 
 import classes.BienLouable;
+import classes.Garage;
 import enumeration.TypeLogement;
 
 import java.sql.SQLException;
@@ -21,31 +22,31 @@ public interface BienLouableDAO {
 	 * @throws SQLException
 	 * @throws IllegalArgumentException
 	 */
-	public void create(BienLouable bien, TypeLogement type, int nb_piece, double surface,Integer id_garage_assoc)
+	public void create(BienLouable bien, TypeLogement type, int nb_piece, double surface)
 			throws DAOException, IllegalArgumentException, SQLException;
 
-	/*
-	 * Récupère un BienLouable de la base de données en utilisant son identifiant.
-	 *
-	 * @param id L'identifiant unique du bien immobilier
-	 * @return L'objet BienLouable trouvé, ou null si aucun bien n'est trouvé
-	 * @throws DAOException en cas d'erreur lors de la lecture du bien immobilier
+	/**
+	 * Ajoute un garage à un bien louable
+	 * @param garage Garage object
+	 * @param bien BienLouable object
 	 */
+	 void ajouterUnGarageAuBienLouable(BienLouable bien,Garage garage) throws  DAOException;
 
+	/**
+	 * Récupère un BienLouable de la base de données en utilisant son numéro fiscal.
+	 * @param num_fiscal
+	 * @return
+	 * @throws DAOException
+	 */
 	BienLouable readFisc(String num_fiscal) throws DAOException;
 
-
-	Integer getId(String num_fiscal) throws DAOException;
-
-	/*
-	 * Met à jour les informations d'un BienLouable existant dans la base de
-	 * données.
-	 *
-	 * @param bien L'objet BienLouable avec les informations mises à jour
-	 * @throws DAOException en cas d'erreur lors de la mise à jour du bien
-	 *                      immobilier
+	/**
+	 *  Récupère l'id d'un bien louable en utilisant son numéro fiscal
+	 * @param num_fiscal
+	 * @return
+	 * @throws DAOException
 	 */
-	void update(BienLouable bien) throws DAOException;
+	Integer getId(String num_fiscal) throws DAOException;
 
 	/*
 	 * Supprime un BienLouable de la base de données en utilisant son identifiant.

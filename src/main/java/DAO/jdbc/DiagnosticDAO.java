@@ -9,6 +9,7 @@ import com.mysql.cj.protocol.a.SqlDateValueEncoder;
 
 import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DiagnosticDAO implements DAO.DiagnosticDAO{
@@ -135,7 +136,7 @@ public class DiagnosticDAO implements DAO.DiagnosticDAO{
     @Override
     public List<Diagnostic> readAllDiag(int id) throws DAOException {
 
-        List<Diagnostic> lDiags = null;
+        List<Diagnostic> lDiags = new ArrayList<>();
         ConnectionDB db;
         Connection cn = null;
         try {
@@ -149,8 +150,10 @@ public class DiagnosticDAO implements DAO.DiagnosticDAO{
                 String pdf = rs.getString("pdf_diag");
                 String type = rs.getString("type");
                 Date expi = rs.getDate("date_expiration");
+                Diagnostic diag = new Diagnostic(type,pdf,expi);
                 lDiags.add(new Diagnostic(type,pdf,expi));
             }
+            rs.close();
             pstmt.close();
             cn.close();
 

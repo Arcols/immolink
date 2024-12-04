@@ -16,10 +16,10 @@ public class BienLouable extends BienImmobilier {
 	private List<Diagnostic> diagnostic;
 	private String adresse;
 	private String ville;
-	private int id_garage_asosscie;
+	private Integer id_garage_asosscie;
 
 	public BienLouable(String numero_fiscal, String ville, String adresse, String complement_adresse,
-			List<Diagnostic> diagnostic) throws IllegalArgumentException {
+					   List<Diagnostic> diagnostic, Integer id_garage_associe) throws IllegalArgumentException {
 		if (numero_fiscal.length() != 12) {
 			throw new IllegalArgumentException("Numéro fiscal invalide");
 		}
@@ -28,8 +28,8 @@ public class BienLouable extends BienImmobilier {
 		this.diagnostic = diagnostic;
 		this.adresse = adresse;
 		this.ville = ville;
-
 		this.travaux = new ArrayList<Devis>();
+		this.id_garage_asosscie = (id_garage_associe != null) ? id_garage_associe : null;
 	}
 
 	public String getNumero_fiscal() {
@@ -60,7 +60,7 @@ public class BienLouable extends BienImmobilier {
 		this.travaux.add(devis);
 	}
 
-	public int getIdgarage() {
+	public Integer getIdgarage() {
 		return id_garage_asosscie;
 	}
 

@@ -35,7 +35,7 @@ public class BienLouableTest {
         diagnostics.add(diagnostic1);
 
         // Initialize BienLouable
-        bienLouable = new BienLouable("123456789101", "Paris", "123 Rue de la Paix", "Appartement 12B", diagnostics);
+        bienLouable = new BienLouable("123456789101", "Paris", "123 Rue de la Paix", "Appartement 12B", diagnostics,null);
     }
 
     @Test
@@ -97,6 +97,6 @@ public class BienLouableTest {
         List<Diagnostic> diagnostics = new ArrayList<>();
         diagnostics.add(diagnostic1);
 
-        new BienLouable("123456", "Paris", "123 Rue de la Paix", "Appartement 12B", diagnostics);
+        new BienLouable("123456", "Paris", "123 Rue de la Paix", "Appartement 12B", diagnostics,null);
     }
 }
