@@ -7,12 +7,14 @@ import classes.BienLouable;
 import classes.Diagnostic;
 import enumeration.TypeLogement;
 
-import java.io.IOException;
-import java.sql.Date;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BienLouableDAO implements DAO.BienLouableDAO {
     @Override
@@ -135,6 +137,41 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
             e.printStackTrace();
         }
         return Allbien;
+    }
+    @Override
+    public Map<String, List<String>> getAllcomplements() throws SQLException {
+        Map<String, List<String>> adresses = new HashMap<>();
+        ConnectionDB db;
+        Connection cn;
+        try {
+            String query = "SELECT adresse, id FROM batiment";
+            db = ConnectionDB.getInstance();
+            cn = db.getConnection();
+            PreparedStatement pstmt = cn.prepareStatement(query);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                String adresse = rs.getString("adresse");
+                String idBat = rs.getString("id");
+                adresses.putIfAbsent(adresse, new ArrayList<>());
+                String query2 = "SELECT compelement_adresse FROM bienlouable WHERE idBat = ?";
+                PreparedStatement pstmt2 = cn.prepareStatement(query);
+                pstmt2.setString(1,idBat);
+                ResultSet rs2 = pstmt.executeQuery();
+                while (rs2.next()){
+                    String compl = rs2.getString("complement_adresse");
+                    adresses.get(adresse).add(compl);
+                }
+                rs2.close();
+                pstmt2.close();
+            }
+            rs.close();
+            pstmt.close();
+            cn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return adresses;
     }
 }
 
