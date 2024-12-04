@@ -1,50 +1,56 @@
 package DAO.jdbc;
 
 import DAO.db.ConnectionDB;
-import classes.Locataire;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-public class RegimeDAO implements DAO.RegimeDAO{
-    private Connection cn;
+public class RegimeDAO implements DAO.RegimeDAO {
+
     @Override
     public Float getValeur() {
-        ConnectionDB db;
-        Connection cn = null;
+        ConnectionDB cn;
         Float valeur = 0F;
-        try {
-            db = ConnectionDB.getInstance();
-            cn = db.getConnection();
-            String query = "SELECT valeur FROM regimemicrofoncier WHERE id = 1";
-            PreparedStatement pstmt = cn.prepareStatement(query);
-            ResultSet rs = pstmt.executeQuery();
 
-            if (rs.next()) {
-                valeur = rs.getFloat("valeur");
+        try {
+            cn = new ConnectionDB();
+            try (Connection conn = cn.getConnection();
+                 PreparedStatement pstmt = conn.prepareStatement("SELECT valeur FROM regimemicrofoncier WHERE id = 1");
+                 ResultSet rs = pstmt.executeQuery()) {
+
+                if (rs.next()) {
+                    valeur = rs.getFloat("valeur");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw new RuntimeException("Erreur lors de la récupération de la valeur du régime microfoncier.", e);
             }
-            rs.close();
-            pstmt.close();
         } catch (SQLException e) {
-            throw new RuntimeException("Erreur lors de la récupération de la valeur du régime microfoncier.", e);
+            throw new RuntimeException("Erreur lors de la connexion à la base de données.", e);
         }
+
         return valeur;
     }
 
     @Override
     public void updateValeur(Float nouvelleValeur) {
-        ConnectionDB db;
-        Connection cn = null;
+        ConnectionDB cn;
+
         try {
-            db = ConnectionDB.getInstance();
-            cn = db.getConnection();
-            String query = "UPDATE regimemicrofoncier SET valeur = ? WHERE id = 1";
-            PreparedStatement pstmt = cn.prepareStatement(query);
-            pstmt.setFloat(1, nouvelleValeur);
-            pstmt.executeUpdate();
-            pstmt.close();
+            cn = new ConnectionDB();
+            try (Connection conn = cn.getConnection();
+                 PreparedStatement pstmt = conn.prepareStatement("UPDATE regimemicrofoncier SET valeur = ? WHERE id = 1")) {
+
+                pstmt.setFloat(1, nouvelleValeur);
+                pstmt.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw new RuntimeException("Erreur lors de la mise à jour de la valeur du régime microfoncier.", e);
+            }
         } catch (SQLException e) {
-            throw new RuntimeException("Erreur lors de la mise à jour de la valeur du régime microfoncier.", e);
+            throw new RuntimeException("Erreur lors de la connexion à la base de données.", e);
         }
     }
-
 }
