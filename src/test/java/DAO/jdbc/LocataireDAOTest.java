@@ -23,7 +23,7 @@ public class LocataireDAOTest {
     public void setUp() throws SQLException {
         db = ConnectionDB.getInstance();
         cn = db.getConnection();
-        cn.setAutoCommit(false);
+        //cn.setAutoCommit(false);
         locataireDAO = new LocataireDAO();
         locataire = new Locataire("Doe", "John", "0606060606", "ee.ee@ee.ee", java.sql.Date.valueOf("2020-01-01"), "M");
         locataireDAO.addLocataire(locataire);
@@ -39,6 +39,7 @@ public class LocataireDAOTest {
     @Test
     public void testAddLocataire() throws SQLException {
         Locataire locataireRecupere = locataireDAO.getLocataireByNomPrénomTel("Doe", "John", "0606060606");
+        System.out.println(locataireRecupere);
         assertEquals("Doe", locataireRecupere.getNom());
         assertEquals("John", locataireRecupere.getPrénom());
         assertEquals("0606060606", locataireRecupere.getTéléphone());
