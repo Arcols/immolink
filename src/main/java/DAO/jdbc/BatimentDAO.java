@@ -26,7 +26,7 @@ public class BatimentDAO implements DAO.BatimentDAO {
 			pstmt.setString(1, batiment.getNumeroFiscal());
 			pstmt.setString(2, batiment.getVille());
 			pstmt.setString(3, batiment.getAdresse());
-			pstmt.setString(4, "31000");
+			pstmt.setString(4, batiment.getCodePostal());
 			pstmt.executeUpdate();
 			pstmt.close();
 			cn.close();
@@ -52,7 +52,7 @@ public class BatimentDAO implements DAO.BatimentDAO {
 				String adresse = rs.getString("adresse");
 				String code_postal = rs.getString("code_postal");
 				String ville = rs.getString("ville");
-				batiment = new Batiment(num_fiscal,ville,adresse);
+				batiment = new Batiment(num_fiscal,ville,adresse,code_postal);
 			}
 			pstmt.close();
 			cn.close();
@@ -80,7 +80,7 @@ public class BatimentDAO implements DAO.BatimentDAO {
 				String adresse = rs.getString("adresse");
 				String code_postal = rs.getString("code_postal");
 				String ville = rs.getString("ville");
-				batiment = new Batiment(num_fisc,ville,adresse);
+				batiment = new Batiment(num_fisc,ville,adresse,code_postal);
 			}
 			pstmt.close();
 			cn.close();
@@ -103,7 +103,7 @@ public class BatimentDAO implements DAO.BatimentDAO {
 			PreparedStatement pstmt = cn.prepareStatement(query);
 			pstmt.setString(1, batiment.getVille());
 			pstmt.setString(2, batiment.getAdresse());
-			pstmt.setString(3, "31000");
+			pstmt.setString(3, batiment.getCodePostal());
 			pstmt.setString(4, batiment.getNumeroFiscal());
 			pstmt.executeUpdate();
 			pstmt.close();

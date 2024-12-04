@@ -60,7 +60,7 @@ public class LogementDAO implements DAO.LogementDAO {
 				Integer garage = rs.getInt("garage_assoc");
 				String ville = new BatimentDAO().readFisc(num_fisc).getVille();
 				String adresse =  new BatimentDAO().readFisc(num_fisc).getAdresse();
-				List<Diagnostic> diags = new DiagnosticDAO().readAllDiag(num_fisc);
+				List<Diagnostic> diags = new DiagnosticDAO().readAllDiag(id);
 				Boolean haveG = (garage == 1);
 				l = new Logement(nb_pieces,surface,num_fisc,ville,adresse,compl,diags,haveG);
 			}

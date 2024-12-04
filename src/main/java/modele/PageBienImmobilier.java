@@ -493,7 +493,7 @@ public class PageBienImmobilier {
 				case BATIMENT:
 					Batiment batiment = new Batiment(PageBienImmobilier.this.choix_num_fiscal.getText(),
 							PageBienImmobilier.this.texte_ville.getText(),
-							PageBienImmobilier.this.texte_adresse.getText());
+							PageBienImmobilier.this.texte_adresse.getText(),"31500");
 					BatimentDAO batDAO = new BatimentDAO();
                     try {
                         batDAO.create(batiment);
