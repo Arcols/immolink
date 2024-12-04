@@ -141,95 +141,226 @@ public class PageNouveauBail {
 
         JPanel panel_bien = new JPanel();
         body.add(panel_bien, BorderLayout.WEST);
-        panel_bien.setLayout(new GridLayout(0, 2, 0, 0));
+        GridBagLayout gbl_panel_bien = new GridBagLayout();
+        gbl_panel_bien.columnWidths = new int[] {0, 0, 30};
+        gbl_panel_bien.rowHeights = new int[] {30, 0, 0, 0, 0, 0, 0, 0, 0, 90};
+        gbl_panel_bien.columnWeights = new double[]{0.0, 0.0};
+        gbl_panel_bien.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+        panel_bien.setLayout(gbl_panel_bien);
 
         JLabel type_de_bien = new JLabel("Type de bien");
-        panel_bien.add(type_de_bien);
+        GridBagConstraints gbc_type_de_bien = new GridBagConstraints();
+        gbc_type_de_bien.fill = GridBagConstraints.BOTH;
+        gbc_type_de_bien.insets = new Insets(0, 0, 5, 5);
+        gbc_type_de_bien.gridx = 0;
+        gbc_type_de_bien.gridy = 0;
+        panel_bien.add(type_de_bien, gbc_type_de_bien);
 
         JComboBox choix_type_de_bien = new JComboBox();
-        panel_bien.add(choix_type_de_bien);
+        GridBagConstraints gbc_choix_type_de_bien = new GridBagConstraints();
+        gbc_choix_type_de_bien.fill = GridBagConstraints.HORIZONTAL;
+        gbc_choix_type_de_bien.insets = new Insets(0, 0, 5, 0);
+        gbc_choix_type_de_bien.gridx = 1;
+        gbc_choix_type_de_bien.gridy = 0;
+        panel_bien.add(choix_type_de_bien, gbc_choix_type_de_bien);
 
         JLabel ville = new JLabel("Ville");
-        panel_bien.add(ville);
+        GridBagConstraints gbc_ville = new GridBagConstraints();
+        gbc_ville.fill = GridBagConstraints.BOTH;
+        gbc_ville.insets = new Insets(0, 0, 5, 5);
+        gbc_ville.gridx = 0;
+        gbc_ville.gridy = 1;
+        panel_bien.add(ville, gbc_ville);
 
         JComboBox choix_ville = new JComboBox();
-        panel_bien.add(choix_ville);
+        GridBagConstraints gbc_choix_ville = new GridBagConstraints();
+        gbc_choix_ville.fill = GridBagConstraints.HORIZONTAL;
+        gbc_choix_ville.insets = new Insets(0, 0, 5, 0);
+        gbc_choix_ville.gridx = 1;
+        gbc_choix_ville.gridy = 1;
+        panel_bien.add(choix_ville, gbc_choix_ville);
 
         JLabel Adresse = new JLabel("Adresse");
-        panel_bien.add(Adresse);
+        GridBagConstraints gbc_Adresse = new GridBagConstraints();
+        gbc_Adresse.fill = GridBagConstraints.BOTH;
+        gbc_Adresse.insets = new Insets(0, 0, 5, 5);
+        gbc_Adresse.gridx = 0;
+        gbc_Adresse.gridy = 2;
+        panel_bien.add(Adresse, gbc_Adresse);
 
         JComboBox choix_adresse = new JComboBox();
-        panel_bien.add(choix_adresse);
+        GridBagConstraints gbc_choix_adresse = new GridBagConstraints();
+        gbc_choix_adresse.fill = GridBagConstraints.HORIZONTAL;
+        gbc_choix_adresse.insets = new Insets(0, 0, 5, 0);
+        gbc_choix_adresse.gridx = 1;
+        gbc_choix_adresse.gridy = 2;
+        panel_bien.add(choix_adresse, gbc_choix_adresse);
 
         JLabel complement = new JLabel("Complément");
-        panel_bien.add(complement);
+        GridBagConstraints gbc_complement = new GridBagConstraints();
+        gbc_complement.fill = GridBagConstraints.BOTH;
+        gbc_complement.insets = new Insets(0, 0, 5, 5);
+        gbc_complement.gridx = 0;
+        gbc_complement.gridy = 3;
+        panel_bien.add(complement, gbc_complement);
 
         JComboBox choix_complement = new JComboBox();
-        panel_bien.add(choix_complement);
+        GridBagConstraints gbc_choix_complement = new GridBagConstraints();
+        gbc_choix_complement.fill = GridBagConstraints.HORIZONTAL;
+        gbc_choix_complement.insets = new Insets(0, 0, 5, 0);
+        gbc_choix_complement.gridx = 1;
+        gbc_choix_complement.gridy = 3;
+        panel_bien.add(choix_complement, gbc_choix_complement);
 
         JLabel surface = new JLabel("Surface habitable");
-        panel_bien.add(surface);
+        GridBagConstraints gbc_surface = new GridBagConstraints();
+        gbc_surface.fill = GridBagConstraints.BOTH;
+        gbc_surface.insets = new Insets(0, 0, 5, 5);
+        gbc_surface.gridx = 0;
+        gbc_surface.gridy = 4;
+        panel_bien.add(surface, gbc_surface);
 
         JLabel choix_surface = new JLabel("New label");
-        panel_bien.add(choix_surface);
+        GridBagConstraints gbc_choix_surface = new GridBagConstraints();
+        gbc_choix_surface.fill = GridBagConstraints.BOTH;
+        gbc_choix_surface.insets = new Insets(0, 0, 5, 0);
+        gbc_choix_surface.gridx = 1;
+        gbc_choix_surface.gridy = 4;
+        panel_bien.add(choix_surface, gbc_choix_surface);
 
         JLabel nb_piece = new JLabel("Nombre de pièces");
-        panel_bien.add(nb_piece);
+        GridBagConstraints gbc_nb_piece = new GridBagConstraints();
+        gbc_nb_piece.fill = GridBagConstraints.BOTH;
+        gbc_nb_piece.insets = new Insets(0, 0, 5, 5);
+        gbc_nb_piece.gridx = 0;
+        gbc_nb_piece.gridy = 5;
+        panel_bien.add(nb_piece, gbc_nb_piece);
 
         JLabel choix_nb_piece = new JLabel("New label");
-        panel_bien.add(choix_nb_piece);
+        GridBagConstraints gbc_choix_nb_piece = new GridBagConstraints();
+        gbc_choix_nb_piece.fill = GridBagConstraints.BOTH;
+        gbc_choix_nb_piece.insets = new Insets(0, 0, 5, 0);
+        gbc_choix_nb_piece.gridx = 1;
+        gbc_choix_nb_piece.gridy = 5;
+        panel_bien.add(choix_nb_piece, gbc_choix_nb_piece);
 
         JLabel loyer = new JLabel("Loyer");
-        panel_bien.add(loyer);
+        GridBagConstraints gbc_loyer = new GridBagConstraints();
+        gbc_loyer.fill = GridBagConstraints.BOTH;
+        gbc_loyer.insets = new Insets(0, 0, 5, 5);
+        gbc_loyer.gridx = 0;
+        gbc_loyer.gridy = 6;
+        panel_bien.add(loyer, gbc_loyer);
 
         choix_loyer = new JTextField();
-        panel_bien.add(choix_loyer);
-        choix_loyer.setColumns(10);
+        GridBagConstraints gbc_choix_loyer = new GridBagConstraints();
+        gbc_choix_loyer.fill = GridBagConstraints.HORIZONTAL;
+        gbc_choix_loyer.anchor = GridBagConstraints.WEST;
+        gbc_choix_loyer.insets = new Insets(0, 0, 5, 0);
+        gbc_choix_loyer.gridx = 1;
+        gbc_choix_loyer.gridy = 6;
+        panel_bien.add(choix_loyer, gbc_choix_loyer);
+        choix_loyer.setColumns(7);
 
         JLabel prevision = new JLabel("Prévision pour charge");
-        panel_bien.add(prevision);
+        GridBagConstraints gbc_prevision = new GridBagConstraints();
+        gbc_prevision.fill = GridBagConstraints.BOTH;
+        gbc_prevision.insets = new Insets(0, 0, 5, 5);
+        gbc_prevision.gridx = 0;
+        gbc_prevision.gridy = 7;
+        panel_bien.add(prevision, gbc_prevision);
 
         choix_prevision = new JTextField();
-        panel_bien.add(choix_prevision);
-        choix_prevision.setColumns(10);
+        GridBagConstraints gbc_choix_prevision = new GridBagConstraints();
+        gbc_choix_prevision.fill = GridBagConstraints.HORIZONTAL;
+        gbc_choix_prevision.anchor = GridBagConstraints.WEST;
+        gbc_choix_prevision.insets = new Insets(0, 0, 5, 0);
+        gbc_choix_prevision.gridx = 1;
+        gbc_choix_prevision.gridy = 7;
+        panel_bien.add(choix_prevision, gbc_choix_prevision);
+        choix_prevision.setColumns(7);
 
         JLabel depot_garantie = new JLabel("Dépôt de garantie");
-        panel_bien.add(depot_garantie);
+        GridBagConstraints gbc_depot_garantie = new GridBagConstraints();
+        gbc_depot_garantie.fill = GridBagConstraints.BOTH;
+        gbc_depot_garantie.insets = new Insets(0, 0, 0, 5);
+        gbc_depot_garantie.gridx = 0;
+        gbc_depot_garantie.gridy = 8;
+        panel_bien.add(depot_garantie, gbc_depot_garantie);
 
         choix_depot_garantie = new JTextField();
-        panel_bien.add(choix_depot_garantie);
-        choix_depot_garantie.setColumns(10);
+        GridBagConstraints gbc_choix_depot_garantie = new GridBagConstraints();
+        gbc_choix_depot_garantie.fill = GridBagConstraints.HORIZONTAL;
+        gbc_choix_depot_garantie.anchor = GridBagConstraints.WEST;
+        gbc_choix_depot_garantie.gridx = 1;
+        gbc_choix_depot_garantie.gridy = 8;
+        panel_bien.add(choix_depot_garantie, gbc_choix_depot_garantie);
+        choix_depot_garantie.setColumns(7);
 
         JPanel panel_east = new JPanel();
         body.add(panel_east, BorderLayout.CENTER);
-        panel_east.setLayout(new GridLayout(2, 0, 0, 0));
-
-        JPanel panel_locataire = new JPanel();
-        panel_east.add(panel_locataire);
-        panel_locataire.setLayout(new BorderLayout(0, 0));
+        GridBagLayout gbl_panel_east = new GridBagLayout();
+        gbl_panel_east.columnWidths = new int[]{551, 0};
+        gbl_panel_east.rowHeights = new int[] {100, 0, 30};
+        gbl_panel_east.columnWeights = new double[]{0.0, Double.MIN_VALUE};
+        gbl_panel_east.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+        panel_east.setLayout(gbl_panel_east);
 
         tableModel = new DefaultTableModel(new String[] { "Prénom", "Nom", "Téléphone" }, 0);
+
+        JPanel panel_locataire = new JPanel();
+        GridBagConstraints gbc_panel_locataire = new GridBagConstraints();
+        gbc_panel_locataire.fill = GridBagConstraints.BOTH;
+        gbc_panel_locataire.insets = new Insets(0, 0, 5, 0);
+        gbc_panel_locataire.gridx = 0;
+        gbc_panel_locataire.gridy = 0;
+        panel_east.add(panel_locataire, gbc_panel_locataire);
+        GridBagLayout gbl_panel_locataire = new GridBagLayout();
+        gbl_panel_locataire.columnWidths = new int[]{551, 0};
+        gbl_panel_locataire.rowHeights = new int[] {150, 21, 10};
+        gbl_panel_locataire.columnWeights = new double[]{0.0, Double.MIN_VALUE};
+        gbl_panel_locataire.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+        panel_locataire.setLayout(gbl_panel_locataire);
         table = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(table);
-        panel_locataire.add(scrollPane, BorderLayout.CENTER);
+        GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+        gbc_scrollPane.anchor = GridBagConstraints.NORTH;
+        gbc_scrollPane.fill = GridBagConstraints.HORIZONTAL;
+        gbc_scrollPane.insets = new Insets(0, 0, 5, 0);
+        gbc_scrollPane.gridx = 0;
+        gbc_scrollPane.gridy = 0;
+        panel_locataire.add(scrollPane, gbc_scrollPane);
 
         JButton btn_ajouter_locataire = new JButton("Ajouter un locataire");
-        panel_locataire.add(btn_ajouter_locataire, BorderLayout.SOUTH);
+        GridBagConstraints gbc_btn_ajouter_locataire = new GridBagConstraints();
+        gbc_btn_ajouter_locataire.anchor = GridBagConstraints.NORTH;
+        gbc_btn_ajouter_locataire.gridx = 0;
+        gbc_btn_ajouter_locataire.gridy = 1;
+        panel_locataire.add(btn_ajouter_locataire, gbc_btn_ajouter_locataire);
+
+        btn_ajouter_locataire.addActionListener(modele.getAjouterLocataire());
 
         JPanel panel_date = new JPanel();
-        panel_east.add(panel_date);
-        panel_date.setLayout(new GridLayout(0, 2, 0, 0));
+        GridBagConstraints gbc_panel_date = new GridBagConstraints();
+        gbc_panel_date.anchor = GridBagConstraints.NORTH;
+        gbc_panel_date.fill = GridBagConstraints.HORIZONTAL;
+        gbc_panel_date.gridx = 0;
+        gbc_panel_date.gridy = 1;
+        panel_east.add(panel_date, gbc_panel_date);
+        panel_date.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
         JLabel date_debut = new JLabel("Date début");
         panel_date.add(date_debut);
 
         JFormattedTextField choix_date_debut = new JFormattedTextField();
+        choix_date_debut.setColumns(10);
         panel_date.add(choix_date_debut);
 
         JLabel date_fin = new JLabel("Date fin");
         panel_date.add(date_fin);
 
         JFormattedTextField choix_date_fin = new JFormattedTextField();
+        choix_date_fin.setColumns(10);
         panel_date.add(choix_date_fin);
 
         JPanel bas_de_page = new JPanel();
@@ -242,8 +373,6 @@ public class PageNouveauBail {
         valider.setVerticalTextPosition(SwingConstants.TOP);
         valider.setVerticalAlignment(SwingConstants.BOTTOM);
         bas_de_page.add(valider, BorderLayout.EAST);
-
-        btn_ajouter_locataire.addActionListener(modele.getAjouterLocataire());
         this.frame.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
