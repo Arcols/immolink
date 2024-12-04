@@ -86,10 +86,26 @@ public class ModelePageBienImmobilier {
 					}
 					break;
 				case BATIMENT:
-					new Batiment(pageNouveauBienImmobilier.getChoix_num_fiscal().getText(),
-							(String) pageNouveauBienImmobilier.getChoix_ville().getSelectedItem(),
-							(String) pageNouveauBienImmobilier.getChoix_adresse()
-									.getSelectedItem());
+					try {
+						new Batiment(pageNouveauBienImmobilier.getChoix_num_fiscal().getText(),
+								(String) pageNouveauBienImmobilier.getChoix_ville().getSelectedItem(),
+								(String) pageNouveauBienImmobilier.getChoix_adresse()
+										.getSelectedItem());
+						JOptionPane.showMessageDialog(null, "Le bien a été ajouté !", "Succès",
+								JOptionPane.INFORMATION_MESSAGE);
+						// Fermer l'ancienne page
+						JFrame ancienneFenetre = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
+						ancienneFenetre.dispose();
+
+						// Ouvrir une nouvelle instance de la même page
+						PageNouveauBienImmobilier nouvellePage = new PageNouveauBienImmobilier(); // Remplacez par le
+						// constructeur de votre
+						// page
+						nouvellePage.getFrame().setVisible(true);
+					}catch(Exception ex){
+						JOptionPane.showMessageDialog(null, "Une erreur est survenue lors de la création du logement.",
+								"Erreur", JOptionPane.ERROR_MESSAGE);
+					}
 					break;
 				case GARAGE:
 					if (pageNouveauBienImmobilier.getCheck_garage().isSelected()) {
@@ -98,8 +114,20 @@ public class ModelePageBienImmobilier {
 									(String) pageNouveauBienImmobilier.getChoix_ville().getSelectedItem(),
 									(String) pageNouveauBienImmobilier.getChoix_adresse().getSelectedItem(),
 									pageNouveauBienImmobilier.getChoix_complement_adresse().getText());
+							JOptionPane.showMessageDialog(null, "Le bien a été ajouté !", "Succès",
+									JOptionPane.INFORMATION_MESSAGE);
+							// Fermer l'ancienne page
+							JFrame ancienneFenetre = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
+							ancienneFenetre.dispose();
+
+							// Ouvrir une nouvelle instance de la même page
+							PageNouveauBienImmobilier nouvellePage = new PageNouveauBienImmobilier(); // Remplacez par le
+							// constructeur de votre
+							// page
+							nouvellePage.getFrame().setVisible(true);
 						} catch (SQLException ex) {
-							throw new RuntimeException(ex);
+							JOptionPane.showMessageDialog(null, "Une erreur est survenue lors de la création du logement.",
+									"Erreur", JOptionPane.ERROR_MESSAGE);
 						}
 					}
 					break;
