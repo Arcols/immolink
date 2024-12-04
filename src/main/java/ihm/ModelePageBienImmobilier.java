@@ -6,8 +6,6 @@ import classes.Garage;
 import classes.Logement;
 import enumeration.TypeLogement;
 import modele.PageNouveauBienImmobilier;
-import modele.PageBienImmobilier;
-import modele.PageNouveauLocataire;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -78,7 +76,7 @@ public class ModelePageBienImmobilier {
 						ancienneFenetre.dispose();
 
 						// Ouvrir une nouvelle instance de la même page
-						PageBienImmobilier nouvellePage = new PageNouveauBienImmobilier(); // Remplacez par le
+						PageNouveauBienImmobilier nouvellePage = new PageNouveauBienImmobilier(); // Remplacez par le
 																							// constructeur de votre
 																							// page
 						nouvellePage.getFrame().setVisible(true);
