@@ -2,7 +2,10 @@ package ihm;
 
 import DAO.jdbc.LocataireDAO;
 import classes.Locataire;
+
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -39,5 +42,53 @@ public class ModelePageAccueil {
         }
 
         return model; // Retourne le modèle rempli
+    }
+    public static ActionListener getActionListenerForActualiser(JFrame parentFrame) {
+        return e -> {
+            JDialog dialog = new JDialog(parentFrame, "Saisir le seuil microfoncier", true);
+            dialog.setSize(400, 200);
+            dialog.setLayout(null);
+
+            JLabel label = new JLabel("Seuil du régime microfoncier :");
+            label.setBounds(20, 30, 200, 25);
+            dialog.add(label);
+
+            JTextField seuilField = new JTextField();
+            seuilField.setBounds(220, 30, 100, 25);
+            dialog.add(seuilField);
+
+            JButton validerButton = new JButton("Valider");
+            validerButton.setBounds(150, 100, 100, 30);
+            dialog.add(validerButton);
+
+            validerButton.addActionListener(event -> {
+                try {
+                    double seuil = Double.parseDouble(seuilField.getText());
+                    setSeuilMicrofoncier(seuil); // Appelle la méthode métier pour enregistrer le seuil
+                    JOptionPane.showMessageDialog(dialog,
+                            "Le seuil du régime microfoncier a été mis à jour à " + seuil + " €.",
+                            "Confirmation",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    dialog.dispose();
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(dialog,
+                            "Veuillez entrer un nombre valide.",
+                            "Erreur",
+                            JOptionPane.ERROR_MESSAGE);
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(dialog,
+                            "Erreur lors de l'enregistrement du seuil : " + ex.getMessage(),
+                            "Erreur",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            });
+
+            dialog.setLocationRelativeTo(parentFrame);
+            dialog.setVisible(true);
+        };
+    }
+    private static void setSeuilMicrofoncier(double seuil) throws SQLException {
+        // remplir
+
     }
 }

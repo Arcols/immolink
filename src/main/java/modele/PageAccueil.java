@@ -187,8 +187,11 @@ public class PageAccueil {
 		JLabel regimeLabel = new JLabel("Mon régime microfoncier");
 		regimePanel.add(regimeLabel);
 
-		JButton btnNewButton = new JButton("Actualiser");
-		regimePanel.add(btnNewButton);
+		JButton btnActualiserRegime = new JButton("Actualiser");
+		regimePanel.add(btnActualiserRegime);
+		btnActualiserRegime.addActionListener(ModelePageAccueil.getActionListenerForActualiser(frame));
+
+
 
 		JPanel declaFidscalePanel = new JPanel();
 		GridBagConstraints gbc_declaFidscalePanel = new GridBagConstraints();
@@ -204,4 +207,6 @@ public class PageAccueil {
 		JButton declaFiscaleButton = new JButton("Générer");
 		declaFidscalePanel.add(declaFiscaleButton);
 	}
+
+
 }
