@@ -38,6 +38,7 @@ public class ModelePageNouveauLocataire {
             } catch (SQLException e1) {
                 // TODO Auto-generated catch block
                 e1.printStackTrace();
+                JOptionPane.showMessageDialog(null,"Erreur dans la saisie d'information", "Erreur de saisie",JOptionPane.ERROR_MESSAGE);
             }
         };
     }

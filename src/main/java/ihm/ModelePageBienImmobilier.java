@@ -95,17 +95,23 @@ public class ModelePageBienImmobilier {
 								"Erreur", JOptionPane.ERROR_MESSAGE);
 					}
 					break;
+				case BATIMENT:
+					new Batiment(pageNouveauBienImmobilier.getChoix_num_fiscal().getText(),
+							(String) pageNouveauBienImmobilier.getChoix_ville().getSelectedItem(),
+							(String) pageNouveauBienImmobilier.getChoix_adresse()
+									.getSelectedItem());
+					break;
 				case GARAGE:
 					if (pageNouveauBienImmobilier.getCheck_garage().isSelected()) {
-                        try {
-                            new Garage(pageNouveauBienImmobilier.getChoix_num_fiscal().getText(),
-                                    (String) pageNouveauBienImmobilier.getChoix_ville().getSelectedItem(),
-                                    (String) pageNouveauBienImmobilier.getChoix_adresse().getSelectedItem(),
-                                    pageNouveauBienImmobilier.getChoix_complement_adresse().getText());
-                        } catch (SQLException ex) {
-                            throw new RuntimeException(ex);
-                        }
-                    }
+						try {
+							new Garage(pageNouveauBienImmobilier.getChoix_num_fiscal().getText(),
+									(String) pageNouveauBienImmobilier.getChoix_ville().getSelectedItem(),
+									(String) pageNouveauBienImmobilier.getChoix_adresse().getSelectedItem(),
+									pageNouveauBienImmobilier.getChoix_complement_adresse().getText());
+						} catch (SQLException ex) {
+							throw new RuntimeException(ex);
+						}
+					}
 					break;
 			}
 		};
