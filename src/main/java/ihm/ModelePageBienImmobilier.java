@@ -6,6 +6,8 @@ import classes.Garage;
 import classes.Logement;
 import enumeration.TypeLogement;
 import modele.PageNouveauBienImmobilier;
+import modele.PageBienImmobilier;
+import modele.PageNouveauLocataire;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -33,7 +35,8 @@ public class ModelePageBienImmobilier {
 			if (!mapVillesAdresses.containsKey(selectedVille)) {
 				this.pageNouveauBienImmobilier.getChoix_adresse().setModel(new DefaultComboBoxModel());
 			} else {
-				this.pageNouveauBienImmobilier.getChoix_adresse().setModel(new DefaultComboBoxModel(mapVillesAdresses.get(selectedVille).toArray(new String[0])));
+				this.pageNouveauBienImmobilier.getChoix_adresse().setModel(
+						new DefaultComboBoxModel(mapVillesAdresses.get(selectedVille).toArray(new String[0])));
 			}
 		};
 	}
@@ -44,7 +47,8 @@ public class ModelePageBienImmobilier {
 
 	public ActionListener getValidateActionListener() {
 		return e -> {
-			TypeLogement selectedType = TypeLogement.values()[pageNouveauBienImmobilier.getChoix_type_de_bien().getSelectedIndex()];
+			TypeLogement selectedType = TypeLogement.values()[pageNouveauBienImmobilier.getChoix_type_de_bien()
+					.getSelectedIndex()];
 
 			switch (selectedType) {
 				case APPARTEMENT:
@@ -58,35 +62,48 @@ public class ModelePageBienImmobilier {
 									pageNouveauBienImmobilier.getChoix_complement_adresse().getText());
 						}
 						new Logement((Integer) pageNouveauBienImmobilier.getChoix_nb_piece().getValue(),
-								((Double) pageNouveauBienImmobilier.getChoix_surface().getValue() + this.SURFACE_MINIMALE),
+								((Double) pageNouveauBienImmobilier.getChoix_surface().getValue()
+										+ this.SURFACE_MINIMALE),
 								pageNouveauBienImmobilier.getChoix_num_fiscal().getText(),
 								(String) pageNouveauBienImmobilier.getChoix_ville().getSelectedItem(),
 								(String) pageNouveauBienImmobilier.getChoix_adresse().getSelectedItem(),
 								pageNouveauBienImmobilier.getChoix_complement_adresse().getText(),
 								pageNouveauBienImmobilier.getListe_diagnostic(),
 								pageNouveauBienImmobilier.getCheck_garage().isSelected());
+						JOptionPane.showMessageDialog(null, "Le bien a été ajouté !", "Succès",
+								JOptionPane.INFORMATION_MESSAGE);
+
+						// Fermer l'ancienne page
+						JFrame ancienneFenetre = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
+						ancienneFenetre.dispose();
+
+						// Ouvrir une nouvelle instance de la même page
+						PageBienImmobilier nouvellePage = new PageNouveauBienImmobilier(); // Remplacez par le
+																							// constructeur de votre
+																							// page
+						nouvellePage.getFrame().setVisible(true);
 					} catch (Exception ex) {
-						JOptionPane.showMessageDialog(null, "Une erreur est survenue lors de la création du logement.", "Erreur", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Une erreur est survenue lors de la création du logement.",
+								"Erreur", JOptionPane.ERROR_MESSAGE);
 					}
 					break;
 				case BATIMENT:
-					new Batiment
-							(pageNouveauBienImmobilier.getChoix_num_fiscal().getText(),
+					new Batiment(pageNouveauBienImmobilier.getChoix_num_fiscal().getText(),
 							(String) pageNouveauBienImmobilier.getChoix_ville().getSelectedItem(),
 							(String) pageNouveauBienImmobilier.getChoix_adresse()
 									.getSelectedItem());
 					break;
 				case GARAGE:
 					if (pageNouveauBienImmobilier.getCheck_garage().isSelected()) {
-                        try {
-                            new Garage(pageNouveauBienImmobilier.getChoix_num_fiscal().getText(),
-                                    (String) pageNouveauBienImmobilier.getChoix_ville().getSelectedItem(),
-                                    (String) pageNouveauBienImmobilier.getChoix_adresse().getSelectedItem(),
-                                    pageNouveauBienImmobilier.getChoix_complement_adresse().getText());
-                        } catch (SQLException ex) {
-                            throw new RuntimeException(ex);
-                        }
-                    }
+						try {
+							new Garage(pageNouveauBienImmobilier.getChoix_num_fiscal().getText(),
+									(String) pageNouveauBienImmobilier.getChoix_ville().getSelectedItem(),
+									(String) pageNouveauBienImmobilier.getChoix_adresse().getSelectedItem(),
+									pageNouveauBienImmobilier.getChoix_complement_adresse().getText());
+						} catch (SQLException ex) {
+							throw new RuntimeException(ex);
+						}
+					}
 					break;
 			}
 		};
@@ -135,37 +152,45 @@ public class ModelePageBienImmobilier {
 
 			// Ville
 			if (isBatiment) {
-				this.pageNouveauBienImmobilier.getPanel_caracteristique().remove(this.pageNouveauBienImmobilier.getChoix_ville());
+				this.pageNouveauBienImmobilier.getPanel_caracteristique()
+						.remove(this.pageNouveauBienImmobilier.getChoix_ville());
 				gbc.gridx = 1;
 				gbc.gridy = 2;
-				this.pageNouveauBienImmobilier.getPanel_caracteristique().add(this.pageNouveauBienImmobilier.getTexte_ville(), gbc);
+				this.pageNouveauBienImmobilier.getPanel_caracteristique()
+						.add(this.pageNouveauBienImmobilier.getTexte_ville(), gbc);
 			} else {
-				this.pageNouveauBienImmobilier.getPanel_caracteristique().remove(this.pageNouveauBienImmobilier.getTexte_ville());
+				this.pageNouveauBienImmobilier.getPanel_caracteristique()
+						.remove(this.pageNouveauBienImmobilier.getTexte_ville());
 				gbc.gridx = 1;
 				gbc.gridy = 2;
-				this.pageNouveauBienImmobilier.getPanel_caracteristique().add(this.pageNouveauBienImmobilier.getChoix_ville(), gbc);
+				this.pageNouveauBienImmobilier.getPanel_caracteristique()
+						.add(this.pageNouveauBienImmobilier.getChoix_ville(), gbc);
 			}
 
 			// Adresse
 			if (isBatiment) {
-				this.pageNouveauBienImmobilier.getPanel_caracteristique().remove(this.pageNouveauBienImmobilier.getChoix_adresse());
+				this.pageNouveauBienImmobilier.getPanel_caracteristique()
+						.remove(this.pageNouveauBienImmobilier.getChoix_adresse());
 				gbc.gridx = 1;
 				gbc.gridy = 3;
-				this.pageNouveauBienImmobilier.getPanel_caracteristique().add(this.pageNouveauBienImmobilier.getTexte_adresse(), gbc);
+				this.pageNouveauBienImmobilier.getPanel_caracteristique()
+						.add(this.pageNouveauBienImmobilier.getTexte_adresse(), gbc);
 			} else {
-				this.pageNouveauBienImmobilier.getPanel_caracteristique().remove(this.pageNouveauBienImmobilier.getTexte_adresse());
+				this.pageNouveauBienImmobilier.getPanel_caracteristique()
+						.remove(this.pageNouveauBienImmobilier.getTexte_adresse());
 				gbc.gridx = 1;
 				gbc.gridy = 3;
-				this.pageNouveauBienImmobilier.getPanel_caracteristique().add(this.pageNouveauBienImmobilier.getChoix_adresse(), gbc);
+				this.pageNouveauBienImmobilier.getPanel_caracteristique()
+						.add(this.pageNouveauBienImmobilier.getChoix_adresse(), gbc);
 			}
 
 			// Rafraîchir l'interface
 			this.pageNouveauBienImmobilier.getPanel_caracteristique().revalidate();
 			this.pageNouveauBienImmobilier.getPanel_caracteristique().repaint();
 		};
-    }
+	}
 
-	public ActionListener getTelechargerPDFButton(String diagnostic){
+	public ActionListener getTelechargerPDFButton(String diagnostic) {
 		return e -> {
 			// Créer un JFileChooser pour permettre de sélectionner un fichier
 			JFileChooser fileChooser = new JFileChooser();
