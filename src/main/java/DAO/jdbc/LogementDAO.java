@@ -16,11 +16,8 @@ public class LogementDAO implements DAO.LogementDAO {
 
 	@Override
 	public void create(Logement appart) throws DAOException {
-		ConnectionDB db;
-		Connection cn;
 		try {
-			db = ConnectionDB.getInstance();
-			cn = db.getConnection();
+			Connection cn = ConnectionDB.getInstance();
 			String requete = "INSERT INTO Logement bienlouable VALUES (?,?,?,?,?,?,?)";
 			PreparedStatement pstmt = cn.prepareStatement(requete);
 			pstmt.setString(1, appart.getNumero_fiscal());
@@ -33,7 +30,6 @@ public class LogementDAO implements DAO.LogementDAO {
 			pstmt.setInt(7, bat.getIdBat(appart.getVille(), appart.getAdresse()));
 			pstmt.executeUpdate();
 			pstmt.close();
-			cn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -41,12 +37,9 @@ public class LogementDAO implements DAO.LogementDAO {
 
 	@Override
 	public Logement read(int id) throws DAOException {
-		ConnectionDB db;
-		Connection cn = null;
 		Logement l = null;
 		try {
-			db = ConnectionDB.getInstance();
-			cn = db.getConnection();
+			Connection cn = ConnectionDB.getInstance();
 			String requete = "SELECT numero_fical, complement_adresse, type_logement, Nombre_pieces, Surface, garage_assoc FROM bienlouable WHERE id = ?";
 			PreparedStatement pstmt = cn.prepareStatement(requete);
 			pstmt.setInt(1,id);
@@ -65,7 +58,6 @@ public class LogementDAO implements DAO.LogementDAO {
 				l = new Logement(nb_pieces,surface,num_fisc,ville,adresse,compl,diags,haveG);
 			}
 			pstmt.close();
-			cn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
