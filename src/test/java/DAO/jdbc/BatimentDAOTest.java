@@ -7,6 +7,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
@@ -15,20 +16,23 @@ import java.util.Map;
 import static org.junit.Assert.*;
 
 public class BatimentDAOTest {
-    private ConnectionDB connection;
+    private ConnectionDB db;
+    private Connection cn;
     private BatimentDAO batimentDAO;
 
     @Before
     public void setUp() throws SQLException {
-        connection = ConnectionDB.getInstance();
-        connection.setAutoCommit(false);
+        db = ConnectionDB.getInstance();
+        cn = db.getConnection();
+        //cn.setAutoCommit(false);
         batimentDAO = new BatimentDAO();
     }
 
     @After
     public void tearDown() throws SQLException {
-        connection.getConnection().rollback();
-        connection.closeConnection();
+        //cn.rollback();
+        //cn.setAutoCommit(true);
+        cn.close();
     }
 
     @Test
