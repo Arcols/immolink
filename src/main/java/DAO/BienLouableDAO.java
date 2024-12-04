@@ -5,6 +5,7 @@ import enumeration.TypeLogement;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 /*
  * Interface définissant les opérations CRUD pour les objets BienLouable.
@@ -62,4 +63,6 @@ public interface BienLouableDAO {
 	 * @throws DAOException en cas d'erreur lors de la lecture des biens immobiliers
 	 */
 	List<BienLouable> findAll() throws DAOException;
+
+    Map<String, List<String>> getAllcomplements() throws SQLException;
 }
