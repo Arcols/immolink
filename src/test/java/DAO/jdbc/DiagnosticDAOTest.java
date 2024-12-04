@@ -23,8 +23,6 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class DiagnosticDAOTest {
-    private ConnectionDB db;
-    private Connection cn;
     private DiagnosticDAO diagnosticDAO;
     private Path tempFilePath;
     private BatimentDAO batimentDAO;
@@ -32,8 +30,8 @@ public class DiagnosticDAOTest {
 
     @Before
     public void setUp() throws SQLException, IOException, DAOException {
-        db = ConnectionDB.getInstance();
-        cn = db.getConnection();
+        Connection cn = ConnectionDB.getInstance();
+        cn.setAutoCommit(false);
         diagnosticDAO = new DiagnosticDAO();
         batimentDAO = new BatimentDAO();
         // créer un batiment temporaire en rapport avec le bien louable
@@ -49,7 +47,9 @@ public class DiagnosticDAOTest {
 
     @After
     public void tearDown() throws SQLException, IOException {
-        cn.close();
+        ConnectionDB.rollback();
+        ConnectionDB.setAutoCommit(true);
+        ConnectionDB.destroy();
         Files.deleteIfExists(tempFilePath); // Clean up the temporary file
     }
 

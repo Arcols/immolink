@@ -18,16 +18,14 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class BienLouableDAOTest {
-    private ConnectionDB db;
-    private Connection cn;
     private BienLouableDAO bienLouableDAO;
     private BatimentDAO batimentDAO;
     private GarageDAO garageDAO;
 
     @Before
     public void setUp() throws SQLException, DAOException {
-        db = ConnectionDB.getInstance();
-        cn = db.getConnection();
+        Connection cn = ConnectionDB.getInstance();
+        cn.setAutoCommit(false);
         bienLouableDAO = new BienLouableDAO();
         batimentDAO = new BatimentDAO();
         garageDAO = new GarageDAO();
@@ -39,7 +37,9 @@ public class BienLouableDAOTest {
 
     @After
     public void tearDown() throws SQLException {
-        cn.close();
+        ConnectionDB.rollback();
+        ConnectionDB.setAutoCommit(true);
+        ConnectionDB.destroy();
     }
 
     @Test
@@ -85,9 +85,9 @@ public class BienLouableDAOTest {
     @Test
     public void testFindAll() throws SQLException, DAOException {
         BienLouable bienLouable1 = new BienLouable("123456789101", "Paris", "123 Rue de la Paix", "Apt 1", new ArrayList<>(),null);
-        // bienLouable2 = new BienLouable("123456789102", "Paris", "123 Rue de la Paix", "Apt 2", new ArrayList<>(),null);
+        BienLouable bienLouable2 = new BienLouable("123456789102", "Paris", "123 Rue de la Paix", "Apt 2", new ArrayList<>(),null);
         bienLouableDAO.create(bienLouable1, TypeLogement.APPARTEMENT, 3, 75.0);
-        //bienLouableDAO.create(bienLouable2, TypeLogement.APPARTEMENT, 3, 80.0);
+        bienLouableDAO.create(bienLouable2, TypeLogement.APPARTEMENT, 3, 80.0);
 
         List<BienLouable> bienLouables = bienLouableDAO.findAll();
         assertEquals(2, bienLouables.size());

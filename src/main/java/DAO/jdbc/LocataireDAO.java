@@ -8,14 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LocataireDAO implements DAO.LocataireDAO {
-    private Connection cn;
     @Override
     public void addLocataire(Locataire locataire) {
-        ConnectionDB db;
-        Connection cn = null;
         try {
-            db = ConnectionDB.getInstance();
-            cn = db.getConnection();
+            Connection cn = ConnectionDB.getInstance();
             Statement st = cn.createStatement();
             String query = "INSERT INTO locataire (nom, prenom, téléphone, date_arrive,mail,loc_actuel,genre) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement pstmt = cn.prepareStatement(query);
@@ -29,7 +25,6 @@ public class LocataireDAO implements DAO.LocataireDAO {
             pstmt.executeUpdate();
             pstmt.close();
             st.close();
-            cn.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -37,11 +32,8 @@ public class LocataireDAO implements DAO.LocataireDAO {
 
     @Override
     public void updateLocataireTel(Locataire locataire,String tel) {
-        ConnectionDB db;
-        Connection cn = null;
         try {
-            db = ConnectionDB.getInstance();
-            cn = db.getConnection();
+            Connection cn = ConnectionDB.getInstance();
             Statement st = cn.createStatement();
             String query = "UPDATE locataire SET téléphone = ? WHERE nom = ? AND prenom = ? AND téléphone = ?";
             PreparedStatement pstmt = cn.prepareStatement(query);
@@ -52,7 +44,7 @@ public class LocataireDAO implements DAO.LocataireDAO {
             pstmt.executeUpdate();
             pstmt.close();
             st.close();
-            cn.close();
+            
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -60,11 +52,8 @@ public class LocataireDAO implements DAO.LocataireDAO {
 
     @Override
     public void updateLocataireMail(Locataire locataire,String mail) {
-        ConnectionDB db;
-        Connection cn = null;
         try {
-            db = ConnectionDB.getInstance();
-            cn = db.getConnection();
+            Connection cn = ConnectionDB.getInstance();
             Statement st = cn.createStatement();
             String query = "UPDATE locataire SET mail = ? WHERE nom = ? AND prenom = ? AND téléphone = ?";
             PreparedStatement pstmt = cn.prepareStatement(query);
@@ -75,7 +64,7 @@ public class LocataireDAO implements DAO.LocataireDAO {
             pstmt.executeUpdate();
             pstmt.close();
             st.close();
-            cn.close();
+            
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -83,11 +72,8 @@ public class LocataireDAO implements DAO.LocataireDAO {
 
     @Override
     public void updateLocataireGenre(Locataire locataire,String genre) {
-        ConnectionDB db;
-        Connection cn = null;
         try {
-            db = ConnectionDB.getInstance();
-            cn = db.getConnection();
+            Connection cn = ConnectionDB.getInstance();
             Statement st = cn.createStatement();
             String query = "UPDATE locataire SET genre = ? WHERE nom = ? AND prenom = ? AND téléphone = ?";
             PreparedStatement pstmt = cn.prepareStatement(query);
@@ -98,7 +84,7 @@ public class LocataireDAO implements DAO.LocataireDAO {
             pstmt.executeUpdate();
             pstmt.close();
             st.close();
-            cn.close();
+            
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -106,11 +92,8 @@ public class LocataireDAO implements DAO.LocataireDAO {
 
     @Override
     public Locataire getLocataireByNomPrénomTel(String nom, String prénom, String téléphone) {
-        ConnectionDB db;
-        Connection cn = null;
         try {
-            db = ConnectionDB.getInstance();
-            cn = db.getConnection();
+            Connection cn = ConnectionDB.getInstance();
             Locataire locataire = null;
             ResultSet rs;
             String query="SELECT * FROM locataire WHERE nom = ? AND prenom = ? AND téléphone = ?";
@@ -127,7 +110,7 @@ public class LocataireDAO implements DAO.LocataireDAO {
             }
             rs.close();
             pstmt.close();
-            cn.close();
+            
             return locataire;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -136,11 +119,8 @@ public class LocataireDAO implements DAO.LocataireDAO {
 
     @Override
     public  List<Locataire> getAllLocataire() {
-        ConnectionDB db;
-        Connection cn = null;
         try {
-            db = ConnectionDB.getInstance();
-            cn = db.getConnection();
+            Connection cn = ConnectionDB.getInstance();
             List<Locataire> locataires = new ArrayList<>();
             Statement stmt = cn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM locataire");
@@ -157,7 +137,7 @@ public class LocataireDAO implements DAO.LocataireDAO {
             }
             rs.close();
             stmt.close();
-            cn.close();
+            
             return locataires;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -168,11 +148,8 @@ public class LocataireDAO implements DAO.LocataireDAO {
 
     @Override
     public void deleteLocataire(Locataire locataire) {
-        ConnectionDB db;
-        Connection cn = null;
         try {
-            db = ConnectionDB.getInstance();
-            cn = db.getConnection();
+            Connection cn = ConnectionDB.getInstance();
             Statement st = cn.createStatement();
             String query = "DELETE FROM locataire WHERE nom = ? AND prenom = ? AND téléphone = ?";
             PreparedStatement pstmt = cn.prepareStatement(query);
@@ -182,7 +159,7 @@ public class LocataireDAO implements DAO.LocataireDAO {
             pstmt.executeUpdate();
             pstmt.close();
             st.close();
-            cn.close();
+            
 
         } catch (SQLException e) {
             throw new RuntimeException(e);

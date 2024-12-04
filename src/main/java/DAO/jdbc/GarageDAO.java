@@ -13,15 +13,10 @@ import enumeration.TypeLogement;
 
 public class GarageDAO implements DAO.GarageDAO {
 
-	private Connection cn;
-
 	@Override
 	public void create(Garage garage) throws DAOException {
-		ConnectionDB db;
-		Connection cn = null;
 		try {
-			db = ConnectionDB.getInstance();
-			cn = db.getConnection();
+			Connection cn = ConnectionDB.getInstance();
 			String requete = "INSERT INTO Logement bienlouable VALUES (?,?,?,?,?,?,?)";
 			PreparedStatement pstmt = cn.prepareStatement(requete);
 			pstmt.setString(1, garage.getNumero_fiscal());
@@ -34,7 +29,6 @@ public class GarageDAO implements DAO.GarageDAO {
 			pstmt.setInt(7, bat.getIdBat(garage.getVille(), garage.getAdresse()));
 			pstmt.executeUpdate();
 			pstmt.close();
-			cn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -49,12 +43,9 @@ public class GarageDAO implements DAO.GarageDAO {
 
 	@Override
 	public int getIdGarage(String numero_fiscal) throws DAOException {
-		ConnectionDB db;
-		Connection cn = null;
 		Integer idGarage = null;
 		try {
-			db = ConnectionDB.getInstance();
-			cn = db.getConnection();
+			Connection cn = ConnectionDB.getInstance();
 			String query = "SELECT id FROM bienlouable WHERE numero_fiscal = ? AND type_logement = ?";
 			PreparedStatement pstmt = cn.prepareStatement(query);
 			pstmt.setString(1, numero_fiscal);
@@ -65,7 +56,6 @@ public class GarageDAO implements DAO.GarageDAO {
 			}
 			rs.close();
 			pstmt.close();
-			cn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
