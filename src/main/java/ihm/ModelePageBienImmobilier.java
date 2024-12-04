@@ -71,11 +71,33 @@ public class ModelePageBienImmobilier {
 					}
 					break;
 				case BATIMENT:
+<<<<<<< Updated upstream
 					new Batiment
 							(pageBienImmobilier.getChoix_num_fiscal().getText(),
 							(String) pageBienImmobilier.getChoix_ville().getSelectedItem(),
 							(String) pageBienImmobilier.getChoix_adresse()
 									.getSelectedItem());
+=======
+					try {
+						new Batiment(pageNouveauBienImmobilier.getChoix_num_fiscal().getText(),
+								(String) pageNouveauBienImmobilier.getTexte_ville().getText(),
+								(String) pageNouveauBienImmobilier.getTexte_adresse().getText());
+						JOptionPane.showMessageDialog(null, "Le bien a été ajouté !", "Succès",
+								JOptionPane.INFORMATION_MESSAGE);
+						// Fermer l'ancienne page
+						JFrame ancienneFenetre = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
+						ancienneFenetre.dispose();
+
+						// Ouvrir une nouvelle instance de la même page
+						PageNouveauBienImmobilier nouvellePage = new PageNouveauBienImmobilier(); // Remplacez par le
+						// constructeur de votre
+						// page
+						nouvellePage.getFrame().setVisible(true);
+					}catch(Exception ex){
+						JOptionPane.showMessageDialog(null, "Une erreur est survenue lors de la création du logement.",
+								"Erreur", JOptionPane.ERROR_MESSAGE);
+					}
+>>>>>>> Stashed changes
 					break;
 				case GARAGE:
 					if (pageBienImmobilier.getCheck_garage().isSelected()) {
