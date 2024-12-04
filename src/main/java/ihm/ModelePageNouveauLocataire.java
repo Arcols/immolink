@@ -1,7 +1,6 @@
 package ihm;
 
 import classes.Locataire;
-import modele.PageBienImmobilier;
 import modele.PageNouveauLocataire;
 
 import javax.swing.*;
