@@ -1,6 +1,7 @@
 package ihm;
 
 import DAO.jdbc.LocataireDAO;
+import DAO.jdbc.RegimeDAO;
 import classes.Locataire;
 
 import javax.swing.*;
@@ -43,6 +44,10 @@ public class ModelePageAccueil {
 
         return model; // Retourne le modèle rempli
     }
+
+    /**
+     * ActionListener pour actualiser le seuil microfoncier.
+     */
     public static ActionListener getActionListenerForActualiser(JFrame parentFrame) {
         return e -> {
             JDialog dialog = new JDialog(parentFrame, "Saisir le seuil microfoncier", true);
@@ -55,6 +60,13 @@ public class ModelePageAccueil {
 
             JTextField seuilField = new JTextField();
             seuilField.setBounds(220, 30, 100, 25);
+
+            // Charger la valeur actuelle du seuil microfoncier
+            Float valeurActuelle = getValeurRegime();
+            if (valeurActuelle != null) {
+                seuilField.setText(String.valueOf(valeurActuelle)); // Préremplit le champ avec la valeur actuelle
+            }
+
             dialog.add(seuilField);
 
             JButton validerButton = new JButton("Valider");
@@ -87,8 +99,37 @@ public class ModelePageAccueil {
             dialog.setVisible(true);
         };
     }
-    private static void setSeuilMicrofoncier(double seuil) throws SQLException {
-        // remplir
 
+    /**
+     * Méthode pour récupérer la valeur actuelle du seuil microfoncier depuis la base de données.
+     *
+     * @return La valeur actuelle du seuil, ou null si une erreur survient.
+     */
+    private static Float getValeurRegime() {
+        try {
+            RegimeDAO regimeDAO = new RegimeDAO();
+            return regimeDAO.getValeur(); // Récupère la valeur depuis la DAO
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null,
+                    "Erreur lors de la récupération de la valeur actuelle : " + ex.getMessage(),
+                    "Erreur",
+                    JOptionPane.ERROR_MESSAGE);
+            return null; // En cas d'erreur, retourne null
+        }
+    }
+
+    /**
+     * Met à jour la valeur du seuil microfoncier dans la base de données.
+     *
+     * @param seuil nouvelle valeur du seuil
+     * @throws SQLException en cas d'erreur lors de l'enregistrement
+     */
+    private static void setSeuilMicrofoncier(double seuil) throws SQLException {
+        RegimeDAO regimeDAO = new RegimeDAO();
+        try {
+            regimeDAO.updateValeur((float) seuil); // Utilise la DAO pour mettre à jour la valeur
+        } catch (Exception e) {
+            throw new SQLException("Impossible de mettre à jour le seuil microfoncier.", e);
+        }
     }
 }
