@@ -17,6 +17,14 @@ public interface GarageDAO {
 	 */
 	void create(Garage garage) throws DAOException;
 
+	/**
+	 * Récupère l'id d'un garage en utilisant son numéro fiscal
+	 * @param numero_fiscal
+	 * @return
+	 * @throws DAOException
+	 */
+	int getIdGarage(String numero_fiscal) throws DAOException;
+
 	/*
 	 * Récupère un Garage de la base de données en utilisant son identifiant.
 	 *

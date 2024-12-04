@@ -2,12 +2,14 @@ package DAO.jdbc;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
 import DAO.DAOException;
 import DAO.db.ConnectionDB;
 import classes.Garage;
+import enumeration.TypeLogement;
 
 public class GarageDAO implements DAO.GarageDAO {
 
@@ -43,6 +45,31 @@ public class GarageDAO implements DAO.GarageDAO {
 	public Garage read(int id) throws DAOException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public int getIdGarage(String numero_fiscal) throws DAOException {
+		ConnectionDB db;
+		Connection cn = null;
+		Integer idGarage = null;
+		try {
+			db = ConnectionDB.getInstance();
+			cn = db.getConnection();
+			String query = "SELECT id FROM bienlouable WHERE numero_fiscal = ? AND type_logement = ?";
+			PreparedStatement pstmt = cn.prepareStatement(query);
+			pstmt.setString(1, numero_fiscal);
+			pstmt.setInt(2, TypeLogement.GARAGE.getValue());
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				idGarage = rs.getInt("id");
+			}
+			rs.close();
+			pstmt.close();
+			cn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return idGarage;
 	}
 
 	@Override
