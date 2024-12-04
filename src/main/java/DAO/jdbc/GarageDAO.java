@@ -1,5 +1,6 @@
 package DAO.jdbc;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
@@ -10,12 +11,17 @@ import classes.Garage;
 
 public class GarageDAO implements DAO.GarageDAO {
 
+	private Connection cn;
+
 	@Override
 	public void create(Garage garage) throws DAOException {
+		ConnectionDB db;
+		Connection cn = null;
 		try {
-			ConnectionDB cn = ConnectionDB.getInstance();
+			db = ConnectionDB.getInstance();
+			cn = db.getConnection();
 			String requete = "INSERT INTO Logement bienlouable VALUES (?,?,?,?,?,?,?)";
-			PreparedStatement pstmt = cn.getConnection().prepareStatement(requete);
+			PreparedStatement pstmt = cn.prepareStatement(requete);
 			pstmt.setString(1, garage.getNumero_fiscal());
 			pstmt.setString(2, garage.getComplement_adresse());
 			pstmt.setInt(3, 2);
@@ -26,7 +32,7 @@ public class GarageDAO implements DAO.GarageDAO {
 			pstmt.setInt(7, bat.getIdBat(garage.getVille(), garage.getAdresse()));
 			pstmt.executeUpdate();
 			pstmt.close();
-			cn.closeConnection();
+			cn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
