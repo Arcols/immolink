@@ -11,12 +11,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.io.File;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +23,6 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -37,20 +32,15 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import classes.Batiment;
 import classes.Diagnostic;
-import classes.Garage;
-import classes.Logement;
-import enumeration.TypeLogement;
 import ihm.Charte;
 import ihm.Menu;
 import ihm.ModelePageBienImmobilier;
 import ihm.ResizedImage;
 
-public class PageBienImmobilier {
+public class PageNouveauBienImmobilier {
 
 	private JFrame frame;
 	private JPanel tableau_diagnostic;
@@ -88,7 +78,7 @@ public class PageBienImmobilier {
 			@Override
 			public void run() {
 				try {
-					PageBienImmobilier window = new PageBienImmobilier();
+					PageNouveauBienImmobilier window = new PageNouveauBienImmobilier();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -104,7 +94,7 @@ public class PageBienImmobilier {
 	/**
 	 * Create the application.
 	 */
-	public PageBienImmobilier() {
+	public PageNouveauBienImmobilier() {
 		this.initialize();
 	}
 
@@ -417,10 +407,10 @@ public class PageBienImmobilier {
 			@Override
 			public void componentResized(ComponentEvent e) {
                 ResizedImage res = new ResizedImage();
-                res.resizeImage("logo+nom.png", PageBienImmobilier.this.frame,
-PageBienImmobilier.this.logo, 3, 8);
-                int frameWidth = PageBienImmobilier.this.frame.getWidth();
-				int frameHeight = PageBienImmobilier.this.frame.getHeight();
+                res.resizeImage("logo+nom.png", PageNouveauBienImmobilier.this.frame,
+PageNouveauBienImmobilier.this.logo, 3, 8);
+                int frameWidth = PageNouveauBienImmobilier.this.frame.getWidth();
+				int frameHeight = PageNouveauBienImmobilier.this.frame.getHeight();
 
 				int newFontSize = Math.min(frameWidth, frameHeight) / 30;
 

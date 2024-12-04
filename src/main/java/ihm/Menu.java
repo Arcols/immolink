@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import modele.PageAccueil;
 import modele.PageBaux;
 import modele.PageNouveauBienImmobilier;
+import modele.PageNouveauBienImmobilier;
 import modele.PageNouveauLocataire;
 import modele.PageProfil;
 
@@ -45,8 +46,8 @@ public class Menu implements ActionListener {
 			break;
 		case "Mes Biens":
 			this.frame.dispose();
-			PageNouveauBienImmobilier pageBienImmobilier = new PageNouveauBienImmobilier();
-			pageBienImmobilier.main(null);
+			PageNouveauBienImmobilier pageNouveauBienImmobilier = new PageNouveauBienImmobilier();
+			pageNouveauBienImmobilier.main(null);
 			break;
 		default:
 			break;
