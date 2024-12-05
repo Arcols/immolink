@@ -26,11 +26,11 @@ public interface BienLouableDAO {
 			throws DAOException, IllegalArgumentException, SQLException;
 
 	/**
-	 * Ajoute un garage à un bien louable
+	 * Lie un garage à un bien louable en insérant son id dans la base de donnée dans la colonne garage_assoc
 	 * @param garage Garage object
 	 * @param bien BienLouable object
 	 */
-	 void ajouterUnGarageAuBienLouable(BienLouable bien,Garage garage) throws  DAOException;
+	 void lierUnGarageAuBienLouable(BienLouable bien,Garage garage) throws  DAOException;
 
 	/**
 	 * Récupère un BienLouable de la base de données en utilisant son numéro fiscal.

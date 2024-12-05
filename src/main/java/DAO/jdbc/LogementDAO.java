@@ -40,7 +40,7 @@ public class LogementDAO implements DAO.LogementDAO {
 		Logement l = null;
 		try {
 			Connection cn = ConnectionDB.getInstance();
-			String requete = "SELECT numero_fical, complement_adresse, type_logement, Nombre_pieces, Surface, garage_assoc FROM bienlouable WHERE id = ?";
+			String requete = "SELECT numero_fical, complement_adresse, type_logement, Nombre_pieces, Surface, garage_assoc,IdBat FROM bienlouable WHERE id = ?";
 			PreparedStatement pstmt = cn.prepareStatement(requete);
 			pstmt.setInt(1,id);
 			ResultSet rs = pstmt.executeQuery();
@@ -51,8 +51,9 @@ public class LogementDAO implements DAO.LogementDAO {
 				Integer nb_pieces = rs.getInt("Nombre_pieces");
 				Double surface = rs.getDouble("Surface");
 				Integer garage = rs.getInt("garage_assoc");
-				String ville = new BatimentDAO().readFisc(num_fisc).getVille();
-				String adresse =  new BatimentDAO().readFisc(num_fisc).getAdresse();
+				Integer id_bat = rs.getInt("idBat");
+				String ville = new BatimentDAO().readId(id_bat).getVille();
+				String adresse =  new BatimentDAO().readId(id_bat).getAdresse();
 				List<Diagnostic> diags = new DiagnosticDAO().readAllDiag(id);
 				Boolean haveG = (garage == 1);
 				l = new Logement(nb_pieces,surface,num_fisc,ville,adresse,compl,diags,haveG);
