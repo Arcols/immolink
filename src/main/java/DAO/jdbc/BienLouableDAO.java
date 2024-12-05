@@ -94,7 +94,7 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
     }
 
     @Override
-    public void ajouterUnGarageAuBienLouable(BienLouable bien,Garage garage){
+    public void lierUnGarageAuBienLouable(BienLouable bien,Garage garage){
         Integer idGarage;
         Integer idBat;
         try {
@@ -132,7 +132,7 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
 
     @Override
     public List<BienLouable> findAll() throws DAOException {
-        List<BienLouable> Allbien = null;
+        List<BienLouable> Allbien = new ArrayList<>();
         try {
             Connection cn = ConnectionDB.getInstance();
             String query = "SELECT * FROM bienlouable";
@@ -141,8 +141,9 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
             while (rs.next()){
                 String num_fisc = rs.getString("numero_fiscal");
                 String compl = rs.getString("complement_adresse");
-                String ville = new BatimentDAO().readFisc(num_fisc).getVille();
-                String adresse = new BatimentDAO().readFisc(num_fisc).getAdresse();
+                Integer id_bat = rs.getInt("IdBat");
+                String ville = new BatimentDAO().readId(id_bat).getVille();
+                String adresse = new BatimentDAO().readId(id_bat).getAdresse();
                 List<Diagnostic> lDiags = new DiagnosticDAO().readAllDiag(rs.getInt("id"));
                 GarageDAO garageDAO = new GarageDAO();
                 Allbien.add(new BienLouable(num_fisc,ville,adresse,compl,lDiags,garageDAO.getIdGarage(num_fisc)));
@@ -186,6 +187,7 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
         }
         return adresses;
     }
+
 }
 
 

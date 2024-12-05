@@ -66,8 +66,10 @@ public class BienLouableDAOTest {
     public void testUpdate() throws SQLException, DAOException {
         BienLouable bienLouable = new BienLouable("101010101010", "Paris", "123 Rue de la Paix", "Apt 1", new ArrayList<>(),null);
         bienLouableDAO.create(bienLouable, TypeLogement.APPARTEMENT, 3, 75.0);
-
-        bienLouableDAO.ajouterUnGarageAuBienLouable(bienLouable, new Garage("101010101010", "Ville ", "adresse","complément"));
+        Garage garage = new Garage("101010101010", "Paris ", "123 Rue de la Paix","garage 1");
+        GarageDAO garageDAO = new GarageDAO();
+        garageDAO.create(garage);
+        bienLouableDAO.lierUnGarageAuBienLouable(bienLouable, garage);
         BienLouable bienLouableRecupere = bienLouableDAO.readFisc("101010101010");
         assertNotNull(bienLouableRecupere.getIdgarage());
     }
