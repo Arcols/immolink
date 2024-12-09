@@ -18,7 +18,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.swing.*;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
 import DAO.jdbc.LocataireDAO;
@@ -77,7 +84,7 @@ public class PageNouveauLocataire {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		ModelePageNouveauLocataire modele=new ModelePageNouveauLocataire(this);
+		ModelePageNouveauLocataire modele = new ModelePageNouveauLocataire(this);
 		try {
 			DAO.jdbc.BatimentDAO tousBat = new DAO.jdbc.BatimentDAO();
 			mapVillesAdresses = tousBat.searchAllBatiments();
@@ -161,10 +168,10 @@ public class PageNouveauLocataire {
 		JPanel donnees_loca = new JPanel();
 		body.add(donnees_loca);
 		GridBagLayout gbl_donnees_loca = new GridBagLayout();
-		gbl_donnees_loca.columnWidths = new int[] { 40, 0, 0, 40, 0, 0, 0 };
-		gbl_donnees_loca.rowHeights = new int[] { 40, 40, 40, 40, 40, 0 };
-		gbl_donnees_loca.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
-		gbl_donnees_loca.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+		gbl_donnees_loca.columnWidths = new int[]{40, 0, 0, 40, 0, 0, 0};
+		gbl_donnees_loca.rowHeights = new int[]{40, 40, 40, 40, 40, 0};
+		gbl_donnees_loca.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+		gbl_donnees_loca.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 		donnees_loca.setLayout(gbl_donnees_loca);
 
 		JLabel labelNom = new JLabel("Nom");
@@ -323,7 +330,7 @@ public class PageNouveauLocataire {
 		donnees_loca.add(labelGenre, gbc_labelGenre);
 
 		this.genreValeur = new JComboBox();
-		this.genreValeur.setModel(new DefaultComboBoxModel(new String[] { "H", "F", "O" }));
+		this.genreValeur.setModel(new DefaultComboBoxModel(new String[]{"H", "F", "O"}));
 		GridBagConstraints gbc_genreValeur = new GridBagConstraints();
 		gbc_genreValeur.fill = GridBagConstraints.HORIZONTAL;
 		gbc_genreValeur.insets = new Insets(0, 0, 5, 5);
@@ -343,47 +350,20 @@ public class PageNouveauLocataire {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				java.sql.Date sqlDate = java.sql.Date.valueOf(dateValeur.getText());
-                daoLoc = new LocataireDAO();
-                Locataire l = new Locataire(nomValeur.getText(), prenomValeur.getText(), telephoneValeur.getText(),
-                        mailValeur.getText(), sqlDate, (String) genreValeur.getSelectedItem());
+				daoLoc = new LocataireDAO();
+				Locataire l = new Locataire(nomValeur.getText(), prenomValeur.getText(), telephoneValeur.getText(),
+						mailValeur.getText(), sqlDate, (String) genreValeur.getSelectedItem());
 
-					// Création de l'objet Locataire
-					daoLoc = new LocataireDAO();
-					Locataire l = new Locataire(nomValeur.getText(),prenomValeur.getText(),
-							telephoneValeur.getText(),mailValeur.getText(),sqlDate,(String) genreValeur.getSelectedItem(),
-							daoLoc.getLastIdLocataire() + 1
-					);
-
-					// Ajout du locataire dans la base de données
-					LocataireDAO locataireDAO = new LocataireDAO();
-					locataireDAO.addLocataire(l);
-
-					// Message de confirmation
-					JOptionPane.showMessageDialog(
-							null,"Le locataire a bien été ajouté !","Succès",JOptionPane.INFORMATION_MESSAGE
-					);
-
-					// Rouvrir la même page
-					JFrame ancienneFenetre = (JFrame) SwingUtilities.getWindowAncestor(enregistrerButton);
-					ancienneFenetre.dispose(); // Fermer l'ancienne fenêtre
-					PageNouveauLocataire nouvellePage = new PageNouveauLocataire(); // Créer une nouvelle instance de la page
-					nouvellePage.frame.setVisible(true); // Afficher la nouvelle instance
-
-				} catch (Exception ex) {
-					// Gestion des erreurs
-					JOptionPane.showMessageDialog(null,"Erreur lors de l'ajout du locataire : " + ex.getMessage(),"Erreur",JOptionPane.ERROR_MESSAGE);
-					ex.printStackTrace();
-				}
 			}
 		});
 
 		this.frame.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {
-                ResizedImage res = new ResizedImage();
-                res.resizeImage("logo+nom.png", PageNouveauLocataire.this.frame,
-PageNouveauLocataire.this.logo, 3, 8);
-                int frameWidth = PageNouveauLocataire.this.frame.getWidth();
+				ResizedImage res = new ResizedImage();
+				res.resizeImage("logo+nom.png", PageNouveauLocataire.this.frame,
+						PageNouveauLocataire.this.logo, 3, 8);
+				int frameWidth = PageNouveauLocataire.this.frame.getWidth();
 				int frameHeight = PageNouveauLocataire.this.frame.getHeight();
 
 				int newFontSize = Math.min(frameWidth, frameHeight) / 30;
@@ -434,7 +414,7 @@ PageNouveauLocataire.this.logo, 3, 8);
 		return adresseValeur;
 	}
 
-	public JComboBox getVilleValeur(){
+	public JComboBox getVilleValeur() {
 		return villeValeur;
 	}
 

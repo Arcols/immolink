@@ -86,11 +86,11 @@ public class PageAccueil {
 
 				// Appliquer la nouvelle police au bouton
 				Font resizedFont = new Font("Arial", Font.PLAIN, newFontSize);
-				b_loca.setFont(resizedFont);
-				b_baux.setFont(resizedFont);
-				b_accueil.setFont(resizedFont);
-				b_profil.setFont(resizedFont);
-				b_biens.setFont(resizedFont);
+//				b_loca.setFont(resizedFont);
+//				b_baux.setFont(resizedFont);
+//				b_accueil.setFont(resizedFont);
+//				b_profil.setFont(resizedFont);
+//				b_biens.setFont(resizedFont);
 			}
 		});
 

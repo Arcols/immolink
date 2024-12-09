@@ -13,7 +13,7 @@ import javax.swing.JLabel;
 
 public class ResizedImage {
 
-	public void resizeImage(String imagePath, JFrame frame, JLabel label, int width, int height) {
+	public static void resizeImage(String imagePath, JFrame frame, JLabel label, int width, int height) {
 
 		if (width > 0 && height > 0) {
 

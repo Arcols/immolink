@@ -24,7 +24,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
-import static ihm.ModelePageBienImmobilier.loadDataBienImmoToTable;
+import static ihm.ModelePageMesBiens.loadDataBienImmoToTable;
 
 public class PageMesBiens {
 
@@ -147,7 +147,7 @@ public class PageMesBiens {
         gbc_table.gridy = 1;
         panel.add(table, gbc_table);
         try {
-            DefaultTableModel model = ModelePageBienImmobilier.loadDataBienImmoToTable();
+            DefaultTableModel model = ModelePageMesBiens.loadDataBienImmoToTable();
             table.setModel(model);
         } catch (SQLException | DAOException e) {
             JOptionPane.showMessageDialog(frame, "Erreur lors du chargement des données : " + e.getMessage(),

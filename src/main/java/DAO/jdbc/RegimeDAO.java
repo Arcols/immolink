@@ -11,24 +11,19 @@ public class RegimeDAO implements DAO.RegimeDAO {
 
     @Override
     public Float getValeur() {
-        ConnectionDB cn;
         Float valeur = 0F;
 
-        try {
-            cn = new ConnectionDB();
-            try (Connection conn = cn.getConnection();
-                 PreparedStatement pstmt = conn.prepareStatement("SELECT valeur FROM regimemicrofoncier WHERE id = 1");
-                 ResultSet rs = pstmt.executeQuery()) {
+        Connection cn = ConnectionDB.getInstance();
+        try (
+             PreparedStatement pstmt = cn.prepareStatement("SELECT valeur FROM regimemicrofoncier WHERE id = 1");
+             ResultSet rs = pstmt.executeQuery()) {
 
-                if (rs.next()) {
-                    valeur = rs.getFloat("valeur");
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-                throw new RuntimeException("Erreur lors de la récupération de la valeur du régime microfoncier.", e);
+            if (rs.next()) {
+                valeur = rs.getFloat("valeur");
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Erreur lors de la connexion à la base de données.", e);
+            e.printStackTrace();
+            throw new RuntimeException("Erreur lors de la récupération de la valeur du régime microfoncier.", e);
         }
 
         return valeur;
@@ -36,21 +31,16 @@ public class RegimeDAO implements DAO.RegimeDAO {
 
     @Override
     public void updateValeur(Float nouvelleValeur) {
-        ConnectionDB cn;
+        Connection cn = ConnectionDB.getInstance();
 
-        try {
-            cn = new ConnectionDB();
-            try (Connection conn = cn.getConnection();
-                 PreparedStatement pstmt = conn.prepareStatement("UPDATE regimemicrofoncier SET valeur = ? WHERE id = 1")) {
+        try (
+             PreparedStatement pstmt = cn.prepareStatement("UPDATE regimemicrofoncier SET valeur = ? WHERE id = 1")) {
 
-                pstmt.setFloat(1, nouvelleValeur);
-                pstmt.executeUpdate();
-            } catch (SQLException e) {
-                e.printStackTrace();
-                throw new RuntimeException("Erreur lors de la mise à jour de la valeur du régime microfoncier.", e);
-            }
+            pstmt.setFloat(1, nouvelleValeur);
+            pstmt.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Erreur lors de la connexion à la base de données.", e);
+            e.printStackTrace();
+            throw new RuntimeException("Erreur lors de la mise à jour de la valeur du régime microfoncier.", e);
         }
     }
 }

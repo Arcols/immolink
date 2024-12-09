@@ -1,6 +1,7 @@
 package modele;
 
 import DAO.DAOException;
+import DAO.jdbc.LogementDAO;
 import ihm.*;
 import ihm.Menu;
 
@@ -30,13 +31,13 @@ public class PageMonBien {
 
     private JFrame frame;
     private JLabel logo;
-    private JTextField choix_loyer;
-    private JTextField choix_prevision;
-    private JTextField choix_depot_garantie;
-    private JTable table;
-    private DefaultTableModel tableModel;
+    private JLabel affichageNumeroFiscal;
+    private JLabel affichageVille;
+    private JLabel affichageAdresse;
+    private JLabel affichageComplement;
     private JTable tableDiagnostics;
     private JTable tableTravaux;
+    private DefaultTableModel tableModel;
 
     /**
      * Launch the application.
@@ -72,6 +73,19 @@ public class PageMonBien {
         this.frame.getContentPane().setBackground(Charte.FOND.getCouleur());
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Menu m = new Menu(this.frame);
+
+        try {
+            // Instanciation du DAO et du modèle
+            ModelePageMonBien modele = new ModelePageMonBien();
+
+            // Chargement des données du bien
+            modele.chargerDonneesBien(idBien, this);
+
+        } catch (DAOException e) {
+            JOptionPane.showMessageDialog(frame, "Erreur lors du chargement des données du bien : " + e.getMessage(),
+                    "Erreur", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
 
         // Panel d'entête pour le logo et le nom de l'appli
         JPanel entete = new JPanel();
@@ -134,94 +148,134 @@ public class PageMonBien {
         JLabel lblNewLabel = new JLabel("Mon bien");
         lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
         body.add(lblNewLabel, BorderLayout.NORTH);
-
-        JPanel panel = new JPanel();
-        body.add(panel, BorderLayout.WEST);
-        GridBagLayout gbl_panel = new GridBagLayout();
-        gbl_panel.columnWidths = new int[] {0, 0};
-        gbl_panel.rowHeights = new int[] {0};
-        gbl_panel.columnWeights = new double[]{0.0, 0.0};
-        gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0};
-        panel.setLayout(gbl_panel);
-
-        JLabel affichageTypeBien = new JLabel("Type de bien");
-        GridBagConstraints gbc_affichageTypeBien = new GridBagConstraints();
-        gbc_affichageTypeBien.insets = new Insets(0, 0, 5, 5);
-        gbc_affichageTypeBien.gridx = 0;
-        gbc_affichageTypeBien.gridy = 0;
-        panel.add(affichageTypeBien, gbc_affichageTypeBien);
-
-        JLabel lblNewLabel_2 = new JLabel("New label");
-        GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
-        gbc_lblNewLabel_2.insets = new Insets(0, 0, 5, 5);
-        gbc_lblNewLabel_2.gridx = 1;
-        gbc_lblNewLabel_2.gridy = 0;
-        panel.add(lblNewLabel_2, gbc_lblNewLabel_2);
-
-        JLabel labelVille = new JLabel("Ville");
-        GridBagConstraints gbc_labelVille = new GridBagConstraints();
-        gbc_labelVille.insets = new Insets(0, 0, 5, 5);
-        gbc_labelVille.gridx = 0;
-        gbc_labelVille.gridy = 1;
-        panel.add(labelVille, gbc_labelVille);
-
-        JLabel affichageVille = new JLabel("New label");
-        GridBagConstraints gbc_affichageVille = new GridBagConstraints();
-        gbc_affichageVille.insets = new Insets(0, 0, 5, 5);
-        gbc_affichageVille.gridx = 1;
-        gbc_affichageVille.gridy = 1;
-        panel.add(affichageVille, gbc_affichageVille);
-
-        JLabel labelAdresse = new JLabel("Adresse");
-        GridBagConstraints gbc_labelAdresse = new GridBagConstraints();
-        gbc_labelAdresse.insets = new Insets(0, 0, 5, 5);
-        gbc_labelAdresse.gridx = 0;
-        gbc_labelAdresse.gridy = 2;
-        panel.add(labelAdresse, gbc_labelAdresse);
-
-        JLabel affichageAdresse = new JLabel("New label");
-        GridBagConstraints gbc_affichageAdresse = new GridBagConstraints();
-        gbc_affichageAdresse.insets = new Insets(0, 0, 5, 5);
-        gbc_affichageAdresse.gridx = 1;
-        gbc_affichageAdresse.gridy = 2;
-        panel.add(affichageAdresse, gbc_affichageAdresse);
-
-        JLabel labelComplement = new JLabel("Complement");
-        GridBagConstraints gbc_labelComplement = new GridBagConstraints();
-        gbc_labelComplement.insets = new Insets(0, 0, 5, 5);
-        gbc_labelComplement.gridx = 0;
-        gbc_labelComplement.gridy = 3;
-        panel.add(labelComplement, gbc_labelComplement);
-
-        JLabel affichageComplement = new JLabel("New label");
-        GridBagConstraints gbc_affichageComplement = new GridBagConstraints();
-        gbc_affichageComplement.insets = new Insets(0, 0, 5, 5);
-        gbc_affichageComplement.gridx = 1;
-        gbc_affichageComplement.gridy = 3;
-        panel.add(affichageComplement, gbc_affichageComplement);
-
-        JScrollPane scrollPane = new JScrollPane();
-        body.add(scrollPane, BorderLayout.CENTER);
-
-        tableDiagnostics = new JTable();
-        scrollPane.setViewportView(tableDiagnostics);
         try {
             DefaultTableModel model = ModelePageMonBien.loadDataDiagnosticsToTable(idBien);
-            table.setModel(model);
         } catch (SQLException | DAOException e) {
             JOptionPane.showMessageDialog(frame, "Erreur lors du chargement des données : " + e.getMessage(),
                     "Erreur", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
+        try {
+            DefaultTableModel model = ModelePageMonBien.loadDataTravauxToTable();
+
+            JPanel panel_1 = new JPanel();
+            body.add(panel_1, BorderLayout.CENTER);
+            GridBagLayout gbl_panel_1 = new GridBagLayout();
+            gbl_panel_1.columnWidths = new int[] {114, 250, 250};
+            gbl_panel_1.rowHeights = new int[] {0, 0};
+            gbl_panel_1.columnWeights = new double[]{0.0, 0.0, 0.0};
+            gbl_panel_1.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+            panel_1.setLayout(gbl_panel_1);
+
+            JPanel panel = new JPanel();
+            GridBagConstraints gbc_panel = new GridBagConstraints();
+            gbc_panel.anchor = GridBagConstraints.WEST;
+            gbc_panel.insets = new Insets(0, 0, 0, 5);
+            gbc_panel.gridx = 0;
+            gbc_panel.gridy = 0;
+            panel_1.add(panel, gbc_panel);
+            GridBagLayout gbl_panel = new GridBagLayout();
+            gbl_panel.columnWidths = new int[] {0, 0};
+            gbl_panel.rowHeights = new int[] {0};
+            gbl_panel.columnWeights = new double[]{0.0, 0.0};
+            gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0};
+            panel.setLayout(gbl_panel);
+
+            JLabel labelNumeroFiscal = new JLabel("Numero fiscal");
+            GridBagConstraints gbc_labelNumeroFiscal = new GridBagConstraints();
+            gbc_labelNumeroFiscal.anchor = GridBagConstraints.WEST;
+            gbc_labelNumeroFiscal.insets = new Insets(0, 0, 5, 5);
+            gbc_labelNumeroFiscal.gridx = 0;
+            gbc_labelNumeroFiscal.gridy = 0;
+            panel.add(labelNumeroFiscal, gbc_labelNumeroFiscal);
+
+            this.affichageNumeroFiscal = new JLabel("New label");
+            GridBagConstraints gbcaffichageTypeBien = new GridBagConstraints();
+            gbcaffichageTypeBien.anchor = GridBagConstraints.WEST;
+            gbcaffichageTypeBien.insets = new Insets(0, 0, 5, 5);
+            gbcaffichageTypeBien.gridx = 1;
+            gbcaffichageTypeBien.gridy = 0;
+            panel.add(this.affichageNumeroFiscal, gbcaffichageTypeBien);
+
+            JLabel labelVille = new JLabel("Ville");
+            GridBagConstraints gbc_labelVille = new GridBagConstraints();
+            gbc_labelVille.anchor = GridBagConstraints.WEST;
+            gbc_labelVille.insets = new Insets(0, 0, 5, 5);
+            gbc_labelVille.gridx = 0;
+            gbc_labelVille.gridy = 1;
+            panel.add(labelVille, gbc_labelVille);
+
+            this.affichageVille = new JLabel("New label");
+            GridBagConstraints gbc_affichageVille = new GridBagConstraints();
+            gbc_affichageVille.anchor = GridBagConstraints.WEST;
+            gbc_affichageVille.insets = new Insets(0, 0, 5, 5);
+            gbc_affichageVille.gridx = 1;
+            gbc_affichageVille.gridy = 1;
+            panel.add(affichageVille, gbc_affichageVille);
+
+            JLabel labelAdresse = new JLabel("Adresse");
+            GridBagConstraints gbc_labelAdresse = new GridBagConstraints();
+            gbc_labelAdresse.anchor = GridBagConstraints.WEST;
+            gbc_labelAdresse.insets = new Insets(0, 0, 5, 5);
+            gbc_labelAdresse.gridx = 0;
+            gbc_labelAdresse.gridy = 2;
+            panel.add(labelAdresse, gbc_labelAdresse);
+
+            this.affichageAdresse = new JLabel("New label");
+            GridBagConstraints gbc_affichageAdresse = new GridBagConstraints();
+            gbc_affichageAdresse.anchor = GridBagConstraints.WEST;
+            gbc_affichageAdresse.insets = new Insets(0, 0, 5, 5);
+            gbc_affichageAdresse.gridx = 1;
+            gbc_affichageAdresse.gridy = 2;
+            panel.add(this.affichageAdresse, gbc_affichageAdresse);
+
+            JLabel labelComplement = new JLabel("Complement");
+            GridBagConstraints gbc_labelComplement = new GridBagConstraints();
+            gbc_labelComplement.anchor = GridBagConstraints.WEST;
+            gbc_labelComplement.insets = new Insets(0, 0, 5, 5);
+            gbc_labelComplement.gridx = 0;
+            gbc_labelComplement.gridy = 3;
+            panel.add(labelComplement, gbc_labelComplement);
+
+            this.affichageComplement = new JLabel("New label");
+            GridBagConstraints gbc_affichageComplement = new GridBagConstraints();
+            gbc_affichageComplement.anchor = GridBagConstraints.WEST;
+            gbc_affichageComplement.insets = new Insets(0, 0, 5, 5);
+            gbc_affichageComplement.gridx = 1;
+            gbc_affichageComplement.gridy = 3;
+            panel.add(this.affichageComplement, gbc_affichageComplement);
+
+            JScrollPane scrollPane = new JScrollPane();
+            GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+            gbc_scrollPane.fill = GridBagConstraints.BOTH;
+            gbc_scrollPane.anchor = GridBagConstraints.NORTHWEST;
+            gbc_scrollPane.insets = new Insets(0, 0, 0, 5);
+            gbc_scrollPane.gridx = 1;
+            gbc_scrollPane.gridy = 0;
+            panel_1.add(scrollPane, gbc_scrollPane);
+
+            this.tableDiagnostics = new JTable();
+            scrollPane.setViewportView(this.tableDiagnostics);
+            this.tableDiagnostics.setModel(model);
 
 
 
-        JScrollPane scrollPane_1 = new JScrollPane();
-        body.add(scrollPane_1, BorderLayout.EAST);
+            JScrollPane scrollPane_1 = new JScrollPane();
+            GridBagConstraints gbc_scrollPane_1 = new GridBagConstraints();
+            gbc_scrollPane_1.fill = GridBagConstraints.BOTH;
+            gbc_scrollPane_1.anchor = GridBagConstraints.NORTHWEST;
+            gbc_scrollPane_1.gridx = 2;
+            gbc_scrollPane_1.gridy = 0;
+            panel_1.add(scrollPane_1, gbc_scrollPane_1);
 
-        tableTravaux = new JTable();
-        scrollPane_1.setViewportView(tableTravaux);
-
+            this.tableTravaux = new JTable();
+            scrollPane_1.setViewportView(this.tableTravaux);
+            this.tableTravaux.setModel(model);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(frame, "Erreur lors du chargement des données : " + e.getMessage(),
+                    "Erreur", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
 
 
 
@@ -255,5 +309,13 @@ public class PageMonBien {
     public DefaultTableModel getTableModel() {
         return tableModel;
     }
+
+    public JLabel getAffichageNumeroFiscal(){ return this.affichageNumeroFiscal;}
+
+    public JLabel getAffichageVille(){ return this.affichageVille;}
+
+    public JLabel getAffichageAdresse(){ return this.affichageAdresse;}
+
+    public JLabel getAffichageComplement(){ return this.affichageComplement;}
 
 }

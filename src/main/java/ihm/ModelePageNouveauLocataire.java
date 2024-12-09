@@ -1,5 +1,6 @@
 package ihm;
 
+import DAO.jdbc.LocataireDAO;
 import classes.Locataire;
 import modele.PageBienImmobilier;
 import modele.PageNouveauLocataire;
@@ -24,6 +25,8 @@ public class ModelePageNouveauLocataire {
             java.sql.Date sqlDate = java.sql.Date.valueOf(pageNouveauLocataire.getDateValeur().getText());
             Locataire l = new Locataire(pageNouveauLocataire.getNomValeur().getText(), pageNouveauLocataire.getPrenomValeur().getText(), pageNouveauLocataire.getTelephoneValeur().getText(),
                     pageNouveauLocataire.getMailValeur().getText(), sqlDate, (String) pageNouveauLocataire.getGenreValeur().getSelectedItem());
+            LocataireDAO locataireDAO = new LocataireDAO();
+            locataireDAO.addLocataire(l);
         };
     }
 
