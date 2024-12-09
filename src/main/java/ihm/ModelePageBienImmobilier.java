@@ -64,8 +64,8 @@ public class ModelePageBienImmobilier {
 								(String) pageBienImmobilier.getChoix_ville().getSelectedItem(),
 								(String) pageBienImmobilier.getChoix_adresse().getSelectedItem(),
 								pageBienImmobilier.getChoix_complement_adresse().getText(),
-								pageBienImmobilier.getListe_diagnostic(),
-								pageBienImmobilier.getCheck_garage().isSelected());
+								pageBienImmobilier.getListe_diagnostic()
+								);
 					} catch (Exception ex) {
 						JOptionPane.showMessageDialog(null, "Une erreur est survenue lors de la création du logement.", "Erreur", JOptionPane.ERROR_MESSAGE);
 					}

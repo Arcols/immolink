@@ -8,8 +8,8 @@ import classes.Garage;
 import classes.Logement;
 import enumeration.TypeLogement;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class LogementDAO implements DAO.LogementDAO {
@@ -17,21 +17,16 @@ public class LogementDAO implements DAO.LogementDAO {
 	public void create(Logement appart) throws DAOException {
 		try {
 			Connection cn = ConnectionDB.getInstance();
-			String requete = "INSERT INTO bienlouable (numero_fiscal, complement_adresse, type_logement, Nombre_pieces, surface, idBat, garage_assoc) VALUES (?,?,?,?,?,?,?)";
+			String requete = "INSERT INTO bienlouable (numero_fiscal, complement_adresse, type_logement, Nombre_pieces, surface, garage_assoc,idBat) VALUES (?,?,?,?,?,?,?)";
 			PreparedStatement pstmt = cn.prepareStatement(requete);
 			pstmt.setString(1, appart.getNumero_fiscal());
 			pstmt.setString(2, appart.getComplement_adresse());
 			pstmt.setInt(3, TypeLogement.APPARTEMENT.getValue());
 			pstmt.setInt(4, appart.getNbPiece());
 			pstmt.setDouble(5, appart.getSurface());
-			if (appart.getGarage()) {
-				pstmt.setInt(6, 1);
-			} else {
-				pstmt.setInt(6, 0);
-			}
 			BatimentDAO bat = new BatimentDAO();
-			pstmt.setInt(6, bat.getIdBat(appart.getVille(), appart.getAdresse()));
-			pstmt.setNull(7, java.sql.Types.INTEGER);  // si on veut ajouter un garagon on utilisera ajouterUnGarageAuLogement par la suite
+			pstmt.setNull(6, java.sql.Types.INTEGER);  // si on veut ajouter un garagon on utilisera ajouterUnGarageAuLogement par la suite
+			pstmt.setInt(7, bat.getIdBat(appart.getVille(), appart.getAdresse()));
 			pstmt.executeUpdate();
 			pstmt.close();
 		} catch (SQLException e) {
@@ -148,9 +143,10 @@ public class LogementDAO implements DAO.LogementDAO {
 		Integer idGarage;
 		try{
 			Connection cn = ConnectionDB.getInstance();
-			String query = "SELECT garage_assoc FROM bienlouable WHERE numero_fiscal = ?";
+			String query = "SELECT garage_assoc FROM bienlouable WHERE numero_fiscal = ? AND type_logement = ?";
 			PreparedStatement pstmt = cn.prepareStatement(query);
 			pstmt.setString(1, logement.getNumero_fiscal());
+			pstmt.setInt(2, TypeLogement.APPARTEMENT.getValue());
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()){
 				idGarage = rs.getInt("garage_assoc");

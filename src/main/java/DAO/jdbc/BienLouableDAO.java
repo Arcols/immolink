@@ -4,7 +4,13 @@ import DAO.DAOException;
 import DAO.db.ConnectionDB;
 import classes.Batiment;
 import classes.BienLouable;
+import classes.Diagnostic;
+import classes.Garage;
 import enumeration.*;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BienLouableDAO implements DAO.BienLouableDAO {
 
@@ -28,6 +34,23 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
         } catch (SQLException | DAOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void lierUnGarageAuBienLouable(BienLouable bien, Garage garage) throws DAOException {
+        try {
+            Connection cn = ConnectionDB.getInstance();
+            String query = "UPDATE bienlouable SET garage_assoc = ? WHERE numero_fiscal = ? AND type_logement = ?";
+            PreparedStatement pstmt = cn.prepareStatement(query);
+            GarageDAO garageDAO = new GarageDAO();
+            pstmt.setInt(1, garageDAO.getIdGarage(garage.getNumero_fiscal()));
+            pstmt.setString(2, bien.getNumero_fiscal());
+            pstmt.setInt(3, TypeLogement.APPARTEMENT.getValue());
+            pstmt.executeUpdate();
+            pstmt.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -61,11 +84,27 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
         return bien;
     }
 
-	@Override
-	public void update(BienLouable bien) throws DAOException {
-		// TODO Auto-generated method stub
+    @Override
+    public Integer getId(String num_fiscal) throws DAOException {
+        Integer id = null;
+        try {
+            Connection cn = ConnectionDB.getInstance();
+            String query = "SELECT id FROM bienlouable WHERE numero_fiscal = ? AND type_logement = ?";
+            PreparedStatement pstmt = cn.prepareStatement(query);
+            pstmt.setString(1, num_fiscal);
+            pstmt.setInt(2,TypeLogement.APPARTEMENT.getValue());
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()){
+                id = rs.getInt("id");
+            }
+            pstmt.close();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return id;
+    }
 
-	}
 
     @Override
     public void delete(int id) throws DAOException {
@@ -76,16 +115,38 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
             pstmt.setInt(1, id);
             pstmt.executeUpdate();
             pstmt.close();
-            
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-	@Override
-	public List<BienLouable> findAll() throws DAOException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public List<BienLouable> findAll() throws DAOException {
+        List<BienLouable> Allbien = new ArrayList<>();
+        try {
+            Connection cn = ConnectionDB.getInstance();
+            String query = "SELECT * FROM bienlouable";
+            PreparedStatement pstmt = cn.prepareStatement(query);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()){
+                String num_fisc = rs.getString("numero_fiscal");
+                String compl = rs.getString("complement_adresse");
+                Integer id_bat = rs.getInt("IdBat");
+                String ville = new BatimentDAO().readId(id_bat).getVille();
+                String adresse = new BatimentDAO().readId(id_bat).getAdresse();
+                List<Diagnostic> lDiags = new DiagnosticDAO().readAllDiag(rs.getInt("id"));
+                GarageDAO garageDAO = new GarageDAO();
+                Allbien.add(new BienLouable(num_fisc,ville,adresse,compl,lDiags,garageDAO.getIdGarage(num_fisc)));
+            }
+            rs.close();
+            pstmt.close();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return Allbien;
+    }
+
 
 }
