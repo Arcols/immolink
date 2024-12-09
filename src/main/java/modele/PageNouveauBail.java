@@ -321,7 +321,7 @@ public class PageNouveauBail {
         JScrollPane scrollPane = new JScrollPane(table);
         GridBagConstraints gbc_scrollPane = new GridBagConstraints();
         gbc_scrollPane.anchor = GridBagConstraints.NORTH;
-        gbc_scrollPane.fill = GridBagConstraints.HORIZONTAL;
+        gbc_scrollPane.fill = GridBagConstraints.BOTH;
         gbc_scrollPane.insets = new Insets(0, 0, 5, 0);
         gbc_scrollPane.gridx = 0;
         gbc_scrollPane.gridy = 0;
