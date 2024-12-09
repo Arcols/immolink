@@ -1,5 +1,6 @@
 package modele;
 
+import classes.Batiment;
 import ihm.Charte;
 import ihm.Menu;
 import ihm.ModelePageNouveauBail;
@@ -8,19 +9,12 @@ import ihm.ResizedImage;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFormattedTextField;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
@@ -35,6 +29,9 @@ public class PageNouveauBail {
     private JTextField choix_depot_garantie;
     private JTable table;
     private DefaultTableModel tableModel;
+    private Map<String, List<String>> mapVillesAdresses;
+    private Set<String> setVilles;
+
 
     /**
      * Launch the application.
@@ -64,6 +61,15 @@ public class PageNouveauBail {
      * Initialize the contents of the frame.
      */
     private void initialize() {
+
+        try {
+            this.mapVillesAdresses = Batiment.searchAllBatiments();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        this.setVilles = this.mapVillesAdresses.keySet();
+
         ModelePageNouveauBail modele = new ModelePageNouveauBail(this);
 
         this.frame = new JFrame();
@@ -148,21 +154,6 @@ public class PageNouveauBail {
         gbl_panel_bien.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
         panel_bien.setLayout(gbl_panel_bien);
 
-        JLabel type_de_bien = new JLabel("Type de bien");
-        GridBagConstraints gbc_type_de_bien = new GridBagConstraints();
-        gbc_type_de_bien.fill = GridBagConstraints.BOTH;
-        gbc_type_de_bien.insets = new Insets(0, 0, 5, 5);
-        gbc_type_de_bien.gridx = 0;
-        gbc_type_de_bien.gridy = 0;
-        panel_bien.add(type_de_bien, gbc_type_de_bien);
-
-        JComboBox choix_type_de_bien = new JComboBox();
-        GridBagConstraints gbc_choix_type_de_bien = new GridBagConstraints();
-        gbc_choix_type_de_bien.fill = GridBagConstraints.HORIZONTAL;
-        gbc_choix_type_de_bien.insets = new Insets(0, 0, 5, 0);
-        gbc_choix_type_de_bien.gridx = 1;
-        gbc_choix_type_de_bien.gridy = 0;
-        panel_bien.add(choix_type_de_bien, gbc_choix_type_de_bien);
 
         JLabel ville = new JLabel("Ville");
         GridBagConstraints gbc_ville = new GridBagConstraints();
@@ -179,6 +170,11 @@ public class PageNouveauBail {
         gbc_choix_ville.gridx = 1;
         gbc_choix_ville.gridy = 1;
         panel_bien.add(choix_ville, gbc_choix_ville);
+        if (!this.setVilles.isEmpty()) {
+            choix_ville.setModel(new DefaultComboBoxModel(this.setVilles.toArray(new String[0])));
+        } else {
+            choix_ville.setModel(new DefaultComboBoxModel());
+        }
 
         JLabel Adresse = new JLabel("Adresse");
         GridBagConstraints gbc_Adresse = new GridBagConstraints();
@@ -220,7 +216,7 @@ public class PageNouveauBail {
         gbc_surface.gridy = 4;
         panel_bien.add(surface, gbc_surface);
 
-        JLabel choix_surface = new JLabel("New label");
+        JLabel choix_surface = new JLabel("");
         GridBagConstraints gbc_choix_surface = new GridBagConstraints();
         gbc_choix_surface.fill = GridBagConstraints.BOTH;
         gbc_choix_surface.insets = new Insets(0, 0, 5, 0);
@@ -236,7 +232,7 @@ public class PageNouveauBail {
         gbc_nb_piece.gridy = 5;
         panel_bien.add(nb_piece, gbc_nb_piece);
 
-        JLabel choix_nb_piece = new JLabel("New label");
+        JLabel choix_nb_piece = new JLabel("");
         GridBagConstraints gbc_choix_nb_piece = new GridBagConstraints();
         gbc_choix_nb_piece.fill = GridBagConstraints.BOTH;
         gbc_choix_nb_piece.insets = new Insets(0, 0, 5, 0);
