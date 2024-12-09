@@ -50,6 +50,7 @@ public class PageNouveauBienImmobilier {
 	private JLabel surface;
 	private JLabel nombre_piece;
 	private JLabel complement_adresse;
+	private JLabel code_postal=new JLabel("Code postal");
 	private JTextField choix_num_fiscal;
 	private JTextField choix_complement_adresse;
 	private JButton valider;
@@ -58,6 +59,7 @@ public class PageNouveauBienImmobilier {
 	private JComboBox choix_type_de_bien;
 	private JTextField texte_ville = new JTextField();
 	private JTextField texte_adresse = new JTextField();
+	private JTextField texte_code_postal = new JTextField();
 	private JSpinner choix_nb_piece;
 	private JSpinner choix_surface;
 	private JCheckBox check_garage;
@@ -501,6 +503,14 @@ PageNouveauBienImmobilier.this.logo, 3, 8);
 
 	public JLabel getSurface() {
 		return surface;
+	}
+
+	public JTextField getTexte_code_postal() {
+		return texte_code_postal;
+	}
+
+	public JLabel getCode_postalLabel() {
+		return code_postal;
 	}
 
 	public void checkFields() {
