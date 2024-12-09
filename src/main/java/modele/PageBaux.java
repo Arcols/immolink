@@ -133,7 +133,12 @@ public class PageBaux {
 		String[] columns = { "Adresse", "Complément", "Ville", "Locataires", "Loyer", "Statut" };
 
 		// Créer le modèle de table avec les données
-		DefaultTableModel tableModel = new DefaultTableModel(data, columns);
+		DefaultTableModel tableModel = new DefaultTableModel(data, columns) {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false; // Toutes les cellules sont non éditables
+			}
+		};
 
 		// Créer la table avec ce modèle
 		JTable table = new JTable(tableModel);
@@ -153,6 +158,65 @@ public class PageBaux {
 		ajouter.setVerticalTextPosition(SwingConstants.TOP);
 		ajouter.setVerticalAlignment(SwingConstants.BOTTOM);
 		bas_de_page.add(ajouter, BorderLayout.EAST);
+
+		table.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+			public void mouseClicked(java.awt.event.MouseEvent evt) {
+				// Vérifier s'il s'agit d'un double-clic
+				if (evt.getClickCount() == 2) {
+					// Obtenir l'index de la ligne cliquée
+					int row = table.getSelectedRow();
+
+					// Récupérer les données de la ligne sélectionnée
+					if (row != -1) {
+						String adresse = (String) tableModel.getValueAt(row, 0);
+						String complement = (String) tableModel.getValueAt(row, 1);
+						String ville = (String) tableModel.getValueAt(row, 2);
+						String locataire = (String) tableModel.getValueAt(row, 3);
+						String loyer = (String) tableModel.getValueAt(row, 4);
+						String statut = (String) tableModel.getValueAt(row, 5);
+
+						// Ouvrir une nouvelle fenêtre avec ces données
+						openNewPage(adresse, complement, ville, locataire, loyer, statut);
+					}
+				}
+			}
+		});
+	}
+
+	private void openNewPage(String adresse, String complement, String ville, String locataire, String loyer,
+							 String statut) {
+		// Créer une nouvelle JFrame
+		JFrame newFrame = new JFrame("Détails du bail");
+		newFrame.setSize(400, 300);
+		newFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+		// Ajouter les données dans un panel
+		JPanel panel = new JPanel();
+		panel.setLayout(new GridLayout(6, 2));
+
+		panel.add(new JLabel("Adresse:"));
+		panel.add(new JLabel(adresse));
+
+		panel.add(new JLabel("Complément:"));
+		panel.add(new JLabel(complement));
+
+		panel.add(new JLabel("Ville:"));
+		panel.add(new JLabel(ville));
+
+		panel.add(new JLabel("Locataire:"));
+		panel.add(new JLabel(locataire));
+
+		panel.add(new JLabel("Loyer:"));
+		panel.add(new JLabel(loyer));
+
+		panel.add(new JLabel("Statut:"));
+		panel.add(new JLabel(statut));
+
+		newFrame.add(panel);
+
+		// Rendre la nouvelle fenêtre visible
+		newFrame.setVisible(true);
 	}
 
 }
