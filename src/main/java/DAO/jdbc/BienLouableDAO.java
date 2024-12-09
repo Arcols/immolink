@@ -8,6 +8,7 @@ import classes.Diagnostic;
 import classes.Garage;
 import enumeration.TypeLogement;
 
+import java.lang.reflect.Type;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -100,12 +101,11 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
         try {
             Connection cn = ConnectionDB.getInstance();
             idGarage = new GarageDAO().getIdGarage(garage.getNumero_fiscal());
-            idBat = new BienLouableDAO().getId(bien.getNumero_fiscal());
-            String query = "UPDATE bienlouable SET garage_assoc = ? WHERE numero_fiscal = ? AND id = ?";
+            String query = "UPDATE bienlouable SET garage_assoc = ? WHERE numero_fiscal = ? AND type_logement = ?";
             PreparedStatement pstmt = cn.prepareStatement(query);
             pstmt.setInt(1, idGarage);
             pstmt.setString(2, bien.getNumero_fiscal());
-            pstmt.setInt(3, idBat);
+            pstmt.setInt(3, TypeLogement.APPARTEMENT.getValue());
             pstmt.executeUpdate();
             pstmt.close();
         }catch (SQLException e){
@@ -187,6 +187,8 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
         }
         return adresses;
     }
+
+
 
 }
 

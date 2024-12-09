@@ -37,7 +37,6 @@ public class LocataireDAOTest {
     @Test
     public void testAddLocataire() throws SQLException {
         Locataire locataireRecupere = locataireDAO.getLocataireByNomPrénomTel("Doe", "John", "0606060606");
-        System.out.println(locataireRecupere);
         assertEquals("Doe", locataireRecupere.getNom());
         assertEquals("John", locataireRecupere.getPrénom());
         assertEquals("0606060606", locataireRecupere.getTéléphone());

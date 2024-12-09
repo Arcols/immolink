@@ -470,7 +470,7 @@ public class PageBienImmobilier {
 								PageBienImmobilier.this.choix_num_fiscal.getText(),
 								(String) choix_ville.getSelectedItem(), (String) choix_adresse.getSelectedItem(),
 								PageBienImmobilier.this.choix_complement_adresse.getText(),
-								PageBienImmobilier.this.liste_diagnostic, bool);
+								PageBienImmobilier.this.liste_diagnostic);
 					} catch (IllegalArgumentException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();

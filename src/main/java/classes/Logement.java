@@ -14,7 +14,7 @@ public class Logement extends BienLouable {
 
 	// Constructeur si il n'y a pas de garage présent
 	public Logement(int nb_piece, double surface, String numero_fiscal, String ville, String adresse,
-			String complement_adresse, List<Diagnostic> diagnostic, Boolean haveGarage)
+			String complement_adresse, List<Diagnostic> diagnostic)
 			throws IllegalArgumentException {
 		super(numero_fiscal, ville, adresse, complement_adresse, diagnostic,null);
 		if (surface < 9.0F) {

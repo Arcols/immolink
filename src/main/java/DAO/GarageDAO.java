@@ -50,4 +50,5 @@ public interface GarageDAO {
 	 * @throws DAOException en cas d'erreur lors de la lecture des biens immobiliers
 	 */
 	List<Garage> findAll() throws DAOException;
+
 }
