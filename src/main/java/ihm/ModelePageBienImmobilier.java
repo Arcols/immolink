@@ -96,10 +96,34 @@ public class ModelePageBienImmobilier {
 					}
 					break;
 				case BATIMENT:
+<<<<<<< HEAD
 					new Batiment(pageNouveauBienImmobilier.getChoix_num_fiscal().getText(),
 							(String) pageNouveauBienImmobilier.getChoix_ville().getSelectedItem(),
 							(String) pageNouveauBienImmobilier.getChoix_adresse()
 									.getSelectedItem());
+=======
+					try {
+						new Batiment(pageNouveauBienImmobilier.getChoix_num_fiscal().getText(),
+								(String) pageNouveauBienImmobilier.getChoix_ville().getSelectedItem(),
+								(String) pageNouveauBienImmobilier.getChoix_adresse()
+										.getSelectedItem(),
+								pageNouveauBienImmobilier.getTexte_code_postal().getText());
+						JOptionPane.showMessageDialog(null, "Le bien a été ajouté !", "Succès",
+								JOptionPane.INFORMATION_MESSAGE);
+						// Fermer l'ancienne page
+						JFrame ancienneFenetre = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
+						ancienneFenetre.dispose();
+
+						// Ouvrir une nouvelle instance de la même page
+						PageNouveauBienImmobilier nouvellePage = new PageNouveauBienImmobilier(); // Remplacez par le
+						// constructeur de votre
+						// page
+						nouvellePage.getFrame().setVisible(true);
+					} catch (Exception ex) {
+						JOptionPane.showMessageDialog(null, "Une erreur est survenue lors de la création du logement.",
+								"Erreur", JOptionPane.ERROR_MESSAGE);
+					}
+>>>>>>> 28a2249 (Modele update pour codepostal)
 					break;
 				case GARAGE:
 					if (pageNouveauBienImmobilier.getCheck_garage().isSelected()) {
@@ -219,6 +243,27 @@ public class ModelePageBienImmobilier {
 				this.pageBienImmobilier.getPanel_caracteristique().remove(this.pageBienImmobilier.getCode_postalLabel());
 
 			}
+
+			if (isBatiment) {
+				gbc.gridx = 1;
+				gbc.gridy = 4;
+				this.pageNouveauBienImmobilier.getPanel_caracteristique()
+						.add(this.pageNouveauBienImmobilier.getTexte_code_postal(), gbc);
+			} else {
+				this.pageNouveauBienImmobilier.getPanel_caracteristique()
+						.remove(this.pageNouveauBienImmobilier.getTexte_code_postal());
+			}
+
+			if (isBatiment) {
+				gbc.gridx = 1;
+				gbc.gridy = 4;
+				this.pageNouveauBienImmobilier.getPanel_caracteristique()
+						.add(this.pageNouveauBienImmobilier.getCode_postalLabel(), gbc);
+			} else {
+				this.pageNouveauBienImmobilier.getPanel_caracteristique()
+						.remove(this.pageNouveauBienImmobilier.getCode_postalLabel());
+			}
+
 
 			// Rafraîchir l'interface
 			this.pageNouveauBienImmobilier.getPanel_caracteristique().revalidate();
