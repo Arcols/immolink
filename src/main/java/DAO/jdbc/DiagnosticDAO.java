@@ -9,21 +9,18 @@ import com.mysql.cj.protocol.a.SqlDateValueEncoder;
 
 import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DiagnosticDAO implements DAO.DiagnosticDAO{
 
-    private Connection cn;
 
     @Override
     public void create(Diagnostic diagnostic,String numero_fiscal) throws DAOException {
         BienLouable bien = new BienLouableDAO().readFisc(numero_fiscal);
         Integer id = new BienLouableDAO().getId(numero_fiscal);
-        ConnectionDB db;
-        Connection cn = null;
         try {
-            db = ConnectionDB.getInstance();
-            cn = db.getConnection();
+            Connection cn = ConnectionDB.getInstance();
             String requete = "INSERT INTO diagnostiques (id,pdf_diag, type, date_expiration) VALUES (?,?,?,?)";
             PreparedStatement pstmt = cn.prepareStatement(requete);
             pstmt.setInt(1, id);
@@ -32,7 +29,7 @@ public class DiagnosticDAO implements DAO.DiagnosticDAO{
             pstmt.setDate(4, diagnostic.getDateInvalidite());
             pstmt.executeUpdate();
             pstmt.close();
-            cn.close();
+            
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -43,11 +40,8 @@ public class DiagnosticDAO implements DAO.DiagnosticDAO{
         BienLouable bien = new BienLouableDAO().readFisc(numero_fiscal);
         Integer id = new BienLouableDAO().getId(numero_fiscal);
         List<Diagnostic> lDiags = null;
-        ConnectionDB db;
-        Connection cn = null;
         try {
-            db = ConnectionDB.getInstance();
-            cn = db.getConnection();
+            Connection cn = ConnectionDB.getInstance();
             String query = "SELECT pdf_diag, type, date_expiration FROM diagnostiques WHERE id = ? AND type = ?";
             PreparedStatement pstmt = cn.prepareStatement(query);
             pstmt.setInt(1, id);
@@ -71,11 +65,8 @@ public class DiagnosticDAO implements DAO.DiagnosticDAO{
     public void updatePath(Diagnostic diagnostic, String numero_fiscal, String path) throws DAOException {
         BienLouable bien = new BienLouableDAO().readFisc(numero_fiscal);
         Integer id = new BienLouableDAO().getId(numero_fiscal);
-        ConnectionDB db;
-        Connection cn = null;
         try {
-            db = ConnectionDB.getInstance();
-            cn = db.getConnection();
+            Connection cn = ConnectionDB.getInstance();
             String query = "UPDATE diagnostiques SET pdf_diag = ? WHERE id = ? AND type = ?";
             PreparedStatement pstmt = cn.prepareStatement(query);
             pstmt.setString(1, path);
@@ -83,7 +74,7 @@ public class DiagnosticDAO implements DAO.DiagnosticDAO{
             pstmt.setString(3, diagnostic.getReference());
             pstmt.executeUpdate();
             pstmt.close();
-            cn.close();
+            
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -93,11 +84,8 @@ public class DiagnosticDAO implements DAO.DiagnosticDAO{
     public void updateDate(Diagnostic diagnostic, String numero_fiscal, Date date) throws DAOException {
         BienLouable bien = new BienLouableDAO().readFisc(numero_fiscal);
         Integer id = new BienLouableDAO().getId(numero_fiscal);
-        ConnectionDB db;
-        Connection cn = null;
         try {
-            db = ConnectionDB.getInstance();
-            cn = db.getConnection();
+            Connection cn = ConnectionDB.getInstance();
             String query = "UPDATE diagnostiques SET date_expiration = ? WHERE id = ? AND type = ?";
             PreparedStatement pstmt = cn.prepareStatement(query);
             pstmt.setDate(1, date);
@@ -105,7 +93,7 @@ public class DiagnosticDAO implements DAO.DiagnosticDAO{
             pstmt.setString(3, diagnostic.getReference());
             pstmt.executeUpdate();
             pstmt.close();
-            cn.close();
+            
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -115,18 +103,15 @@ public class DiagnosticDAO implements DAO.DiagnosticDAO{
     public void delete(String numero_fiscal, String reference) throws DAOException {
         BienLouable bien = new BienLouableDAO().readFisc(numero_fiscal);
         Integer id = new BienLouableDAO().getId(numero_fiscal);
-        ConnectionDB db;
-        Connection cn = null;
         try {
-            db = ConnectionDB.getInstance();
-            cn = db.getConnection();
+            Connection cn = ConnectionDB.getInstance();
             String query = "DELETE FROM diagnostiques WHERE id = ? AND type = ?";
             PreparedStatement pstmt = cn.prepareStatement(query);
             pstmt.setInt(1, id);
             pstmt.setString(2, reference);
             pstmt.executeUpdate();
             pstmt.close();
-            cn.close();
+            
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -134,13 +119,9 @@ public class DiagnosticDAO implements DAO.DiagnosticDAO{
 
     @Override
     public List<Diagnostic> readAllDiag(int id) throws DAOException {
-
-        List<Diagnostic> lDiags = null;
-        ConnectionDB db;
-        Connection cn = null;
+        List<Diagnostic> lDiags = new ArrayList<>();
         try {
-            db = ConnectionDB.getInstance();
-            cn = db.getConnection();
+            Connection cn = ConnectionDB.getInstance();
             String query = "SELECT pdf_diag, type, date_expiration FROM diagnostiques WHERE id = ?";
             PreparedStatement pstmt = cn.prepareStatement(query);
             pstmt.setInt(1, id);
@@ -149,10 +130,12 @@ public class DiagnosticDAO implements DAO.DiagnosticDAO{
                 String pdf = rs.getString("pdf_diag");
                 String type = rs.getString("type");
                 Date expi = rs.getDate("date_expiration");
+                Diagnostic diag = new Diagnostic(type,pdf,expi);
                 lDiags.add(new Diagnostic(type,pdf,expi));
             }
+            rs.close();
             pstmt.close();
-            cn.close();
+            
 
         } catch (SQLException e) {
             // TODO Auto-generated catch block

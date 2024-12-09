@@ -36,7 +36,7 @@ public class LogementTest {
         List<Diagnostic> diagnostics = new ArrayList<>();
         diagnostics.add(diagnostic1);
 
-        Logement logement = new Logement(2, 25.0, "123456789101", "Paris", "123 Rue de la Paix", "Appartement 12B", diagnostics, false);
+        Logement logement = new Logement(2, 25.0, "123456789101", "Paris", "123 Rue de la Paix", "Appartement 12B", diagnostics);
 
         // Vérification des attributs du constructeur
         assertEquals(2, logement.getNbPiece());
@@ -48,7 +48,7 @@ public class LogementTest {
         List<Diagnostic> diagnostics = new ArrayList<>();
         diagnostics.add(diagnostic1);
 
-        Logement logement = new Logement(3, 45.0, "123456789101", "Paris", "123 Rue de la Paix", "Appartement 12B", diagnostics, true);
+        Logement logement = new Logement(3, 45.0, "123456789101", "Paris", "123 Rue de la Paix", "Appartement 12B", diagnostics);
 
         // Vérification des attributs spécifiques
         assertEquals(3, logement.getNbPiece());
@@ -60,6 +60,6 @@ public class LogementTest {
         List<Diagnostic> diagnostics = new ArrayList<>();
         diagnostics.add(diagnostic1);
 
-        new Logement(1, 8.5, "123456789101", "Paris", "123 Rue de la Paix", "Appartement 12B", diagnostics, false);
+        new Logement(1, 8.5, "123456789101", "Paris", "123 Rue de la Paix", "Appartement 12B", diagnostics);
     }
 }

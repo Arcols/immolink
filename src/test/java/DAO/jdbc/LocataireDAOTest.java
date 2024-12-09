@@ -14,16 +14,13 @@ import static org.junit.Assert.*;
 
 public class LocataireDAOTest {
 
-    private ConnectionDB db;
-    private Connection cn;
     private LocataireDAO locataireDAO;
     private Locataire locataire;
 
     @Before
     public void setUp() throws SQLException {
-        db = ConnectionDB.getInstance();
-        cn = db.getConnection();
-        //cn.setAutoCommit(false);
+        Connection cn = ConnectionDB.getInstance();
+        cn.setAutoCommit(false);
         locataireDAO = new LocataireDAO();
         locataire = new Locataire("Doe", "John", "0606060606", "ee.ee@ee.ee", java.sql.Date.valueOf("2020-01-01"), "M");
         locataireDAO.addLocataire(locataire);
@@ -31,15 +28,15 @@ public class LocataireDAOTest {
 
     @After
     public void tearDown() throws SQLException {
-        //cn.rollback();
-        //cn.setAutoCommit(true);
-        cn.close();
+        ConnectionDB.rollback();
+        ConnectionDB.setAutoCommit(true);
+        ConnectionDB.destroy();
+
     }
 
     @Test
     public void testAddLocataire() throws SQLException {
         Locataire locataireRecupere = locataireDAO.getLocataireByNomPrénomTel("Doe", "John", "0606060606");
-        System.out.println(locataireRecupere);
         assertEquals("Doe", locataireRecupere.getNom());
         assertEquals("John", locataireRecupere.getPrénom());
         assertEquals("0606060606", locataireRecupere.getTéléphone());

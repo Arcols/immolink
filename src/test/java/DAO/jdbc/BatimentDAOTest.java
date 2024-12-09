@@ -16,23 +16,20 @@ import java.util.Map;
 import static org.junit.Assert.*;
 
 public class BatimentDAOTest {
-    private ConnectionDB db;
-    private Connection cn;
     private BatimentDAO batimentDAO;
 
     @Before
     public void setUp() throws SQLException {
-        db = ConnectionDB.getInstance();
-        cn = db.getConnection();
-        //cn.setAutoCommit(false);
+        Connection cn = ConnectionDB.getInstance();
+        cn.setAutoCommit(false);
         batimentDAO = new BatimentDAO();
     }
 
     @After
     public void tearDown() throws SQLException {
-        //cn.rollback();
-        //cn.setAutoCommit(true);
-        cn.close();
+        ConnectionDB.rollback();
+        ConnectionDB.setAutoCommit(true);
+        ConnectionDB.destroy();
     }
 
     @Test
