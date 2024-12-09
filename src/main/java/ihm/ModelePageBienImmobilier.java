@@ -178,6 +178,24 @@ public class ModelePageBienImmobilier {
 				this.pageBienImmobilier.getPanel_caracteristique().add(this.pageBienImmobilier.getChoix_adresse(), gbc);
 			}
 
+			if (isBatiment) {
+				gbc.gridx = 1;
+				gbc.gridy = 4;
+				this.pageBienImmobilier.getPanel_caracteristique().add(this.pageBienImmobilier.getTexte_code_postal(), gbc);
+			} else {
+				this.pageBienImmobilier.getPanel_caracteristique().remove(this.pageBienImmobilier.getTexte_code_postal());
+
+			}
+
+			if (isBatiment) {
+				gbc.gridx = 0;
+				gbc.gridy = 4;
+				this.pageBienImmobilier.getPanel_caracteristique().add(this.pageBienImmobilier.getCode_postalLabel(), gbc);
+			} else {
+				this.pageBienImmobilier.getPanel_caracteristique().remove(this.pageBienImmobilier.getCode_postalLabel());
+
+			}
+
 			// Rafraîchir l'interface
 			this.pageBienImmobilier.getPanel_caracteristique().revalidate();
 			this.pageBienImmobilier.getPanel_caracteristique().repaint();
