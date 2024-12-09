@@ -1,6 +1,5 @@
 package modele;
 
-import classes.Diagnostic;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -12,6 +11,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.File;
@@ -22,14 +23,32 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.swing.*;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
+import classes.Batiment;
+import classes.Diagnostic;
+import classes.Garage;
+import classes.Logement;
+import enumeration.TypeLogement;
 import ihm.Charte;
 import ihm.Menu;
 import ihm.ModelePageBienImmobilier;
 import ihm.ResizedImage;
-
 
 public class PageBienImmobilier {
 
@@ -52,7 +71,7 @@ public class PageBienImmobilier {
 	private JSpinner choix_nb_piece;
 	private JSpinner choix_surface;
 	private JCheckBox check_garage;
-	private List<classes.Diagnostic> liste_diagnostic;
+	private List<Diagnostic> liste_diagnostic;
 	private Set<String> setVilles;
 	private Map<String, List<String>> mapVillesAdresses;
 
@@ -96,8 +115,7 @@ public class PageBienImmobilier {
 
 		this.liste_diagnostic = new ArrayList<>();
 		try {
-			DAO.jdbc.BatimentDAO tousBat = new DAO.jdbc.BatimentDAO();
-			this.mapVillesAdresses = tousBat.searchAllBatiments();
+			this.mapVillesAdresses = Batiment.searchAllBatiments();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -370,29 +388,7 @@ public class PageBienImmobilier {
 
 			// Créer le bouton "Télécharger" pour chaque diagnostic
 			JButton bouton = new JButton("Télécharger");
-			bouton.addActionListener(e -> {
-				// Créer un JFileChooser pour permettre de sélectionner un fichier
-				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setDialogTitle("Sélectionnez un fichier à associer au diagnostic");
-
-				// Ouvrir le dialogue de sélection de fichier
-				int returnValue = fileChooser.showOpenDialog(null);
-
-				if (returnValue == JFileChooser.APPROVE_OPTION) {
-					// Obtenir le fichier sélectionné
-					File selectedFile = fileChooser.getSelectedFile();
-					try {
-						this.liste_diagnostic
-								.add(new Diagnostic(diagnostic, fileChooser.getSelectedFile().getAbsolutePath()));
-						System.out.println("Rajouté !");
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-                } else {
-					System.out.println("Aucun fichier sélectionné.");
-				}
-			});
+			bouton.addActionListener(modele.getTelechargerPDFButton(diagnostic));
 			gbc_diag.gridx = 1; // Deuxième colonne pour le bouton
 			this.tableau_diagnostic.add(bouton, gbc_diag);
 
@@ -501,7 +497,7 @@ PageBienImmobilier.this.logo, 3, 8);
 		return choix_surface;
 	}
 
-	public List<classes.Diagnostic> getListe_diagnostic() {
+	public List<Diagnostic> getListe_diagnostic() {
 		return liste_diagnostic;
 	}
 

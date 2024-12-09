@@ -5,13 +5,12 @@ import classes.Diagnostic;
 import classes.Garage;
 import classes.Logement;
 import enumeration.TypeLogement;
-import modele.PageBienImmobilier;
+import modele.PageNouveauBienImmobilier;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
@@ -21,10 +20,10 @@ import java.util.Map;
 
 public class ModelePageBienImmobilier {
 
-	private PageBienImmobilier pageBienImmobilier;
+	private PageNouveauBienImmobilier pageBienImmobilier;
 	private static double SURFACE_MINIMALE = 9;
 
-	public ModelePageBienImmobilier(PageBienImmobilier pageBienImmobilier) {
+	public ModelePageBienImmobilier(PageNouveauBienImmobilier pageBienImmobilier) {
 		this.pageBienImmobilier = pageBienImmobilier;
 	}
 
@@ -71,10 +70,15 @@ public class ModelePageBienImmobilier {
 					}
 					break;
 				case BATIMENT:
+					new Batiment
+							(pageBienImmobilier.getChoix_num_fiscal().getText(),
+							(String) pageBienImmobilier.getChoix_ville().getSelectedItem(),
+							(String) pageBienImmobilier.getChoix_adresse()
+									.getSelectedItem());
 					try {
-						new Batiment(pageNouveauBienImmobilier.getChoix_num_fiscal().getText(),
-								(String) pageNouveauBienImmobilier.getTexte_ville().getText(),
-								(String) pageNouveauBienImmobilier.getTexte_adresse().getText());
+						new Batiment(pageBienImmobilier.getChoix_num_fiscal().getText(),
+								(String) pageBienImmobilier.getTexte_ville().getText(),
+								(String) pageBienImmobilier.getTexte_adresse().getText());
 						JOptionPane.showMessageDialog(null, "Le bien a été ajouté !", "Succès",
 								JOptionPane.INFORMATION_MESSAGE);
 						// Fermer l'ancienne page
