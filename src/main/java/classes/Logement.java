@@ -16,7 +16,7 @@ public class Logement extends BienLouable {
 	public Logement(int nb_piece, double surface, String numero_fiscal, String ville, String adresse,
 			String complement_adresse, List<Diagnostic> diagnostic)
 			throws IllegalArgumentException {
-		super(numero_fiscal, ville, adresse, complement_adresse, diagnostic,null);
+		super(numero_fiscal, ville, adresse, complement_adresse, diagnostic);
 		if (surface < 9.0F) {
 			throw new IllegalArgumentException(" Un logement fait au minimum 9m²");
 		}

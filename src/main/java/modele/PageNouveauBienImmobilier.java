@@ -33,6 +33,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
+import DAO.jdbc.BatimentDAO;
 import classes.Batiment;
 import classes.Diagnostic;
 import ihm.Charte;
@@ -107,7 +108,8 @@ public class PageNouveauBienImmobilier {
 
 		this.liste_diagnostic = new ArrayList<>();
 		try {
-			this.mapVillesAdresses = Batiment.searchAllBatiments();
+			BatimentDAO batimentDAO = new BatimentDAO();
+			this.mapVillesAdresses = batimentDAO.searchAllBatiments();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

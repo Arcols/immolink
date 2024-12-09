@@ -22,24 +22,18 @@ public class ModelePageNouveauLocataire {
     public ActionListener getAjouterLocataireListener(){
         return e->{
             java.sql.Date sqlDate = java.sql.Date.valueOf(pageNouveauLocataire.getDateValeur().getText());
-            try {
-                Locataire l = new Locataire(pageNouveauLocataire.getNomValeur().getText(), pageNouveauLocataire.getPrenomValeur().getText(), pageNouveauLocataire.getTelephoneValeur().getText(),
-                        pageNouveauLocataire.getMailValeur().getText(), sqlDate, (String) pageNouveauLocataire.getGenreValeur().getSelectedItem());
+            Locataire l = new Locataire(pageNouveauLocataire.getNomValeur().getText(), pageNouveauLocataire.getPrenomValeur().getText(), pageNouveauLocataire.getTelephoneValeur().getText(),
+                    pageNouveauLocataire.getMailValeur().getText(), sqlDate, (String) pageNouveauLocataire.getGenreValeur().getSelectedItem());
 
-                JOptionPane.showMessageDialog(null,"Le locataire a bien été ajouté !", "Succès",JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null,"Le locataire a bien été ajouté !", "Succès",JOptionPane.INFORMATION_MESSAGE);
 
-                // Fermer l'ancienne page
-                JFrame ancienneFenetre = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
-                ancienneFenetre.dispose();
+            // Fermer l'ancienne page
+            JFrame ancienneFenetre = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
+            ancienneFenetre.dispose();
 
-                // Ouvrir une nouvelle instance de la même page
-                PageNouveauLocataire nouvellePage = new PageNouveauLocataire(); // Remplacez par le constructeur de votre page
-                nouvellePage.getFrame().setVisible(true);
-            } catch (SQLException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-                JOptionPane.showMessageDialog(null,"Erreur dans la saisie d'information", "Erreur de saisie",JOptionPane.ERROR_MESSAGE);
-            }
+            // Ouvrir une nouvelle instance de la même page
+            PageNouveauLocataire nouvellePage = new PageNouveauLocataire(); // Remplacez par le constructeur de votre page
+            nouvellePage.getFrame().setVisible(true);
         };
     }
 

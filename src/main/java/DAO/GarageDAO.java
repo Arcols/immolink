@@ -6,6 +6,7 @@ import java.util.List;
 import classes.Garage;
 
 public interface GarageDAO {
+
 	/**
 	 * Crée un nouveau Garage dans la base de données.
 	 *

@@ -1,5 +1,9 @@
 package ihm;
 
+import DAO.DAOException;
+import DAO.jdbc.BatimentDAO;
+import DAO.jdbc.GarageDAO;
+import DAO.jdbc.LogementDAO;
 import classes.Batiment;
 import classes.Diagnostic;
 import classes.Garage;
@@ -48,23 +52,29 @@ public class ModelePageBienImmobilier {
 
 			switch (selectedType) {
 				case APPARTEMENT:
-					Boolean bool = false;
 					try {
 						if (pageNouveauBienImmobilier.getCheck_garage().isSelected()) {
-							bool = true;
-							new Garage(pageNouveauBienImmobilier.getChoix_num_fiscal().getText(),
+							Garage garage = new Garage(pageNouveauBienImmobilier.getChoix_num_fiscal().getText(),
 									(String) pageNouveauBienImmobilier.getChoix_ville().getSelectedItem(),
 									(String) pageNouveauBienImmobilier.getChoix_adresse().getSelectedItem(),
 									pageNouveauBienImmobilier.getChoix_complement_adresse().getText());
+							GarageDAO garageDAO = new GarageDAO();
+							garageDAO.create(garage);
 						}
+<<<<<<< Updated upstream
 						new Logement((Integer) pageNouveauBienImmobilier.getChoix_nb_piece().getValue(),
 								((Double) pageNouveauBienImmobilier.getChoix_surface().getValue() + this.SURFACE_MINIMALE),
+=======
+						Logement logement = new Logement((Integer) pageNouveauBienImmobilier.getChoix_nb_piece().getValue(),
+								((Double) pageNouveauBienImmobilier.getChoix_surface().getValue()),
+>>>>>>> Stashed changes
 								pageNouveauBienImmobilier.getChoix_num_fiscal().getText(),
 								(String) pageNouveauBienImmobilier.getChoix_ville().getSelectedItem(),
 								(String) pageNouveauBienImmobilier.getChoix_adresse().getSelectedItem(),
 								pageNouveauBienImmobilier.getChoix_complement_adresse().getText(),
 								pageNouveauBienImmobilier.getListe_diagnostic(),
 								pageNouveauBienImmobilier.getCheck_garage().isSelected());
+<<<<<<< Updated upstream
 					} catch (Exception ex) {
 						JOptionPane.showMessageDialog(null, "Une erreur est survenue lors de la création du logement.", "Erreur", JOptionPane.ERROR_MESSAGE);
 					}
@@ -79,16 +89,23 @@ public class ModelePageBienImmobilier {
 						new Batiment(pageBienImmobilier.getChoix_num_fiscal().getText(),
 								(String) pageBienImmobilier.getTexte_ville().getText(),
 								(String) pageBienImmobilier.getTexte_adresse().getText());
+=======
+						LogementDAO logementDAO = new LogementDAO();
+						logementDAO.create(logement);
+>>>>>>> Stashed changes
 						JOptionPane.showMessageDialog(null, "Le bien a été ajouté !", "Succès",
 								JOptionPane.INFORMATION_MESSAGE);
 						// Fermer l'ancienne page
 						JFrame ancienneFenetre = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
 						ancienneFenetre.dispose();
-
 						// Ouvrir une nouvelle instance de la même page
+<<<<<<< Updated upstream
 						PageBienImmobilier nouvellePage = new PageNouveauBienImmobilier(); // Remplacez par le
 																							// constructeur de votre
 																							// page
+=======
+						PageNouveauBienImmobilier nouvellePage = new PageNouveauBienImmobilier();
+>>>>>>> Stashed changes
 						nouvellePage.getFrame().setVisible(true);
 					}catch(Exception ex){
 						JOptionPane.showMessageDialog(null, "Une erreur est survenue lors de la création du logement.",
@@ -103,29 +120,28 @@ public class ModelePageBienImmobilier {
 									.getSelectedItem());
 =======
 					try {
-						new Batiment(pageNouveauBienImmobilier.getChoix_num_fiscal().getText(),
-								(String) pageNouveauBienImmobilier.getChoix_ville().getSelectedItem(),
-								(String) pageNouveauBienImmobilier.getChoix_adresse()
-										.getSelectedItem(),
-								pageNouveauBienImmobilier.getTexte_code_postal().getText());
+						Batiment batiment = new Batiment(pageNouveauBienImmobilier.getChoix_num_fiscal().getText(),
+								(String) pageNouveauBienImmobilier.getTexte_ville().getText(),
+								(String) pageNouveauBienImmobilier.getTexte_adresse().getText(),
+								(String) pageNouveauBienImmobilier.getTexte_code_postal().getText());
+						BatimentDAO batimentDAO = new BatimentDAO();
+						batimentDAO.create(batiment);
 						JOptionPane.showMessageDialog(null, "Le bien a été ajouté !", "Succès",
 								JOptionPane.INFORMATION_MESSAGE);
 						// Fermer l'ancienne page
 						JFrame ancienneFenetre = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
 						ancienneFenetre.dispose();
-
 						// Ouvrir une nouvelle instance de la même page
-						PageNouveauBienImmobilier nouvellePage = new PageNouveauBienImmobilier(); // Remplacez par le
-						// constructeur de votre
-						// page
+						PageNouveauBienImmobilier nouvellePage = new PageNouveauBienImmobilier();
 						nouvellePage.getFrame().setVisible(true);
-					} catch (Exception ex) {
+					} catch (DAOException ex) {
 						JOptionPane.showMessageDialog(null, "Une erreur est survenue lors de la création du logement.",
 								"Erreur", JOptionPane.ERROR_MESSAGE);
 					}
 >>>>>>> 28a2249 (Modele update pour codepostal)
 					break;
 				case GARAGE:
+<<<<<<< Updated upstream
 					if (pageNouveauBienImmobilier.getCheck_garage().isSelected()) {
 						try {
 							new Garage(pageNouveauBienImmobilier.getChoix_num_fiscal().getText(),
@@ -134,7 +150,39 @@ public class ModelePageBienImmobilier {
 									pageNouveauBienImmobilier.getChoix_complement_adresse().getText());
 						} catch (SQLException ex) {
 							throw new RuntimeException(ex);
+=======
+					try {
+						Garage garage = new Garage(pageNouveauBienImmobilier.getChoix_num_fiscal().getText(),
+								(String) pageNouveauBienImmobilier.getChoix_ville().getSelectedItem(),
+								(String) pageNouveauBienImmobilier.getChoix_adresse().getSelectedItem(),
+								pageNouveauBienImmobilier.getChoix_complement_adresse().getText());
+						GarageDAO garageDAO = new GarageDAO();
+						garageDAO.create(garage);
+						JOptionPane.showMessageDialog(null, "Le garage a été ajouté !", "Succès",
+								JOptionPane.INFORMATION_MESSAGE);
+						// Fermer l'ancienne page
+						JFrame ancienneFenetre = (JFrame) SwingUtilities
+								.getWindowAncestor((Component) e.getSource());
+						ancienneFenetre.dispose();
+
+						// Ouvrir une nouvelle instance de la même page
+						PageNouveauBienImmobilier nouvellePage = new PageNouveauBienImmobilier();
+						nouvellePage.getFrame().setVisible(true);
+					} catch (SQLException err) {
+						if (err.getMessage().contains("Erreur : Un garage associé à un logement avec ce numero_fiscal existe déjà.")) {
+							JOptionPane.showMessageDialog(null,
+									"Un garage associé à un logement avec ce numero_fiscal existe déjà.",
+									"Erreur", JOptionPane.ERROR_MESSAGE);
+							err.printStackTrace();
+						} else {
+							JOptionPane.showMessageDialog(null,
+									"Une erreur est survenue lors de la création du Garage.",
+									"Erreur", JOptionPane.ERROR_MESSAGE);
+							err.printStackTrace();
+>>>>>>> Stashed changes
 						}
+					} catch (DAOException ex) {
+						throw new RuntimeException(ex);
 					}
 					break;
 			}
@@ -251,19 +299,18 @@ public class ModelePageBienImmobilier {
 						.add(this.pageNouveauBienImmobilier.getTexte_code_postal(), gbc);
 			} else {
 				this.pageNouveauBienImmobilier.getPanel_caracteristique()
-						.remove(this.pageNouveauBienImmobilier.getTexte_code_postal());
+						.add(this.pageNouveauBienImmobilier.getTexte_code_postal(), gbc);
 			}
 
 			if (isBatiment) {
-				gbc.gridx = 1;
+				gbc.gridx = 0;
 				gbc.gridy = 4;
 				this.pageNouveauBienImmobilier.getPanel_caracteristique()
 						.add(this.pageNouveauBienImmobilier.getCode_postalLabel(), gbc);
 			} else {
 				this.pageNouveauBienImmobilier.getPanel_caracteristique()
-						.remove(this.pageNouveauBienImmobilier.getCode_postalLabel());
+						.add(this.pageNouveauBienImmobilier.getCode_postalLabel(), gbc);
 			}
-
 
 			// Rafraîchir l'interface
 			this.pageNouveauBienImmobilier.getPanel_caracteristique().revalidate();
