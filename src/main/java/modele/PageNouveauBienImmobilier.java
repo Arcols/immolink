@@ -408,7 +408,7 @@ public class PageNouveauBienImmobilier {
 			public void componentResized(ComponentEvent e) {
                 ResizedImage res = new ResizedImage();
                 res.resizeImage("logo+nom.png", PageNouveauBienImmobilier.this.frame,
-				PageNouveauBienImmobilier.this.logo, 3, 8);
+					PageNouveauBienImmobilier.this.logo, 3, 8);
                 int frameWidth = PageNouveauBienImmobilier.this.frame.getWidth();
 				int frameHeight = PageNouveauBienImmobilier.this.frame.getHeight();
 
