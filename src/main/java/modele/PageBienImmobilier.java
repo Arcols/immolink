@@ -61,7 +61,7 @@ public class PageBienImmobilier {
 	private JSpinner choix_nb_piece;
 	private JSpinner choix_surface;
 	private JCheckBox check_garage;
-	private List<Diagnostic> liste_diagnostic;
+	private List<classes.Diagnostic> liste_diagnostic;
 	private Set<String> setVilles;
 	private Map<String, List<String>> mapVillesAdresses;
 
@@ -488,7 +488,7 @@ PageBienImmobilier.this.logo, 3, 8);
 		return choix_surface;
 	}
 
-	public List<Diagnostic> getListe_diagnostic() {
+	public List<classes.Diagnostic> getListe_diagnostic() {
 		return liste_diagnostic;
 	}
 

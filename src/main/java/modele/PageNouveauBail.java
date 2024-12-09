@@ -1,5 +1,7 @@
 package modele;
 
+import DAO.jdbc.BailDAO;
+import DAO.jdbc.BatimentDAO;
 import classes.Batiment;
 import ihm.Charte;
 import ihm.Menu;
@@ -63,7 +65,7 @@ public class PageNouveauBail {
     private void initialize() {
 
         try {
-            this.mapVillesAdresses = Batiment.searchAllBatiments();
+            this.mapVillesAdresses = new BatimentDAO().searchAllBatiments();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

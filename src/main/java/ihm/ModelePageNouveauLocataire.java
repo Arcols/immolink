@@ -22,13 +22,8 @@ public class ModelePageNouveauLocataire {
     public ActionListener getAjouterLocataireListener(){
         return e->{
             java.sql.Date sqlDate = java.sql.Date.valueOf(pageNouveauLocataire.getDateValeur().getText());
-            try {
-                Locataire l = new Locataire(pageNouveauLocataire.getNomValeur().getText(), pageNouveauLocataire.getPrenomValeur().getText(), pageNouveauLocataire.getTelephoneValeur().getText(),
-                        pageNouveauLocataire.getMailValeur().getText(), sqlDate, (String) pageNouveauLocataire.getGenreValeur().getSelectedItem());
-            } catch (SQLException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-            }
+            Locataire l = new Locataire(pageNouveauLocataire.getNomValeur().getText(), pageNouveauLocataire.getPrenomValeur().getText(), pageNouveauLocataire.getTelephoneValeur().getText(),
+                    pageNouveauLocataire.getMailValeur().getText(), sqlDate, (String) pageNouveauLocataire.getGenreValeur().getSelectedItem());
         };
     }
 

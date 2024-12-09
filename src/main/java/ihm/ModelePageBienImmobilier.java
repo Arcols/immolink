@@ -75,7 +75,7 @@ public class ModelePageBienImmobilier {
 							(pageBienImmobilier.getChoix_num_fiscal().getText(),
 							(String) pageBienImmobilier.getChoix_ville().getSelectedItem(),
 							(String) pageBienImmobilier.getChoix_adresse()
-									.getSelectedItem());
+									.getSelectedItem(),"33333");
 					break;
 				case GARAGE:
 					if (pageBienImmobilier.getCheck_garage().isSelected()) {
@@ -185,11 +185,8 @@ public class ModelePageBienImmobilier {
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
 				}
-			} else {
+            } else {
 				System.out.println("Aucun fichier sélectionné.");
 			}
 		};
