@@ -90,7 +90,8 @@ public class ModelePageBienImmobilier {
 						new Batiment(pageNouveauBienImmobilier.getChoix_num_fiscal().getText(),
 								(String) pageNouveauBienImmobilier.getChoix_ville().getSelectedItem(),
 								(String) pageNouveauBienImmobilier.getChoix_adresse()
-										.getSelectedItem());
+										.getSelectedItem(),
+								pageNouveauBienImmobilier.getTexte_code_postal().getText());
 						JOptionPane.showMessageDialog(null, "Le bien a été ajouté !", "Succès",
 								JOptionPane.INFORMATION_MESSAGE);
 						// Fermer l'ancienne page
@@ -212,6 +213,27 @@ public class ModelePageBienImmobilier {
 				this.pageNouveauBienImmobilier.getPanel_caracteristique()
 						.add(this.pageNouveauBienImmobilier.getChoix_adresse(), gbc);
 			}
+
+			if (isBatiment) {
+				gbc.gridx = 1;
+				gbc.gridy = 4;
+				this.pageNouveauBienImmobilier.getPanel_caracteristique()
+						.add(this.pageNouveauBienImmobilier.getTexte_code_postal(), gbc);
+			} else {
+				this.pageNouveauBienImmobilier.getPanel_caracteristique()
+						.remove(this.pageNouveauBienImmobilier.getTexte_code_postal());
+			}
+
+			if (isBatiment) {
+				gbc.gridx = 1;
+				gbc.gridy = 4;
+				this.pageNouveauBienImmobilier.getPanel_caracteristique()
+						.add(this.pageNouveauBienImmobilier.getCode_postalLabel(), gbc);
+			} else {
+				this.pageNouveauBienImmobilier.getPanel_caracteristique()
+						.remove(this.pageNouveauBienImmobilier.getCode_postalLabel());
+			}
+
 
 			// Rafraîchir l'interface
 			this.pageNouveauBienImmobilier.getPanel_caracteristique().revalidate();
