@@ -31,6 +31,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import DAO.jdbc.LocataireDAO;
 import classes.Batiment;
 import classes.Locataire;
 import ihm.Charte;
@@ -88,7 +89,8 @@ public class PageNouveauLocataire {
 	private void initialize() {
 		ModelePageNouveauLocataire modele=new ModelePageNouveauLocataire(this);
 		try {
-			mapVillesAdresses = Batiment.searchAllBatiments();
+			DAO.jdbc.BatimentDAO tousBat = new DAO.jdbc.BatimentDAO();
+			mapVillesAdresses = tousBat.searchAllBatiments();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -50,7 +50,7 @@ public class PageNouveauBienImmobilier {
 	private JLabel surface;
 	private JLabel nombre_piece;
 	private JLabel complement_adresse;
-	private JLabel code_postal=new JLabel("Code postal");
+	private JLabel code_postal = new JLabel("Code postal");
 	private JTextField choix_num_fiscal;
 	private JTextField choix_complement_adresse;
 	private JButton valider;
@@ -66,9 +66,6 @@ public class PageNouveauBienImmobilier {
 	private List<Diagnostic> liste_diagnostic;
 	private Set<String> setVilles;
 	private Map<String, List<String>> mapVillesAdresses;
-
-
-
 
 	/**
 	 * Launch the application.
@@ -256,7 +253,6 @@ public class PageNouveauBienImmobilier {
 			choix_ville.setModel(new DefaultComboBoxModel());
 		}
 
-
 		JLabel adresse = new JLabel("Adresse");
 		GridBagConstraints gbc_adresse = new GridBagConstraints();
 		gbc_adresse.fill = GridBagConstraints.BOTH;
@@ -313,7 +309,8 @@ public class PageNouveauBienImmobilier {
 		gbc_choix_surface.gridx = 1;
 		gbc_choix_surface.gridy = 5;
 		this.panel_caracteristique.add(this.choix_surface, gbc_choix_surface);
-		this.choix_surface.setModel(new SpinnerNumberModel(Double.valueOf(9), Double.valueOf(9), null, Double.valueOf(0.5)));
+		this.choix_surface
+				.setModel(new SpinnerNumberModel(Double.valueOf(9), Double.valueOf(9), null, Double.valueOf(0.5)));
 		JSpinner.NumberEditor editor = new JSpinner.NumberEditor(this.choix_surface, "#0.## 'm²'");
 		editor.setAlignmentY(1.0f);
 		editor.setAlignmentX(1.0f);
@@ -401,15 +398,14 @@ public class PageNouveauBienImmobilier {
 		this.valider.setVerticalAlignment(SwingConstants.BOTTOM);
 		bas_de_page.add(this.valider, BorderLayout.EAST);
 
-
 		this.valider.addActionListener(modele.getValidateActionListener());
 		this.frame.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {
-                ResizedImage res = new ResizedImage();
-                res.resizeImage("logo+nom.png", PageNouveauBienImmobilier.this.frame,
-PageNouveauBienImmobilier.this.logo, 3, 8);
-                int frameWidth = PageNouveauBienImmobilier.this.frame.getWidth();
+				ResizedImage res = new ResizedImage();
+				res.resizeImage("logo+nom.png", PageNouveauBienImmobilier.this.frame,
+						PageNouveauBienImmobilier.this.logo, 3, 8);
+				int frameWidth = PageNouveauBienImmobilier.this.frame.getWidth();
 				int frameHeight = PageNouveauBienImmobilier.this.frame.getHeight();
 
 				int newFontSize = Math.min(frameWidth, frameHeight) / 30;
@@ -477,7 +473,7 @@ PageNouveauBienImmobilier.this.logo, 3, 8);
 		return this.valider;
 	}
 
-	public JCheckBox getCheck_garage(){
+	public JCheckBox getCheck_garage() {
 		return this.check_garage;
 	}
 
@@ -523,7 +519,8 @@ PageNouveauBienImmobilier.this.logo, 3, 8);
 		if ("Bâtiment".equals(selectedType)) {
 			// Critères pour "Bâtiment" : vérifier que texte_ville et texte_adresse sont
 			// remplis
-			isFilled = !this.getTexte_ville().getText().trim().isEmpty() && !this.getTexte_adresse().getText().trim().isEmpty();
+			isFilled = !this.getTexte_ville().getText().trim().isEmpty()
+					&& !this.getTexte_adresse().getText().trim().isEmpty();
 		} else {
 			// Critères pour les autres types de bien : vérifier choix_complement_adresse et
 			// choix_num_fiscal

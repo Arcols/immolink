@@ -10,13 +10,16 @@ public interface BatimentDAO {
 	/**
 	 * Crée un nouveau Batiment dans la base de données.
 	 *
-	 * @param bien L'objet Batiment à insérer
+	 * @param batiment L'objet Batiment à insérer
 	 * @throws DAOException             en cas d'erreur lors de la création du bien
 	 *                                  immobilier
 	 * @throws SQLException
 	 * @throws IllegalArgumentException
 	 */
 	void create(Batiment batiment) throws DAOException;
+
+
+	Batiment readFisc(String num_fisc) throws DAOException;
 
 	/**
 	 * Récupère un Batiment de la base de données en utilisant son identifiant.
@@ -25,12 +28,13 @@ public interface BatimentDAO {
 	 * @return L'objet Batiment trouvé, ou null si aucun bien n'est trouvé
 	 * @throws DAOException en cas d'erreur lors de la lecture du bien immobilier
 	 */
-	Batiment read(int id) throws DAOException;
+	Batiment readId(int id) throws DAOException;
 
 	/**
 	 * Met à jour les informations d'un Batiment existant dans la base de données.
 	 *
-	 * @param bien L'objet Batiment avec les informations mises à jour
+	 * @param ville
+	 * @param adresse
 	 * @throws DAOException en cas d'erreur lors de la mise à jour du bien
 	 *                      immobilier
 	 */
@@ -41,11 +45,11 @@ public interface BatimentDAO {
 	/**
 	 * Supprime un Batiment de la base de données en utilisant son identifiant.
 	 *
-	 * @param id L'identifiant unique du bien immobilier à supprimer
+	 * @param num_fisc L'identifiant unique du bien immobilier à supprimer
 	 * @throws DAOException en cas d'erreur lors de la suppression du bien
 	 *                      immobilier
 	 */
-	void delete(int id) throws DAOException;
+	void delete(String num_fisc) throws DAOException;
 
 	/**
 	 * Récupère tous les biens immobiliers de la base de données.

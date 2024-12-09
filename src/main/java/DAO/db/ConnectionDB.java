@@ -5,37 +5,52 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConnectionDB {
-    private Connection cn = null;
 
-    public ConnectionDB() throws SQLException {
+    private static Connection cn;
+
+    public static Connection getInstance() {
         try {
-            // Load the MySQL JDBC driver
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            // Establish the connection
-            cn = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/immolink", // DB URL
-                "root", // Username
-                "" // Password
-            );
-            if (cn == null) {
-                throw new SQLException("Failed to establish a connection.");
-            }
+            if (cn == null || cn.isClosed())
+                create();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return cn;
+    }
+
+    public static Connection create() {
+        try {
+            cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/immolink",
+                    "root",
+                    "");
         } catch (SQLException e) {
             e.printStackTrace();
-            throw e; 
-        } catch (ClassNotFoundException e) {
+        }
+        return cn;
+    }
+
+    public static void destroy() {
+        try {
+            cn.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        cn = null;
+    }
+
+    public static void setAutoCommit(boolean b) {
+        try {
+            cn.setAutoCommit(b);
+        } catch (SQLException e) {
             e.printStackTrace();
-            throw new SQLException("MySQL JDBC Driver not found.", e);
         }
     }
 
-    public Connection getConnection() {
-        return this.cn;
-    }
-
-    public void closeConnection() throws SQLException {
-        if (cn != null && !cn.isClosed()) {
-            cn.close();
+    public static void rollback() {
+        try {
+            cn.rollback();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

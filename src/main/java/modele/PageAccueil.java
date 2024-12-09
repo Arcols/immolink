@@ -20,11 +20,11 @@ import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
+import DAO.jdbc.LocataireDAO;
 import classes.Locataire;
 import ihm.Charte;
 import ihm.Menu;
 import ihm.ResizedImage;
-import modele.*;
 import java.awt.GridBagLayout;
 import javax.swing.JTable;
 import java.awt.GridBagConstraints;
@@ -35,6 +35,7 @@ public class PageAccueil {
 	private JFrame frame;
 	private JLabel logo;
 	private JTable table;
+	private LocataireDAO daoLoc;
 
 	/**
 	 * Launch the application.
@@ -227,7 +228,8 @@ public class PageAccueil {
 	    DefaultTableModel model = new DefaultTableModel(columnNames, 0); // `0` pour aucune ligne au départ
 
 	    // Récupération des locataires
-	    List<Locataire> locataires = Locataire.getAllLocataires();
+		daoLoc = new LocataireDAO();
+	    List<Locataire> locataires = daoLoc.getAllLocataire();
 
 	    // Remplissage du modèle avec les données des locataires
 	    for (Locataire locataire : locataires) {
