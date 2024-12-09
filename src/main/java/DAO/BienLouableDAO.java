@@ -64,8 +64,6 @@ public interface BienLouableDAO {
 	 * @throws DAOException en cas d'erreur lors de la lecture des biens immobiliers
 	 */
 	List<BienLouable> findAll() throws DAOException;
-<<<<<<< Updated upstream
-=======
 
 	Integer getTypeFromCompl(String ville,String adresse, String complement);
 
@@ -74,5 +72,5 @@ public interface BienLouableDAO {
 	Double getSurfaceFromCompl(String ville,String adresse, String complement);
 
     Map<String, List<String>> getAllcomplements() throws SQLException;
->>>>>>> Stashed changes
+
 }

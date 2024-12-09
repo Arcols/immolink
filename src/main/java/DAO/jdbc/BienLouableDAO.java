@@ -10,7 +10,9 @@ import enumeration.*;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BienLouableDAO implements DAO.BienLouableDAO {
 
@@ -148,8 +150,6 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
         return Allbien;
     }
 
-<<<<<<< Updated upstream
-=======
     @Override
     public Integer getTypeFromCompl(String ville, String adresse, String complement) {
         Integer type = null;
@@ -246,6 +246,5 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
         }
         return adresses;
     }
->>>>>>> Stashed changes
 
 }
