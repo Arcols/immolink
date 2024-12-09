@@ -148,5 +148,104 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
         return Allbien;
     }
 
+<<<<<<< Updated upstream
+=======
+    @Override
+    public Integer getTypeFromCompl(String ville, String adresse, String complement) {
+        Integer type = null;
+        try {
+            Connection cn = ConnectionDB.getInstance();
+            Integer idBat = new BatimentDAO().getIdBat(ville, adresse);
+            String query = "SELECT * FROM bienlouable WHERE idBat = ? AND complement_adresse = ?";
+            PreparedStatement pstmt = cn.prepareStatement(query);
+            pstmt.setInt(1,idBat);
+            pstmt.setString(2,complement);
+            ResultSet rs = pstmt.executeQuery();
+            if(rs.next()){
+                type = rs.getInt("type_logement");
+            }
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return type;
+    }
+
+    @Override
+    public Integer getNbPieceFromCompl(String ville, String adresse, String complement) {
+        Integer nb_pieces = null;
+        try {
+            Connection cn = ConnectionDB.getInstance();
+            Integer idBat = new BatimentDAO().getIdBat(ville, adresse);
+            String query = "SELECT * FROM bienlouable WHERE idBat = ? AND complement_adresse = ?";
+            PreparedStatement pstmt = cn.prepareStatement(query);
+            pstmt.setInt(1,idBat);
+            pstmt.setString(2,complement);
+            ResultSet rs = pstmt.executeQuery();
+            if(rs.next()){
+                nb_pieces = rs.getInt("Nombre_pieces");
+            }
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return nb_pieces;
+    }
+
+    @Override
+    public Double getSurfaceFromCompl(String ville, String adresse, String complement) {
+        Double surface = null;
+        try {
+            Connection cn = ConnectionDB.getInstance();
+            Integer idBat = new BatimentDAO().getIdBat(ville, adresse);
+            String query = "SELECT * FROM bienlouable WHERE idBat = ? AND complement_adresse = ?";
+            PreparedStatement pstmt = cn.prepareStatement(query);
+            pstmt.setInt(1,idBat);
+            pstmt.setString(2,complement);
+            ResultSet rs = pstmt.executeQuery();
+            if(rs.next()){
+                surface = rs.getDouble("surface");
+            }
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return surface;
+    }
+
+    @Override
+    public Map<String, List<String>> getAllcomplements() throws SQLException {
+        Map<String, List<String>> adresses = new HashMap<>();
+        try {
+            Connection cn = ConnectionDB.getInstance();
+            String query = "SELECT adresse, id FROM batiment";
+            PreparedStatement pstmt = cn.prepareStatement(query);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                String adresse = rs.getString("adresse");
+                String idBat = rs.getString("id");
+                adresses.putIfAbsent(adresse, new ArrayList<>());
+                String query2 = "SELECT compelement_adresse FROM bienlouable WHERE idBat = ?";
+                PreparedStatement pstmt2 = cn.prepareStatement(query);
+                pstmt2.setString(1,idBat);
+                ResultSet rs2 = pstmt.executeQuery();
+                while (rs2.next()){
+                    String compl = rs2.getString("complement_adresse");
+                    adresses.get(adresse).add(compl);
+                }
+                rs2.close();
+                pstmt2.close();
+            }
+            rs.close();
+            pstmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return adresses;
+    }
+>>>>>>> Stashed changes
 
 }
