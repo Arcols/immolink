@@ -8,6 +8,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -199,9 +201,10 @@ public class PageAccueil {
 		this.frame.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {
-				ResizedImage.resizeImage("/ressources/images/logo+nom.png", PageAccueil.this.frame,
-						PageAccueil.this.logo, 3, 8);
-				int frameWidth = PageAccueil.this.frame.getWidth();
+				ResizedImage res = new ResizedImage();
+                res.resizeImage("logo+nom.png", PageAccueil.this.frame,
+                        PageAccueil.this.logo, 3, 8);
+                int frameWidth = PageAccueil.this.frame.getWidth();
 				int frameHeight = PageAccueil.this.frame.getHeight();
 
 				int newFontSize = Math.min(frameWidth, frameHeight) / 30;

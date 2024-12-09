@@ -18,14 +18,18 @@ public class Batiment extends BienImmobilier {
 		if (numero_fiscal.length() != 12) {
 			throw new IllegalArgumentException("Numéro fiscal invalide");
 		}
-		setNumero_fiscal(numero_fiscal);
-		setVille(ville);
-		setAdresse(adresse);
-		setCode_postal(code_postal);
-		setBien_louable(new ArrayList<>());
+		this.adresse = adresse;
+		// this.code_postal = code_postal;
+		this.ville = ville;
+		this.numero_fiscal = numero_fiscal;
+		this.bien_louable = new ArrayList<BienLouable>();
+		try {
+			this.insertIntoTable(numero_fiscal, ville, adresse);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
-
-	private void setCode_postal(String codePostal) {this.code_postal = codePostal;}
 
 	public String getAdresse() {
 		return this.adresse;

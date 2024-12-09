@@ -8,9 +8,8 @@ import classes.Garage;
 import classes.Logement;
 import enumeration.TypeLogement;
 
-import java.io.IOException;
-import java.sql.*;
-import java.util.ArrayList;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 public class LogementDAO implements DAO.LogementDAO {
@@ -25,6 +24,11 @@ public class LogementDAO implements DAO.LogementDAO {
 			pstmt.setInt(3, TypeLogement.APPARTEMENT.getValue());
 			pstmt.setInt(4, appart.getNbPiece());
 			pstmt.setDouble(5, appart.getSurface());
+			if (appart.getGarage()) {
+				pstmt.setInt(6, 1);
+			} else {
+				pstmt.setInt(6, 0);
+			}
 			BatimentDAO bat = new BatimentDAO();
 			pstmt.setInt(6, bat.getIdBat(appart.getVille(), appart.getAdresse()));
 			pstmt.setNull(7, java.sql.Types.INTEGER);  // si on veut ajouter un garagon on utilisera ajouterUnGarageAuLogement par la suite

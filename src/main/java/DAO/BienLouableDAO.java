@@ -64,13 +64,4 @@ public interface BienLouableDAO {
 	 * @throws DAOException en cas d'erreur lors de la lecture des biens immobiliers
 	 */
 	List<BienLouable> findAll() throws DAOException;
-
-	/**
-	 * Récupère tous les biens immobiliers de la base de données.
-	 * @return Une liste de tous les objets BienLouable
-	 * @throws DAOException en cas d'erreur lors de la lecture des biens immobiliers
-	 * @throws SQLException
-	 */
-    Map<String, List<String>> getAllcomplements() throws SQLException;
-
 }
