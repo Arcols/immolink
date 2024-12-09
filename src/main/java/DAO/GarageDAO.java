@@ -9,13 +9,21 @@ public interface GarageDAO {
 	/**
 	 * Crée un nouveau Garage dans la base de données.
 	 *
-	 * @param bien L'objet Garage à insérer
+	 * @param garage L'objet Garage à insérer
 	 * @throws DAOException             en cas d'erreur lors de la création du bien
 	 *                                  immobilier
 	 * @throws SQLException
 	 * @throws IllegalArgumentException
 	 */
 	void create(Garage garage) throws DAOException;
+
+	/**
+	 * Récupère l'id d'un garage en utilisant son numéro fiscal
+	 * @param numero_fiscal le numéro fiscal du garage
+	 * @return Integer id du garage demandé
+	 * @throws DAOException
+	 */
+	Integer getIdGarage(String numero_fiscal) throws DAOException;
 
 	/**
 	 * Récupère un Garage de la base de données en utilisant son identifiant.
@@ -25,15 +33,6 @@ public interface GarageDAO {
 	 * @throws DAOException en cas d'erreur lors de la lecture du bien immobilier
 	 */
 	Garage read(int id) throws DAOException;
-
-	/**
-	 * Met à jour les informations d'un Garage existant dans la base de données.
-	 *
-	 * @param bien L'objet Garage avec les informations mises à jour
-	 * @throws DAOException en cas d'erreur lors de la mise à jour du bien
-	 *                      immobilier
-	 */
-	void update(Garage bien) throws DAOException;
 
 	/**
 	 * Supprime un Garage de la base de données en utilisant son identifiant.

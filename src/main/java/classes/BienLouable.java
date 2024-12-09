@@ -12,13 +12,14 @@ public class BienLouable extends BienImmobilier {
 
 	private String numero_fiscal;
 	private String complement_adresse;
-	public List<Devis> travaux;
-	public List<Diagnostic> diagnostic;
+	private List<Devis> travaux;
+	private List<Diagnostic> diagnostic;
 	private String adresse;
 	private String ville;
+	private Integer id_garage_asosscie;
 
 	public BienLouable(String numero_fiscal, String ville, String adresse, String complement_adresse,
-			List<Diagnostic> diagnostic) throws IllegalArgumentException {
+					   List<Diagnostic> diagnostic, Integer id_garage_associe) throws IllegalArgumentException {
 		if (numero_fiscal.length() != 12) {
 			throw new IllegalArgumentException("Numéro fiscal invalide");
 		}
@@ -27,8 +28,8 @@ public class BienLouable extends BienImmobilier {
 		this.diagnostic = diagnostic;
 		this.adresse = adresse;
 		this.ville = ville;
-
 		this.travaux = new ArrayList<Devis>();
+		this.id_garage_asosscie = (id_garage_associe != null) ? id_garage_associe : null;
 	}
 
 	public String getNumero_fiscal() {
@@ -59,6 +60,10 @@ public class BienLouable extends BienImmobilier {
 		this.travaux.add(devis);
 	}
 
+	public Integer getIdgarage() {
+		return id_garage_asosscie;
+	}
+
 	// pas sur que ça serve ?
 	/**
 	 * In : Diagnostic Out : Void La fonction sert à mettre à jour un diagnostic si
@@ -71,21 +76,6 @@ public class BienLouable extends BienImmobilier {
 			if (d.isSameRef(diagnostic)) {
 				d.miseAJourDiagnostic(diagnostic);
 			}
-		}
-	}
-
-	public static int foundIDBatInDB(ConnectionDB db, String ville, String adresse) throws SQLException {
-		String query_id_batiment = "SELECT id FROM batiment WHERE adresse = ? AND ville = ?";
-		PreparedStatement pstmt_id_batiment = null;
-		ResultSet rs = null;
-		pstmt_id_batiment = db.getConnection().prepareStatement(query_id_batiment);
-		pstmt_id_batiment.setString(1, adresse); // Utilisation des paramètres passés
-		pstmt_id_batiment.setString(2, ville);
-		rs = pstmt_id_batiment.executeQuery();
-		if (rs.next()) { // Vérifie s'il y a un résultat
-			return rs.getInt("id");
-		} else {
-			throw new SQLException("Pas de données pour ce couple ville adresse (bizarre)");
 		}
 	}
 

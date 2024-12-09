@@ -33,12 +33,16 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
+import DAO.DAOException;
+import DAO.jdbc.BatimentDAO;
 import classes.Batiment;
 import classes.Diagnostic;
 import ihm.Charte;
 import ihm.Menu;
 import ihm.ModelePageBienImmobilier;
 import ihm.ResizedImage;
+import DAO.jdbc.BatimentDAO;
+
 
 public class PageNouveauBienImmobilier {
 
@@ -105,7 +109,8 @@ public class PageNouveauBienImmobilier {
 
 		this.liste_diagnostic = new ArrayList<>();
 		try {
-			this.mapVillesAdresses = Batiment.searchAllBatiments();
+			DAO.jdbc.BatimentDAO tousBat = new DAO.jdbc.BatimentDAO();
+			this.mapVillesAdresses = tousBat.searchAllBatiments();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

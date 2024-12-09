@@ -5,7 +5,7 @@ import java.util.List;
 import classes.Logement;
 
 public interface LogementDAO {
-	/**
+	/*
 	 * Crée un nouveau BienLouable dans la base de données.
 	 *
 	 * @param bien L'objet BienLouable à insérer
@@ -13,7 +13,7 @@ public interface LogementDAO {
 	 */
 	void create(Logement logement) throws DAOException;
 
-	/**
+	/*
 	 * Récupère un BienLouable de la base de données en utilisant son identifiant.
 	 *
 	 * @param id L'identifiant unique du bien immobilier
@@ -22,7 +22,7 @@ public interface LogementDAO {
 	 */
 	Logement read(int id) throws DAOException;
 
-	/**
+	/*
 	 * Met à jour les informations d'un BienLouable existant dans la base de
 	 * données.
 	 *
@@ -32,7 +32,7 @@ public interface LogementDAO {
 	 */
 	void update(Logement logement) throws DAOException;
 
-	/**
+	/*
 	 * Supprime un BienLouable de la base de données en utilisant son identifiant.
 	 *
 	 * @param id L'identifiant unique du bien immobilier à supprimer
@@ -41,7 +41,7 @@ public interface LogementDAO {
 	 */
 	void delete(int id) throws DAOException;
 
-	/**
+	/*
 	 * Récupère tous les biens immobiliers de la base de données.
 	 *
 	 * @return Une liste de tous les objets BienLouable

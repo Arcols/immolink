@@ -1,3 +1,4 @@
+package classes;
 
 import static org.junit.Assert.*;
 
@@ -15,52 +16,30 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import classes.*;
-
 public class DiagnosticTest {
 
     private File tempFile;
     private File tempFile2;
     private ConnectionDB db;
     private Connection connection;
-    
+
     @Before
     public void setUp() throws IOException, SQLException {
-        // Crée un fichier temporaire avant chaque test
-        // Ce PDF sera juste un fichier texte avec l'extension pdf
+        // Create a temporary file before each test
         tempFile = File.createTempFile("testFile", ".pdf");
         Files.write(tempFile.toPath(), "Test PDF Data".getBytes());
 
-        // Deuxième fichier pour les tests de mise à jour
+        // Second file for update tests
         tempFile2 = File.createTempFile("testFile2", ".pdf");
         Files.write(tempFile2.toPath(), "New PDF Data".getBytes());
-        
-        // Initialiser la connexion et démarrer une transaction
-        db = new ConnectionDB();
-        connection = db.getConnection();
-        Statement statement = connection.createStatement();
-        statement.execute("BEGIN;");
-        statement.close();
+
     }
 
-    @After
-    public void tearDown() throws SQLException {
-        // Annule toutes les modifications
-    	Statement statement = connection.createStatement();
-        statement.execute("ROLLBACK;");
-        statement.close();
-        db.closeConnection();
-    }
-    
     @Test
     public void testGettersAndConstructeur() throws IOException, SQLException {
         Diagnostic diagnostic = new Diagnostic("RéfTest", tempFile.getAbsolutePath());
         assertEquals("RéfTest", diagnostic.getReference());
-        assertArrayEquals("Test PDF Data".getBytes(), diagnostic.getPdfData());
-        
-        Statement statement = connection.createStatement();
-        statement.execute("ROLLBACK");
-        statement.close();
+        assertEquals(tempFile.getAbsolutePath(), diagnostic.getPdfPath());
     }
 
     @Test
@@ -80,7 +59,7 @@ public class DiagnosticTest {
             new Diagnostic("RéfTest", "chemin_invalide.pdf");
             fail("Une exception aurait dû être levée pour un chemin de fichier invalide.");
         } catch (IOException e) {
-            assertTrue(e.getMessage().contains("chemin_invalide"));
+            assertTrue(e.getMessage().contains("Invalid file path"));
         }
     }
 
@@ -101,45 +80,45 @@ public class DiagnosticTest {
 
         diagnostic1.miseAJourDiagnostic(diagnostic2);
 
-        assertArrayEquals("New PDF Data".getBytes(), diagnostic1.getPdfData());
+        assertEquals(tempFile2.getAbsolutePath(), diagnostic1.getPdfPath());
     }
-    
+
     @Test
     public void testConstructeurAvecDateInvalidite() throws IOException, SQLException {
-        // Crée une date d'invalidité pour aujourd'hui
+        // Create an invalidity date for today
         Date dateInvalidite = new Date(System.currentTimeMillis());
         Diagnostic diagnostic = new Diagnostic("RéfTest", tempFile.getAbsolutePath(), dateInvalidite);
 
         assertEquals("RéfTest", diagnostic.getReference());
-        assertArrayEquals("Test PDF Data".getBytes(), diagnostic.getPdfData());
+        assertEquals(tempFile.getAbsolutePath(), diagnostic.getPdfPath());
         assertEquals(dateInvalidite, diagnostic.getDateInvalidite());
     }
 
     @Test
     public void testEstExpireSansDateInvalidite() throws IOException, SQLException {
         Diagnostic diagnostic = new Diagnostic("RéfTest", tempFile.getAbsolutePath());
-        assertFalse(diagnostic.estExpire()); // Diagnostic sans date d'invalidité ne peut pas être expiré
+        assertFalse(diagnostic.estExpire()); // Diagnostic without invalidity date cannot be expired
     }
 
     @Test
     public void testEstExpireAvecDateInvaliditeNonExpiree() throws IOException, SQLException {
-        // Crée une date d'invalidité future
+        // Create a future invalidity date
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_MONTH, 5); // 5 jours dans le futur
+        calendar.add(Calendar.DAY_OF_MONTH, 5); // 5 days in the future
         Date dateInvalidite = new Date(calendar.getTimeInMillis());
 
         Diagnostic diagnostic = new Diagnostic("RéfTest", tempFile.getAbsolutePath(), dateInvalidite);
-        assertFalse(diagnostic.estExpire()); // Ne doit pas être expiré
+        assertFalse(diagnostic.estExpire()); // Should not be expired
     }
 
     @Test
     public void testEstExpireAvecDateInvaliditeExpiree() throws IOException, SQLException {
-        // Crée une date d'invalidité passée
+        // Create a past invalidity date
         Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_MONTH, -5); // 5 jours dans le passé
+        calendar.add(Calendar.DAY_OF_MONTH, -5); // 5 days in the past
         Date dateInvalidite = new Date(calendar.getTimeInMillis());
 
         Diagnostic diagnostic = new Diagnostic("RéfTest", tempFile.getAbsolutePath(), dateInvalidite);
-        assertTrue(diagnostic.estExpire()); // Doit être expiré
+        assertTrue(diagnostic.estExpire()); // Should be expired
     }
 }
