@@ -1,6 +1,5 @@
 package modele;
 
-import classes.Diagnostic;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -14,24 +13,26 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.io.File;
-import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.PlainDocument;
 
+import DAO.jdbc.BatimentDAO;
+import classes.Batiment;
+import classes.Diagnostic;
+import enumeration.NomsDiags;
 import ihm.Charte;
 import ihm.Menu;
 import ihm.ModelePageBienImmobilier;
 import ihm.ResizedImage;
 
-
-public class PageBienImmobilier {
+public class PageNouveauBienImmobilier {
 
 	private JFrame frame;
 	private JPanel tableau_diagnostic;
@@ -41,7 +42,8 @@ public class PageBienImmobilier {
 	private JLabel surface;
 	private JLabel nombre_piece;
 	private JLabel complement_adresse;
-	private JTextField choix_num_fiscal;
+	private JLabel code_postal=new JLabel("Code postal");
+	private JFormattedTextField choix_num_fiscal;
 	private JTextField choix_complement_adresse;
 	private JButton valider;
 	private JComboBox choix_adresse;
@@ -49,10 +51,12 @@ public class PageBienImmobilier {
 	private JComboBox choix_type_de_bien;
 	private JTextField texte_ville = new JTextField();
 	private JTextField texte_adresse = new JTextField();
+	private JTextField texte_code_postal = new JTextField();
 	private JSpinner choix_nb_piece;
 	private JSpinner choix_surface;
 	private JCheckBox check_garage;
-	private List<classes.Diagnostic> liste_diagnostic;
+	private List<Diagnostic> liste_diagnostic;
+	private Map<String,Diagnostic> map_diagnostic;
 	private Set<String> setVilles;
 	private Map<String, List<String>> mapVillesAdresses;
 
@@ -67,7 +71,7 @@ public class PageBienImmobilier {
 			@Override
 			public void run() {
 				try {
-					PageBienImmobilier window = new PageBienImmobilier();
+					PageNouveauBienImmobilier window = new PageNouveauBienImmobilier();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -83,7 +87,7 @@ public class PageBienImmobilier {
 	/**
 	 * Create the application.
 	 */
-	public PageBienImmobilier() {
+	public PageNouveauBienImmobilier() {
 		this.initialize();
 	}
 
@@ -93,11 +97,12 @@ public class PageBienImmobilier {
 	private void initialize() {
 		ModelePageBienImmobilier modele = new ModelePageBienImmobilier(this);
 		Menu m = new Menu(this.frame);
-
+		this.map_diagnostic = new HashMap<>();
+		initialiseMapDiagnostic();
 		this.liste_diagnostic = new ArrayList<>();
 		try {
-			DAO.jdbc.BatimentDAO tousBat = new DAO.jdbc.BatimentDAO();
-			this.mapVillesAdresses = tousBat.searchAllBatiments();
+			BatimentDAO batimentDAO = new BatimentDAO();
+			this.mapVillesAdresses = batimentDAO.searchAllBatiments();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -213,14 +218,23 @@ public class PageBienImmobilier {
 		gbc_num_fiscal.gridy = 1;
 		this.panel_caracteristique.add(num_fiscal, gbc_num_fiscal);
 
-		this.choix_num_fiscal = new JTextField();
+		this.choix_num_fiscal = new JFormattedTextField();
+		this.choix_num_fiscal = new JFormattedTextField();
+		this.choix_num_fiscal.setColumns(12);
+		this.choix_num_fiscal.setDocument(new PlainDocument() {
+			@Override
+			public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+				if (str == null || getLength() + str.length() <= 12) {
+					super.insertString(offs, str, a);
+				}
+			}
+		});
 		GridBagConstraints gbc_choix_num_fiscal = new GridBagConstraints();
 		gbc_choix_num_fiscal.fill = GridBagConstraints.HORIZONTAL;
 		gbc_choix_num_fiscal.insets = new Insets(0, 0, 5, 0);
 		gbc_choix_num_fiscal.gridx = 1;
 		gbc_choix_num_fiscal.gridy = 1;
 		this.panel_caracteristique.add(this.choix_num_fiscal, gbc_choix_num_fiscal);
-		this.choix_num_fiscal.setColumns(10);
 
 		// Ajout des listeners sur chaque champ de texte
 
@@ -368,31 +382,9 @@ public class PageBienImmobilier {
 			gbc_diag.gridy = row;
 			this.tableau_diagnostic.add(label, gbc_diag);
 
-			// Créer le bouton "Télécharger" pour chaque diagnostic
-			JButton bouton = new JButton("Télécharger");
-			bouton.addActionListener(e -> {
-				// Créer un JFileChooser pour permettre de sélectionner un fichier
-				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setDialogTitle("Sélectionnez un fichier à associer au diagnostic");
-
-				// Ouvrir le dialogue de sélection de fichier
-				int returnValue = fileChooser.showOpenDialog(null);
-
-				if (returnValue == JFileChooser.APPROVE_OPTION) {
-					// Obtenir le fichier sélectionné
-					File selectedFile = fileChooser.getSelectedFile();
-					try {
-						this.liste_diagnostic
-								.add(new Diagnostic(diagnostic, fileChooser.getSelectedFile().getAbsolutePath()));
-						System.out.println("Rajouté !");
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-                } else {
-					System.out.println("Aucun fichier sélectionné.");
-				}
-			});
+			// Créer le bouton "Importer" pour chaque diagnostic
+			JButton bouton = new JButton("Importer");
+			bouton.addActionListener(modele.getTelechargerPDFButton(diagnostic));
 			gbc_diag.gridx = 1; // Deuxième colonne pour le bouton
 			this.tableau_diagnostic.add(bouton, gbc_diag);
 
@@ -418,11 +410,11 @@ public class PageBienImmobilier {
 		this.frame.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {
-                ResizedImage res = new ResizedImage();
-                res.resizeImage("logo+nom.png", PageBienImmobilier.this.frame,
-PageBienImmobilier.this.logo, 3, 8);
-                int frameWidth = PageBienImmobilier.this.frame.getWidth();
-				int frameHeight = PageBienImmobilier.this.frame.getHeight();
+				ResizedImage res = new ResizedImage();
+				res.resizeImage("logo+nom.png", PageNouveauBienImmobilier.this.frame,
+						PageNouveauBienImmobilier.this.logo, 3, 8);
+				int frameWidth = PageNouveauBienImmobilier.this.frame.getWidth();
+				int frameHeight = PageNouveauBienImmobilier.this.frame.getHeight();
 
 				int newFontSize = Math.min(frameWidth, frameHeight) / 30;
 
@@ -500,9 +492,11 @@ PageBienImmobilier.this.logo, 3, 8);
 	public JSpinner getChoix_surface() {
 		return choix_surface;
 	}
-
-	public List<classes.Diagnostic> getListe_diagnostic() {
-		return liste_diagnostic;
+	public Map<String,Diagnostic> getMap_diagnostic(){
+		return map_diagnostic;
+	}
+	public List<Diagnostic> getListe_diagnostic() {
+		return map_diagnostic.values().stream().collect(Collectors.toList());
 	}
 
 	public JLabel getDiagnostics() {
@@ -517,6 +511,27 @@ PageBienImmobilier.this.logo, 3, 8);
 		return surface;
 	}
 
+	public JTextField getTexte_code_postal() {
+		return texte_code_postal;
+	}
+
+	public JLabel getCode_postalLabel() {
+		return code_postal;
+	}
+
+	public void initialiseMapDiagnostic() {
+		for (NomsDiags diag : NomsDiags.values()) {
+			this.map_diagnostic.put(diag.name(), null);
+		}
+	}
+	public boolean isMapDiagnosticFull(){
+		for (Map.Entry<String, Diagnostic> entry : this.map_diagnostic.entrySet()) {
+			if(entry.getValue() == null){
+				return false;
+			}
+		}
+		return true;
+	}
 	public void checkFields() {
 		// Vérifier le type de bien sélectionné
 		String selectedType = (String) this.getChoix_type_de_bien().getSelectedItem();
@@ -528,9 +543,12 @@ PageBienImmobilier.this.logo, 3, 8);
 			// Critères pour "Bâtiment" : vérifier que texte_ville et texte_adresse sont
 			// remplis
 			isFilled = !this.getTexte_ville().getText().trim().isEmpty() && !this.getTexte_adresse().getText().trim().isEmpty();
-		} else {
+		} else if ("Appartement".equals(selectedType)) {
 			// Critères pour les autres types de bien : vérifier choix_complement_adresse et
 			// choix_num_fiscal
+			isFilled = !this.getChoix_complement_adresse().getText().trim().isEmpty()
+					&& !this.getChoix_num_fiscal().getText().trim().isEmpty() && isMapDiagnosticFull();
+		}else{
 			isFilled = !this.getChoix_complement_adresse().getText().trim().isEmpty()
 					&& !this.getChoix_num_fiscal().getText().trim().isEmpty();
 		}

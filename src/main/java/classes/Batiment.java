@@ -2,6 +2,7 @@ package classes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Batiment extends BienImmobilier {
 	private String adresse;
@@ -25,7 +26,7 @@ public class Batiment extends BienImmobilier {
 		this.bien_louable = new ArrayList<BienLouable>();
 	}
 
-	public String getAdresse() {
+    public String getAdresse() {
 		return this.adresse;
 	}
 

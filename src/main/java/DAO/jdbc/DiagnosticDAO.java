@@ -29,7 +29,6 @@ public class DiagnosticDAO implements DAO.DiagnosticDAO{
             pstmt.setDate(4, diagnostic.getDateInvalidite());
             pstmt.executeUpdate();
             pstmt.close();
-            
         } catch (SQLException e) {
             e.printStackTrace();
         }

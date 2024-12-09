@@ -6,11 +6,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
-import modele.PageAccueil;
-import modele.PageBaux;
-import modele.PageBienImmobilier;
-import modele.PageNouveauLocataire;
-import modele.PageProfil;
+import modele.*;
 
 public class Menu implements ActionListener {
 	private JFrame frame;
@@ -45,8 +41,8 @@ public class Menu implements ActionListener {
 			break;
 		case "Mes Biens":
 			this.frame.dispose();
-			PageBienImmobilier pageBienImmobilier = new PageBienImmobilier();
-			pageBienImmobilier.main(null);
+			PageNouveauBienImmobilier pageBienImmobilier = new PageNouveauBienImmobilier();
+			PageNouveauBienImmobilier.main(null);
 			break;
 		default:
 			break;

@@ -85,6 +85,24 @@ public class BienLouableDAOTest {
     }
 
     @Test
+    public void testReadId() throws SQLException, DAOException {
+        // Create a BienLouable
+        BienLouable bienLouable = new BienLouable("101010101010", "Paris", "123 Rue de la Paix", "Apt 1", new ArrayList<>(), null);
+        bienLouableDAO.create(bienLouable, TypeLogement.APPARTEMENT, 3, 75.0);
+
+        // Retrieve the ID of the created BienLouable
+        Integer id = bienLouableDAO.getId("101010101010");
+
+        // Read the BienLouable by ID
+        BienLouable bienLouableRecupere = bienLouableDAO.readId(id);
+
+        // Verify the BienLouable details
+        assertNotNull(bienLouableRecupere);
+        assertEquals("101010101010", bienLouableRecupere.getNumero_fiscal());
+        assertEquals("Apt 1", bienLouableRecupere.getComplement_adresse());
+    }
+
+    @Test
     public void testFindAll() throws SQLException, DAOException {
         BienLouable bienLouable1 = new BienLouable("123456789101", "Paris", "123 Rue de la Paix", "Apt 1", new ArrayList<>(),null);
         BienLouable bienLouable2 = new BienLouable("123456789102", "Paris", "123 Rue de la Paix", "Apt 2", new ArrayList<>(),null);

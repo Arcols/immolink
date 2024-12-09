@@ -41,6 +41,14 @@ public interface BienLouableDAO {
 	BienLouable readFisc(String num_fiscal) throws DAOException;
 
 	/**
+	 * Récupère un BienLouable de la base de données en utilisant son identifiant.
+	 * @param id
+	 * @return
+	 * @throws DAOException
+	 */
+	BienLouable readId(int id) throws DAOException;
+
+	/**
 	 *  Récupère l'id d'un bien louable en utilisant son numéro fiscal
 	 * @param num_fiscal
 	 * @return
