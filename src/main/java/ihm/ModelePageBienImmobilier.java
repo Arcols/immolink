@@ -254,7 +254,10 @@ public class ModelePageBienImmobilier {
 				// Obtenir le fichier sélectionné
 				File selectedFile = fileChooser.getSelectedFile();
 				try {
-					date = setDateDiag();
+					if(diagnostic == NomsDiags.PERFORMANCE_ENERGETIQUE.getDescription()
+							|| diagnostic == NomsDiags.ELECTRICITE.getDescription()){
+						date = setDateDiag();
+					}
 					// Ajouter le diagnostic à la map
 					NomsDiags diag = NomsDiags.fromDescription(diagnostic);
 					this.pageNouveauBienImmobilier.getMap_diagnostic().put(diag.name(), new Diagnostic(diagnostic, selectedFile.getAbsolutePath(),date));
@@ -281,10 +284,8 @@ public class ModelePageBienImmobilier {
 		}
 		return true;
 	}
-	// raccourci pour tout mettre en commentaire
-	// menteur
 
-	 public Date setDateDiag(){
+	public Date setDateDiag(){
 		AtomicReference<Date> date = new AtomicReference<>();
 		JDialog dialog = new JDialog((Frame) null, "Saisir la date de péremption du diagnostic ", true);
 		dialog.setSize(400, 200);
@@ -311,14 +312,15 @@ public class ModelePageBienImmobilier {
 						"Confirmation",
 						JOptionPane.INFORMATION_MESSAGE);
 				dialog.dispose();
-			} catch (NumberFormatException ex) {
+			} catch (IllegalArgumentException ex) {
 				JOptionPane.showMessageDialog(dialog,
-						"Veuillez entrer une date valide.",
+						"Veuillez entrer une date valide sous le format yyyy-mm-dd.",
 						"Erreur",
 						JOptionPane.ERROR_MESSAGE);
 			}
-        });
+		});
 
+		dialog.setLocationRelativeTo(null);
 		dialog.setVisible(true);
 		return date.get();
 	};
