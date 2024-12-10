@@ -4,27 +4,31 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.EventQueue;
-import java.awt.Font;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableModel;
 
-import ihm.Charte;
-import ihm.Menu;
-import ihm.ResizedImage;
-import javax.swing.JCheckBox;
+import static ihm.Charte.*;
 
 public class PageBaux {
 
 	private JFrame frame;
 	private JLabel logo;
+	private JTextField choix_loyer;
+	private JTextField choix_prevision;
+	private JTextField choix_depot_garantie;
+	private JTable table;
+	private DefaultTableModel tableModel;
 
 	/**
 	 * Launch the application.
@@ -43,25 +47,20 @@ public class PageBaux {
 		});
 	}
 
-	public JFrame getFrame() {
-		return this.frame;
-	}
-
 	/**
 	 * Create the application.
 	 */
 	public PageBaux() {
-		this.initialize();
+		initialize();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		// Initialisation du JFrame
 		this.frame = new JFrame();
 		this.frame.setBounds(100, 100, 750, 400);
-		this.frame.getContentPane().setBackground(Charte.FOND.getCouleur());
+		this.frame.getContentPane().setBackground(FOND.getCouleur());
 		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// Panel d'entête pour le logo et le nom de l'appli
@@ -69,7 +68,7 @@ public class PageBaux {
 		this.frame.getContentPane().add(entete, BorderLayout.NORTH);
 		entete.setLayout(new BorderLayout(0, 0));
 
-		entete.setBackground(Charte.ENTETE.getCouleur());
+		entete.setBackground(ENTETE.getCouleur());
 		entete.setBorder(new LineBorder(Color.BLACK, 2));
 		// Label pour le logo (Image)
 		this.logo = new JLabel("");
@@ -78,69 +77,146 @@ public class PageBaux {
 
 		entete.add(menu_bouttons, BorderLayout.CENTER);
 		menu_bouttons.setLayout(new GridLayout(0, 5, 0, 0));
-		menu_bouttons.setBackground(Charte.ENTETE.getCouleur());
-
-		Menu m = new Menu(this.frame);
+		menu_bouttons.setBackground(ENTETE.getCouleur());
 
 		JButton b_accueil = new JButton("Accueil");
 		b_accueil.setBorderPainted(false);
-		b_accueil.setBackground(Charte.ENTETE.getCouleur());
+		b_accueil.setBackground(ENTETE.getCouleur());
 		b_accueil.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		menu_bouttons.add(b_accueil);
-		b_accueil.addActionListener(m);
 
 		JButton b_profil = new JButton("Profil");
 		b_profil.setBorderPainted(false);
-		b_profil.setBackground(Charte.ENTETE.getCouleur());
+		b_profil.setBackground(ENTETE.getCouleur());
 		b_profil.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		menu_bouttons.add(b_profil);
-		menu_bouttons.add(b_profil);
-		b_profil.addActionListener(m);
 
 		JButton b_baux = new JButton("Mes baux");
 		b_baux.setBorderPainted(false);
-		b_baux.setBackground(Charte.ENTETE.getCouleur());
+		b_baux.setBackground(ENTETE.getCouleur());
 		b_baux.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		menu_bouttons.add(b_baux);
 		menu_bouttons.add(b_baux);
 
 		JButton b_loca = new JButton("Locataires");
 		b_loca.setBorderPainted(false);
-		b_loca.setBackground(Charte.ENTETE.getCouleur());
+		b_loca.setBackground(ENTETE.getCouleur());
 		b_loca.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		menu_bouttons.add(b_loca);
-		menu_bouttons.add(b_loca);
-		b_loca.addActionListener(m);
 
 		JButton b_biens = new JButton("Mes Biens");
 		b_biens.setBorderPainted(false);
-		b_biens.setBackground(Charte.ENTETE.getCouleur());
+		b_biens.setBackground(ENTETE.getCouleur());
 		b_biens.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		menu_bouttons.add(b_biens);
-		menu_bouttons.add(b_biens);
-		
-		b_biens.addActionListener(m);
 
-		this.frame.addComponentListener(new ComponentAdapter() {
+		JPanel body = new JPanel();
+		frame.getContentPane().add(body, BorderLayout.CENTER);
+		body.setLayout(new BorderLayout(0, 0));
+
+		JPanel titre = new JPanel();
+		FlowLayout fl_titre = (FlowLayout) titre.getLayout();
+		body.add(titre, BorderLayout.NORTH);
+
+		JLabel titrePage = new JLabel("Mes baux");
+		titrePage.setAlignmentY(0.0f);
+		titrePage.setAlignmentX(0.5f);
+		titre.add(titrePage);
+
+		// Créer les données fictives pour le tableau
+		String[][] data = { { "123 Rue A", "Bâtiment 1", "Paris", "Alice Dupont", "800", "Payé" },
+				{ "456 Rue B", "Bâtiment 2", "Lyon", "Bob Martin", "900", "Payé" },
+				{ "789 Rue C", "Bâtiment 3", "Marseille", "Charlie Durand", "950", "Payé" },
+				{ "101 Rue D", "Bâtiment 4", "Paris", "David Lefevre", "850", "Payé" },
+				{ "202 Rue E", "Bâtiment 5", "Bordeaux", "Eve Robert", "950", "Payé" },
+				{ "303 Rue F", "Bâtiment 6", "Lille", "Franck Bernard", "980", "Payé" } };
+
+		String[] columns = { "Adresse", "Complément", "Ville", "Locataires", "Loyer", "Statut" };
+
+		// Créer le modèle de table avec les données
+		DefaultTableModel tableModel = new DefaultTableModel(data, columns) {
 			@Override
-			public void componentResized(ComponentEvent e) {
-                ResizedImage res = new ResizedImage();
-                res.resizeImage("logo+nom.png", PageBaux.this.frame, PageBaux.this.logo, 3,
-8);
-                int frameWidth = PageBaux.this.frame.getWidth();
-				int frameHeight = PageBaux.this.frame.getHeight();
+			public boolean isCellEditable(int row, int column) {
+				return false; // Toutes les cellules sont non éditables
+			}
+		};
 
-				int newFontSize = Math.min(frameWidth, frameHeight) / 30;
+		// Créer la table avec ce modèle
+		JTable table = new JTable(tableModel);
 
-				// Appliquer la nouvelle police au bouton
-				Font resizedFont = new Font("Arial", Font.PLAIN, newFontSize);
-				b_loca.setFont(resizedFont);
-				b_baux.setFont(resizedFont);
-				b_accueil.setFont(resizedFont);
-				b_profil.setFont(resizedFont);
-				b_biens.setFont(resizedFont);
+		// Ajouter la table dans un JScrollPane pour permettre le défilement
+		JScrollPane scrollPane = new JScrollPane(table);
+		body.add(scrollPane, BorderLayout.CENTER);
+
+		// Panel bas pour le bouton "Nouveau"
+		JPanel bas_de_page = new JPanel();
+		this.frame.getContentPane().add(bas_de_page, BorderLayout.SOUTH);
+		bas_de_page.setLayout(new BorderLayout(0, 0));
+
+		JButton ajouter = new JButton("Nouveau bail");
+		ajouter.setEnabled(true); // Le bouton est maintenant activé
+		ajouter.setHorizontalTextPosition(SwingConstants.LEFT);
+		ajouter.setVerticalTextPosition(SwingConstants.TOP);
+		ajouter.setVerticalAlignment(SwingConstants.BOTTOM);
+		bas_de_page.add(ajouter, BorderLayout.EAST);
+
+		table.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+			public void mouseClicked(java.awt.event.MouseEvent evt) {
+				// Vérifier s'il s'agit d'un double-clic
+				if (evt.getClickCount() == 2) {
+					// Obtenir l'index de la ligne cliquée
+					int row = table.getSelectedRow();
+
+					// Récupérer les données de la ligne sélectionnée
+					if (row != -1) {
+						String adresse = (String) tableModel.getValueAt(row, 0);
+						String complement = (String) tableModel.getValueAt(row, 1);
+						String ville = (String) tableModel.getValueAt(row, 2);
+						String locataire = (String) tableModel.getValueAt(row, 3);
+						String loyer = (String) tableModel.getValueAt(row, 4);
+						String statut = (String) tableModel.getValueAt(row, 5);
+
+						// Ouvrir une nouvelle fenêtre avec ces données
+						openNewPage(adresse, complement, ville, locataire, loyer, statut);
+					}
+				}
 			}
 		});
-
 	}
+
+	private void openNewPage(String adresse, String complement, String ville, String locataire, String loyer,
+							 String statut) {
+		// Créer une nouvelle JFrame
+		JFrame newFrame = new JFrame("Détails du bail");
+		newFrame.setSize(400, 300);
+		newFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+		// Ajouter les données dans un panel
+		JPanel panel = new JPanel();
+		panel.setLayout(new GridLayout(6, 2));
+
+		panel.add(new JLabel("Adresse:"));
+		panel.add(new JLabel(adresse));
+
+		panel.add(new JLabel("Complément:"));
+		panel.add(new JLabel(complement));
+
+		panel.add(new JLabel("Ville:"));
+		panel.add(new JLabel(ville));
+
+		panel.add(new JLabel("Locataire:"));
+		panel.add(new JLabel(locataire));
+
+		panel.add(new JLabel("Loyer:"));
+		panel.add(new JLabel(loyer));
+
+		panel.add(new JLabel("Statut:"));
+		panel.add(new JLabel(statut));
+
+		newFrame.add(panel);
+
+		// Rendre la nouvelle fenêtre visible
+		newFrame.setVisible(true);
+	}
+
 }
