@@ -480,8 +480,6 @@ public class PageNouveauBienImmobilier {
 	}
 
 	public JCheckBox getCheck_garage() {
-
-	public JCheckBox getCheck_garage() {
 		return this.check_garage;
 	}
 
