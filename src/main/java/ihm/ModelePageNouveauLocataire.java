@@ -9,6 +9,7 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.List;
@@ -20,6 +21,9 @@ public class ModelePageNouveauLocataire {
     public ModelePageNouveauLocataire(PageNouveauLocataire pageNouveauLocataire) {
         this.pageNouveauLocataire = pageNouveauLocataire;
     }
+
+    public ActionListener getAjouterLocataireListener() {
+        return e -> {
 
     public ActionListener getAjouterLocataireListener() {
         return e -> {
@@ -59,6 +63,8 @@ public class ModelePageNouveauLocataire {
             if (!mapVillesAdresses.containsKey(selectedVille)) {
                 this.pageNouveauLocataire.getAdresseValeur().setModel(new DefaultComboBoxModel());
             } else {
+                this.pageNouveauLocataire.getAdresseValeur().setModel(
+                        new DefaultComboBoxModel(mapVillesAdresses.get(selectedVille).toArray(new String[0])));
                 this.pageNouveauLocataire.getAdresseValeur().setModel(
                         new DefaultComboBoxModel(mapVillesAdresses.get(selectedVille).toArray(new String[0])));
             }
