@@ -79,11 +79,4 @@ public interface BienLouableDAO {
 
     Map<String, List<String>> getAllcomplements() throws SQLException;
 
-	/**
-	 * Récupère un BienLouable de la base de données en utilisant son identifiant.
-	 * @param id
-	 * @return
-	 * @throws DAOException
-	 */
-	BienLouable readId(int id) throws DAOException;
 }

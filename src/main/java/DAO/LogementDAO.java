@@ -2,10 +2,7 @@ package DAO;
 
 import java.util.List;
 
-<<<<<<< Updated upstream
 import classes.BienLouable;
-=======
->>>>>>> Stashed changes
 import classes.Garage;
 import classes.Logement;
 
@@ -44,17 +41,9 @@ public interface LogementDAO {
 	 */
 	List<Logement> findAll() throws DAOException;
 
-	/**
-<<<<<<< Updated upstream
-	 * Lie un garage à un logement en insérant son id dans la base de donnée dans la colonne garage_assoc
-	 * @param garage Garage object
-	 * @param logement Logement object
-	 */
-	void lierUnGarageAuBienLouable(Logement logement, Garage garage) throws  DAOException;
 
 	/**
 	 *  Récupère l'id d'un logement en utilisant son numéro fiscal
-=======
 	 * Lier un garage à un logement
 	 * @param logement
 	 * @param garage
@@ -69,11 +58,8 @@ public interface LogementDAO {
 	 * @return
 	 * @throws DAOException
 	 */
-<<<<<<< Updated upstream
 	Integer getId(String num_fiscal) throws DAOException;
 
 	Integer getGarageAssocie(Logement logement);
-=======
- 	Integer getId(String num_fiscal) throws DAOException;
->>>>>>> Stashed changes
+
 }

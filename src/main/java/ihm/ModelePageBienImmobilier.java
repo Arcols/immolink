@@ -11,14 +11,13 @@ import classes.Garage;
 import classes.Logement;
 import enumeration.NomsDiags;
 import enumeration.TypeLogement;
-import modele.PageNouveauBienImmobilier;
-import modele.PageNouveauBienImmobilier;
-import modele.PageNouveauBienImmobilier;
+import modele.*;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
@@ -30,7 +29,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class ModelePageBienImmobilier {
 
 	private PageNouveauBienImmobilier pageNouveauBienImmobilier;
-	private static double SURFACE_MINIMALE = 9;
+	private final static double SURFACE_MINIMALE = 9;
 
 	public ModelePageBienImmobilier(PageNouveauBienImmobilier pageNouveauBienImmobilier) {
 		this.pageNouveauBienImmobilier = pageNouveauBienImmobilier;
@@ -258,10 +257,6 @@ public class ModelePageBienImmobilier {
 		};
 	}
 
-	}
-
-	public ActionListener getTelechargerPDFButton(String diagnostic) {
-
 	public ActionListener getTelechargerPDFButton(String diagnostic) {
 		return e -> {
 			// Créer un JFileChooser pour permettre de sélectionner un fichier
@@ -292,7 +287,6 @@ public class ModelePageBienImmobilier {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-			} else {
 			} else {
 				System.out.println("Aucun fichier sélectionné.");
 			}

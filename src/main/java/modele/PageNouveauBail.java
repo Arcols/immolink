@@ -390,7 +390,7 @@ public class PageNouveauBail {
         JLabel date_debut = new JLabel("Date début");
         panel_date.add(date_debut);
 
-        this.choix_date_debut = new     
+        this.choix_date_debut = new JFormattedTextField();
         choix_date_debut.setColumns(10);
         panel_date.add(choix_date_debut);
 
