@@ -245,6 +245,28 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
     }
 
     @Override
+    public String getFiscFromCompl(String ville, String adresse, String complement) {
+        String fisc = null;
+        try {
+            Connection cn = ConnectionDB.getInstance();
+            Integer idBat = new BatimentDAO().getIdBat(ville, adresse);
+            String query = "SELECT * FROM bienlouable WHERE idBat = ? AND complement_adresse = ?";
+            PreparedStatement pstmt = cn.prepareStatement(query);
+            pstmt.setInt(1,idBat);
+            pstmt.setString(2,complement);
+            ResultSet rs = pstmt.executeQuery();
+            if(rs.next()){
+                fisc = rs.getString("numero_fiscal");
+            }
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return fisc;
+    }
+
+    @Override
     public Map<String, List<String>> getAllcomplements() throws SQLException {
         Map<String, List<String>> adresses = new HashMap<>();
         try {
@@ -256,10 +278,10 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
                 String adresse = rs.getString("adresse");
                 String idBat = rs.getString("id");
                 adresses.putIfAbsent(adresse, new ArrayList<>());
-                String query2 = "SELECT compelement_adresse FROM bienlouable WHERE idBat = ?";
-                PreparedStatement pstmt2 = cn.prepareStatement(query);
+                String query2 = "SELECT complement_adresse FROM bienlouable WHERE idBat = ?";
+                PreparedStatement pstmt2 = cn.prepareStatement(query2);
                 pstmt2.setString(1,idBat);
-                ResultSet rs2 = pstmt.executeQuery();
+                ResultSet rs2 = pstmt2.executeQuery();
                 while (rs2.next()){
                     String compl = rs2.getString("complement_adresse");
                     adresses.get(adresse).add(compl);

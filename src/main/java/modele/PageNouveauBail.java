@@ -2,6 +2,7 @@ package modele;
 
 import DAO.jdbc.BailDAO;
 import DAO.jdbc.BatimentDAO;
+import DAO.jdbc.BienLouableDAO;
 import classes.Batiment;
 import ihm.Charte;
 import ihm.Menu;
@@ -26,13 +27,24 @@ public class PageNouveauBail {
 
     private JFrame frame;
     private JLabel logo;
+    private JLabel choix_surface;
+    private JLabel choix_nb_piece;
     private JTextField choix_loyer;
     private JTextField choix_prevision;
     private JTextField choix_depot_garantie;
+    private JFormattedTextField choix_date_debut;
+    private JFormattedTextField choix_date_fin;
+    private JComboBox choix_complement;
+    private JComboBox choix_adresse;
+    private JComboBox choix_ville;
+    private JButton valider;
+    private JCheckBox solde_tout_compte;
     private JTable table;
     private DefaultTableModel tableModel;
     private Map<String, List<String>> mapVillesAdresses;
+    private Map<String, List<String>> mapAdressesComplement;
     private Set<String> setVilles;
+    private Set<String> setAdresse;
 
 
     /**
@@ -71,6 +83,14 @@ public class PageNouveauBail {
             e.printStackTrace();
         }
         this.setVilles = this.mapVillesAdresses.keySet();
+
+        try {
+            this.mapAdressesComplement = new BienLouableDAO().getAllcomplements();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        this.setAdresse = this.mapAdressesComplement.keySet();
 
         ModelePageNouveauBail modele = new ModelePageNouveauBail(this);
 
@@ -151,9 +171,9 @@ public class PageNouveauBail {
         body.add(panel_bien, BorderLayout.WEST);
         GridBagLayout gbl_panel_bien = new GridBagLayout();
         gbl_panel_bien.columnWidths = new int[] {0, 0, 30};
-        gbl_panel_bien.rowHeights = new int[] {30, 0, 0, 0, 0, 0, 0, 0, 0, 90};
+        gbl_panel_bien.rowHeights = new int[] {30, 0, 0, 0, 0, 0, 0, 0, 0, 0,60};
         gbl_panel_bien.columnWeights = new double[]{0.0, 0.0};
-        gbl_panel_bien.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+        gbl_panel_bien.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0};
         panel_bien.setLayout(gbl_panel_bien);
 
 
@@ -165,7 +185,7 @@ public class PageNouveauBail {
         gbc_ville.gridy = 1;
         panel_bien.add(ville, gbc_ville);
 
-        JComboBox choix_ville = new JComboBox();
+        this.choix_ville = new JComboBox();
         GridBagConstraints gbc_choix_ville = new GridBagConstraints();
         gbc_choix_ville.fill = GridBagConstraints.HORIZONTAL;
         gbc_choix_ville.insets = new Insets(0, 0, 5, 0);
@@ -186,13 +206,19 @@ public class PageNouveauBail {
         gbc_Adresse.gridy = 2;
         panel_bien.add(Adresse, gbc_Adresse);
 
-        JComboBox choix_adresse = new JComboBox();
+        this.choix_adresse = new JComboBox();
         GridBagConstraints gbc_choix_adresse = new GridBagConstraints();
         gbc_choix_adresse.fill = GridBagConstraints.HORIZONTAL;
         gbc_choix_adresse.insets = new Insets(0, 0, 5, 0);
         gbc_choix_adresse.gridx = 1;
         gbc_choix_adresse.gridy = 2;
         panel_bien.add(choix_adresse, gbc_choix_adresse);
+        if (this.setVilles.isEmpty()) {
+            choix_adresse.setModel(new DefaultComboBoxModel());
+        } else {
+            choix_adresse.setModel(new DefaultComboBoxModel(
+                    this.mapVillesAdresses.get(choix_ville.getSelectedItem()).toArray(new String[0])));
+        }
 
         JLabel complement = new JLabel("Complément");
         GridBagConstraints gbc_complement = new GridBagConstraints();
@@ -202,13 +228,19 @@ public class PageNouveauBail {
         gbc_complement.gridy = 3;
         panel_bien.add(complement, gbc_complement);
 
-        JComboBox choix_complement = new JComboBox();
+        this.choix_complement = new JComboBox();
         GridBagConstraints gbc_choix_complement = new GridBagConstraints();
         gbc_choix_complement.fill = GridBagConstraints.HORIZONTAL;
         gbc_choix_complement.insets = new Insets(0, 0, 5, 0);
         gbc_choix_complement.gridx = 1;
         gbc_choix_complement.gridy = 3;
         panel_bien.add(choix_complement, gbc_choix_complement);
+        if (this.setAdresse.isEmpty()) {
+            choix_complement.setModel(new DefaultComboBoxModel());
+        } else {
+            choix_complement.setModel(new DefaultComboBoxModel(
+                    this.mapAdressesComplement.get(choix_adresse.getSelectedItem()).toArray(new String[0])));
+        }
 
         JLabel surface = new JLabel("Surface habitable");
         GridBagConstraints gbc_surface = new GridBagConstraints();
@@ -218,7 +250,7 @@ public class PageNouveauBail {
         gbc_surface.gridy = 4;
         panel_bien.add(surface, gbc_surface);
 
-        JLabel choix_surface = new JLabel("");
+        this.choix_surface = new JLabel("");
         GridBagConstraints gbc_choix_surface = new GridBagConstraints();
         gbc_choix_surface.fill = GridBagConstraints.BOTH;
         gbc_choix_surface.insets = new Insets(0, 0, 5, 0);
@@ -234,7 +266,7 @@ public class PageNouveauBail {
         gbc_nb_piece.gridy = 5;
         panel_bien.add(nb_piece, gbc_nb_piece);
 
-        JLabel choix_nb_piece = new JLabel("");
+        this.choix_nb_piece = new JLabel("");
         GridBagConstraints gbc_choix_nb_piece = new GridBagConstraints();
         gbc_choix_nb_piece.fill = GridBagConstraints.BOTH;
         gbc_choix_nb_piece.insets = new Insets(0, 0, 5, 0);
@@ -295,6 +327,14 @@ public class PageNouveauBail {
         panel_bien.add(choix_depot_garantie, gbc_choix_depot_garantie);
         choix_depot_garantie.setColumns(7);
 
+        this.solde_tout_compte = new JCheckBox("Solde de tout compte");
+        GridBagConstraints gbc_solde_tout_compte = new GridBagConstraints();
+        gbc_solde_tout_compte.fill = GridBagConstraints.HORIZONTAL;
+        gbc_solde_tout_compte.anchor = GridBagConstraints.WEST;
+        gbc_solde_tout_compte.gridx = 1;
+        gbc_solde_tout_compte.gridy = 9;
+        panel_bien.add(solde_tout_compte, gbc_solde_tout_compte);
+
         JPanel panel_east = new JPanel();
         body.add(panel_east, BorderLayout.CENTER);
         GridBagLayout gbl_panel_east = new GridBagLayout();
@@ -350,14 +390,14 @@ public class PageNouveauBail {
         JLabel date_debut = new JLabel("Date début");
         panel_date.add(date_debut);
 
-        JFormattedTextField choix_date_debut = new JFormattedTextField();
+        this.choix_date_debut = new     
         choix_date_debut.setColumns(10);
         panel_date.add(choix_date_debut);
 
         JLabel date_fin = new JLabel("Date fin");
         panel_date.add(date_fin);
 
-        JFormattedTextField choix_date_fin = new JFormattedTextField();
+        this.choix_date_fin = new JFormattedTextField();
         choix_date_fin.setColumns(10);
         panel_date.add(choix_date_fin);
 
@@ -365,7 +405,7 @@ public class PageNouveauBail {
         this.frame.getContentPane().add(bas_de_page, BorderLayout.SOUTH);
         bas_de_page.setLayout(new BorderLayout(0, 0));
 
-        JButton valider = new JButton("Valider");
+        this.valider = new JButton("Valider");
         valider.setEnabled(false);
         valider.setHorizontalTextPosition(SwingConstants.LEFT);
         valider.setVerticalTextPosition(SwingConstants.TOP);
@@ -392,6 +432,13 @@ public class PageNouveauBail {
                 b_biens.setFont(resizedFont);
             }
         });
+        this.choix_complement.addActionListener(modele.getSurfaceEtPiece());
+        this.choix_date_fin.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
+        this.choix_date_debut.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
+        this.choix_loyer.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
+        this.choix_prevision.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
+        this.choix_depot_garantie.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
+        this.valider.addActionListener(modele.CreationBail());
     }
 
     public JFrame getFrame() {
@@ -402,4 +449,61 @@ public class PageNouveauBail {
         return tableModel;
     }
 
+    public JComboBox getChoix_complement() {
+        return choix_complement;
+    }
+
+    public JComboBox getChoix_adresse() {
+        return choix_adresse;
+    }
+
+    public JFormattedTextField getChoix_date_fin() {
+        return choix_date_fin;
+    }
+
+    public JFormattedTextField getChoix_date_debut() {
+        return choix_date_debut;
+    }
+
+    public JComboBox getChoix_ville() {
+        return choix_ville;
+    }
+
+    public JTextField getChoix_loyer() {
+        return choix_loyer;
+    }
+
+    public JTextField getChoix_prevision() {
+        return choix_prevision;
+    }
+
+    public JTextField getChoix_depot_garantie() {
+        return choix_depot_garantie;
+    }
+
+    public JLabel getChoix_nb_piece() {
+        return choix_nb_piece;
+    }
+
+    public JLabel getChoix_surface() {
+        return choix_surface;
+    }
+
+
+    public JCheckBox getSolde_tout_compte() {
+        return solde_tout_compte;
+    }
+
+    public void checkFields() {
+        boolean isFilled;
+
+        isFilled = !this.choix_loyer.getText().trim().isEmpty()
+                && !this.choix_prevision.getText().trim().isEmpty()
+                && !this.choix_depot_garantie.getText().trim().isEmpty()
+                &&!this.choix_date_debut.getText().trim().isEmpty()
+                &&!this.choix_date_fin.getText().trim().isEmpty();
+
+        // Active ou désactive le bouton "Valider"
+        this.valider.setEnabled(isFilled);
+    }
 }

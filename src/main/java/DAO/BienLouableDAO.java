@@ -78,6 +78,7 @@ public interface BienLouableDAO {
 	Integer getNbPieceFromCompl(String ville,String adresse, String complement);
 
 	Double getSurfaceFromCompl(String ville,String adresse, String complement);
+	String getFiscFromCompl(String ville,String adresse, String complement);
 
     Map<String, List<String>> getAllcomplements() throws SQLException;
 
