@@ -10,7 +10,7 @@ public class ConnectionDB {
 
     public static Connection getInstance() {
         try {
-            if(cn == null || cn.isClosed())
+            if (cn == null || cn.isClosed())
                 create();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -22,7 +22,7 @@ public class ConnectionDB {
         try {
             cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/immolink",
                     "root",
-                    "" );
+                    "");
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -168,10 +168,10 @@ public class PageNouveauLocataire {
         JPanel donnees_loca = new JPanel();
         body.add(donnees_loca);
         GridBagLayout gbl_donnees_loca = new GridBagLayout();
-        gbl_donnees_loca.columnWidths = new int[]{40, 0, 0, 40, 0, 0, 0};
-        gbl_donnees_loca.rowHeights = new int[]{40, 40, 40, 40, 40, 0};
-        gbl_donnees_loca.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-        gbl_donnees_loca.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+        gbl_donnees_loca.columnWidths = new int[] { 40, 0, 0, 40, 0, 0, 0 };
+        gbl_donnees_loca.rowHeights = new int[] { 40, 40, 40, 40, 40, 0 };
+        gbl_donnees_loca.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+        gbl_donnees_loca.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
         donnees_loca.setLayout(gbl_donnees_loca);
 
         JLabel labelNom = new JLabel("Nom");
@@ -213,7 +213,6 @@ public class PageNouveauLocataire {
         } else {
             villeValeur.setModel(new DefaultComboBoxModel());
         }
-
 
         JLabel labelPrenom = new JLabel("Prénom");
         GridBagConstraints gbc_labelPrenom = new GridBagConstraints();
@@ -330,7 +329,7 @@ public class PageNouveauLocataire {
         donnees_loca.add(labelGenre, gbc_labelGenre);
 
         this.genreValeur = new JComboBox();
-        this.genreValeur.setModel(new DefaultComboBoxModel(new String[]{"H", "F", "O"}));
+        this.genreValeur.setModel(new DefaultComboBoxModel(new String[] { "H", "F", "O" }));
         GridBagConstraints gbc_genreValeur = new GridBagConstraints();
         gbc_genreValeur.fill = GridBagConstraints.HORIZONTAL;
         gbc_genreValeur.insets = new Insets(0, 0, 5, 5);

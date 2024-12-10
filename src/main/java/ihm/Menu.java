@@ -19,33 +19,33 @@ public class Menu implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		JButton b = (JButton) e.getSource();
 		switch (b.getText()) {
-		case "Accueil":
-			this.frame.dispose();
-			PageAccueil pageAccueil = new PageAccueil();
-			pageAccueil.main(null);
-			break;
-		case "Profil":
-			this.frame.dispose();
-			PageProfil pageProfil = new PageProfil();
-			pageProfil.main(null);
-			break;
-		case "Mes baux":
-			this.frame.dispose();
-			PageBaux pageBaux = new PageBaux();
-			pageBaux.main(null);
-			break;
-		case "Locataires":
-			this.frame.dispose();
-			PageNouveauLocataire PageNouveauLocataire = new PageNouveauLocataire();
-			PageNouveauLocataire.main(null);
-			break;
-		case "Mes Biens":
-			this.frame.dispose();
-			PageNouveauBienImmobilier pageBienImmobilier = new PageNouveauBienImmobilier();
-			PageNouveauBienImmobilier.main(null);
-			break;
-		default:
-			break;
+			case "Accueil":
+				this.frame.dispose();
+				PageAccueil pageAccueil = new PageAccueil();
+				pageAccueil.main(null);
+				break;
+			case "Profil":
+				this.frame.dispose();
+				PageProfil pageProfil = new PageProfil();
+				pageProfil.main(null);
+				break;
+			case "Mes baux":
+				this.frame.dispose();
+				PageBaux pageBaux = new PageBaux();
+				pageBaux.main(null);
+				break;
+			case "Locataires":
+				this.frame.dispose();
+				PageNouveauLocataire PageNouveauLocataire = new PageNouveauLocataire();
+				PageNouveauLocataire.main(null);
+				break;
+			case "Mes Biens":
+				this.frame.dispose();
+				PageNouveauBienImmobilier pageBienImmobilier = new PageNouveauBienImmobilier();
+				PageNouveauBienImmobilier.main(null);
+				break;
+			default:
+				break;
 		}
 	}
 
