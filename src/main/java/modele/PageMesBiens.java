@@ -24,7 +24,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
-import static ihm.ModelePageBienImmobilier.loadDataBienImmoToTable;
+import static ihm.ModelePageMesBiens.loadDataBienImmoToTable;
 
 public class PageMesBiens {
 
@@ -133,10 +133,10 @@ public class PageMesBiens {
         JPanel panel = new JPanel();
         body.add(panel, BorderLayout.CENTER);
         GridBagLayout gbl_panel = new GridBagLayout();
-        gbl_panel.columnWidths = new int[] {30, 0, 30};
-        gbl_panel.rowHeights = new int[] {30, 170, 40, 30};
-        gbl_panel.columnWeights = new double[]{0.0, 1.0};
-        gbl_panel.rowWeights = new double[]{0.0, 1.0, 1.0};
+        gbl_panel.columnWidths = new int[] { 30, 0, 30 };
+        gbl_panel.rowHeights = new int[] { 30, 170, 40, 30 };
+        gbl_panel.columnWeights = new double[] { 0.0, 1.0 };
+        gbl_panel.rowWeights = new double[] { 0.0, 1.0, 1.0 };
         panel.setLayout(gbl_panel);
 
         table = new JTable();
@@ -147,7 +147,7 @@ public class PageMesBiens {
         gbc_table.gridy = 1;
         panel.add(table, gbc_table);
         try {
-            DefaultTableModel model = ModelePageBienImmobilier.loadDataBienImmoToTable();
+            DefaultTableModel model = ModelePageMesBiens.loadDataBienImmoToTable();
             table.setModel(model);
         } catch (SQLException | DAOException e) {
             JOptionPane.showMessageDialog(frame, "Erreur lors du chargement des données : " + e.getMessage(),
@@ -161,10 +161,10 @@ public class PageMesBiens {
         gbc_panel_1.gridy = 2;
         panel.add(panel_1, gbc_panel_1);
         GridBagLayout gbl_panel_1 = new GridBagLayout();
-        gbl_panel_1.columnWidths = new int[] {0};
-        gbl_panel_1.rowHeights = new int[] {0};
-        gbl_panel_1.columnWeights = new double[]{0.0, 0.0, 0.0};
-        gbl_panel_1.rowWeights = new double[]{0.0, 0.0};
+        gbl_panel_1.columnWidths = new int[] { 0 };
+        gbl_panel_1.rowHeights = new int[] { 0 };
+        gbl_panel_1.columnWeights = new double[] { 0.0, 0.0, 0.0 };
+        gbl_panel_1.rowWeights = new double[] { 0.0, 0.0 };
         panel_1.setLayout(gbl_panel_1);
 
         this.frame.addComponentListener(new ComponentAdapter() {
@@ -188,8 +188,5 @@ public class PageMesBiens {
         });
 
     }
-
-
-
 
 }

@@ -16,17 +16,23 @@ import java.awt.event.ComponentEvent;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-import javax.swing.*;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import DAO.jdbc.LocataireDAO;
-import classes.Batiment;
 import classes.Locataire;
 import ihm.Charte;
 import ihm.Menu;
+import ihm.ModelePageNouveauLocataire;
 import ihm.ResizedImage;
 
 public class PageNouveauLocataire {
@@ -38,18 +44,13 @@ public class PageNouveauLocataire {
 	private JTextField telephoneValeur;
 	private JTextField mailValeur;
 	private JTextField dateValeur;
+	private JComboBox villeValeur;
+	private JComboBox genreValeur;
+	private JComboBox adresseValeur;
 	private JButton enregistrerButton;
 	private Map<String, List<String>> mapVillesAdresses;
 	private LocataireDAO daoLoc;
-
-	private void checkFields() {
-		// Vérification si tous les champs sont remplis
-		boolean isFilled = !nomValeur.getText().trim().isEmpty() && !prenomValeur.getText().trim().isEmpty()
-				&& !telephoneValeur.getText().trim().isEmpty() && !dateValeur.getText().trim().isEmpty();
-
-		// Active ou désactive le bouton "Valider"
-		enregistrerButton.setEnabled(isFilled);
-	}
+	private Set<String> setVilles;
 
 	/**
 	 * Launch the application.
@@ -83,6 +84,7 @@ public class PageNouveauLocataire {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		ModelePageNouveauLocataire modele = new ModelePageNouveauLocataire(this);
 		try {
 			DAO.jdbc.BatimentDAO tousBat = new DAO.jdbc.BatimentDAO();
 			mapVillesAdresses = tousBat.searchAllBatiments();
@@ -90,6 +92,7 @@ public class PageNouveauLocataire {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		this.setVilles = this.mapVillesAdresses.keySet();
 		this.frame = new JFrame();
 		this.frame.setBounds(100, 100, 750, 400);
 		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -198,13 +201,18 @@ public class PageNouveauLocataire {
 		gbc_labelVille.gridy = 0;
 		donnees_loca.add(labelVille, gbc_labelVille);
 
-		JComboBox villeValeur = new JComboBox();
+		this.villeValeur = new JComboBox();
 		GridBagConstraints gbc_villeValeur = new GridBagConstraints();
 		gbc_villeValeur.fill = GridBagConstraints.HORIZONTAL;
 		gbc_villeValeur.insets = new Insets(0, 0, 5, 5);
 		gbc_villeValeur.gridx = 5;
 		gbc_villeValeur.gridy = 0;
-		donnees_loca.add(villeValeur, gbc_villeValeur);
+		donnees_loca.add(this.villeValeur, gbc_villeValeur);
+		if (!this.setVilles.isEmpty()) {
+			villeValeur.setModel(new DefaultComboBoxModel(this.setVilles.toArray(new String[0])));
+		} else {
+			villeValeur.setModel(new DefaultComboBoxModel());
+		}
 
 		JLabel labelPrenom = new JLabel("Prénom");
 		GridBagConstraints gbc_labelPrenom = new GridBagConstraints();
@@ -231,13 +239,19 @@ public class PageNouveauLocataire {
 		gbc_labelAdresse.gridy = 1;
 		donnees_loca.add(labelAdresse, gbc_labelAdresse);
 
-		JComboBox adresseValeur = new JComboBox();
+		adresseValeur = new JComboBox();
 		GridBagConstraints gbc_adresseValeur = new GridBagConstraints();
 		gbc_adresseValeur.fill = GridBagConstraints.HORIZONTAL;
 		gbc_adresseValeur.insets = new Insets(0, 0, 5, 5);
 		gbc_adresseValeur.gridx = 5;
 		gbc_adresseValeur.gridy = 1;
 		donnees_loca.add(adresseValeur, gbc_adresseValeur);
+		if (this.setVilles.isEmpty()) {
+			this.adresseValeur.setModel(new DefaultComboBoxModel());
+		} else {
+			this.adresseValeur.setModel(new DefaultComboBoxModel(
+					this.mapVillesAdresses.get(this.villeValeur.getSelectedItem()).toArray(new String[0])));
+		}
 
 		JLabel labelTelephone = new JLabel("Téléphone");
 		GridBagConstraints gbc_labelTelephone = new GridBagConstraints();
@@ -314,14 +328,14 @@ public class PageNouveauLocataire {
 		gbc_labelGenre.gridy = 4;
 		donnees_loca.add(labelGenre, gbc_labelGenre);
 
-		JComboBox genreValeur = new JComboBox();
-		genreValeur.setModel(new DefaultComboBoxModel(new String[] { "H", "F", "O" }));
+		this.genreValeur = new JComboBox();
+		this.genreValeur.setModel(new DefaultComboBoxModel(new String[] { "H", "F", "O" }));
 		GridBagConstraints gbc_genreValeur = new GridBagConstraints();
 		gbc_genreValeur.fill = GridBagConstraints.HORIZONTAL;
 		gbc_genreValeur.insets = new Insets(0, 0, 5, 5);
 		gbc_genreValeur.gridx = 2;
 		gbc_genreValeur.gridy = 4;
-		donnees_loca.add(genreValeur, gbc_genreValeur);
+		donnees_loca.add(this.genreValeur, gbc_genreValeur);
 
 		this.enregistrerButton = new JButton("Enregistrer");
 		this.enregistrerButton.setEnabled(false);
@@ -334,44 +348,19 @@ public class PageNouveauLocataire {
 		enregistrerButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				try {
-					// Conversion de la date
-					java.sql.Date sqlDate = java.sql.Date.valueOf(dateValeur.getText());
+				java.sql.Date sqlDate = java.sql.Date.valueOf(dateValeur.getText());
+				daoLoc = new LocataireDAO();
+				Locataire l = new Locataire(nomValeur.getText(), prenomValeur.getText(), telephoneValeur.getText(),
+						mailValeur.getText(), sqlDate, (String) genreValeur.getSelectedItem());
 
-					// Création de l'objet Locataire
-					daoLoc = new LocataireDAO();
-					Locataire l = new Locataire(nomValeur.getText(),prenomValeur.getText(),
-							telephoneValeur.getText(),mailValeur.getText(),sqlDate,(String) genreValeur.getSelectedItem(),
-							daoLoc.getLastIdLocataire() + 1
-					);
-
-					// Ajout du locataire dans la base de données
-					LocataireDAO locataireDAO = new LocataireDAO();
-					locataireDAO.addLocataire(l);
-
-					// Message de confirmation
-					JOptionPane.showMessageDialog(
-							null,"Le locataire a bien été ajouté !","Succès",JOptionPane.INFORMATION_MESSAGE
-					);
-
-					// Rouvrir la même page
-					JFrame ancienneFenetre = (JFrame) SwingUtilities.getWindowAncestor(enregistrerButton);
-					ancienneFenetre.dispose(); // Fermer l'ancienne fenêtre
-					PageNouveauLocataire nouvellePage = new PageNouveauLocataire(); // Créer une nouvelle instance de la page
-					nouvellePage.frame.setVisible(true); // Afficher la nouvelle instance
-
-				} catch (Exception ex) {
-					// Gestion des erreurs
-					JOptionPane.showMessageDialog(null,"Erreur lors de l'ajout du locataire : " + ex.getMessage(),"Erreur",JOptionPane.ERROR_MESSAGE);
-					ex.printStackTrace();
-				}
 			}
 		});
 
 		this.frame.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {
-				ResizedImage.resizeImage("/ressources/images/logo+nom.png", PageNouveauLocataire.this.frame,
+				ResizedImage res = new ResizedImage();
+				res.resizeImage("logo+nom.png", PageNouveauLocataire.this.frame,
 						PageNouveauLocataire.this.logo, 3, 8);
 				int frameWidth = PageNouveauLocataire.this.frame.getWidth();
 				int frameHeight = PageNouveauLocataire.this.frame.getHeight();
@@ -388,27 +377,52 @@ public class PageNouveauLocataire {
 			}
 		});
 
-		DocumentListener textListener = new DocumentListener() {
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				checkFields();
-			}
-
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				checkFields();
-			}
-
-			@Override
-			public void changedUpdate(DocumentEvent e) {
-				checkFields();
-			}
-		};
-
-		nomValeur.getDocument().addDocumentListener(textListener);
-		prenomValeur.getDocument().addDocumentListener(textListener);
-		telephoneValeur.getDocument().addDocumentListener(textListener);
-		dateValeur.getDocument().addDocumentListener(textListener);
+		villeValeur.addActionListener(modele.getVilleActionListener(mapVillesAdresses));
+		enregistrerButton.addActionListener(modele.getAjouterLocataireListener());
+		nomValeur.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
+		prenomValeur.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
+		telephoneValeur.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
+		dateValeur.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
 	}
 
+	public JTextField getDateValeur() {
+		return dateValeur;
+	}
+
+	public JTextField getNomValeur() {
+		return nomValeur;
+	}
+
+	public JTextField getPrenomValeur() {
+		return prenomValeur;
+	}
+
+	public JTextField getTelephoneValeur() {
+		return telephoneValeur;
+	}
+
+	public JTextField getMailValeur() {
+		return mailValeur;
+	}
+
+	public JComboBox getGenreValeur() {
+		return genreValeur;
+	}
+
+	public JComboBox getAdresseValeur() {
+		return adresseValeur;
+	}
+
+	public JComboBox getVilleValeur() {
+		return villeValeur;
+	}
+
+	public void checkFields() {
+		// Vérification si tous les champs sont remplis
+		boolean isFilled = !nomValeur.getText().trim().isEmpty() && !prenomValeur.getText().trim().isEmpty()
+				&& !telephoneValeur.getText().trim().isEmpty() && !dateValeur.getText().trim().isEmpty();
+
+		// Active ou désactive le bouton "Valider"
+		enregistrerButton.setEnabled(isFilled);
+	}
 }

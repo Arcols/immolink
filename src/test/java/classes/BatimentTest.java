@@ -22,10 +22,10 @@ public class BatimentTest {
         tempFile = File.createTempFile("testFile", ".pdf");
         Files.write(tempFile.toPath(), "Test PDF Data".getBytes());
 
-        batiment = new Batiment("123456789101", "Paris", "123 Rue de la Paix");
+        batiment = new Batiment("123456789101", "Paris", "123 Rue de la Paix","31000");
         List<Diagnostic> diagnostics = new ArrayList<>();
         diagnostics.add(new Diagnostic("RefDiag1", tempFile.getAbsolutePath()));
-        bienLouable = new BienLouable("123456789102", "Paris", "123 Rue de la Paix", "Appartement 12B", diagnostics);
+        bienLouable = new BienLouable("123456789102", "Paris", "123 Rue de la Paix", "Appartement 12B", diagnostics,null);
     }
 
     @Test
@@ -52,6 +52,11 @@ public class BatimentTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testNumeroFiscalInvalide() {
-        new Batiment("123456", "Paris", "123 Rue de la Paix");
+        new Batiment("123456", "Paris", "123 Rue de la Paix","31000");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testCodePostalInvalide() {
+        new Batiment("123456789101", "Paris", "123 Rue de la Paix","310");
     }
 }

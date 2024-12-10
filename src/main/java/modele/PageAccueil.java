@@ -8,6 +8,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.sql.SQLException;
 import java.util.List;
 import ihm.ModelePageAccueil;
@@ -74,7 +76,21 @@ public class PageAccueil {
 		frame.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {
-				ResizedImage.resizeImage("/ressources/images/logo+nom.png", frame, logo, 3, 8);
+				ResizedImage res = new ResizedImage();
+				res.resizeImage("logo+nom.png", PageAccueil.this.frame,
+						PageAccueil.this.logo, 3, 8);
+				int frameWidth = PageAccueil.this.frame.getWidth();
+				int frameHeight = PageAccueil.this.frame.getHeight();
+
+				int newFontSize = Math.min(frameWidth, frameHeight) / 30;
+
+				// Appliquer la nouvelle police au bouton
+				Font resizedFont = new Font("Arial", Font.PLAIN, newFontSize);
+				// b_loca.setFont(resizedFont);
+				// b_baux.setFont(resizedFont);
+				// b_accueil.setFont(resizedFont);
+				// b_profil.setFont(resizedFont);
+				// b_biens.setFont(resizedFont);
 			}
 		});
 
@@ -96,7 +112,7 @@ public class PageAccueil {
 		JPanel menuPanel = new JPanel(new GridLayout(1, 5, 10, 0));
 		menuPanel.setBackground(Charte.ENTETE.getCouleur());
 
-		String[] menuItems = {"Accueil", "Profil", "Mes baux", "Locataires", "Mes Biens"};
+		String[] menuItems = { "Accueil", "Profil", "Mes baux", "Locataires", "Mes Biens" };
 		Menu menuListener = new Menu(frame);
 
 		for (String item : menuItems) {
@@ -110,7 +126,8 @@ public class PageAccueil {
 
 	/**
 	 * Crée un bouton de menu avec les propriétés standard.
-	 * @param text Texte du bouton.
+	 * 
+	 * @param text     Texte du bouton.
 	 * @param listener Écouteur d'événements.
 	 * @return Le bouton configuré.
 	 */
@@ -153,10 +170,10 @@ public class PageAccueil {
 		JPanel boutonsPanel = new JPanel();
 		bodyPanel.add(boutonsPanel, BorderLayout.SOUTH);
 		GridBagLayout gbl_boutonsPanel = new GridBagLayout();
-		gbl_boutonsPanel.columnWidths = new int[] {0};
-		gbl_boutonsPanel.rowHeights = new int[] {0};
-		gbl_boutonsPanel.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0};
-		gbl_boutonsPanel.rowWeights = new double[]{0.0};
+		gbl_boutonsPanel.columnWidths = new int[] { 0 };
+		gbl_boutonsPanel.rowHeights = new int[] { 0 };
+		gbl_boutonsPanel.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0 };
+		gbl_boutonsPanel.rowWeights = new double[] { 0.0 };
 		boutonsPanel.setLayout(gbl_boutonsPanel);
 
 		JPanel regimePanel = new JPanel();
@@ -175,8 +192,6 @@ public class PageAccueil {
 		regimePanel.add(btnActualiserRegime);
 		btnActualiserRegime.addActionListener(ModelePageAccueil.getActionListenerForActualiser(frame));
 
-
-
 		JPanel declaFidscalePanel = new JPanel();
 		GridBagConstraints gbc_declaFidscalePanel = new GridBagConstraints();
 		gbc_declaFidscalePanel.anchor = GridBagConstraints.NORTHWEST;
@@ -191,6 +206,5 @@ public class PageAccueil {
 		JButton declaFiscaleButton = new JButton("Générer");
 		declaFidscalePanel.add(declaFiscaleButton);
 	}
-
 
 }

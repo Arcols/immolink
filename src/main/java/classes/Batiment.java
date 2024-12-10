@@ -7,17 +7,22 @@ public class Batiment extends BienImmobilier {
 	private String adresse;
 	private String numero_fiscal;
 	private String ville;
+	private String code_postal;
 	public List<BienLouable> bien_louable;
 
 	// Un batiment est initialisé sans bien louable
-	public Batiment(String numero_fiscal, String ville, String adresse) {
+	public Batiment(String numero_fiscal, String ville, String adresse,String code_postal) {
+		if(code_postal.length()!=5){
+			throw new IllegalArgumentException("Code postal invalide");
+		}
 		if (numero_fiscal.length() != 12) {
 			throw new IllegalArgumentException("Numéro fiscal invalide");
 		}
-		setNumero_fiscal(numero_fiscal);
-		setVille(ville);
-		setAdresse(adresse);
-		setBien_louable(new ArrayList<>());
+		this.adresse = adresse;
+		this.code_postal = code_postal;
+		this.ville = ville;
+		this.numero_fiscal = numero_fiscal;
+		this.bien_louable = new ArrayList<BienLouable>();
 	}
 
 	public String getAdresse() {
@@ -59,4 +64,6 @@ public class Batiment extends BienImmobilier {
 	public void setBien_louable(List<BienLouable> bien_louable) {
 		this.bien_louable = bien_louable;
 	}
+
+	public String getCodePostal() {return this.code_postal;}
 }

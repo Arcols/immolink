@@ -7,6 +7,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
@@ -15,25 +16,25 @@ import java.util.Map;
 import static org.junit.Assert.*;
 
 public class BatimentDAOTest {
-    private ConnectionDB connection;
     private BatimentDAO batimentDAO;
 
     @Before
     public void setUp() throws SQLException {
-        connection = new ConnectionDB();
-        connection.setAutoCommit(false);
+        Connection cn = ConnectionDB.getInstance();
+        cn.setAutoCommit(false);
         batimentDAO = new BatimentDAO();
     }
 
     @After
     public void tearDown() throws SQLException {
-        connection.getConnection().rollback();
-        connection.closeConnection();
+        ConnectionDB.rollback();
+        ConnectionDB.setAutoCommit(true);
+        ConnectionDB.destroy();
     }
 
     @Test
     public void testCreate() throws SQLException, DAOException {
-        Batiment batiment = new Batiment("123456789101", "Paris", "123 Rue de la Paix");
+        Batiment batiment = new Batiment("123456789101", "Paris", "123 Rue de la Paix","31000");
         batimentDAO.create(batiment);
 
         Batiment batimentRecupere = batimentDAO.readFisc("123456789101");
@@ -44,7 +45,7 @@ public class BatimentDAOTest {
 
     @Test
     public void testReadFisc() throws SQLException, DAOException {
-        Batiment batiment = new Batiment("123456789101", "Paris", "123 Rue de la Paix");
+        Batiment batiment = new Batiment("123456789101", "Paris", "123 Rue de la Paix","31000");
         batimentDAO.create(batiment);
 
         Batiment batimentRecupere = batimentDAO.readFisc("123456789101");
@@ -55,7 +56,7 @@ public class BatimentDAOTest {
 
     @Test
     public void testUpdate() throws SQLException, DAOException {
-        Batiment batiment = new Batiment("123456789101", "Paris", "123 Rue de la Paix");
+        Batiment batiment = new Batiment("123456789101", "Paris", "123 Rue de la Paix","31000");
         batimentDAO.create(batiment);
 
         batiment.setVille("Lyon");
@@ -70,7 +71,7 @@ public class BatimentDAOTest {
 
     @Test
     public void testDelete() throws SQLException, DAOException {
-        Batiment batiment = new Batiment("123456789101", "Paris", "123 Rue de la Paix");
+        Batiment batiment = new Batiment("123456789101", "Paris", "123 Rue de la Paix","31000");
         batimentDAO.create(batiment);
 
         batimentDAO.delete("123456789101");
@@ -79,8 +80,8 @@ public class BatimentDAOTest {
 
     @Test
     public void testSearchAllBatiments() throws SQLException, DAOException {
-        Batiment batiment1 = new Batiment("123456789101", "Paris", "123 Rue de la Paix");
-        Batiment batiment2 = new Batiment("123456789102", "Lyon", "456 Rue de Lyon");
+        Batiment batiment1 = new Batiment("123456789101", "Paris", "123 Rue de la Paix","31000");
+        Batiment batiment2 = new Batiment("123456789102", "Lyon", "456 Rue de Lyon","31000");
         batimentDAO.create(batiment1);
         batimentDAO.create(batiment2);
 
@@ -92,7 +93,7 @@ public class BatimentDAOTest {
 
     @Test
     public void testGetIdBat() throws SQLException, DAOException {
-        Batiment batiment = new Batiment("123456789101", "Paris", "123 Rue de la Paix");
+        Batiment batiment = new Batiment("123456789101", "Paris", "123 Rue de la Paix","31000");
         batimentDAO.create(batiment);
         int id = batimentDAO.getIdBat("Paris", "123 Rue de la Paix");
         assertTrue(id > 0);
@@ -100,7 +101,7 @@ public class BatimentDAOTest {
 
     @Test
     public void testReadId() throws SQLException, DAOException {
-        Batiment batiment = new Batiment("123456789101", "Paris", "123 Rue de la Paix");
+        Batiment batiment = new Batiment("123456789101", "Paris", "123 Rue de la Paix","31000");
         batimentDAO.create(batiment);
 
         int id = batimentDAO.getIdBat("Paris", "123 Rue de la Paix");
@@ -110,5 +111,7 @@ public class BatimentDAOTest {
         assertEquals("123456789101", batimentRecupere.getNumeroFiscal());
         assertEquals("Paris", batimentRecupere.getVille());
         assertEquals("123 Rue de la Paix", batimentRecupere.getAdresse());
+        assertEquals("31000", batimentRecupere.getCodePostal());
+
     }
 }
