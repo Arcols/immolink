@@ -1,6 +1,7 @@
 package ihm;
 
 import DAO.jdbc.LocataireDAO;
+import DAO.jdbc.LocataireDAO;
 import classes.Locataire;
 import modele.PageNouveauBienImmobilier;
 import modele.PageNouveauLocataire;

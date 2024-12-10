@@ -12,6 +12,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.reflect.Array.setInt;
+
 public class LogementDAO implements DAO.LogementDAO {
 
 	public void create(Logement appart) throws DAOException {
@@ -25,7 +27,8 @@ public class LogementDAO implements DAO.LogementDAO {
 			pstmt.setInt(4, appart.getNbPiece());
 			pstmt.setDouble(5, appart.getSurface());
 			BatimentDAO bat = new BatimentDAO();
-			pstmt.setNull(6, java.sql.Types.INTEGER);  // si on veut ajouter un garagon on utilisera ajouterUnGarageAuLogement par la suite
+			pstmt.setNull(6, java.sql.Types.INTEGER); // si on veut ajouter un garagon on utilisera
+														// ajouterUnGarageAuLogement par la suite
 			pstmt.setInt(7, bat.getIdBat(appart.getVille(), appart.getAdresse()));
 			pstmt.executeUpdate();
 			pstmt.close();
@@ -41,9 +44,9 @@ public class LogementDAO implements DAO.LogementDAO {
 			Connection cn = ConnectionDB.getInstance();
 			String requete = "SELECT numero_fiscal, complement_adresse, type_logement, Nombre_pieces, Surface, garage_assoc,IdBat FROM bienlouable WHERE id = ?";
 			PreparedStatement pstmt = cn.prepareStatement(requete);
-			pstmt.setInt(1,id);
+			pstmt.setInt(1, id);
 			ResultSet rs = pstmt.executeQuery();
-			if (rs.next()){
+			if (rs.next()) {
 				String num_fisc = rs.getString("numero_fiscal");
 				String compl = rs.getString("complement_adresse");
 				Integer type = rs.getInt("type_logement");
@@ -52,9 +55,9 @@ public class LogementDAO implements DAO.LogementDAO {
 				Integer garage = rs.getInt("garage_assoc");
 				Integer id_bat = rs.getInt("idBat");
 				String ville = new BatimentDAO().readId(id_bat).getVille();
-				String adresse =  new BatimentDAO().readId(id_bat).getAdresse();
+				String adresse = new BatimentDAO().readId(id_bat).getAdresse();
 				List<Diagnostic> diags = new DiagnosticDAO().readAllDiag(id);
-				l = new Logement(nb_pieces,surface,num_fisc,ville,adresse,compl,diags);
+				l = new Logement(nb_pieces, surface, num_fisc, ville, adresse, compl, diags);
 			}
 			pstmt.close();
 		} catch (SQLException e) {
@@ -62,7 +65,6 @@ public class LogementDAO implements DAO.LogementDAO {
 		}
 		return l;
 	}
-
 
 	@Override
 	public void delete(int id) throws DAOException {
@@ -166,7 +168,7 @@ public class LogementDAO implements DAO.LogementDAO {
 	public void lierUnGarageAuBienLouable(Logement logement, Garage garage) throws DAOException {
 		Integer idGarage;
 		Integer idBat;
-		try{
+		try {
 			Connection cn = ConnectionDB.getInstance();
 			idGarage = new GarageDAO().getIdGarage(garage.getNumero_fiscal());
 			String query = "UPDATE bienlouable SET garage_assoc = ? WHERE numero_fiscal = ? AND type_logement = ?";
@@ -177,9 +179,9 @@ public class LogementDAO implements DAO.LogementDAO {
 			pstmt.executeUpdate();
 			pstmt.close();
 		} catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
+			throw new RuntimeException(e);
+		}
+	}
 
 	@Override
 	public Integer getId(String num_fiscal) throws DAOException {
@@ -203,16 +205,16 @@ public class LogementDAO implements DAO.LogementDAO {
 		return id;
 	}
 
-	public Integer getGarageAssocie(Logement logement){
+	public Integer getGarageAssocie(Logement logement) {
 		Integer idGarage;
-		try{
+		try {
 			Connection cn = ConnectionDB.getInstance();
 			String query = "SELECT garage_assoc FROM bienlouable WHERE numero_fiscal = ? AND type_logement = ?";
 			PreparedStatement pstmt = cn.prepareStatement(query);
 			pstmt.setString(1, logement.getNumero_fiscal());
 			pstmt.setInt(2, TypeLogement.APPARTEMENT.getValue());
 			ResultSet rs = pstmt.executeQuery();
-			if (rs.next()){
+			if (rs.next()) {
 				idGarage = rs.getInt("garage_assoc");
 			} else {
 				idGarage = null;
@@ -220,7 +222,7 @@ public class LogementDAO implements DAO.LogementDAO {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
-        return idGarage;
-    }
+		return idGarage;
+	}
 
 }

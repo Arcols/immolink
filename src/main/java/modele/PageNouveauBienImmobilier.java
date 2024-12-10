@@ -315,6 +315,8 @@ public class PageNouveauBienImmobilier {
 		this.panel_caracteristique.add(this.choix_surface, gbc_choix_surface);
 		this.choix_surface
 				.setModel(new SpinnerNumberModel(Double.valueOf(9), Double.valueOf(9), null, Double.valueOf(0.5)));
+		this.choix_surface
+				.setModel(new SpinnerNumberModel(Double.valueOf(9), Double.valueOf(9), null, Double.valueOf(0.5)));
 		JSpinner.NumberEditor editor = new JSpinner.NumberEditor(this.choix_surface, "#0.## 'm²'");
 		editor.setAlignmentY(1.0f);
 		editor.setAlignmentX(1.0f);
@@ -476,6 +478,8 @@ public class PageNouveauBienImmobilier {
 	public JButton getValider() {
 		return this.valider;
 	}
+
+	public JCheckBox getCheck_garage() {
 
 	public JCheckBox getCheck_garage() {
 		return this.check_garage;

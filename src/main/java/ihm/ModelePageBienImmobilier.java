@@ -258,6 +258,10 @@ public class ModelePageBienImmobilier {
 		};
 	}
 
+	}
+
+	public ActionListener getTelechargerPDFButton(String diagnostic) {
+
 	public ActionListener getTelechargerPDFButton(String diagnostic) {
 		return e -> {
 			// Créer un JFileChooser pour permettre de sélectionner un fichier
@@ -288,6 +292,7 @@ public class ModelePageBienImmobilier {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+			} else {
 			} else {
 				System.out.println("Aucun fichier sélectionné.");
 			}
