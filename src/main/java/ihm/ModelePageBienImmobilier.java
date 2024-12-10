@@ -30,7 +30,6 @@ import java.util.concurrent.atomic.AtomicReference;
 public class ModelePageBienImmobilier {
 
 	private PageNouveauBienImmobilier pageNouveauBienImmobilier;
-	private PageNouveauBienImmobilier pageNouveauBienImmobilier;
 	private static double SURFACE_MINIMALE = 9;
 
 	public ModelePageBienImmobilier(PageNouveauBienImmobilier pageNouveauBienImmobilier) {
@@ -40,9 +39,7 @@ public class ModelePageBienImmobilier {
 	public ActionListener getVilleActionListener(Map<String, List<String>> mapVillesAdresses) {
 		return e -> {
 			String selectedVille = (String) this.pageNouveauBienImmobilier.getChoix_ville().getSelectedItem();
-			String selectedVille = (String) this.pageNouveauBienImmobilier.getChoix_ville().getSelectedItem();
 			if (!mapVillesAdresses.containsKey(selectedVille)) {
-				this.pageNouveauBienImmobilier.getChoix_adresse().setModel(new DefaultComboBoxModel());
 				this.pageNouveauBienImmobilier.getChoix_adresse().setModel(new DefaultComboBoxModel());
 			} else {
 				this.pageNouveauBienImmobilier.getChoix_adresse().setModel(
@@ -52,7 +49,6 @@ public class ModelePageBienImmobilier {
 	}
 
 	public ActionListener getCheckFieldsActionListener() {
-		return e -> pageNouveauBienImmobilier.checkFields();
 		return e -> pageNouveauBienImmobilier.checkFields();
 	}
 
@@ -164,21 +160,15 @@ public class ModelePageBienImmobilier {
 			@Override
 			public void insertUpdate(DocumentEvent e) {
 				pageNouveauBienImmobilier.checkFields();
-				pageNouveauBienImmobilier.checkFields();
-				pageNouveauBienImmobilier.checkFields();
 			}
 
 			@Override
 			public void removeUpdate(DocumentEvent e) {
 				pageNouveauBienImmobilier.checkFields();
-				pageNouveauBienImmobilier.checkFields();
-				pageNouveauBienImmobilier.checkFields();
 			}
 
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-				pageNouveauBienImmobilier.checkFields();
-				pageNouveauBienImmobilier.checkFields();
 				pageNouveauBienImmobilier.checkFields();
 			}
 		};
@@ -192,24 +182,6 @@ public class ModelePageBienImmobilier {
 			boolean isBatiment = "Bâtiment".equals(selectedType);
 
 			// Gérer la visibilité des composants
-			this.pageNouveauBienImmobilier.getDiagnostics().setVisible(isAppartement);
-			this.pageNouveauBienImmobilier.getTableau_diagnostic().setVisible(isAppartement);
-			this.pageNouveauBienImmobilier.getSurface().setVisible(isAppartement);
-			this.pageNouveauBienImmobilier.getChoix_surface().setVisible(isAppartement);
-			this.pageNouveauBienImmobilier.getNombre_piece().setVisible(isAppartement);
-			this.pageNouveauBienImmobilier.getChoix_nb_piece().setVisible(isAppartement);
-			this.pageNouveauBienImmobilier.getComplement_adresse().setVisible(!isBatiment);
-			this.pageNouveauBienImmobilier.getChoix_complement_adresse().setVisible(!isBatiment);
-			this.pageNouveauBienImmobilier.getCheck_garage().setVisible(isAppartement);
-			this.pageNouveauBienImmobilier.getDiagnostics().setVisible(isAppartement);
-			this.pageNouveauBienImmobilier.getTableau_diagnostic().setVisible(isAppartement);
-			this.pageNouveauBienImmobilier.getSurface().setVisible(isAppartement);
-			this.pageNouveauBienImmobilier.getChoix_surface().setVisible(isAppartement);
-			this.pageNouveauBienImmobilier.getNombre_piece().setVisible(isAppartement);
-			this.pageNouveauBienImmobilier.getChoix_nb_piece().setVisible(isAppartement);
-			this.pageNouveauBienImmobilier.getComplement_adresse().setVisible(!isBatiment);
-			this.pageNouveauBienImmobilier.getChoix_complement_adresse().setVisible(!isBatiment);
-			this.pageNouveauBienImmobilier.getCheck_garage().setVisible(isAppartement);
 			this.pageNouveauBienImmobilier.getDiagnostics().setVisible(isAppartement);
 			this.pageNouveauBienImmobilier.getTableau_diagnostic().setVisible(isAppartement);
 			this.pageNouveauBienImmobilier.getSurface().setVisible(isAppartement);
@@ -268,28 +240,6 @@ public class ModelePageBienImmobilier {
 			} else {
 				this.pageNouveauBienImmobilier.getPanel_caracteristique()
 						.remove(this.pageNouveauBienImmobilier.getTexte_code_postal());
-
-			}
-
-			if (isBatiment) {
-				gbc.gridx = 0;
-				gbc.gridy = 4;
-				this.pageNouveauBienImmobilier.getPanel_caracteristique()
-						.add(this.pageNouveauBienImmobilier.getCode_postalLabel(), gbc);
-			} else {
-				this.pageNouveauBienImmobilier.getPanel_caracteristique()
-						.remove(this.pageNouveauBienImmobilier.getCode_postalLabel());
-
-			}
-
-			if (isBatiment) {
-				gbc.gridx = 1;
-				gbc.gridy = 4;
-				this.pageNouveauBienImmobilier.getPanel_caracteristique()
-						.add(this.pageNouveauBienImmobilier.getTexte_code_postal(), gbc);
-			} else {
-				this.pageNouveauBienImmobilier.getPanel_caracteristique()
-						.remove(this.pageNouveauBienImmobilier.getTexte_code_postal());
 			}
 
 			if (isBatiment) {
@@ -303,10 +253,6 @@ public class ModelePageBienImmobilier {
 			}
 
 			// Rafraîchir l'interface
-			this.pageNouveauBienImmobilier.getPanel_caracteristique().revalidate();
-			this.pageNouveauBienImmobilier.getPanel_caracteristique().repaint();
-			this.pageNouveauBienImmobilier.getPanel_caracteristique().revalidate();
-			this.pageNouveauBienImmobilier.getPanel_caracteristique().repaint();
 			this.pageNouveauBienImmobilier.getPanel_caracteristique().revalidate();
 			this.pageNouveauBienImmobilier.getPanel_caracteristique().repaint();
 		};

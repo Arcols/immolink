@@ -24,9 +24,6 @@ public class ModelePageNouveauLocataire {
 
     public ActionListener getAjouterLocataireListener() {
         return e -> {
-
-    public ActionListener getAjouterLocataireListener() {
-        return e -> {
             java.sql.Date sqlDate = java.sql.Date.valueOf(pageNouveauLocataire.getDateValeur().getText());
             Locataire l = new Locataire(pageNouveauLocataire.getNomValeur().getText(),
                     pageNouveauLocataire.getPrenomValeur().getText(),
