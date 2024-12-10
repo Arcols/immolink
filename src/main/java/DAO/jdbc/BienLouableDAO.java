@@ -6,16 +6,11 @@ import classes.Batiment;
 import classes.BienLouable;
 import classes.Diagnostic;
 import classes.Garage;
-import enumeration.TypeLogement;
+import enumeration.*;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class BienLouableDAO implements DAO.BienLouableDAO {
 
@@ -39,6 +34,23 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
         } catch (SQLException | DAOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void lierUnGarageAuBienLouable(BienLouable bien, Garage garage) throws DAOException {
+        try {
+            Connection cn = ConnectionDB.getInstance();
+            String query = "UPDATE bienlouable SET garage_assoc = ? WHERE numero_fiscal = ? AND type_logement = ?";
+            PreparedStatement pstmt = cn.prepareStatement(query);
+            GarageDAO garageDAO = new GarageDAO();
+            pstmt.setInt(1, garageDAO.getIdGarage(garage.getNumero_fiscal()));
+            pstmt.setString(2, bien.getNumero_fiscal());
+            pstmt.setInt(3, TypeLogement.APPARTEMENT.getValue());
+            pstmt.executeUpdate();
+            pstmt.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -83,7 +95,7 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
             pstmt.setInt(2,TypeLogement.APPARTEMENT.getValue());
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()){
-                 id = rs.getInt("id");
+                id = rs.getInt("id");
             }
             pstmt.close();
         } catch (SQLException e) {
@@ -93,27 +105,6 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
         return id;
     }
 
-    @Override
-    public void lierUnGarageAuBienLouable(BienLouable bien,Garage garage){
-        Integer idGarage;
-        Integer idBat;
-        try {
-            Connection cn = ConnectionDB.getInstance();
-            idGarage = new GarageDAO().getIdGarage(garage.getNumero_fiscal());
-            idBat = new BienLouableDAO().getId(bien.getNumero_fiscal());
-            String query = "UPDATE bienlouable SET garage_assoc = ? WHERE numero_fiscal = ? AND id = ?";
-            PreparedStatement pstmt = cn.prepareStatement(query);
-            pstmt.setInt(1, idGarage);
-            pstmt.setString(2, bien.getNumero_fiscal());
-            pstmt.setInt(3, idBat);
-            pstmt.executeUpdate();
-            pstmt.close();
-        }catch (SQLException e){
-            e.printStackTrace();
-        } catch (DAOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     @Override
     public void delete(int id) throws DAOException {
@@ -124,7 +115,7 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
             pstmt.setInt(1, id);
             pstmt.executeUpdate();
             pstmt.close();
-            
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -157,40 +148,5 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
         return Allbien;
     }
 
-    @Override
-    public Map<String, List<String>> getAllcomplements() throws SQLException {
-        Map<String, List<String>> adresses = new HashMap<>();
-        try {
-            Connection cn = ConnectionDB.getInstance();
-            String query = "SELECT adresse, id FROM batiment";
-            PreparedStatement pstmt = cn.prepareStatement(query);
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                String adresse = rs.getString("adresse");
-                String idBat = rs.getString("id");
-                adresses.putIfAbsent(adresse, new ArrayList<>());
-                String query2 = "SELECT compelement_adresse FROM bienlouable WHERE idBat = ?";
-                PreparedStatement pstmt2 = cn.prepareStatement(query);
-                pstmt2.setString(1,idBat);
-                ResultSet rs2 = pstmt.executeQuery();
-                while (rs2.next()){
-                    String compl = rs2.getString("complement_adresse");
-                    adresses.get(adresse).add(compl);
-                }
-                rs2.close();
-                pstmt2.close();
-            }
-            rs.close();
-            pstmt.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return adresses;
-    }
 
 }
-
-
-
-
-

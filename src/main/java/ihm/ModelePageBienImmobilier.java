@@ -1,10 +1,15 @@
 package ihm;
 
+import DAO.DAOException;
+import DAO.jdbc.BatimentDAO;
+import DAO.jdbc.GarageDAO;
+import DAO.jdbc.LogementDAO;
 import classes.Batiment;
 import classes.Diagnostic;
 import classes.Garage;
 import classes.Logement;
 import enumeration.TypeLogement;
+import modele.PageNouveauBienImmobilier;
 import modele.PageNouveauBienImmobilier;
 
 import javax.swing.*;
@@ -21,6 +26,7 @@ import java.util.Map;
 public class ModelePageBienImmobilier {
 
 	private PageNouveauBienImmobilier pageNouveauBienImmobilier;
+	private PageNouveauBienImmobilier pageNouveauBienImmobilier;
 	private static double SURFACE_MINIMALE = 9;
 
 	public ModelePageBienImmobilier(PageNouveauBienImmobilier pageNouveauBienImmobilier) {
@@ -30,7 +36,9 @@ public class ModelePageBienImmobilier {
 	public ActionListener getVilleActionListener(Map<String, List<String>> mapVillesAdresses) {
 		return e -> {
 			String selectedVille = (String) this.pageNouveauBienImmobilier.getChoix_ville().getSelectedItem();
+			String selectedVille = (String) this.pageNouveauBienImmobilier.getChoix_ville().getSelectedItem();
 			if (!mapVillesAdresses.containsKey(selectedVille)) {
+				this.pageNouveauBienImmobilier.getChoix_adresse().setModel(new DefaultComboBoxModel());
 				this.pageNouveauBienImmobilier.getChoix_adresse().setModel(new DefaultComboBoxModel());
 			} else {
 				this.pageNouveauBienImmobilier.getChoix_adresse().setModel(
@@ -41,6 +49,7 @@ public class ModelePageBienImmobilier {
 
 	public ActionListener getCheckFieldsActionListener() {
 		return e -> pageNouveauBienImmobilier.checkFields();
+		return e -> pageNouveauBienImmobilier.checkFields();
 	}
 
 	public ActionListener getValidateActionListener() {
@@ -50,7 +59,6 @@ public class ModelePageBienImmobilier {
 
 			switch (selectedType) {
 				case APPARTEMENT:
-					Boolean bool = false;
 					try {
 						if (pageNouveauBienImmobilier.getCheck_garage().isSelected()) {
 							bool = true;
@@ -144,15 +152,18 @@ public class ModelePageBienImmobilier {
 			@Override
 			public void insertUpdate(DocumentEvent e) {
 				pageNouveauBienImmobilier.checkFields();
+				pageNouveauBienImmobilier.checkFields();
 			}
 
 			@Override
 			public void removeUpdate(DocumentEvent e) {
 				pageNouveauBienImmobilier.checkFields();
+				pageNouveauBienImmobilier.checkFields();
 			}
 
 			@Override
 			public void changedUpdate(DocumentEvent e) {
+				pageNouveauBienImmobilier.checkFields();
 				pageNouveauBienImmobilier.checkFields();
 			}
 		};
@@ -161,10 +172,20 @@ public class ModelePageBienImmobilier {
 	public ActionListener getChoixTypeBienListener() {
 		return e -> {
 			String selectedType = (String) this.pageNouveauBienImmobilier.getChoix_type_de_bien().getSelectedItem();
+			String selectedType = (String) this.pageNouveauBienImmobilier.getChoix_type_de_bien().getSelectedItem();
 			boolean isAppartement = "Appartement".equals(selectedType);
 			boolean isBatiment = "Bâtiment".equals(selectedType);
 
 			// Gérer la visibilité des composants
+			this.pageNouveauBienImmobilier.getDiagnostics().setVisible(isAppartement);
+			this.pageNouveauBienImmobilier.getTableau_diagnostic().setVisible(isAppartement);
+			this.pageNouveauBienImmobilier.getSurface().setVisible(isAppartement);
+			this.pageNouveauBienImmobilier.getChoix_surface().setVisible(isAppartement);
+			this.pageNouveauBienImmobilier.getNombre_piece().setVisible(isAppartement);
+			this.pageNouveauBienImmobilier.getChoix_nb_piece().setVisible(isAppartement);
+			this.pageNouveauBienImmobilier.getComplement_adresse().setVisible(!isBatiment);
+			this.pageNouveauBienImmobilier.getChoix_complement_adresse().setVisible(!isBatiment);
+			this.pageNouveauBienImmobilier.getCheck_garage().setVisible(isAppartement);
 			this.pageNouveauBienImmobilier.getDiagnostics().setVisible(isAppartement);
 			this.pageNouveauBienImmobilier.getTableau_diagnostic().setVisible(isAppartement);
 			this.pageNouveauBienImmobilier.getSurface().setVisible(isAppartement);
@@ -234,8 +255,9 @@ public class ModelePageBienImmobilier {
 						.remove(this.pageNouveauBienImmobilier.getCode_postalLabel());
 			}
 
-
 			// Rafraîchir l'interface
+			this.pageNouveauBienImmobilier.getPanel_caracteristique().revalidate();
+			this.pageNouveauBienImmobilier.getPanel_caracteristique().repaint();
 			this.pageNouveauBienImmobilier.getPanel_caracteristique().revalidate();
 			this.pageNouveauBienImmobilier.getPanel_caracteristique().repaint();
 		};
@@ -255,16 +277,14 @@ public class ModelePageBienImmobilier {
 				File selectedFile = fileChooser.getSelectedFile();
 				try {
 					this.pageNouveauBienImmobilier.getListe_diagnostic()
+					this.pageNouveauBienImmobilier.getListe_diagnostic()
 							.add(new Diagnostic(diagnostic, fileChooser.getSelectedFile().getAbsolutePath()));
 					System.out.println("Rajouté !");
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
 				}
-			} else {
+            } else {
 				System.out.println("Aucun fichier sélectionné.");
 			}
 		};

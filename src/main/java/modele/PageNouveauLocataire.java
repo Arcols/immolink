@@ -13,7 +13,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -28,11 +27,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import DAO.jdbc.LocataireDAO;
-import classes.Batiment;
 import classes.Locataire;
 import ihm.Charte;
 import ihm.Menu;
@@ -53,6 +49,7 @@ public class PageNouveauLocataire {
 	private JComboBox adresseValeur;
 	private JButton enregistrerButton;
 	private Map<String, List<String>> mapVillesAdresses;
+	private LocataireDAO daoLoc;
 	private Set<String> setVilles;
 
 	/**
@@ -87,7 +84,7 @@ public class PageNouveauLocataire {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		ModelePageNouveauLocataire modele=new ModelePageNouveauLocataire(this);
+		ModelePageNouveauLocataire modele = new ModelePageNouveauLocataire(this);
 		try {
 			DAO.jdbc.BatimentDAO tousBat = new DAO.jdbc.BatimentDAO();
 			mapVillesAdresses = tousBat.searchAllBatiments();
@@ -216,7 +213,6 @@ public class PageNouveauLocataire {
 		} else {
 			villeValeur.setModel(new DefaultComboBoxModel());
 		}
-
 
 		JLabel labelPrenom = new JLabel("Prénom");
 		GridBagConstraints gbc_labelPrenom = new GridBagConstraints();
@@ -349,13 +345,24 @@ public class PageNouveauLocataire {
 		gbc_enregistrerButton.gridy = 5;
 		donnees_loca.add(enregistrerButton, gbc_enregistrerButton);
 
+		enregistrerButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				java.sql.Date sqlDate = java.sql.Date.valueOf(dateValeur.getText());
+				daoLoc = new LocataireDAO();
+				Locataire l = new Locataire(nomValeur.getText(), prenomValeur.getText(), telephoneValeur.getText(),
+						mailValeur.getText(), sqlDate, (String) genreValeur.getSelectedItem());
+
+			}
+		});
+
 		this.frame.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {
-                ResizedImage res = new ResizedImage();
-                res.resizeImage("logo+nom.png", PageNouveauLocataire.this.frame,
-PageNouveauLocataire.this.logo, 3, 8);
-                int frameWidth = PageNouveauLocataire.this.frame.getWidth();
+				ResizedImage res = new ResizedImage();
+				res.resizeImage("logo+nom.png", PageNouveauLocataire.this.frame,
+						PageNouveauLocataire.this.logo, 3, 8);
+				int frameWidth = PageNouveauLocataire.this.frame.getWidth();
 				int frameHeight = PageNouveauLocataire.this.frame.getHeight();
 
 				int newFontSize = Math.min(frameWidth, frameHeight) / 30;
@@ -406,7 +413,7 @@ PageNouveauLocataire.this.logo, 3, 8);
 		return adresseValeur;
 	}
 
-	public JComboBox getVilleValeur(){
+	public JComboBox getVilleValeur() {
 		return villeValeur;
 	}
 

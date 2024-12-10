@@ -6,6 +6,7 @@ import java.util.List;
 import classes.Garage;
 
 public interface GarageDAO {
+
 	/**
 	 * Crée un nouveau Garage dans la base de données.
 	 *
@@ -50,4 +51,5 @@ public interface GarageDAO {
 	 * @throws DAOException en cas d'erreur lors de la lecture des biens immobiliers
 	 */
 	List<Garage> findAll() throws DAOException;
+
 }

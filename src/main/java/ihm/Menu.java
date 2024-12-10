@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import modele.PageAccueil;
 import modele.PageBaux;
 import modele.PageNouveauBienImmobilier;
+import modele.PageNouveauBienImmobilier;
 import modele.PageNouveauLocataire;
 import modele.PageProfil;
 

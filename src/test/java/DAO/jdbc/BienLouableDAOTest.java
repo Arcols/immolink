@@ -94,4 +94,24 @@ public class BienLouableDAOTest {
         List<BienLouable> bienLouables = bienLouableDAO.findAll();
         assertEquals(2, bienLouables.size());
     }
+
+
+    @Test
+    public void testLierUnGarageAuBienLouable() throws SQLException, DAOException {
+        // Create a BienLouable
+        BienLouable bienLouable = new BienLouable("101010101010", "Paris", "123 Rue de la Paix", "Apt 1", new ArrayList<>(), null);
+        bienLouableDAO.create(bienLouable, TypeLogement.APPARTEMENT, 3, 75.0);
+
+        // Create a Garage
+        Garage garage = new Garage("G12345678910", "Paris", "123 Rue de la Paix", "Garage 1");
+        garageDAO.create(garage);
+
+        // Link the Garage to the BienLouable
+        bienLouableDAO.lierUnGarageAuBienLouable(bienLouable, garage);
+
+        // Retrieve the BienLouable and check if the garage is linked
+        BienLouable bienLouableRecupere = bienLouableDAO.readFisc("101010101010");
+        assertNotNull(bienLouableRecupere.getIdgarage());
+        assertEquals(garageDAO.getIdGarage("G12345678910"), bienLouableRecupere.getIdgarage());
+    }
 }
