@@ -242,7 +242,7 @@ public class ModelePageBienImmobilier {
 			}
 
 			if (isBatiment) {
-				gbc.gridx = 1;
+				gbc.gridx = 0;
 				gbc.gridy = 4;
 				this.pageNouveauBienImmobilier.getPanel_caracteristique()
 						.add(this.pageNouveauBienImmobilier.getCode_postalLabel(), gbc);
