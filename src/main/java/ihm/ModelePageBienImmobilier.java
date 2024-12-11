@@ -29,7 +29,6 @@ import java.util.concurrent.atomic.AtomicReference;
 public class ModelePageBienImmobilier {
 
 	private PageNouveauBienImmobilier pageNouveauBienImmobilier;
-	private final static double SURFACE_MINIMALE = 9;
 
 	public ModelePageBienImmobilier(PageNouveauBienImmobilier pageNouveauBienImmobilier) {
 		this.pageNouveauBienImmobilier = pageNouveauBienImmobilier;

@@ -344,7 +344,7 @@ public class PageNouveauBail {
         gbl_panel_east.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
         panel_east.setLayout(gbl_panel_east);
 
-        tableModel = new DefaultTableModel(new String[] { "Prénom", "Nom", "Téléphone" }, 0);
+        tableModel = new DefaultTableModel(new String[] { "Prénom", "Nom", "Téléphone","Quotité" }, 0);
 
         JPanel panel_locataire = new JPanel();
         GridBagConstraints gbc_panel_locataire = new GridBagConstraints();

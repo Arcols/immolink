@@ -18,14 +18,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ModelePageNouveauBail {
 
     private PageNouveauBail pageNouveauBail;
     private List<Locataire> Locataireselected=new LinkedList<Locataire>();
+    private List<Integer> ListQuotite = new LinkedList<Integer>();
 
     public ModelePageNouveauBail(PageNouveauBail pageNouveauBail) {
         this.pageNouveauBail = pageNouveauBail;
@@ -83,7 +87,9 @@ public class ModelePageNouveauBail {
                             // Ajouter ces données dans la table principale
 
                             Locataireselected.add(new DAO.jdbc.LocataireDAO().getLocataireByNomPrénomTel(nom,prenom,telephone));
-                            pageNouveauBail.getTableModel().addRow(new String[]{prenom,nom, telephone});
+                            int quotite=setQuotite();
+                            ListQuotite.add(quotite);
+                            pageNouveauBail.getTableModel().addRow(new String[]{prenom,nom, telephone,String.valueOf(quotite)+"%"});
                             pageNouveauBail.checkFields();
 
                             // Fermer la fenêtre popup
@@ -96,6 +102,36 @@ public class ModelePageNouveauBail {
             // Afficher la fenêtre popup
             popupFrame.setVisible(true);
         };
+    }
+
+    public int setQuotite() {
+        JDialog dialog = new JDialog((Frame) null, "Saisir la quotité du locataire sélectionné ", true);
+        dialog.setSize(400, 200);
+        dialog.setLayout(null);
+
+        JLabel label = new JLabel("Quotité en % :");
+        label.setBounds(20, 30, 200, 25);
+        dialog.add(label);
+
+        JSpinner quotiteSpinner = new JSpinner();
+        quotiteSpinner.setBounds(220, 30, 100, 25);
+        quotiteSpinner.setModel(new SpinnerNumberModel(100, 0, 100, 1));
+
+        dialog.add(quotiteSpinner);
+
+
+        JButton validerButton = new JButton("Valider");
+        validerButton.setBounds(150, 100, 100, 30);
+        dialog.add(validerButton);
+
+        validerButton.addActionListener(event -> {
+            dialog.dispose();
+        });
+
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
+        int i = (Integer) quotiteSpinner.getValue();
+        return i;
     }
 
     public ActionListener getSurfaceEtPiece() {
@@ -145,8 +181,8 @@ public class ModelePageNouveauBail {
                     sqlDateFin);
             try {
                 new BailDAO().create(bail);
-                for(Locataire l:Locataireselected) {
-                    new LouerDAO().create(l,bail);
+                for(int i=0;i<Locataireselected.size();i++) {
+                    new LouerDAO().create(Locataireselected.get(i),bail,ListQuotite.get(i));
                 }
                 JOptionPane.showMessageDialog(null, "Le Bail a été ajouté et lié à vos locataires !", "Succès",
                         JOptionPane.INFORMATION_MESSAGE);
