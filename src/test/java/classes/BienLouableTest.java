@@ -7,6 +7,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +52,18 @@ public class BienLouableTest {
 
     @Test
     public void testAjouterTravaux() {
-        Devis devis = new Devis("DEV123", 1000.0f, "Rénovation", 200.0f);
+        String num_devis = "123456789012";
+        float montant = 1000.0f;
+        String nature = "Renovation";
+        float montant_nondeductible = 200.0f;
+        Date date_debut = Date.valueOf("2024-01-01");
+        Date date_fin = Date.valueOf("2024-06-01");
+        String type = "TypeA";
+        String adresse = "123 Rue de Paris";
+        String nom_entreprise = "EntrepriseA";
+
+        Devis devis = new Devis(num_devis, montant, nature, montant_nondeductible, date_debut, date_fin, type,adresse,nom_entreprise);
+
         bienLouable.ajouterTravaux(devis);
         assertEquals(1, bienLouable.getTravaux().size());
         assertEquals(devis, bienLouable.getTravaux().get(0));
@@ -86,7 +98,18 @@ public class BienLouableTest {
     @Test
     public void testGetTravaux() {
         assertTrue(bienLouable.getTravaux().isEmpty());
-        Devis devis = new Devis("DEV456", 2000.0f, "Peinture", 300.0f);
+        String num_devis = "123456789012";
+        float montant = 1000.0f;
+        String nature = "Renovation";
+        float montant_nondeductible = 200.0f;
+        Date date_debut = Date.valueOf("2024-01-01");
+        Date date_fin = Date.valueOf("2024-06-01");
+        String type = "TypeA";
+        String adresse = "123 Rue de Paris";
+        String nom_entreprise = "EntrepriseA";
+
+        Devis devis = new Devis(num_devis, montant, nature, montant_nondeductible, date_debut, date_fin, type,adresse,nom_entreprise);
+
         bienLouable.ajouterTravaux(devis);
         assertEquals(1, bienLouable.getTravaux().size());
         assertEquals(devis, bienLouable.getTravaux().get(0));

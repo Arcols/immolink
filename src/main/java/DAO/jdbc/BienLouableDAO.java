@@ -2,10 +2,7 @@ package DAO.jdbc;
 
 import DAO.DAOException;
 import DAO.db.ConnectionDB;
-import classes.Batiment;
-import classes.BienLouable;
-import classes.Diagnostic;
-import classes.Garage;
+import classes.*;
 import enumeration.*;
 
 import java.sql.*;
@@ -297,5 +294,15 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
         }
         return adresses;
     }
+
+    /*public List<Devis> finAllTravaux(){
+        List<Devis> list = new ArrayList<>();
+        try{
+
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+        return list;
+    }*/
 
 }

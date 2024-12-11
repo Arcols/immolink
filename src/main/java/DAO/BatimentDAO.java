@@ -7,6 +7,7 @@ import java.util.Map;
 import classes.Batiment;
 
 public interface BatimentDAO {
+
 	/**
 	 * Crée un nouveau Batiment dans la base de données.
 	 *
@@ -18,7 +19,12 @@ public interface BatimentDAO {
 	 */
 	void create(Batiment batiment) throws DAOException;
 
-
+	/**
+	 *  Récupère l'id d'un batiment en utilisant son numéro fiscal
+	 * @param num_fisc le numéro fiscal du batiment
+	 * @return Integer id du batiment demandé
+	 * @throws DAOException
+	 */
 	Batiment readFisc(String num_fisc) throws DAOException;
 
 	/**
@@ -40,6 +46,11 @@ public interface BatimentDAO {
 	 */
 	int getIdBat(String ville, String adresse) throws DAOException;
 
+	/**
+	 *  Récupère l'id d'un batiment en utilisant son numéro fiscal
+	 * @param batiment le batiment
+	 * @throws DAOException
+	 */
 	void update(Batiment batiment) throws DAOException;
 
 	/**

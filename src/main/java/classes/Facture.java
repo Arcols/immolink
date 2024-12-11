@@ -8,6 +8,7 @@ public class Facture {
         this.montant = montant;
         this.devis = devis;
     }
+
     private String numero;
 
     private String date;

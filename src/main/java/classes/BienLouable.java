@@ -1,6 +1,7 @@
 package classes;
 
 import DAO.db.ConnectionDB;
+import enumeration.TypeLogement;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -63,8 +64,11 @@ public class BienLouable extends BienImmobilier {
 	public Integer getIdgarage() {
 		return id_garage_asosscie;
 	}
+	
+	public TypeLogement getTypeLogement(){
+		return TypeLogement.APPARTEMENT;
+	}
 
-	// pas sur que ça serve ?
 	/**
 	 * In : Diagnostic Out : Void La fonction sert à mettre à jour un diagnostic si
 	 * jamais celui-ci va bientot expirer
