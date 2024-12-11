@@ -165,4 +165,25 @@ public class LocataireDAO implements DAO.LocataireDAO {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public int getId(Locataire locataire){
+        Integer idloc=(Integer)  null;
+        try {
+            Connection cn = ConnectionDB.getInstance();
+            String query = "SELECT id_loc FROM locataire WHERE prenom = ? AND nom = ? AND téléphone = ? ";
+            PreparedStatement pstmt = cn.prepareStatement(query);
+            pstmt.setString(1, locataire.getPrénom());
+            pstmt.setString(2, locataire.getNom());
+            pstmt.setString(3, locataire.getTéléphone());
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()){
+                idloc = rs.getInt("id_loc");
+            }
+            pstmt.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return idloc;
+    }
 }

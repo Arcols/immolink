@@ -3,10 +3,10 @@ package DAO.jdbc;
 import DAO.DAOException;
 import DAO.db.ConnectionDB;
 import classes.Bail;
-import classes.BienLouable;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class BailDAO implements DAO.BailDAO {
@@ -34,6 +34,30 @@ public class BailDAO implements DAO.BailDAO {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public int getId(Bail bail){
+        Integer idBail = (Integer) null;
+        try {
+            Connection cn = ConnectionDB.getInstance();
+            String query = "SELECT id FROM bail WHERE date_debut = ? AND date_fin = ? AND id_bien_louable = ? ";
+            PreparedStatement pstmt = cn.prepareStatement(query);
+            Integer id = new BienLouableDAO().getId(bail.getFisc_bien());
+            pstmt.setDate(1, bail.getDate_debut());
+            pstmt.setDate(2, bail.getDate_fin());
+            pstmt.setInt(3, id);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()){
+                idBail = rs.getInt("id");
+            }
+            pstmt.close();
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return idBail;
     }
 }
 

@@ -16,7 +16,5 @@ public interface BailDAO {
          */
         void create(Bail bail) throws DAOException;
 
-        
-
-
+    int getId(Bail bail);
 }

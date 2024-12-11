@@ -114,4 +114,21 @@ public class Locataire {
                 ", charges=" + charges +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        // Vérifie si les références sont identiques
+        if (this == obj) return true;
+
+        // Vérifie si l'objet est null ou de type différent
+        if (obj == null || getClass() != obj.getClass()) return false;
+
+        // Cast l'objet en Locataire
+        Locataire locataire = (Locataire) obj;
+
+        // Compare les champs significatifs
+        return nom.equals(locataire.nom) &&
+                prénom.equals(locataire.prénom) &&
+                téléphone.equals(locataire.téléphone);
+    }
 }

@@ -501,7 +501,8 @@ public class PageNouveauBail {
                 && !this.choix_prevision.getText().trim().isEmpty()
                 && !this.choix_depot_garantie.getText().trim().isEmpty()
                 &&!this.choix_date_debut.getText().trim().isEmpty()
-                &&!this.choix_date_fin.getText().trim().isEmpty();
+                &&!this.choix_date_fin.getText().trim().isEmpty()
+                &&!(this.table.getRowCount()==0);
 
         // Active ou désactive le bouton "Valider"
         this.valider.setEnabled(isFilled);

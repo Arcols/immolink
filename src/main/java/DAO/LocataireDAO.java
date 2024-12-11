@@ -64,4 +64,5 @@ public interface LocataireDAO {
      */
     public void deleteLocataire(Locataire locataire);
 
+    int getId(Locataire locataire);
 }

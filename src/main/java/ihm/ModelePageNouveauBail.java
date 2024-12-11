@@ -2,21 +2,30 @@ package ihm;
 
 import DAO.DAOException;
 import DAO.jdbc.BailDAO;
+import DAO.jdbc.LouerDAO;
 import classes.Bail;
 import classes.BienLouable;
+import classes.Locataire;
 import modele.PageNouveauBail;
+import modele.PageNouveauBienImmobilier;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 public class ModelePageNouveauBail {
 
     private PageNouveauBail pageNouveauBail;
+    private List<Locataire> Locataireselected=new LinkedList<Locataire>();
 
     public ModelePageNouveauBail(PageNouveauBail pageNouveauBail) {
         this.pageNouveauBail = pageNouveauBail;
@@ -25,41 +34,67 @@ public class ModelePageNouveauBail {
     public ActionListener getAjouterLocataire() {
         return e -> {
             // Données fictives pour les locataires
+            List<Locataire> listlocataires = new DAO.jdbc.LocataireDAO().getAllLocataire();
+            String[][] locataires = new String[listlocataires.size()-Locataireselected.size()][];
+            String[] ligne;
+            int i = 0;
+            for (Locataire l : listlocataires) {
+                if (!Locataireselected.contains(l)) {
+                    ligne = new String[]{l.getNom(), l.getPrénom(), l.getTéléphone()};
+                    locataires[i] = ligne;
+                    i++;
+                }
+            }
+            // Colonnes de la table
+            String[] columns = {"Nom", "Prénom", "Téléphone"};
 
-            String[][] locataires = {
-                    {"Alice", "Dupont", "0123456789"},
-                    {"Bob", "Martin", "0987654321"},
-                    {"Charlie", "Durand", "0543210987"}
-            };//IL FAUT FAIRE LA REQUETE SQL
-            String[] columns = {"Prénom", "Nom", "Téléphone"};
-            // Créer une table avec les données des locataires
-            DefaultTableModel model = new DefaultTableModel(locataires, columns);
+            // Modèle pour la table
+            DefaultTableModel model = new DefaultTableModel(locataires, columns){
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false; // Toutes les cellules sont non éditables
+                }
+            };
             JTable selectionTable = new JTable(model);
             selectionTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
             // ScrollPane pour la table
             JScrollPane scrollPanePopUp = new JScrollPane(selectionTable);
 
-            // Afficher la table dans un JOptionPane
-            int result = JOptionPane.showConfirmDialog(this.pageNouveauBail.getFrame(), scrollPanePopUp, "Sélectionner un locataire",
-                    JOptionPane.OK_CANCEL_OPTION);
+            // Création d'une fenêtre popup
+            JFrame popupFrame = new JFrame("Sélectionner un locataire");
+            popupFrame.setSize(400, 300);
+            popupFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            popupFrame.add(scrollPanePopUp);
+            popupFrame.setLocationRelativeTo(this.pageNouveauBail.getFrame());
 
-            // Si l'utilisateur clique sur OK
-            if (result == JOptionPane.OK_OPTION) {
-                int selectedRow = selectionTable.getSelectedRow();
-                if (selectedRow >= 0) {
-                    // Récupérer les données du locataire sélectionné
-                    String prenom = model.getValueAt(selectedRow, 0).toString();
-                    String nom = model.getValueAt(selectedRow, 1).toString();
-                    String telephone = model.getValueAt(selectedRow, 2).toString();
+            // Ajout d'un MouseListener pour détecter le double-clic
+            selectionTable.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if (e.getClickCount() == 2) { // Double-clic
+                        int selectedRow = selectionTable.getSelectedRow();
+                        if (selectedRow >= 0) {
+                            // Récupérer les données du locataire sélectionné
+                            String nom = model.getValueAt(selectedRow, 0).toString();
+                            String prenom = model.getValueAt(selectedRow, 1).toString();
+                            String telephone = model.getValueAt(selectedRow, 2).toString();
 
-                    // Ajouter ces données dans la table principale
-                    this.pageNouveauBail.getTableModel().addRow(new String[]{prenom, nom, telephone});
-                } else {
-                    // Aucune ligne sélectionnée
-                    JOptionPane.showMessageDialog(this.pageNouveauBail.getFrame(), "Veuillez sélectionner un locataire.");
+                            // Ajouter ces données dans la table principale
+
+                            Locataireselected.add(new DAO.jdbc.LocataireDAO().getLocataireByNomPrénomTel(nom,prenom,telephone));
+                            pageNouveauBail.getTableModel().addRow(new String[]{prenom,nom, telephone});
+                            pageNouveauBail.checkFields();
+
+                            // Fermer la fenêtre popup
+                            popupFrame.dispose();
+                        }
+                    }
                 }
-            }
+            });
+
+            // Afficher la fenêtre popup
+            popupFrame.setVisible(true);
         };
     }
 
@@ -110,11 +145,23 @@ public class ModelePageNouveauBail {
                     sqlDateFin);
             try {
                 new BailDAO().create(bail);
+                for(Locataire l:Locataireselected) {
+                    new LouerDAO().create(l,bail);
+                }
+                JOptionPane.showMessageDialog(null, "Le Bail a été ajouté et lié à vos locataires !", "Succès",
+                        JOptionPane.INFORMATION_MESSAGE);
+                refreshPage(e);
             } catch (DAOException ex) {
-                JOptionPane.showMessageDialog(null, "Une erreur est survenue lors de la création du logement.", "Erreur", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Une erreur est survenue lors de la création du bail.", "Erreur", JOptionPane.ERROR_MESSAGE);
             }
         };
     }
 
+    private void refreshPage(ActionEvent e) {
+        JFrame ancienneFenetre = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
+        ancienneFenetre.dispose();
+        PageNouveauBail nouvellePage = new PageNouveauBail();
+        nouvellePage.getFrame().setVisible(true);
+    }
 }
 
