@@ -8,12 +8,9 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-/*
- * Interface définissant les opérations CRUD pour les objets BienLouable.
- */
 public interface BienLouableDAO {
 
-	/*
+	/**
 	 * Crée un nouveau BienLouable dans la base de données.
 	 *
 	 * @param bien L'objet BienLouable à créer
@@ -53,7 +50,7 @@ public interface BienLouableDAO {
 	 */
 	Integer getId(String num_fiscal) throws DAOException;
 
-	/*
+	/**
 	 * Supprime un BienLouable de la base de données en utilisant son identifiant.
 	 *
 	 * @param id L'identifiant unique du bien immobilier à supprimer
@@ -62,7 +59,7 @@ public interface BienLouableDAO {
 	 */
 	void delete(int id) throws DAOException;
 
-	/*
+	/**
 	 * Récupère tous les biens immobiliers de la base de données.
 	 *
 	 * @return Une liste de tous les objets BienLouable
@@ -70,13 +67,47 @@ public interface BienLouableDAO {
 	 */
 	List<BienLouable> findAll() throws DAOException;
 
+	/**
+	 *  Récupère le garage associé à un bien louable
+	 * @param ville la ville du bien louable
+	 * @param adresse l'adresse du bien louable
+	 * @param complement le complement d'adresse du bien louable
+	 * @return l'identifiant du garage associé
+	 */
 	Integer getTypeFromCompl(String ville,String adresse, String complement);
 
+	/**
+	 *  Récupère le garage associé à un bien louable
+	 * @param ville la ville du bien louable
+	 * @param adresse l'adresse du bien louable
+	 * @param complement le complement d'adresse du bien louable
+	 * @return
+	 */
 	Integer getNbPieceFromCompl(String ville,String adresse, String complement);
 
+	/**
+	 * Récupère le garage associé à un bien louable
+	 * @param ville la ville du bien louable
+	 * @param adresse l'adresse du bien louable
+	 * @param complement le complement d'adresse du bien louable
+	 * @return l'identifiant du garage associé
+	 */
 	Double getSurfaceFromCompl(String ville,String adresse, String complement);
+
+	/**
+	 * Récupère le garage associé à un bien louable
+	 * @param ville la ville du bien louable
+	 * @param adresse l'adresse du bien louable
+	 * @param complement le complement d'adresse du bien louable
+	 * @return l'identifiant du garage associé
+	 */
 	String getFiscFromCompl(String ville,String adresse, String complement);
 
+	/**
+	 * Récupère le garage associé à un bien louable
+	 * @return l'identifiant du garage associé
+	 * @throws SQLException
+	 */
     Map<String, List<String>> getAllcomplements() throws SQLException;
 
 }
