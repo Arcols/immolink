@@ -1,5 +1,7 @@
 package classes;
 
+import enumeration.TypeLogement;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -68,6 +70,10 @@ public class Batiment extends BienImmobilier {
 	}
 
 	public String getCodePostal() {return this.code_postal;}
+
+	public TypeLogement getTypeLogement(){
+		return TypeLogement.BATIMENT;
+	}
 
 	@Override
 	public String toString() {
