@@ -4,10 +4,10 @@ import DAO.DAOException;
 import DAO.db.ConnectionDB;
 import classes.Bail;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class BailDAO implements DAO.BailDAO {
     @Override
@@ -58,6 +58,34 @@ public class BailDAO implements DAO.BailDAO {
             throw new RuntimeException(e);
         }
         return idBail;
+    }
+
+    @Override
+    public List<Bail> getAllBaux() {
+        List<Bail> baux = new LinkedList<>();
+        try {
+            Connection cn = ConnectionDB.getInstance();
+            String query = "SELECT solde_de_compte, id_bien_louable, loyer, charges, depot_garantie, date_debut, date_fin FROM bail";
+            PreparedStatement pstmt = cn.prepareStatement(query);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                int solde_de_compte = rs.getInt("solde_de_compte");
+                int id_bien_louable = rs.getInt("id_bien_louable");
+                Double loyer = rs.getDouble("loyer");
+                Double charges = rs.getDouble("charges");
+                Double depot_garantie = rs.getDouble("depot_garantie");
+                java.sql.Date date_debut = rs.getDate("date_debut");
+                Date date_fin = rs.getDate("date_fin");
+                baux.add(new Bail((solde_de_compte==1),new LogementDAO().read(id_bien_louable).getNumero_fiscal(),loyer,charges,depot_garantie,date_debut,date_fin));
+            }
+            rs.close();
+            pstmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
+        return baux;
     }
 }
 
