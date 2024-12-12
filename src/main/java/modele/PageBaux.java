@@ -1,6 +1,7 @@
 package modele;
 
 import DAO.DAOException;
+import DAO.jdbc.BailDAO;
 import DAO.jdbc.BatimentDAO;
 import DAO.jdbc.BienLouableDAO;
 import DAO.jdbc.LouerDAO;
@@ -178,7 +179,8 @@ public class PageBaux {
 		this.frame.getContentPane().add(bas_de_page, BorderLayout.SOUTH);
 		bas_de_page.setLayout(new BorderLayout(0, 0));
 
-		JLabel revenu_immobilier = new JLabel("caca");
+		Double totalrevenu = new BailDAO().getAllLoyer();
+		JLabel revenu_immobilier = new JLabel("Total revenu immobilier : "+String.valueOf(totalrevenu)+" €");
 		revenu_immobilier.setHorizontalTextPosition(SwingConstants.LEFT);
 		revenu_immobilier.setVerticalTextPosition(SwingConstants.TOP);
 		revenu_immobilier.setVerticalAlignment(SwingConstants.BOTTOM);
@@ -231,7 +233,6 @@ public class PageBaux {
 							Bail bail =  new BienLouableDAO().getBailFromBien(bien);
 							frame.dispose();
 							PageUnBail PageUnBail = new PageUnBail(bail);
-							PageUnBail.main(null);
 
                         } catch (DAOException e) {
                             throw new RuntimeException(e);
