@@ -107,4 +107,24 @@ public class DevisDAO implements DAO.DevisDAO {
         return liste_devis;
     }
 
+    @Override
+    public double getMontantTotalDevis(String num_fiscal, TypeLogement typeLogement) {
+        double resultat=0.0;
+        List<Devis> liste_devis = getAllDevisFromABien(num_fiscal,typeLogement);
+        for (Devis devis : liste_devis){
+            resultat += devis.getMontantDevis();
+        }
+        return resultat;
+    }
+
+    @Override
+    public double getMontantTotalTravaux(String num_fiscal, TypeLogement typeLogement) {
+        double resultat=0.0;
+        List<Devis> liste_devis = getAllDevisFromABien(num_fiscal,typeLogement);
+        for (Devis devis : liste_devis){
+            resultat += devis.getMontantTravaux();
+        }
+        return resultat;
+    }
+
 }

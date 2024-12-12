@@ -42,6 +42,23 @@ public interface DevisDAO {
     List<Devis> getAllDevisFromABien(String num_fiscal,TypeLogement typeLogement);
 
     /**
+     * Récupère le montant total des devis d'un bien
+     * @param num_fiscal
+     * @param typeLogement
+     * @return
+     */
+    double getMontantTotalDevis(String num_fiscal, TypeLogement typeLogement);
+
+    /**
+     * Récupère le montant total des travaux d'un bien
+     * @param num_fiscal
+     * @param typeLogement
+     * @return
+     */
+    double getMontantTotalTravaux(String num_fiscal, TypeLogement typeLogement);
+
+
+    /**
      * Récupère un devis à partir de son identifiant
      * @param id l'identifiant du devis
      * @return le devis
