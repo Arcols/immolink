@@ -37,6 +37,24 @@ public class BailDAO implements DAO.BailDAO {
     }
 
     @Override
+    public double getAllLoyer() {
+        double resultat = 0.0;
+        try {
+            Connection cn = ConnectionDB.getInstance();
+            String query = "SELECT SUM(loyer) FROM bail";
+            PreparedStatement pstmt = cn.prepareStatement(query);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()){
+                resultat = rs.getDouble("SUM(loyer)");
+            }
+            pstmt.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return resultat;
+    }
+
+    @Override
     public int getId(Bail bail){
         Integer idBail = (Integer) null;
         try {

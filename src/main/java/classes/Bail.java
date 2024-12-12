@@ -1,6 +1,7 @@
 package classes;
 
 import java.sql.Date;
+import java.util.Objects;
 
 public class Bail {
     private boolean solde_de_compte;
@@ -81,5 +82,24 @@ public class Bail {
 
     public void setSolde_de_compte(boolean solde_de_compte) {
         this.solde_de_compte = solde_de_compte;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Bail bail = (Bail) o;
+        return solde_de_compte == bail.solde_de_compte &&
+                Double.compare(bail.loyer, loyer) == 0 &&
+                Double.compare(bail.charge, charge) == 0 &&
+                Double.compare(bail.depot_garantie, depot_garantie) == 0 &&
+                Objects.equals(fisc_bien, bail.fisc_bien) &&
+                Objects.equals(date_debut, bail.date_debut) &&
+                Objects.equals(date_fin, bail.date_fin);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(solde_de_compte, fisc_bien, loyer, charge, depot_garantie, date_debut, date_fin);
     }
 }
