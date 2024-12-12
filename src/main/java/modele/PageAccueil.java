@@ -23,6 +23,7 @@ import classes.Locataire;
 import ihm.Charte;
 import ihm.Menu;
 import ihm.ResizedImage;
+
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -112,7 +113,7 @@ public class PageAccueil {
 		JPanel menuPanel = new JPanel(new GridLayout(1, 5, 10, 0));
 		menuPanel.setBackground(Charte.ENTETE.getCouleur());
 
-		String[] menuItems = { "Accueil", "Profil", "Mes baux", "Locataires", "Mes Biens" };
+		String[] menuItems = { "Accueil", "Mes baux", "Mes Biens" };
 		Menu menuListener = new Menu(frame);
 
 		for (String item : menuItems) {
@@ -146,6 +147,7 @@ public class PageAccueil {
 	private void initBody() {
 		JPanel bodyPanel = new JPanel(new BorderLayout());
 		frame.add(bodyPanel, BorderLayout.CENTER);
+		ModelePageAccueil modele=new ModelePageAccueil(this);
 
 		// Titre
 		JLabel titleLabel = new JLabel("Locataires", SwingConstants.CENTER);
@@ -167,23 +169,12 @@ public class PageAccueil {
 			e.printStackTrace();
 		}
 
-		JPanel boutonsPanel = new JPanel();
-		bodyPanel.add(boutonsPanel, BorderLayout.SOUTH);
-		GridBagLayout gbl_boutonsPanel = new GridBagLayout();
-		gbl_boutonsPanel.columnWidths = new int[] { 0 };
-		gbl_boutonsPanel.rowHeights = new int[] { 0 };
-		gbl_boutonsPanel.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0 };
-		gbl_boutonsPanel.rowWeights = new double[] { 0.0 };
-		boutonsPanel.setLayout(gbl_boutonsPanel);
+		JPanel bas_de_page = new JPanel();
+		this.frame.getContentPane().add(bas_de_page, BorderLayout.SOUTH);
+		bas_de_page.setLayout(new BorderLayout(0, 0));
 
 		JPanel regimePanel = new JPanel();
-		GridBagConstraints gbc_regimePanel = new GridBagConstraints();
-		gbc_regimePanel.anchor = GridBagConstraints.NORTHWEST;
-		gbc_regimePanel.insets = new Insets(0, 0, 0, 5);
-		gbc_regimePanel.gridx = 1;
-		gbc_regimePanel.gridy = 0;
-		boutonsPanel.add(regimePanel, gbc_regimePanel);
-		regimePanel.setLayout(new GridLayout(2, 1, 0, 0));
+		bas_de_page.add(regimePanel,BorderLayout.WEST);
 
 		JLabel regimeLabel = new JLabel("Mon régime microfoncier");
 		regimePanel.add(regimeLabel);
@@ -193,18 +184,20 @@ public class PageAccueil {
 		btnActualiserRegime.addActionListener(ModelePageAccueil.getActionListenerForActualiser(frame));
 
 		JPanel declaFidscalePanel = new JPanel();
-		GridBagConstraints gbc_declaFidscalePanel = new GridBagConstraints();
-		gbc_declaFidscalePanel.anchor = GridBagConstraints.NORTHWEST;
-		gbc_declaFidscalePanel.gridx = 3;
-		gbc_declaFidscalePanel.gridy = 0;
-		boutonsPanel.add(declaFidscalePanel, gbc_declaFidscalePanel);
-		declaFidscalePanel.setLayout(new GridLayout(0, 1, 0, 0));
+		bas_de_page.add(declaFidscalePanel,BorderLayout.CENTER);
 
 		JLabel declaFiscaleLabel = new JLabel("Déclaration fiscale");
 		declaFidscalePanel.add(declaFiscaleLabel);
 
 		JButton declaFiscaleButton = new JButton("Générer");
 		declaFidscalePanel.add(declaFiscaleButton);
+
+		JButton ajouter = new JButton("Ajouter un locataire");
+		bas_de_page.add(ajouter, BorderLayout.EAST);
+		ajouter.addActionListener(modele.ouvrirNouveauLocataire());
 	}
 
+	public JFrame getFrame() {
+		return frame;
+	}
 }

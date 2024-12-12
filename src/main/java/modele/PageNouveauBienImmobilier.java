@@ -93,7 +93,6 @@ public class PageNouveauBienImmobilier {
 	 */
 	private void initialize() {
 		ModelePageBienImmobilier modele = new ModelePageBienImmobilier(this);
-		Menu m = new Menu(this.frame);
 		this.map_diagnostic = new HashMap<>();
 		initialiseMapDiagnostic();
 		this.liste_diagnostic = new ArrayList<>();
@@ -114,16 +113,20 @@ public class PageNouveauBienImmobilier {
 		JPanel entete = new JPanel();
 		this.frame.getContentPane().add(entete, BorderLayout.NORTH);
 		entete.setLayout(new BorderLayout(0, 0));
+		this.frame.getContentPane().setBackground(Charte.FOND.getCouleur());
 
 		entete.setBackground(Charte.ENTETE.getCouleur());
 		entete.setBorder(new LineBorder(Color.BLACK, 2));
-		// Label pour le logo (Image)
+
 		this.logo = new JLabel("");
 		entete.add(this.logo, BorderLayout.WEST);
+
+		Menu m = new Menu(this.frame);
+
 		JPanel menu_bouttons = new JPanel();
 
 		entete.add(menu_bouttons, BorderLayout.CENTER);
-		menu_bouttons.setLayout(new GridLayout(0, 5, 0, 0));
+		menu_bouttons.setLayout(new GridLayout(0, 3, 0, 0));
 		menu_bouttons.setBackground(Charte.ENTETE.getCouleur());
 
 		JButton b_accueil = new JButton("Accueil");
@@ -133,14 +136,6 @@ public class PageNouveauBienImmobilier {
 		menu_bouttons.add(b_accueil);
 		b_accueil.addActionListener(m);
 
-		JButton b_profil = new JButton("Profil");
-		b_profil.setBorderPainted(false);
-		b_profil.setBackground(Charte.ENTETE.getCouleur());
-		b_profil.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		menu_bouttons.add(b_profil);
-		menu_bouttons.add(b_profil);
-		b_profil.addActionListener(m);
-
 		JButton b_baux = new JButton("Mes baux");
 		b_baux.setBorderPainted(false);
 		b_baux.setBackground(Charte.ENTETE.getCouleur());
@@ -149,20 +144,13 @@ public class PageNouveauBienImmobilier {
 		menu_bouttons.add(b_baux);
 		b_baux.addActionListener(m);
 
-		JButton b_loca = new JButton("Locataires");
-		b_loca.setBorderPainted(false);
-		b_loca.setBackground(Charte.ENTETE.getCouleur());
-		b_loca.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		menu_bouttons.add(b_loca);
-		menu_bouttons.add(b_loca);
-		b_loca.addActionListener(m);
-
 		JButton b_biens = new JButton("Mes Biens");
 		b_biens.setBorderPainted(false);
 		b_biens.setBackground(Charte.ENTETE.getCouleur());
 		b_biens.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		menu_bouttons.add(b_biens);
 		menu_bouttons.add(b_biens);
+		b_biens.addActionListener(m);
 
 		JPanel body = new JPanel();
 		this.frame.getContentPane().add(body, BorderLayout.CENTER);
@@ -415,6 +403,12 @@ public class PageNouveauBienImmobilier {
 		this.valider.setVerticalAlignment(SwingConstants.BOTTOM);
 		bas_de_page.add(this.valider, BorderLayout.EAST);
 
+		JButton quitter = new JButton("Quitter");
+		quitter.setHorizontalTextPosition(SwingConstants.LEFT);
+		quitter.setVerticalTextPosition(SwingConstants.TOP);
+		quitter.setVerticalAlignment(SwingConstants.BOTTOM);
+		bas_de_page.add(quitter, BorderLayout.WEST);
+
 		this.valider.addActionListener(modele.getValidateActionListener());
 		this.frame.addComponentListener(new ComponentAdapter() {
 			@Override
@@ -429,10 +423,8 @@ public class PageNouveauBienImmobilier {
 
 				// Appliquer la nouvelle police au bouton
 				Font resizedFont = new Font("Arial", Font.PLAIN, newFontSize);
-				b_loca.setFont(resizedFont);
 				b_baux.setFont(resizedFont);
 				b_accueil.setFont(resizedFont);
-				b_profil.setFont(resizedFont);
 				b_biens.setFont(resizedFont);
 			}
 		});
@@ -443,7 +435,7 @@ public class PageNouveauBienImmobilier {
 		this.choix_complement_adresse.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
 		this.texte_ville.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
 		this.texte_adresse.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
-
+		quitter.addActionListener(modele.quitterPage());
 	}
 
 	public JComboBox getChoix_adresse() {

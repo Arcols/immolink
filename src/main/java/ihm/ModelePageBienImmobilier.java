@@ -339,5 +339,12 @@ public class ModelePageBienImmobilier {
 		dialog.setLocationRelativeTo(null);
 		dialog.setVisible(true);
 		return date.get();
-	};
+	}
+	public ActionListener quitterPage(){
+		return e -> {
+			pageNouveauBienImmobilier.getFrame().dispose();
+			PageMesBiens PageMesBiens = new PageMesBiens();
+			PageMesBiens.main(null);
+		};
+	}
 }

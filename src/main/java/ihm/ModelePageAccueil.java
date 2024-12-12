@@ -3,6 +3,9 @@ package ihm;
 import DAO.jdbc.LocataireDAO;
 import DAO.jdbc.RegimeDAO;
 import classes.Locataire;
+import modele.PageAccueil;
+import modele.PageNouveauBail;
+import modele.PageNouveauLocataire;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -12,6 +15,11 @@ import java.util.List;
 
 public class ModelePageAccueil {
 
+    private PageAccueil pageAccueil;
+
+    public ModelePageAccueil(PageAccueil pageAccueil) {
+        this.pageAccueil = pageAccueil;
+    }
     /**
      * Charge les données des locataires dans un DefaultTableModel.
      *
@@ -131,5 +139,13 @@ public class ModelePageAccueil {
         } catch (Exception e) {
             throw new SQLException("Impossible de mettre à jour le seuil microfoncier.", e);
         }
+    }
+
+    public ActionListener ouvrirNouveauLocataire(){
+        return e->{
+            pageAccueil.getFrame().dispose();
+            PageNouveauLocataire PageNouveauLocataire = new PageNouveauLocataire();
+            PageNouveauLocataire.main(null);
+        };
     }
 }
