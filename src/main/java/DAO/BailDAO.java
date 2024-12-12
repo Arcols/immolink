@@ -16,5 +16,10 @@ public interface BailDAO {
          */
         void create(Bail bail) throws DAOException;
 
+    /**
+     * Récupère l'identifiant d'un bail dans la base de données.
+     * @param bail L'objet bail à insérer
+     * @return l'identifiant du bail
+     */
     int getId(Bail bail);
 }

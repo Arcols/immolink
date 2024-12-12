@@ -1,6 +1,7 @@
 package DAO;
 
 public interface RegimeDAO {
+
     /**
      * Recupere la valeur du regime microfoncier
      * @return un float de la valeur du regime microfoncier

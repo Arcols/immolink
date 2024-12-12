@@ -39,7 +39,6 @@ public interface LocataireDAO {
      */
     public void updateLocataireGenre(Locataire locataire, String genre);
 
-
     /**
      * Récupère un locataire de la base de données en utilisant son nom et prénom et téléphone
      * @param nom Le nom du locataire à rechercher
@@ -64,5 +63,10 @@ public interface LocataireDAO {
      */
     public void deleteLocataire(Locataire locataire);
 
+    /**
+     * Récupère l'identifiant d'un locataire dans la base de données
+     * @param locataire L'objet locataire à rechercher
+     * @return L'identifiant du locataire
+     */
     int getId(Locataire locataire);
 }
