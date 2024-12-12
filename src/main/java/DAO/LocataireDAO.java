@@ -69,4 +69,6 @@ public interface LocataireDAO {
      * @return L'identifiant du locataire
      */
     int getId(Locataire locataire);
+
+    Locataire getLocFromId(int id);
 }
