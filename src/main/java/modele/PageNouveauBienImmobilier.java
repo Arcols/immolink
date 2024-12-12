@@ -51,7 +51,7 @@ public class PageNouveauBienImmobilier {
 	private JComboBox choix_type_de_bien;
 	private JTextField texte_ville = new JTextField();
 	private JTextField texte_adresse = new JTextField();
-	private JTextField texte_code_postal = new JTextField();
+	private JFormattedTextField texte_code_postal;
 	private JSpinner choix_nb_piece;
 	private JSpinner choix_surface;
 	private JCheckBox check_garage;
@@ -216,7 +216,6 @@ public class PageNouveauBienImmobilier {
 		this.panel_caracteristique.add(num_fiscal, gbc_num_fiscal);
 
 		this.choix_num_fiscal = new JFormattedTextField();
-		this.choix_num_fiscal = new JFormattedTextField();
 		this.choix_num_fiscal.setColumns(12);
 		this.choix_num_fiscal.setDocument(new PlainDocument() {
 			@Override
@@ -232,6 +231,18 @@ public class PageNouveauBienImmobilier {
 		gbc_choix_num_fiscal.gridx = 1;
 		gbc_choix_num_fiscal.gridy = 1;
 		this.panel_caracteristique.add(this.choix_num_fiscal, gbc_choix_num_fiscal);
+
+		// code postal max 5 caractères
+		texte_code_postal = new JFormattedTextField();
+		this.texte_code_postal.setColumns(5);
+		this.texte_code_postal.setDocument(new PlainDocument() {
+			@Override
+			public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+				if (str == null || getLength() + str.length() <= 5) {
+					super.insertString(offs, str, a);
+				}
+			}
+		});
 
 		// Ajout des listeners sur chaque champ de texte
 
