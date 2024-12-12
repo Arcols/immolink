@@ -24,25 +24,15 @@ public class Menu implements ActionListener {
 				PageAccueil pageAccueil = new PageAccueil();
 				pageAccueil.main(null);
 				break;
-			case "Profil":
-				this.frame.dispose();
-				PageProfil pageProfil = new PageProfil();
-				pageProfil.main(null);
-				break;
 			case "Mes baux":
 				this.frame.dispose();
 				PageBaux pageBaux = new PageBaux();
 				pageBaux.main(null);
 				break;
-			case "Locataires":
-				this.frame.dispose();
-				PageNouveauLocataire PageNouveauLocataire = new PageNouveauLocataire();
-				PageNouveauLocataire.main(null);
-				break;
 			case "Mes Biens":
 				this.frame.dispose();
-				PageNouveauBienImmobilier pageBienImmobilier = new PageNouveauBienImmobilier();
-				PageNouveauBienImmobilier.main(null);
+				PageMesBiens PageMesBiens = new PageMesBiens();
+				PageMesBiens.main(null);
 				break;
 			default:
 				break;

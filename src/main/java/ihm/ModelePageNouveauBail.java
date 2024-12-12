@@ -6,6 +6,7 @@ import DAO.jdbc.LouerDAO;
 import classes.Bail;
 import classes.BienLouable;
 import classes.Locataire;
+import modele.PageBaux;
 import modele.PageNouveauBail;
 import modele.PageNouveauBienImmobilier;
 
@@ -198,6 +199,14 @@ public class ModelePageNouveauBail {
         ancienneFenetre.dispose();
         PageNouveauBail nouvellePage = new PageNouveauBail();
         nouvellePage.getFrame().setVisible(true);
+    }
+
+    public ActionListener quitterPage(){
+        return e -> {
+            pageNouveauBail.getFrame().dispose();
+            PageBaux PageBaux = new PageBaux();
+            PageBaux.main(null);
+        };
     }
 }
 

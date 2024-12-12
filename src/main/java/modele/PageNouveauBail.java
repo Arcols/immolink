@@ -98,22 +98,25 @@ public class PageNouveauBail {
         this.frame.setBounds(100, 100, 750, 400);
         this.frame.getContentPane().setBackground(Charte.FOND.getCouleur());
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        Menu m = new Menu(this.frame);
 
         // Panel d'entête pour le logo et le nom de l'appli
         JPanel entete = new JPanel();
         this.frame.getContentPane().add(entete, BorderLayout.NORTH);
         entete.setLayout(new BorderLayout(0, 0));
+        this.frame.getContentPane().setBackground(Charte.FOND.getCouleur());
 
         entete.setBackground(Charte.ENTETE.getCouleur());
         entete.setBorder(new LineBorder(Color.BLACK, 2));
-        // Label pour le logo (Image)
+
         this.logo = new JLabel("");
         entete.add(this.logo, BorderLayout.WEST);
+
+        Menu m = new Menu(this.frame);
+
         JPanel menu_bouttons = new JPanel();
 
         entete.add(menu_bouttons, BorderLayout.CENTER);
-        menu_bouttons.setLayout(new GridLayout(0, 5, 0, 0));
+        menu_bouttons.setLayout(new GridLayout(0, 3, 0, 0));
         menu_bouttons.setBackground(Charte.ENTETE.getCouleur());
 
         JButton b_accueil = new JButton("Accueil");
@@ -123,14 +126,6 @@ public class PageNouveauBail {
         menu_bouttons.add(b_accueil);
         b_accueil.addActionListener(m);
 
-        JButton b_profil = new JButton("Profil");
-        b_profil.setBorderPainted(false);
-        b_profil.setBackground(Charte.ENTETE.getCouleur());
-        b_profil.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        menu_bouttons.add(b_profil);
-        menu_bouttons.add(b_profil);
-        b_profil.addActionListener(m);
-
         JButton b_baux = new JButton("Mes baux");
         b_baux.setBorderPainted(false);
         b_baux.setBackground(Charte.ENTETE.getCouleur());
@@ -139,20 +134,13 @@ public class PageNouveauBail {
         menu_bouttons.add(b_baux);
         b_baux.addActionListener(m);
 
-        JButton b_loca = new JButton("Locataires");
-        b_loca.setBorderPainted(false);
-        b_loca.setBackground(Charte.ENTETE.getCouleur());
-        b_loca.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        menu_bouttons.add(b_loca);
-        menu_bouttons.add(b_loca);
-        b_loca.addActionListener(m);
-
         JButton b_biens = new JButton("Mes Biens");
         b_biens.setBorderPainted(false);
         b_biens.setBackground(Charte.ENTETE.getCouleur());
         b_biens.setCursor(new Cursor(Cursor.HAND_CURSOR));
         menu_bouttons.add(b_biens);
         menu_bouttons.add(b_biens);
+        b_biens.addActionListener(m);
 
         JPanel body = new JPanel();
         frame.getContentPane().add(body, BorderLayout.CENTER);
@@ -411,13 +399,19 @@ public class PageNouveauBail {
         valider.setVerticalTextPosition(SwingConstants.TOP);
         valider.setVerticalAlignment(SwingConstants.BOTTOM);
         bas_de_page.add(valider, BorderLayout.EAST);
+
+        JButton quitter = new JButton("Quitter");
+        quitter.setHorizontalTextPosition(SwingConstants.LEFT);
+        quitter.setVerticalTextPosition(SwingConstants.TOP);
+        quitter.setVerticalAlignment(SwingConstants.BOTTOM);
+        bas_de_page.add(quitter, BorderLayout.WEST);
+
         this.frame.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
                 ResizedImage res = new ResizedImage();
                 res.resizeImage("logo+nom.png", PageNouveauBail.this.frame,
-                        PageNouveauBail
-                                .this.logo, 3, 8);
+                        PageNouveauBail.this.logo, 3, 8);
                 int frameWidth = PageNouveauBail.this.frame.getWidth();
                 int frameHeight = PageNouveauBail.this.frame.getHeight();
 
@@ -425,10 +419,8 @@ public class PageNouveauBail {
 
                 // Appliquer la nouvelle police au bouton
                 Font resizedFont = new Font("Arial", Font.PLAIN, newFontSize);
-                b_loca.setFont(resizedFont);
                 b_baux.setFont(resizedFont);
                 b_accueil.setFont(resizedFont);
-                b_profil.setFont(resizedFont);
                 b_biens.setFont(resizedFont);
             }
         });
@@ -439,6 +431,7 @@ public class PageNouveauBail {
         this.choix_prevision.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
         this.choix_depot_garantie.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
         this.valider.addActionListener(modele.CreationBail());
+        quitter.addActionListener(modele.quitterPage());
     }
 
     public JFrame getFrame() {

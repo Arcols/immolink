@@ -3,6 +3,8 @@ package ihm;
 import DAO.jdbc.LocataireDAO;
 import DAO.jdbc.LocataireDAO;
 import classes.Locataire;
+import modele.PageAccueil;
+import modele.PageBaux;
 import modele.PageNouveauBienImmobilier;
 import modele.PageNouveauLocataire;
 
@@ -66,6 +68,14 @@ public class ModelePageNouveauLocataire {
                 this.pageNouveauLocataire.getAdresseValeur().setModel(
                         new DefaultComboBoxModel(mapVillesAdresses.get(selectedVille).toArray(new String[0])));
             }
+        };
+    }
+
+    public ActionListener quitterBouton(){
+        return e -> {
+            pageNouveauLocataire.getFrame().dispose();
+            PageAccueil PageAccueil = new PageAccueil();
+            PageAccueil.main(null);
         };
     }
 }
