@@ -324,7 +324,7 @@ public class PageMonBien {
         scrollPane_1.setViewportView(this.tableTravaux);
         this.tableTravaux.setModel(model);
         try {
-            DefaultTableModel modele2 = ModelePageMonBien.loadDataTravauxToTable();
+            DefaultTableModel modele2 = ModelePageMonBien.loadDataTravauxToTable(idBien);
             tableTravaux.setModel(modele2);
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(frame, "Erreur lors du chargement des données : " + e.getMessage(),

@@ -6,10 +6,7 @@ import DAO.jdbc.BienLouableDAO;
 import DAO.jdbc.DevisDAO;
 import DAO.jdbc.DiagnosticDAO;
 import DAO.jdbc.LocataireDAO;
-import classes.BienLouable;
-import classes.Diagnostic;
-import classes.Locataire;
-import classes.Logement;
+import classes.*;
 import enumeration.TypeLogement;
 import modele.PageMonBien;
 
@@ -30,20 +27,26 @@ public class ModelePageMonBien {
 
 
 
-    public static DefaultTableModel loadDataTravauxToTable() throws SQLException {
+    public static DefaultTableModel loadDataTravauxToTable(Integer id) throws SQLException, DAOException {
         // Liste des colonnes
-        String[] columnNames = { "Montant", "Nature", "Montant non deductible" };
+        String[] columnNames = { "Montant", "Nature", "Type" };
 
         // Création du modèle de table
         DefaultTableModel model = new DefaultTableModel(columnNames, 0); // `0` pour aucune ligne au départ
 
-        // Récupération des locataires
-        LocataireDAO locataireDAO = new LocataireDAO();
-        List<Locataire> locataires = locataireDAO.getAllLocataire();
+        DAO.BienLouableDAO bienLouableDAO = new DAO.jdbc.BienLouableDAO();
+        BienLouable bienLouable = bienLouableDAO.readId(id);
+
+        // Récupération des Travaux
+        DevisDAO devisDAO = new DevisDAO();
+        List<Devis> devis = devisDAO.getAllDevisFromABien(bienLouable.getNumero_fiscal(),TypeLogement.APPARTEMENT);
 
         // Remplissage du modèle avec les données des locataires
-        for (Locataire locataire : locataires) {
+        for (Devis devi : devis) {
             Object[] rowData = {
+                    devi.getMontantTravaux(),
+                    devi.getNature(),
+                    devi.getType()
             };
             model.addRow(rowData); // Ajout de la ligne dans le modèle
         }
