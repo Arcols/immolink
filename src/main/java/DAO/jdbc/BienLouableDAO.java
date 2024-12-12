@@ -321,33 +321,7 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
         }
         return adresses;
     }
-    @Override
-    public BienLouable readId(int id) throws DAOException {
-        BienLouable bienLouable = null;
-        try{
-            Connection cn = ConnectionDB.getInstance();
-            String query = "SELECT * FROM bienlouable WHERE id = ? AND type_logement = ?";
-            PreparedStatement pstmt = cn.prepareStatement(query);
-            pstmt.setInt(1, id);
-            pstmt.setInt(2,TypeLogement.APPARTEMENT.getValue());
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                String numero_fiscal = rs.getString("numero_fiscal");
-                String complement_d_adresse = rs.getString("complement_adresse");
-                BatimentDAO batDAO = new BatimentDAO();
-                Batiment bat = batDAO.readId(rs.getInt("idBat"));
-                String ville = bat.getVille();
-                String adresse = bat.getAdresse();
-                List<Diagnostic> lDiags = new DiagnosticDAO().readAllDiag(id);
-                GarageDAO garageDAO = new GarageDAO();
-                bienLouable = new BienLouable(numero_fiscal,ville,adresse,complement_d_adresse,lDiags,garageDAO.getIdGarage(numero_fiscal));
-            }
-        }
-        catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return bienLouable;
-    }
+
 
     /*public List<Devis> finAllTravaux(){
         List<Devis> list = new ArrayList<>();

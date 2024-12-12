@@ -14,33 +14,18 @@ import java.awt.Insets;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JFormattedTextField;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
-import javax.swing.JTextField;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
-import javax.tools.Diagnostic;
 
 import DAO.jdbc.BatimentDAO;
+import classes.Batiment;
+import classes.Diagnostic;
 import enumeration.NomsDiags;
 import ihm.Charte;
 import ihm.Menu;
@@ -418,13 +403,11 @@ public class PageNouveauBienImmobilier {
 		this.valider.setVerticalAlignment(SwingConstants.BOTTOM);
 		bas_de_page.add(this.valider, BorderLayout.EAST);
 
-		
 		JButton quitter = new JButton("Quitter");
 		quitter.setHorizontalTextPosition(SwingConstants.LEFT);
 		quitter.setVerticalTextPosition(SwingConstants.TOP);
 		quitter.setVerticalAlignment(SwingConstants.BOTTOM);
 		bas_de_page.add(quitter, BorderLayout.WEST);
-
 
 		this.valider.addActionListener(modele.getValidateActionListener());
 		this.frame.addComponentListener(new ComponentAdapter() {

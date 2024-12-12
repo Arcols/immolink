@@ -5,26 +5,26 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.sql.SQLException;
+import java.util.List;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTable;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
+import DAO.BienLouableDAO;
 import DAO.DAOException;
-import ihm.ModelePageMesBiens;
+import classes.Locataire;
+import ihm.*;
+import modele.*;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+
+import static ihm.ModelePageMesBiens.loadDataBienImmoToTable;
 
 public class PageMesBiens {
 
@@ -61,8 +61,6 @@ public class PageMesBiens {
      */
     private void initialize() {
         // Initialisation du JFrame
-        ModelePageMesBiens modele = new ModelePageMesBiens(this);
-
         this.frame = new JFrame();
         this.frame.setBounds(100, 100, 750, 400);
         this.frame.getContentPane().setBackground(Charte.FOND.getCouleur());
@@ -71,28 +69,33 @@ public class PageMesBiens {
         JPanel entete = new JPanel();
         this.frame.getContentPane().add(entete, BorderLayout.NORTH);
         entete.setLayout(new BorderLayout(0, 0));
-        this.frame.getContentPane().setBackground(Charte.FOND.getCouleur());
 
         entete.setBackground(Charte.ENTETE.getCouleur());
         entete.setBorder(new LineBorder(Color.BLACK, 2));
-
+        // Label pour le logo (Image)
         this.logo = new JLabel("");
         entete.add(this.logo, BorderLayout.WEST);
-
-        Menu m = new Menu(this.frame);
-
         JPanel menu_bouttons = new JPanel();
 
         entete.add(menu_bouttons, BorderLayout.CENTER);
-        menu_bouttons.setLayout(new GridLayout(0, 3, 0, 0));
+        menu_bouttons.setLayout(new GridLayout(0, 5, 0, 0));
         menu_bouttons.setBackground(Charte.ENTETE.getCouleur());
+
+        Menu m = new Menu(this.frame);
 
         JButton b_accueil = new JButton("Accueil");
         b_accueil.setBorderPainted(false);
         b_accueil.setBackground(Charte.ENTETE.getCouleur());
         b_accueil.setCursor(new Cursor(Cursor.HAND_CURSOR));
         menu_bouttons.add(b_accueil);
-        b_accueil.addActionListener(m);
+
+        JButton b_profil = new JButton("Profil");
+        b_profil.setBorderPainted(false);
+        b_profil.setBackground(Charte.ENTETE.getCouleur());
+        b_profil.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        menu_bouttons.add(b_profil);
+        menu_bouttons.add(b_profil);
+        b_profil.addActionListener(m);
 
         JButton b_baux = new JButton("Mes baux");
         b_baux.setBorderPainted(false);
@@ -101,6 +104,14 @@ public class PageMesBiens {
         menu_bouttons.add(b_baux);
         menu_bouttons.add(b_baux);
         b_baux.addActionListener(m);
+
+        JButton b_loca = new JButton("Locataires");
+        b_loca.setBorderPainted(false);
+        b_loca.setBackground(Charte.ENTETE.getCouleur());
+        b_loca.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        menu_bouttons.add(b_loca);
+        menu_bouttons.add(b_loca);
+        b_loca.addActionListener(m);
 
         JButton b_biens = new JButton("Mes Biens");
         b_biens.setBorderPainted(false);
@@ -156,22 +167,10 @@ public class PageMesBiens {
         gbl_panel_1.rowWeights = new double[] { 0.0, 0.0 };
         panel_1.setLayout(gbl_panel_1);
 
-        JPanel bas_de_page = new JPanel();
-        this.frame.getContentPane().add(bas_de_page, BorderLayout.SOUTH);
-        bas_de_page.setLayout(new BorderLayout(0, 0));
-
-        JButton ajouter = new JButton("Nouveau bien");
-        ajouter.setEnabled(true); // Le bouton est maintenant activé
-        ajouter.setHorizontalTextPosition(SwingConstants.LEFT);
-        ajouter.setVerticalTextPosition(SwingConstants.TOP);
-        ajouter.setVerticalAlignment(SwingConstants.BOTTOM);
-        bas_de_page.add(ajouter, BorderLayout.EAST);
-
         this.frame.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
-                ResizedImage res = new ResizedImage();
-                res.resizeImage("logo+nom.png", PageMesBiens.this.frame,
+                ResizedImage.resizeImage("/ressources/images/logo+nom.png", PageMesBiens.this.frame,
                         PageMesBiens.this.logo, 3, 8);
                 int frameWidth = PageMesBiens.this.frame.getWidth();
                 int frameHeight = PageMesBiens.this.frame.getHeight();
@@ -180,17 +179,14 @@ public class PageMesBiens {
 
                 // Appliquer la nouvelle police au bouton
                 Font resizedFont = new Font("Arial", Font.PLAIN, newFontSize);
+                b_loca.setFont(resizedFont);
                 b_baux.setFont(resizedFont);
                 b_accueil.setFont(resizedFont);
+                b_profil.setFont(resizedFont);
                 b_biens.setFont(resizedFont);
             }
         });
 
-        ajouter.addActionListener(modele.ouvrirNouveauBien());
-    }
-
-    public JFrame getFrame() {
-        return frame;
     }
 
 }
