@@ -25,7 +25,5 @@ public interface BailDAO {
          */
         int getId(Bail bail);
 
-        int getId(Bail bail);
-
         List<Bail> getAllBaux();
 }

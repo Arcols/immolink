@@ -132,7 +132,7 @@ public class PageBaux {
 		titre.add(titrePage);
 
 		// Créer les données fictives pour le tableau
-		List<Bail> listBail = new DAO.jdbc.BailDAO().getAllBaux();
+		List<Bail> listBail = new DAO.jdbc.BailDAO().getAllBaux();	
 
 		String[][] data = new String[listBail.size()][];
 		String[] ligne;
