@@ -82,8 +82,10 @@ public class PageNouveauLocataire {
 
     /**
      * Initialize the contents of the frame.
+     *
+     * @return
      */
-    private void initialize() {
+    private JTextField initialize() {
         ModelePageNouveauLocataire modele = new ModelePageNouveauLocataire(this);
         try {
             DAO.jdbc.BatimentDAO tousBat = new DAO.jdbc.BatimentDAO();
@@ -100,6 +102,27 @@ public class PageNouveauLocataire {
         this.frame.getContentPane().add(entete, BorderLayout.NORTH);
         entete.setLayout(new BorderLayout(0, 0));
         this.frame.getContentPane().setBackground(Charte.FOND.getCouleur());
+    }
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize {
+		ModelePageNouveauLocataire modele = new ModelePageNouveauLocataire(this);
+		try {
+			DAO.jdbc.BatimentDAO tousBat = new DAO.jdbc.BatimentDAO();
+			mapVillesAdresses = tousBat.searchAllBatiments();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		this.setVilles = this.mapVillesAdresses.keySet();
+		this.frame = new JFrame();
+		this.frame.setBounds(100, 100, 750, 400);
+		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		JPanel entete = new JPanel();
+		this.frame.getContentPane().add(entete, BorderLayout.NORTH);
+		entete.setLayout(new BorderLayout(0, 0));
+		this.frame.getContentPane().setBackground(Charte.FOND.getCouleur());
 
         entete.setBackground(Charte.ENTETE.getCouleur());
         entete.setBorder(new LineBorder(Color.BLACK, 2));
@@ -275,25 +298,32 @@ public class PageNouveauLocataire {
         gbc_quitter.gridy = 5;
         donnees_loca.add(quitter, gbc_quitter);
 
-        enregistrerButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                java.sql.Date sqlDate = java.sql.Date.valueOf(dateValeur.getText());
-                daoLoc = new LocataireDAO();
-                Locataire l = new Locataire(nomValeur.getText(), prenomValeur.getText(), telephoneValeur.getText(),
-                        mailValeur.getText(), sqlDate, (String) genreValeur.getSelectedItem());
+        
+        JButton quitter = new JButton("Quitter");
+        GridBagConstraints gbc_quitter = new GridBagConstraints();
+        gbc_quitter.gridx = 1;
+        gbc_quitter.gridy = 5;
+        donnees_loca.add(quitter, gbc_quitter);
 
-            }
-        });
+		enregistrerButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				java.sql.Date sqlDate = java.sql.Date.valueOf(dateValeur.getText());
+				daoLoc = new LocataireDAO();
+				Locataire l = new Locataire(nomValeur.getText(), prenomValeur.getText(), telephoneValeur.getText(),
+						mailValeur.getText(), sqlDate, (String) genreValeur.getSelectedItem());
 
-        this.frame.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                ResizedImage res = new ResizedImage();
-                res.resizeImage("logo+nom.png", PageNouveauLocataire.this.frame,
-                        PageNouveauLocataire.this.logo, 3, 8);
-                int frameWidth = PageNouveauLocataire.this.frame.getWidth();
-                int frameHeight = PageNouveauLocataire.this.frame.getHeight();
+			}
+		});
+
+		this.frame.addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentResized(ComponentEvent e) {
+				ResizedImage res = new ResizedImage();
+				res.resizeImage("logo+nom.png", PageNouveauLocataire.this.frame,
+						PageNouveauLocataire.this.logo, 3, 8);
+				int frameWidth = PageNouveauLocataire.this.frame.getWidth();
+				int frameHeight = PageNouveauLocataire.this.frame.getHeight();
 
                 int newFontSize = Math.min(frameWidth, frameHeight) / 30;
 
@@ -341,9 +371,9 @@ public class PageNouveauLocataire {
         return adresseValeur;
     }
 
-    public JComboBox getVilleValeur() {
-        return villeValeur;
-    }
+	public JComboBox getVilleValeur() {
+		return villeValeur;
+	}
 
     public void checkFields() {
         // Vérification si tous les champs sont remplis

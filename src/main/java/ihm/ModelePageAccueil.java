@@ -1,19 +1,25 @@
 package ihm;
 
-import DAO.jdbc.LocataireDAO;
-import DAO.jdbc.RegimeDAO;
-import classes.Locataire;
-import modele.PageAccueil;
-import modele.PageNouveauBail;
-import modele.PageNouveauLocataire;
-
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+
+import DAO.jdbc.LocataireDAO;
+import DAO.jdbc.RegimeDAO;
+import classes.Locataire;
+import modele.PageAccueil;
+import modele.PageNouveauLocataire;
+
 public class ModelePageAccueil {
+
 
     private PageAccueil pageAccueil;
 
@@ -141,6 +147,7 @@ public class ModelePageAccueil {
         }
     }
 
+
     public ActionListener ouvrirNouveauLocataire(){
         return e->{
             pageAccueil.getFrame().dispose();
@@ -148,4 +155,5 @@ public class ModelePageAccueil {
             PageNouveauLocataire.main(null);
         };
     }
+
 }

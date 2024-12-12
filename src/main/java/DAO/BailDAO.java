@@ -13,8 +13,6 @@ public interface BailDAO {
          */
         void create(Bail bail) throws DAOException;
 
-
-
         /**
          * Récupère tous les loyers de tous les bails de la base de données.
          * 

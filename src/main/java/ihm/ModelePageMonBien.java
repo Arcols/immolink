@@ -1,35 +1,27 @@
 package ihm;
 
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
+
+import javax.swing.table.DefaultTableModel;
+import javax.tools.Diagnostic;
+
 import DAO.DAOException;
-import DAO.LogementDAO;
 import DAO.jdbc.BienLouableDAO;
 import DAO.jdbc.DevisDAO;
 import DAO.jdbc.DiagnosticDAO;
-import DAO.jdbc.LocataireDAO;
 import classes.*;
+import classes.BienLouable;
 import enumeration.TypeLogement;
 import modele.PageMonBien;
 
-import javax.swing.*;
-
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.Date;
-import java.util.List;
-
 public class ModelePageMonBien {
-    
 
-
-
-    public static DefaultTableModel loadDataTravauxToTable(Integer id) throws SQLException, DAOException {
+    public static DefaultTableModel loadDataDiagnosticsToTable(int idBien) throws SQLException, DAOException {
         // Liste des colonnes
-        String[] columnNames = { "Montant", "Nature", "Type" };
+        String[] columnNames = {"Libellé", "Fichier PDF","Date expiration"};
+
 
         // Création du modèle de table
         DefaultTableModel model = new DefaultTableModel(columnNames, 0); // `0` pour aucune ligne au départ
@@ -69,11 +61,13 @@ public class ModelePageMonBien {
                 page.getAffichageAdresse().setText(bienLouable.getAdresse());
                 page.getAffichageComplement().setText(bienLouable.getComplement_adresse());
                 page.getAffichageCoutTravaux().setText(String.valueOf(devisDAO.getMontantTotalTravaux(bienLouable.getNumero_fiscal(), TypeLogement.APPARTEMENT))+" €");
+
             }
         } catch (DAOException e) {
             throw new DAOException("Erreur lors du chargement des informations du bien : " + e.getMessage(), e);
         }
     }
+
 
     public ActionListener openDiag(String reference,Integer idBien) {
         return new ActionListener() {

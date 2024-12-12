@@ -8,25 +8,24 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.sql.SQLException;
-import java.util.List;
-import ihm.ModelePageAccueil;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 import DAO.jdbc.LocataireDAO;
-import classes.Locataire;
 import ihm.Charte;
 import ihm.Menu;
+import ihm.ModelePageAccueil;
 import ihm.ResizedImage;
-
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 
 public class PageAccueil {
 

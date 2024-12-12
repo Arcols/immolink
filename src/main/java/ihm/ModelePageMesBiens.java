@@ -1,20 +1,19 @@
 package ihm;
 
-import DAO.DAOException;
-import DAO.jdbc.BienLouableDAO;
-import DAO.jdbc.LocataireDAO;
-import classes.BienLouable;
-import classes.Locataire;
-import modele.PageMesBiens;
-import modele.PageNouveauBail;
-import modele.PageNouveauBienImmobilier;
-
-import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.swing.table.DefaultTableModel;
+
+import DAO.DAOException;
+import DAO.jdbc.BienLouableDAO;
+import classes.BienLouable;
+import modele.PageMesBiens;
+import modele.PageNouveauBienImmobilier;
+
 public class ModelePageMesBiens {
+
 
 
     private PageMesBiens pageMesBiens;
@@ -31,6 +30,7 @@ public class ModelePageMesBiens {
             PageNouveauBienImmobilier.main(null);
         };
     }
+
 
     /**
      * Charge les données des locataires dans un DefaultTableModel.
@@ -61,6 +61,5 @@ public class ModelePageMesBiens {
 
         return model; // Retourne le modèle rempli
     }
-
 
 }
