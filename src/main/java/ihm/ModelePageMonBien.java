@@ -3,12 +3,14 @@ package ihm;
 import DAO.DAOException;
 import DAO.LogementDAO;
 import DAO.jdbc.BienLouableDAO;
+import DAO.jdbc.DevisDAO;
 import DAO.jdbc.DiagnosticDAO;
 import DAO.jdbc.LocataireDAO;
 import classes.BienLouable;
 import classes.Diagnostic;
 import classes.Locataire;
 import classes.Logement;
+import enumeration.TypeLogement;
 import modele.PageMonBien;
 import javax.swing.JButton;
 
@@ -81,12 +83,15 @@ public class ModelePageMonBien {
             BienLouableDAO bienLouableDAO = new DAO.jdbc.BienLouableDAO();
             BienLouable bienLouable = bienLouableDAO.readId(idBien);
 
+            DevisDAO devisDAO =new DevisDAO();
+
             if (bienLouable != null) {
                 // Mise à jour des labels avec les informations du bien
                 page.setAffichageNumeroFiscal(bienLouable.getNumero_fiscal());
                 page.getAffichageVille().setText(bienLouable.getVille());
                 page.getAffichageAdresse().setText(bienLouable.getAdresse());
                 page.getAffichageComplement().setText(bienLouable.getComplement_adresse());
+                page.getAffichageCoutTravaux().setText(String.valueOf(devisDAO.getMontantTotalTravaux(bienLouable.getNumero_fiscal(), TypeLogement.APPARTEMENT)));
             }
         } catch (DAOException e) {
             throw new DAOException("Erreur lors du chargement des informations du bien : " + e.getMessage(), e);

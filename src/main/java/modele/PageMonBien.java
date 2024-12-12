@@ -35,6 +35,7 @@ public class PageMonBien {
     private JLabel affichageVille;
     private JLabel affichageAdresse;
     private JLabel affichageComplement;
+    private JLabel affichageCoutTravaux;
     private JTable tableDiagnostics;
     private JTable tableTravaux;
     private DefaultTableModel tableModel;
@@ -71,6 +72,7 @@ public class PageMonBien {
         this.affichageVille = new JLabel("New label");
         this.affichageAdresse = new JLabel("New label");
         this.affichageComplement = new JLabel("New label");
+        this.affichageCoutTravaux = new JLabel("New label");
         this.tableDiagnostics= new JTable();
 
         this.frame = new JFrame();
@@ -249,6 +251,22 @@ public class PageMonBien {
         gbc_affichageComplement.gridy = 3;
         panel.add(this.affichageComplement, gbc_affichageComplement);
 
+        JLabel labelCoutTravaux = new JLabel("Coût travaux");
+        GridBagConstraints gbc_labelCoutTravaux = new GridBagConstraints();
+        gbc_labelCoutTravaux.anchor = GridBagConstraints.WEST;
+        gbc_labelCoutTravaux.insets = new Insets(0, 0, 5, 5);
+        gbc_labelCoutTravaux.gridx = 0;
+        gbc_labelCoutTravaux.gridy = 4;
+        panel.add(labelCoutTravaux, gbc_labelCoutTravaux);
+
+
+        GridBagConstraints gbc_affichageCoutTravaux = new GridBagConstraints();
+        gbc_affichageCoutTravaux.anchor = GridBagConstraints.WEST;
+        gbc_affichageCoutTravaux.insets = new Insets(0, 0, 5, 5);
+        gbc_affichageCoutTravaux.gridx = 1;
+        gbc_affichageCoutTravaux.gridy = 4;
+        panel.add(this.affichageComplement, gbc_affichageComplement);
+
         JScrollPane scrollPane = new JScrollPane();
         GridBagConstraints gbc_scrollPane = new GridBagConstraints();
         gbc_scrollPane.fill = GridBagConstraints.BOTH;
@@ -334,6 +352,10 @@ public class PageMonBien {
 
     public JLabel getAffichageComplement() {
         return this.affichageComplement;
+    }
+
+    public JLabel getAffichageCoutTravaux() {
+        return this.affichageCoutTravaux;
     }
 
 
