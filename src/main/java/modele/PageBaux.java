@@ -136,34 +136,30 @@ public class PageBaux {
 
 		String[][] data = new String[listBail.size()][];
 		String[] ligne;
-
 		int i = 0;
 		for (Bail b : listBail) {
-            BienLouable logement= null;
-            try {
-                logement = new BienLouableDAO().readFisc(b.getFisc_bien());
-            } catch (DAOException e) {
-                throw new RuntimeException(e);
-            }
-            List<Integer> idLocataires=new LouerDAO().getIdLoc(new DAO.jdbc.BailDAO().getId(b));
-			Locataire loc=null;
-			for(int id:idLocataires){
-				loc=new DAO.jdbc.LocataireDAO().getLocFromId(id);
+			BienLouable logement = null;
+			try {
+				logement = new BienLouableDAO().readFisc(b.getFisc_bien());
+			} catch (DAOException e) {
+				throw new RuntimeException(e);
 			}
-            ligne = new String[]{logement.getAdresse(),
-                                logement.getComplement_adresse(),
-                                logement.getVille(),
-								loc.getPrénom(),
-								String.valueOf(b.getLoyer())
-								};
-            data[i] = ligne;
+			List<Integer> idLocataires = new LouerDAO().getIdLoc(new DAO.jdbc.BailDAO().getId(b));
+			String noms=new String();
+			for (int id : idLocataires) {
+				Locataire loc = new DAO.jdbc.LocataireDAO().getLocFromId(id);
+				noms+=loc.getNom()+" ";
+			}
+			ligne = new String[]{logement.getAdresse(),
+					logement.getComplement_adresse(),
+					logement.getVille(),
+					noms,
+					String.valueOf(b.getLoyer())
+			};
+			data[i] = ligne;
 			i++;
 		}
-
-
-
-		String[] columns = { "Adresse", "Complément", "Ville", "Locataires", "Loyer", "Statut" };
-
+		String[] columns = { "Adresse", "Complément", "Ville", "Locataire(s)", "Loyer", "Statut" };
 		// Créer le modèle de table avec les données
 		DefaultTableModel tableModel = new DefaultTableModel(data, columns) {
 			@Override
