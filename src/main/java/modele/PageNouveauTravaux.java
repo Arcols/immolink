@@ -307,8 +307,8 @@ public class PageNouveauTravaux {
         Body.add(panelValider, BorderLayout.SOUTH);
         panelValider.setLayout(new BorderLayout(0, 0));
 
-        JButton btnQuitter = new JButton("Quitter");
-        panelValider.add(btnQuitter, BorderLayout.WEST);
+//        JButton btnQuitter = new JButton("Quitter");
+//        panelValider.add(btnQuitter, BorderLayout.WEST);
 
         JButton btnValider = new JButton("Valider");
         panelValider.add(btnValider, BorderLayout.EAST);
