@@ -1,11 +1,20 @@
 package modele;
 
+import DAO.DAOException;
+import DAO.jdbc.BatimentDAO;
+import DAO.jdbc.BienLouableDAO;
+import DAO.jdbc.LouerDAO;
+import classes.Bail;
+import classes.BienLouable;
+import classes.Locataire;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -123,15 +132,34 @@ public class PageBaux {
 		titre.add(titrePage);
 
 		// Créer les données fictives pour le tableau
-		String[][] data = { { "123 Rue A", "Bâtiment 1", "Paris", "Alice Dupont", "800", "Payé" },
-				{ "456 Rue B", "Bâtiment 2", "Lyon", "Bob Martin", "900", "Payé" },
-				{ "789 Rue C", "Bâtiment 3", "Marseille", "Charlie Durand", "950", "Payé" },
-				{ "101 Rue D", "Bâtiment 4", "Paris", "David Lefevre", "850", "Payé" },
-				{ "202 Rue E", "Bâtiment 5", "Bordeaux", "Eve Robert", "950", "Payé" },
-				{ "303 Rue F", "Bâtiment 6", "Lille", "Franck Bernard", "980", "Payé" } };
+		List<Bail> listBail = new DAO.jdbc.BailDAO().getAllBaux();
 
-		String[] columns = { "Adresse", "Complément", "Ville", "Locataires", "Loyer", "Statut" };
-
+		String[][] data = new String[listBail.size()][];
+		String[] ligne;
+		int i = 0;
+		for (Bail b : listBail) {
+			BienLouable logement = null;
+			try {
+				logement = new BienLouableDAO().readFisc(b.getFisc_bien());
+			} catch (DAOException e) {
+				throw new RuntimeException(e);
+			}
+			List<Integer> idLocataires = new LouerDAO().getIdLoc(new DAO.jdbc.BailDAO().getId(b));
+			String noms=new String();
+			for (int id : idLocataires) {
+				Locataire loc = new DAO.jdbc.LocataireDAO().getLocFromId(id);
+				noms+=loc.getNom()+" ";
+			}
+			ligne = new String[]{logement.getAdresse(),
+					logement.getComplement_adresse(),
+					logement.getVille(),
+					noms,
+					String.valueOf(b.getLoyer())
+			};
+			data[i] = ligne;
+			i++;
+		}
+		String[] columns = { "Adresse", "Complément", "Ville", "Locataire(s)", "Loyer", "Statut" };
 		// Créer le modèle de table avec les données
 		DefaultTableModel tableModel = new DefaultTableModel(data, columns) {
 			@Override

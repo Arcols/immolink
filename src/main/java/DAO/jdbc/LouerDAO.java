@@ -7,7 +7,10 @@ import classes.Locataire;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LouerDAO implements DAO.LouerDAO{
     @Override
@@ -25,5 +28,23 @@ public class LouerDAO implements DAO.LouerDAO{
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
+        }
+        @Override
+        public List<Integer> getIdLoc(int idBail){
+            List<Integer> idLocataires = new ArrayList<>() ;
+            try {
+                Connection cn = ConnectionDB.getInstance();
+                String query = "SELECT id_locataire FROM louer WHERE id_bail = ?";
+                PreparedStatement pstmt = cn.prepareStatement(query);
+                pstmt.setInt(1,idBail);
+                ResultSet rs = pstmt.executeQuery();
+                while (rs.next()){
+                    int id = rs.getInt("id_locataire");
+                    idLocataires.add(id);
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            return  idLocataires;
         }
     }
