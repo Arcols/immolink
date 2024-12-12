@@ -265,6 +265,33 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
     }
 
     @Override
+    public Bail getBailFromBien(BienLouable bien){
+        Bail bail = null;
+        try {
+            Connection cn = ConnectionDB.getInstance();
+            String query = "SELECT * FROM bail WHERE id_bien_louable = ?";
+            PreparedStatement pstmt = cn.prepareStatement(query);
+            pstmt.setInt(1,new BienLouableDAO().getId(bien.getNumero_fiscal()));
+            ResultSet rs = pstmt.executeQuery();
+
+            if(rs.next()){
+                Integer solde_de_compte = rs.getInt("solde_de_compte");
+                Double loyer = rs.getDouble("loyer");
+                Double charges = rs.getDouble("charges");
+                Double depot_garantie = rs.getDouble("depot_garantie");
+                Date date_debut = rs.getDate("date_debut");
+                Date date_fin = rs.getDate("date_fin");
+                bail = new Bail((solde_de_compte==1),bien.getNumero_fiscal(),loyer,charges,depot_garantie,date_debut,date_fin);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
+        return bail;
+    }
+
+    @Override
     public Map<String, List<String>> getAllcomplements() throws SQLException {
         Map<String, List<String>> adresses = new HashMap<>();
         try {

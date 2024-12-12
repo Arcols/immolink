@@ -1,5 +1,6 @@
 package DAO;
 
+import classes.Bail;
 import classes.BienLouable;
 import classes.Garage;
 import enumeration.TypeLogement;
@@ -103,7 +104,9 @@ public interface BienLouableDAO {
 	 */
 	String getFiscFromCompl(String ville,String adresse, String complement);
 
-	/**
+    Bail getBailFromBien(BienLouable bien);
+
+    /**
 	 * Récupère le garage associé à un bien louable
 	 * @return l'identifiant du garage associé
 	 * @throws SQLException
