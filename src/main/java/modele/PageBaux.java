@@ -130,7 +130,7 @@ public class PageBaux {
 		titre.add(titrePage);
 
 		// Créer les données fictives pour le tableau
-		List<Bail> listBail = new DAO.jdbc.BailDAO().getAllBaux();	
+		List<Bail> listBail = new DAO.jdbc.BailDAO().getAllBaux();
 
 		String[][] data = new String[listBail.size()][];
 		String[] ligne;
@@ -178,6 +178,12 @@ public class PageBaux {
 		this.frame.getContentPane().add(bas_de_page, BorderLayout.SOUTH);
 		bas_de_page.setLayout(new BorderLayout(0, 0));
 
+		JLabel revenu_immobilier = new JLabel("caca");
+		revenu_immobilier.setHorizontalTextPosition(SwingConstants.LEFT);
+		revenu_immobilier.setVerticalTextPosition(SwingConstants.TOP);
+		revenu_immobilier.setVerticalAlignment(SwingConstants.BOTTOM);
+		bas_de_page.add(revenu_immobilier, BorderLayout.WEST);
+
 		JButton ajouter = new JButton("Nouveau bail");
 		ajouter.setEnabled(true); // Le bouton est maintenant activé
 		ajouter.setHorizontalTextPosition(SwingConstants.LEFT);
@@ -219,12 +225,18 @@ public class PageBaux {
 						String adresse = (String) tableModel.getValueAt(row, 0);
 						String complement = (String) tableModel.getValueAt(row, 1);
 						String ville = (String) tableModel.getValueAt(row, 2);
-						String locataire = (String) tableModel.getValueAt(row, 3);
-						String loyer = (String) tableModel.getValueAt(row, 4);
-						String statut = (String) tableModel.getValueAt(row, 5);
 
-						// Ouvrir une nouvelle fenêtre avec ces données
-						openNewPage(adresse, complement, ville, locataire, loyer, statut);
+                        try {
+                            BienLouable bien = new BienLouableDAO().readFisc(new BienLouableDAO().getFiscFromCompl(ville,adresse,complement));
+							Bail bail =  new BienLouableDAO().getBailFromBien(bien);
+							frame.dispose();
+							PageUnBail PageUnBail = new PageUnBail(bail);
+							PageUnBail.main(null);
+
+                        } catch (DAOException e) {
+                            throw new RuntimeException(e);
+                        }
+                        // Ouvrir une nouvelle fenêtre avec ces données
 					}
 				}
 			}
