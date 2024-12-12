@@ -10,35 +10,48 @@ import classes.Diagnostic;
 import classes.Locataire;
 import classes.Logement;
 import modele.PageMonBien;
+import javax.swing.JButton;
 
 import javax.swing.table.DefaultTableModel;
+import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 public class ModelePageMonBien {
 
     public static DefaultTableModel loadDataDiagnosticsToTable(int idBien) throws SQLException, DAOException {
-        // Liste des colonnes
         String[] columnNames = { "Libellé", "Fichier PDF", "Date expiration" };
 
-        // Création du modèle de table
-        DefaultTableModel model = new DefaultTableModel(columnNames, 0); // `0` pour aucune ligne au départ
+        DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                // Seul le bouton (colonne 1) sera éditable
+                return column == 1;
+            }
+        };
 
-        // Récupération des locataires
         DiagnosticDAO diagnosticDAO = new DiagnosticDAO();
         List<Diagnostic> diagnostics = diagnosticDAO.readAllDiag(idBien);
 
-        // Remplissage du modèle avec les données des locataires
         for (Diagnostic diagnostic : diagnostics) {
-            Object[] rowData = {
+            JButton pdfButton = new JButton("Ouvrir");
+            pdfButton.addActionListener(e -> {
+                try {
+                    diagnostic.ouvrirPdf();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
+
+            model.addRow(new Object[] {
                     diagnostic.getReference(),
-                    diagnostic.getPdfPath(),
+                    pdfButton,
                     diagnostic.getDateInvalidite()
-            };
-            model.addRow(rowData); // Ajout de la ligne dans le modèle
+            });
         }
 
-        return model; // Retourne le modèle rempli
+        return model;
     }
 
     public static DefaultTableModel loadDataTravauxToTable() throws SQLException {
@@ -70,7 +83,7 @@ public class ModelePageMonBien {
 
             if (bienLouable != null) {
                 // Mise à jour des labels avec les informations du bien
-                page.getAffichageNumeroFiscal().setText(bienLouable.getNumero_fiscal());
+                page.setAffichageNumeroFiscal(bienLouable.getNumero_fiscal());
                 page.getAffichageVille().setText(bienLouable.getVille());
                 page.getAffichageAdresse().setText(bienLouable.getAdresse());
                 page.getAffichageComplement().setText(bienLouable.getComplement_adresse());
