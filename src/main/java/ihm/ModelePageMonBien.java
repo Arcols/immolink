@@ -12,49 +12,23 @@ import classes.Locataire;
 import classes.Logement;
 import enumeration.TypeLogement;
 import modele.PageMonBien;
-import javax.swing.JButton;
+
+import javax.swing.*;
 
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
 public class ModelePageMonBien {
+    
 
-    public static DefaultTableModel loadDataDiagnosticsToTable(int idBien) throws SQLException, DAOException {
-        String[] columnNames = { "Libellé", "Fichier PDF", "Date expiration" };
 
-        DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                // Seul le bouton (colonne 1) sera éditable
-                return column == 1;
-            }
-        };
-
-        DiagnosticDAO diagnosticDAO = new DiagnosticDAO();
-        List<Diagnostic> diagnostics = diagnosticDAO.readAllDiag(idBien);
-
-        for (Diagnostic diagnostic : diagnostics) {
-            JButton pdfButton = new JButton("Ouvrir");
-            pdfButton.addActionListener(e -> {
-                try {
-                    diagnostic.ouvrirPdf();
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
-            });
-
-            model.addRow(new Object[] {
-                    diagnostic.getReference(),
-                    pdfButton,
-                    diagnostic.getDateInvalidite()
-            });
-        }
-
-        return model;
-    }
 
     public static DefaultTableModel loadDataTravauxToTable() throws SQLException {
         // Liste des colonnes
@@ -91,11 +65,31 @@ public class ModelePageMonBien {
                 page.getAffichageVille().setText(bienLouable.getVille());
                 page.getAffichageAdresse().setText(bienLouable.getAdresse());
                 page.getAffichageComplement().setText(bienLouable.getComplement_adresse());
-                page.getAffichageCoutTravaux().setText(String.valueOf(devisDAO.getMontantTotalTravaux(bienLouable.getNumero_fiscal(), TypeLogement.APPARTEMENT)));
+                page.getAffichageCoutTravaux().setText(String.valueOf(devisDAO.getMontantTotalTravaux(bienLouable.getNumero_fiscal(), TypeLogement.APPARTEMENT))+" €");
             }
         } catch (DAOException e) {
             throw new DAOException("Erreur lors du chargement des informations du bien : " + e.getMessage(), e);
         }
     }
 
+    public ActionListener openDiag(String reference,Integer idBien) {
+        return new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    BienLouableDAO bienLouableDAO = new BienLouableDAO();
+                    String num_fisc = bienLouableDAO.readId(idBien).getNumero_fiscal();
+                    DiagnosticDAO diagnosticDAO = new DiagnosticDAO();
+                    Diagnostic diag = diagnosticDAO.read(num_fisc,reference);
+                    if (diag != null) {
+                        diag.ouvrirPdf();
+                    }
+                } catch (DAOException e1) {
+                    e1.printStackTrace();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        };
+    }
 }

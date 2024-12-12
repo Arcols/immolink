@@ -1,30 +1,23 @@
 package modele;
 
 import DAO.DAOException;
+import DAO.jdbc.DiagnosticDAO;
 import DAO.jdbc.LogementDAO;
+import classes.Diagnostic;
 import ihm.*;
 import ihm.Menu;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.sql.SQLException;
+import java.util.List;
 
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFormattedTextField;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
-
 import static ihm.Charte.*;
 
 public class PageMonBien {
@@ -39,7 +32,8 @@ public class PageMonBien {
     private JTable tableDiagnostics;
     private JTable tableTravaux;
     private DefaultTableModel tableModel;
-
+    private JPanel tableau_diagnostic;
+    private JLabel diagnostics;
     /**
      * Launch the application.
      */
@@ -48,7 +42,7 @@ public class PageMonBien {
             @Override
             public void run() {
                 try {
-                    PageMonBien window = new PageMonBien(95);
+                    PageMonBien window = new PageMonBien(175);
                     window.frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -74,19 +68,20 @@ public class PageMonBien {
         this.affichageComplement = new JLabel("New label");
         this.affichageCoutTravaux = new JLabel("New label");
         this.tableDiagnostics= new JTable();
-
+        ModelePageMonBien modele = new  ModelePageMonBien();
         this.frame = new JFrame();
-        this.frame.setBounds(100, 100, 750, 400);
+        this.frame.setBounds(100, 100, 1000, 600);
         this.frame.getContentPane().setBackground(Charte.FOND.getCouleur());
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Menu m = new Menu(this.frame);
 
+
         try {
-            // Instanciation du DAO et du modèle
-            ModelePageMonBien modele = new ModelePageMonBien();
+            // Instanciation du DAO
 
             // Chargement des données du bien
             modele.chargerDonneesBien(idBien, this);
+
 
         } catch (DAOException e) {
             JOptionPane.showMessageDialog(frame, "Erreur lors du chargement des données du bien : " + e.getMessage(),
@@ -155,20 +150,14 @@ public class PageMonBien {
         JLabel lblNewLabel = new JLabel("Mon bien");
         lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
         body.add(lblNewLabel, BorderLayout.NORTH);
-        try {
-            DefaultTableModel modelDiagnostics = ModelePageMonBien.loadDataDiagnosticsToTable(idBien);
-            this.tableDiagnostics.setModel(modelDiagnostics);
-        } catch (SQLException | DAOException e) {
-            JOptionPane.showMessageDialog(frame, "Erreur lors du chargement des données : " + e.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-        }
+
         DefaultTableModel model = new DefaultTableModel();
 
         JPanel panel_1 = new JPanel();
         body.add(panel_1, BorderLayout.CENTER);
         GridBagLayout gbl_panel_1 = new GridBagLayout();
-        gbl_panel_1.columnWidths = new int[] { 114, 250, 250 };
-        gbl_panel_1.rowHeights = new int[] { 119};
+        gbl_panel_1.columnWidths = new int[] { 114, 550, 250 };
+        gbl_panel_1.rowHeights = new int[] { 300};
         gbl_panel_1.columnWeights = new double[] { 0.0, 0.0, 0.0 };
         gbl_panel_1.rowWeights = new double[] { 0.0, Double.MIN_VALUE };
         panel_1.setLayout(gbl_panel_1);
@@ -265,29 +254,63 @@ public class PageMonBien {
         gbc_affichageCoutTravaux.insets = new Insets(0, 0, 5, 5);
         gbc_affichageCoutTravaux.gridx = 1;
         gbc_affichageCoutTravaux.gridy = 4;
-        panel.add(this.affichageComplement, gbc_affichageComplement);
+        panel.add(this.affichageCoutTravaux, gbc_affichageCoutTravaux);
 
-        JScrollPane scrollPane = new JScrollPane();
-        GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-        gbc_scrollPane.fill = GridBagConstraints.BOTH;
-        gbc_scrollPane.anchor = GridBagConstraints.NORTHWEST;
-        gbc_scrollPane.insets = new Insets(0, 0, 0, 5);
-        gbc_scrollPane.gridx = 1;
-        gbc_scrollPane.gridy = 0;
-        panel_1.add(scrollPane, gbc_scrollPane);
+        JPanel panel_diagnostic = new JPanel();
+        GridBagConstraints gbc_diagnostic = new GridBagConstraints();
+        gbc_diagnostic.fill = GridBagConstraints.BOTH;
+        gbc_diagnostic.anchor = GridBagConstraints.NORTHWEST;
+        gbc_diagnostic.insets = new Insets(5, 5, 5, 5);
+        gbc_diagnostic.gridx = 1;
+        gbc_diagnostic.gridy = 0;
+        panel_1.add(panel_diagnostic, gbc_diagnostic);
+        panel_diagnostic.setLayout(new BorderLayout(0, 0));
+        this.diagnostics = new JLabel("Diagnostics");
+        this.diagnostics.setHorizontalAlignment(SwingConstants.CENTER);
+        panel_diagnostic.add(this.diagnostics, BorderLayout.NORTH);
 
-        this.tableDiagnostics = new JTable();
-        scrollPane.setViewportView(this.tableDiagnostics);
-        this.tableDiagnostics.setModel(model);
+        DiagnosticDAO diagnosticDAO = new DiagnosticDAO();
+        List<Diagnostic> diagnosticList = diagnosticDAO.readAllDiag(idBien);
+        int row = 0;
 
-        try {
-            DefaultTableModel modelDiagnostics = ModelePageMonBien.loadDataDiagnosticsToTable(idBien);
-            this.tableDiagnostics.setModel(modelDiagnostics);
-        } catch (SQLException | DAOException e) {
-            JOptionPane.showMessageDialog(frame, "Erreur lors du chargement des diagnostics : " + e.getMessage(),
-                    "Erreur", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
+        String[] nomdiagnostic = new String[diagnosticList.size()];
+        for (Diagnostic diagnostic : diagnosticList) {
+            String diagnosticName = diagnostic.getReference();
+            if (diagnostic.getDateInvalidite() != null) {
+                diagnosticName += " - Périme en " + diagnostic.getDateInvalidite().toString();
+            }
+            nomdiagnostic[row]=diagnosticName;
+            row++;
         }
+
+        // Panel principal (avec un défilement si nécessaire)
+        this.tableau_diagnostic = new JPanel(new GridBagLayout()); // Remplacer GridLayout par GridBagLayout
+
+        // Créer un GridBagConstraints pour gérer le placement des composants
+        GridBagConstraints gbc_diag = new GridBagConstraints();
+        gbc_diag.fill = GridBagConstraints.HORIZONTAL;
+        gbc_diag.insets = new Insets(5, 5, 5, 5); // Espacement entre les composants
+
+        int rowTab = 0; // Initialiser le compteur de ligne pour GridBagLayout
+
+        for (String diagnostic : nomdiagnostic) {
+            // Créer le label pour chaque diagnostic
+            JLabel label = new JLabel(diagnostic);
+            gbc_diag.gridx = 0; // Première colonne pour le label
+            gbc_diag.gridy = rowTab;
+            this.tableau_diagnostic.add(label, gbc_diag);
+
+            // Créer le bouton "Importer" pour chaque diagnostic
+            JButton bouton = new JButton("Importer");
+            bouton.addActionListener(modele.openDiag(diagnostic, idBien));
+            gbc_diag.gridx = 1; // Deuxième colonne pour le bouton
+            this.tableau_diagnostic.add(bouton, gbc_diag);
+
+            rowTab++; // Incrémenter la ligne pour le prochain diagnostic
+        }
+
+        JScrollPane scrollPaneDiag = new JScrollPane(this.tableau_diagnostic);
+        panel_diagnostic.add(scrollPaneDiag, BorderLayout.CENTER);
 
         JScrollPane scrollPane_1 = new JScrollPane();
         GridBagConstraints gbc_scrollPane_1 = new GridBagConstraints();
@@ -308,6 +331,7 @@ public class PageMonBien {
                     "Erreur", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
+
         this.frame.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
