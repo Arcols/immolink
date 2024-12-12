@@ -17,6 +17,12 @@ public interface BailDAO {
         void create(Bail bail) throws DAOException;
 
     /**
+     * Récupère tous les loyers de tous les bails de la base de données.
+     * @return le montant total des loyers
+     */
+    double getAllLoyer();
+
+    /**
      * Récupère l'identifiant d'un bail dans la base de données.
      * @param bail L'objet bail à insérer
      * @return l'identifiant du bail
