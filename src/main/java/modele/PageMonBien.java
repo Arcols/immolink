@@ -42,7 +42,7 @@ public class PageMonBien {
             @Override
             public void run() {
                 try {
-                    PageMonBien window = new PageMonBien(175);
+                    PageMonBien window = new PageMonBien(177);
                     window.frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
