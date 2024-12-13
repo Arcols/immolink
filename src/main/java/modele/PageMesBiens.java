@@ -1,59 +1,46 @@
 package modele;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.sql.SQLException;
-import java.util.List;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
-import DAO.BienLouableDAO;
 import DAO.DAOException;
-import classes.Locataire;
+import DAO.jdbc.BienLouableDAO;
+import classes.Bail;
+import classes.BienLouable;
 import ihm.*;
-import modele.*;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-
-import static ihm.ModelePageMesBiens.loadDataBienImmoToTable;
+import ihm.Menu;
 
 public class PageMesBiens {
 
     private JFrame frame;
     private JLabel logo;
     private JTable table;
+    private DefaultTableModel tableModel;
 
     /**
      * Launch the application.
      */
     public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    PageMesBiens window = new PageMesBiens();
-                    window.frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        EventQueue.invokeLater(() -> {
+            try {
+                PageMesBiens window = new PageMesBiens();
+                window.frame.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }
-
     /**
      * Create the application.
      */
     public PageMesBiens() {
-        this.initialize();
+        initialize();
     }
 
     /**
@@ -62,7 +49,6 @@ public class PageMesBiens {
     private void initialize() {
         // Initialisation du JFrame
         ModelePageMesBiens modele = new ModelePageMesBiens(this);
-
         this.frame = new JFrame();
         this.frame.setBounds(100, 100, 750, 400);
         this.frame.getContentPane().setBackground(Charte.FOND.getCouleur());
@@ -128,21 +114,29 @@ public class PageMesBiens {
         gbl_panel.rowWeights = new double[] { 0.0, 1.0, 1.0 };
         panel.setLayout(gbl_panel);
 
-        table = new JTable();
+
+
+        try {
+            String[] columns = {"Adresse","Complement","Ville","Type"};
+            tableModel = new DefaultTableModel(ModelePageMesBiens.loadDataBienImmoToTable(), columns) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false; // Toutes les cellules sont non éditables
+                }
+            };
+            table = new JTable(tableModel);
+        } catch (SQLException | DAOException e) {
+            JOptionPane.showMessageDialog(frame, "Erreur lors du chargement des données : " + e.getMessage(),
+                    "Erreur", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
         GridBagConstraints gbc_table = new GridBagConstraints();
         gbc_table.insets = new Insets(0, 0, 5, 0);
         gbc_table.fill = GridBagConstraints.BOTH;
         gbc_table.gridx = 1;
         gbc_table.gridy = 1;
         panel.add(table, gbc_table);
-        try {
-            DefaultTableModel model = ModelePageMesBiens.loadDataBienImmoToTable();
-            table.setModel(model);
-        } catch (SQLException | DAOException e) {
-            JOptionPane.showMessageDialog(frame, "Erreur lors du chargement des données : " + e.getMessage(),
-                    "Erreur", JOptionPane.ERROR_MESSAGE);
-            e.printStackTrace();
-        }
+
         JPanel panel_1 = new JPanel();
         GridBagConstraints gbc_panel_1 = new GridBagConstraints();
         gbc_panel_1.anchor = GridBagConstraints.SOUTH;
@@ -187,7 +181,39 @@ public class PageMesBiens {
         });
 
         ajouter.addActionListener(modele.ouvrirNouveauBien());
+
+        table.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                // Vérifier s'il s'agit d'un double-clic
+                if (evt.getClickCount() == 2) {
+                    // Obtenir l'index de la ligne cliquée
+                    int row = table.getSelectedRow();
+
+                    // Récupérer les données de la ligne sélectionnée
+                    if (row != -1) {
+                        String adresse = (String) tableModel.getValueAt(row, 0);
+                        String complement = (String) tableModel.getValueAt(row, 1);
+                        String ville = (String) tableModel.getValueAt(row, 2);
+
+                        try {
+                            BienLouable bien = new DAO.jdbc.BienLouableDAO().readFisc(new DAO.jdbc.BienLouableDAO().getFiscFromCompl(ville, adresse, complement));
+                            frame.dispose();
+                            new PageMonBien(new DAO.jdbc.BienLouableDAO().getId(bien.getNumero_fiscal()));
+
+                        } catch (DAOException e) {
+                            throw new RuntimeException(e);
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+            }
+        });
+
     }
+
+
 
     public JFrame getFrame() {
         return frame;

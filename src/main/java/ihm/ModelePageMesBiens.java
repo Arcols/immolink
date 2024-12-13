@@ -27,7 +27,7 @@ public class ModelePageMesBiens {
     public ActionListener ouvrirNouveauBien(){
         return e->{
             pageMesBiens.getFrame().dispose();
-            PageNouveauBienImmobilier PageNouveauBienImmobilier = new PageNouveauBienImmobilier();
+            PageNouveauBienImmobilier pageNouveauBienImmobilier = new PageNouveauBienImmobilier();
             PageNouveauBienImmobilier.main(null);
         };
     }
@@ -38,28 +38,27 @@ public class ModelePageMesBiens {
      * @return DefaultTableModel rempli avec les données des locataires.
      * @throws SQLException si une erreur survient lors de la récupération des données.
      */
-    public static DefaultTableModel loadDataBienImmoToTable() throws SQLException, DAOException {
-        // Liste des colonnes
-        String[] columnNames = {"Adresse","Complement","Ville","Type"};
-
-        // Création du modèle de table
-        DefaultTableModel model = new DefaultTableModel(columnNames, 0); // `0` pour aucune ligne au départ
+    public static String[][] loadDataBienImmoToTable() throws SQLException, DAOException {
 
         // Récupération des locataires
         BienLouableDAO bienLouableDAO = new BienLouableDAO();
         List<BienLouable> biensLouables = bienLouableDAO.findAll();
 
         // Remplissage du modèle avec les données des locataires
+        int i = 0;
+        String[][] rowData = new String[biensLouables.size()][];
+        String[] ligne;
         for (BienLouable bien : biensLouables) {
-            Object[] rowData = {
-                    bien.getAdresse(),
-                    bien.getComplement_adresse(),
-                    bien.getVille()
-            };
-            model.addRow(rowData); // Ajout de la ligne dans le modèle
+             ligne = new String[]{
+                     bien.getAdresse(),
+                     bien.getComplement_adresse(),
+                     bien.getVille()
+             };
+             rowData[i] = ligne;
+             i++;
         }
 
-        return model; // Retourne le modèle rempli
+        return rowData; // Retourne le modèle rempli
     }
 
 

@@ -8,7 +8,9 @@ import DAO.jdbc.DiagnosticDAO;
 import DAO.jdbc.LocataireDAO;
 import classes.*;
 import enumeration.TypeLogement;
+import modele.PageMesBiens;
 import modele.PageMonBien;
+import modele.PageNouveauTravaux;
 
 import javax.swing.*;
 
@@ -24,9 +26,11 @@ import java.util.List;
 
 public class ModelePageMonBien {
 
+    private PageMonBien pageMonBien;
 
-
-
+    public ModelePageMonBien(PageMonBien pageMonBien){
+        this.pageMonBien = pageMonBien;
+    }
     public static DefaultTableModel loadDataTravauxToTable(Integer id) throws SQLException, DAOException {
         // Liste des colonnes
         String[] columnNames = { "Montant", "Nature", "Type" };
@@ -92,6 +96,21 @@ public class ModelePageMonBien {
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
+            }
+        };
+    }
+
+    public ActionListener ouvrirPageNouveauTravaux(Integer idBien){
+        return new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    pageMonBien.getFrame().dispose();
+                    new PageNouveauTravaux(idBien);
+                } catch (DAOException ex) {
+                    throw new RuntimeException(ex);
+                }
+
             }
         };
     }

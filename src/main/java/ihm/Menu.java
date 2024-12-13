@@ -31,7 +31,7 @@ public class Menu implements ActionListener {
 				break;
 			case "Mes Biens":
 				this.frame.dispose();
-				PageMesBiens PageMesBiens = new PageMesBiens();
+				PageMesBiens pageMesBiens = new PageMesBiens();
 				PageMesBiens.main(null);
 				break;
 			default:

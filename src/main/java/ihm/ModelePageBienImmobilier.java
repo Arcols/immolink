@@ -343,7 +343,7 @@ public class ModelePageBienImmobilier {
 	public ActionListener quitterPage(){
 		return e -> {
 			pageNouveauBienImmobilier.getFrame().dispose();
-			PageMesBiens PageMesBiens = new PageMesBiens();
+			PageMesBiens pageMesBiens = new PageMesBiens();
 			PageMesBiens.main(null);
 		};
 	}
