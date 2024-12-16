@@ -48,5 +48,5 @@ public interface BailDAO {
          * @param idBail L'identifiant du bail à récupérer
          * @return L'objet Bail trouvé, ou null si aucun bail n'est trouvé
          */
-        int getBailFromId(int idBail);
+        Bail getBailFromId(int idBail);
 }

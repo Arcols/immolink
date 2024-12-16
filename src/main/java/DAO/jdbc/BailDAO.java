@@ -126,22 +126,31 @@ public class BailDAO implements DAO.BailDAO {
     }
 
     @Override
-    public int getBailFromId(int idBail) {
-        int idBienLouable = 0;
+    public Bail getBailFromId(int idBail) {
+        Bail bail = null;
         try {
             Connection cn = ConnectionDB.getInstance();
-            String query = "SELECT id_bien_louable FROM bail WHERE id = ?";
+            String query = "SELECT * FROM bail WHERE id = ?";
             PreparedStatement pstmt = cn.prepareStatement(query);
             pstmt.setInt(1, idBail);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()){
-                idBienLouable = rs.getInt("id_bien_louable");
+                int solde_de_compte = rs.getInt("solde_de_compte");
+                int id_bien_louable = rs.getInt("id_bien_louable");
+                Double loyer = rs.getDouble("loyer");
+                Double charges = rs.getDouble("charges");
+                Double depot_garantie = rs.getDouble("depot_garantie");
+                java.sql.Date date_debut = rs.getDate("date_debut");
+                Date date_fin = rs.getDate("date_fin");
+                bail = new Bail((solde_de_compte==1),new LogementDAO().read(id_bien_louable).getNumero_fiscal(),loyer,charges,depot_garantie,date_debut,date_fin);
             }
             pstmt.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
         }
-        return idBienLouable;
+        return bail;
     }
 }
 

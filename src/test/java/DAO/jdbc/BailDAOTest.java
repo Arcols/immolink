@@ -108,10 +108,8 @@ public class BailDAOTest {
         Bail bail = new Bail(true, "BL3456789101", 1000.0, 200.0, 500.0, Date.valueOf("2024-01-01"), Date.valueOf("2024-12-31"));
         bailDAO.create(bail);
         int idBail = bailDAO.getId(bail);
-        int idBienLouable = bailDAO.getBailFromId(idBail);
-        assertNotEquals(0, idBienLouable);
-        int idBienRead = bienLouableDAO.getId(bienLouable.getNumero_fiscal());
-        assertEquals(idBienRead, idBienLouable);
+        Bail baiReadl = bailDAO.getBailFromId(idBail);
+        assertEquals(bail, baiReadl);
     }
 
 }
