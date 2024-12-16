@@ -31,4 +31,12 @@ public interface LouerDAO {
      * @return la quotité de la location
      */
     Integer getQutotié(int idBail, int idLocataire);
+
+    /**
+     * Récupère la quotité d'une location dans la base de données.
+     * @param idBail L'identifiant du bail à récupérer
+     * @param idLocataire L'identifiant du locataire à récupérer
+     * @param quotite La quotité de la location
+     */
+    void updateQuotite(int idBail,int idLocataire, int quotite);
 }
