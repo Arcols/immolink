@@ -6,9 +6,12 @@ import DAO.jdbc.DevisDAO;
 import classes.BienLouable;
 import classes.Devis;
 import enumeration.TypeLogement;
+import modele.PageMesBiens;
+import modele.PageMonBien;
 import modele.PageNouveauTravaux;
 
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 public class ModelePageNouveauTravaux {
     private PageNouveauTravaux pageNouveauTravaux;
@@ -39,6 +42,18 @@ public class ModelePageNouveauTravaux {
             } catch (DAOException ex) {
                 throw new RuntimeException(ex);
             }
+        };
+    }
+
+    public ActionListener quitterPage(int idBien){
+        return e -> {
+            pageNouveauTravaux.getFrame().dispose();
+            try {
+                PageMonBien pageMesBiens = new PageMonBien(idBien);
+            } catch (DAOException | SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+
         };
     }
 }

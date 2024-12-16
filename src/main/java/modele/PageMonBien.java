@@ -308,6 +308,14 @@ public class PageMonBien {
         this.frame.getContentPane().add(bas_de_page, BorderLayout.SOUTH);
         bas_de_page.setLayout(new BorderLayout(0, 0));
 
+        JButton quitter = new JButton("Quitter");
+        quitter.setEnabled(true); // Le bouton est maintenant activé
+        quitter.setHorizontalTextPosition(SwingConstants.LEFT);
+        quitter.setVerticalTextPosition(SwingConstants.TOP);
+        quitter.setVerticalAlignment(SwingConstants.BOTTOM);
+        bas_de_page.add(quitter, BorderLayout.WEST);
+        quitter.addActionListener(modele.quitterPage());
+
         JButton ajouter = new JButton("Nouveau travaux");
         ajouter.setEnabled(true); // Le bouton est maintenant activé
         ajouter.setHorizontalTextPosition(SwingConstants.LEFT);

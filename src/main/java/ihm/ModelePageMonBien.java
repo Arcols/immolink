@@ -8,6 +8,7 @@ import DAO.jdbc.DiagnosticDAO;
 import DAO.jdbc.LocataireDAO;
 import classes.*;
 import enumeration.TypeLogement;
+import modele.PageBaux;
 import modele.PageMesBiens;
 import modele.PageMonBien;
 import modele.PageNouveauTravaux;
@@ -112,6 +113,13 @@ public class ModelePageMonBien {
                 }
 
             }
+        };
+    }
+    public ActionListener quitterPage(){
+        return e -> {
+            pageMonBien.getFrame().dispose();
+            PageMesBiens pageMesBiens = new PageMesBiens();
+            PageMesBiens.main(null);
         };
     }
 }
