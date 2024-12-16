@@ -124,5 +124,24 @@ public class BailDAO implements DAO.BailDAO {
         }
         return idBienLouable;
     }
+
+    @Override
+    public int getBailFromId(int idBail) {
+        int idBienLouable = 0;
+        try {
+            Connection cn = ConnectionDB.getInstance();
+            String query = "SELECT id_bien_louable FROM bail WHERE id = ?";
+            PreparedStatement pstmt = cn.prepareStatement(query);
+            pstmt.setInt(1, idBail);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()){
+                idBienLouable = rs.getInt("id_bien_louable");
+            }
+            pstmt.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return idBienLouable;
+    }
 }
 
