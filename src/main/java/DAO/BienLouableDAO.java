@@ -113,4 +113,5 @@ public interface BienLouableDAO {
 	 */
     Map<String, List<String>> getAllcomplements() throws SQLException;
 
+	Map<String, List<String>> getAllComplNoBail();
 }

@@ -114,7 +114,7 @@ public class PageMonBien {
         b_biens.setCursor(new Cursor(Cursor.HAND_CURSOR));
         menu_bouttons.add(b_biens);
         menu_bouttons.add(b_biens);
-
+        b_biens.addActionListener(m);
 
         JPanel body = new JPanel();
         frame.getContentPane().add(body, BorderLayout.CENTER);

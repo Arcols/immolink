@@ -156,4 +156,26 @@ public class BatimentDAO implements DAO.BatimentDAO {
 		}
 	}
 
+	@Override
+	public Map<String, List<String>> searchAllBatimentsWithCompl() throws SQLException {
+		Map<String, List<String>> batiments = new HashMap<>();
+		String query = "SELECT adresse, ville FROM batiment WHERE id IN (SELECT idBat FROM bienlouable)";
+		try {
+			Connection cn = ConnectionDB.getInstance();
+			PreparedStatement pstmt = cn.prepareStatement(query);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				String adresse = rs.getString("adresse");
+				String ville = rs.getString("ville");
+				batiments.putIfAbsent(ville, new ArrayList<>());
+				batiments.get(ville).add(adresse);
+			}
+			rs.close();
+			pstmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return batiments;
+	}
+
 }

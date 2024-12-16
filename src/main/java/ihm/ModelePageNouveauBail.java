@@ -2,6 +2,7 @@ package ihm;
 
 import DAO.DAOException;
 import DAO.jdbc.BailDAO;
+import DAO.jdbc.BienLouableDAO;
 import DAO.jdbc.LouerDAO;
 import classes.Bail;
 import classes.BienLouable;
@@ -89,6 +90,7 @@ public class ModelePageNouveauBail {
 
                             Locataireselected.add(new DAO.jdbc.LocataireDAO().getLocataireByNomPrénomTel(nom,prenom,telephone));
                             int quotite=setQuotite();
+                            pageNouveauBail.setQuotite_actuelle(quotite);
                             ListQuotite.add(quotite);
                             pageNouveauBail.getTableModel().addRow(new String[]{prenom,nom, telephone,String.valueOf(quotite)+"%"});
                             pageNouveauBail.checkFields();
@@ -105,6 +107,72 @@ public class ModelePageNouveauBail {
         };
     }
 
+    public ActionListener supprimerLocataire(){
+            return e -> {
+                // Données fictives pour les locataires
+                String[][] locataires = new String[Locataireselected.size()][];
+                String[] ligne;
+                int i = 0;
+                for (Locataire l : Locataireselected) {
+                        ligne = new String[]{l.getNom(), l.getPrénom(), l.getTéléphone()};
+                        locataires[i] = ligne;
+                        i++;
+                    }
+                // Colonnes de la table
+                String[] columns = {"Nom", "Prénom", "Téléphone"};
+
+                // Modèle pour la table
+                DefaultTableModel model = new DefaultTableModel(locataires, columns){
+                    @Override
+                    public boolean isCellEditable(int row, int column) {
+                        return false; // Toutes les cellules sont non éditables
+                    }
+                };
+                JTable selectionTable = new JTable(model);
+                selectionTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+                // ScrollPane pour la table
+                JScrollPane scrollPanePopUp = new JScrollPane(selectionTable);
+
+                // Création d'une fenêtre popup
+                JFrame popupFrame = new JFrame("Sélectionner un locataire");
+                popupFrame.setSize(400, 300);
+                popupFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                popupFrame.add(scrollPanePopUp);
+                popupFrame.setLocationRelativeTo(this.pageNouveauBail.getFrame());
+
+                // Ajout d'un MouseListener pour détecter le double-clic
+                selectionTable.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        if (e.getClickCount() == 2) { // Double-clic
+                            int selectedRow = selectionTable.getSelectedRow();
+                            if (selectedRow >= 0) {
+                                // Récupérer les données du locataire sélectionné
+                                String nom = model.getValueAt(selectedRow, 0).toString();
+                                String prenom = model.getValueAt(selectedRow, 1).toString();
+                                String telephone = model.getValueAt(selectedRow, 2).toString();
+
+                                // Ajouter ces données dans la table principale
+
+                                Locataireselected.remove(new DAO.jdbc.LocataireDAO().getLocataireByNomPrénomTel(nom,prenom,telephone));
+                                int num_ligne_suppr = getLigneByValue(new String[]{nom, prenom, telephone});
+                                pageNouveauBail.setQuotite_actuelle((Integer) pageNouveauBail.getTableModel().getValueAt(num_ligne_suppr,3));
+                                pageNouveauBail.getTableModel().removeRow(num_ligne_suppr);
+                                pageNouveauBail.checkFields();
+
+                                // Fermer la fenêtre popup
+                                popupFrame.dispose();
+                            }
+                        }
+                    }
+                });
+
+                // Afficher la fenêtre popup
+                popupFrame.setVisible(true);
+            };
+        }
+
     public int setQuotite() {
         JDialog dialog = new JDialog((Frame) null, "Saisir la quotité du locataire sélectionné ", true);
         dialog.setSize(400, 200);
@@ -116,7 +184,7 @@ public class ModelePageNouveauBail {
 
         JSpinner quotiteSpinner = new JSpinner();
         quotiteSpinner.setBounds(220, 30, 100, 25);
-        quotiteSpinner.setModel(new SpinnerNumberModel(100, 0, 100, 1));
+        quotiteSpinner.setModel(new SpinnerNumberModel(pageNouveauBail.getQuotite_actuelle(), 0, pageNouveauBail.getQuotite_actuelle(), 1));
 
         dialog.add(quotiteSpinner);
 
@@ -134,7 +202,6 @@ public class ModelePageNouveauBail {
         int i = (Integer) quotiteSpinner.getValue();
         return i;
     }
-
     public ActionListener getSurfaceEtPiece() {
         return e -> {
             String ville=(String) this.pageNouveauBail.getChoix_ville().getSelectedItem();
@@ -201,12 +268,66 @@ public class ModelePageNouveauBail {
         nouvellePage.getFrame().setVisible(true);
     }
 
+    public ActionListener getVilleActionListener(Map<String, List<String>> mapVillesAdresses) {
+        return e -> {
+            String selectedVille = (String) this.pageNouveauBail.getChoix_ville().getSelectedItem();
+            if (!mapVillesAdresses.containsKey(selectedVille)) {
+                this.pageNouveauBail.getChoix_adresse().setModel(new DefaultComboBoxModel());
+            } else {
+                this.pageNouveauBail.getChoix_adresse().setModel(
+                        new DefaultComboBoxModel(mapVillesAdresses.get(selectedVille).toArray(new String[0])));
+            }
+
+            Map<String, List<String>> mapAdresseCompl = new BienLouableDAO().getAllComplNoBail();
+            String selectedAdresse = (String) this.pageNouveauBail.getChoix_adresse().getItemAt(0);
+            if(!mapAdresseCompl.containsKey(selectedAdresse)){
+                this.pageNouveauBail.getChoix_complement().setModel(new DefaultComboBoxModel());
+            } else {
+                this.pageNouveauBail.getChoix_complement().setModel(
+                        new DefaultComboBoxModel(mapAdresseCompl.get(selectedAdresse).toArray(new String[0]))
+                );
+            }
+        };
+    }
+
+    public ActionListener getAdresseActionListener(Map<String, List<String>> mapAdresseCompl){
+        return e ->{
+            String selectedAdresse = (String) this.pageNouveauBail.getChoix_adresse().getSelectedItem();
+            if(!mapAdresseCompl.containsKey(selectedAdresse)){
+                this.pageNouveauBail.getChoix_complement().setModel(new DefaultComboBoxModel());
+            } else {
+                this.pageNouveauBail.getChoix_complement().setModel(
+                        new DefaultComboBoxModel(mapAdresseCompl.get(selectedAdresse).toArray(new String[0]))
+                );
+            }
+        };
+    }
+
     public ActionListener quitterPage(){
         return e -> {
             pageNouveauBail.getFrame().dispose();
             PageBaux PageBaux = new PageBaux();
             PageBaux.main(null);
         };
+    }
+
+    public int getLigneByValue(String[] value){
+        for (int ligne = 0; ligne < pageNouveauBail.getTable().getRowCount(); ligne++) {
+            boolean trouve = false;
+            // Comparer les colonnes avec les valeurs recherchées
+            for (int col = 0; col < 3; col++) {
+                if (pageNouveauBail.getTable().getValueAt(ligne, col).equals(value[col])) {
+                    trouve = true;
+                } else {
+                    trouve = false;
+                }
+            }
+            if (trouve) {
+                return ligne; // Retourne le numéro de la ligne correspondante
+            }
+        }
+        // Si aucune correspondance trouvée, retourner -1
+        return -1;
     }
 }
 

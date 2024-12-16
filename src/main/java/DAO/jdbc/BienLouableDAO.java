@@ -322,6 +322,29 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
         return adresses;
     }
 
+    @Override
+    public Map<String, List<String>> getAllComplNoBail(){
+        Map<String, List<String>> complements = new HashMap<>();
+
+        String query = "SELECT b.adresse, bl.complement_adresse FROM batiment b, bienlouable bl WHERE b.id IN (SELECT idBat FROM bienlouable) AND b.id = bl.idBat AND bl.id NOT IN (SELECT id_bien_louable FROM bail);";
+
+        try (Connection cn = ConnectionDB.getInstance();
+             PreparedStatement pstmt = cn.prepareStatement(query);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                String adresse = rs.getString("adresse");
+                String complement = rs.getString("complement_adresse");
+
+                // Ajoute le complément à la liste associée à l'adresse
+                complements.computeIfAbsent(adresse, k -> new ArrayList<>()).add(complement);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return complements;
+    }
 
     /*public List<Devis> finAllTravaux(){
         List<Devis> list = new ArrayList<>();

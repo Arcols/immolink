@@ -13,6 +13,7 @@ import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -45,6 +46,7 @@ public class PageNouveauBail {
     private Map<String, List<String>> mapAdressesComplement;
     private Set<String> setVilles;
     private Set<String> setAdresse;
+    private Integer quotite_actuelle;
 
 
     /**
@@ -77,19 +79,15 @@ public class PageNouveauBail {
     private void initialize() {
 
         try {
-            this.mapVillesAdresses = new BatimentDAO().searchAllBatiments();
+            this.mapVillesAdresses = new BatimentDAO().searchAllBatimentsWithCompl();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        this.quotite_actuelle = 100;
         this.setVilles = this.mapVillesAdresses.keySet();
 
-        try {
-            this.mapAdressesComplement = new BienLouableDAO().getAllcomplements();
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        this.mapAdressesComplement =new BienLouableDAO().getAllComplNoBail();
         this.setAdresse = this.mapAdressesComplement.keySet();
 
         ModelePageNouveauBail modele = new ModelePageNouveauBail(this);
@@ -366,6 +364,15 @@ public class PageNouveauBail {
 
         btn_ajouter_locataire.addActionListener(modele.getAjouterLocataire());
 
+        JButton btn_supprimer_locataire = new JButton("Supprimer un locataire");
+        GridBagConstraints gbc_btn_supprimer_locataire = new GridBagConstraints();
+        gbc_btn_supprimer_locataire.anchor = GridBagConstraints.NORTH;
+        gbc_btn_supprimer_locataire.gridx = 0;
+        gbc_btn_supprimer_locataire.gridy = 2;
+        panel_locataire.add(btn_supprimer_locataire, gbc_btn_supprimer_locataire);
+
+        btn_supprimer_locataire.addActionListener(modele.supprimerLocataire());
+
         JPanel panel_date = new JPanel();
         GridBagConstraints gbc_panel_date = new GridBagConstraints();
         gbc_panel_date.anchor = GridBagConstraints.NORTH;
@@ -431,6 +438,8 @@ public class PageNouveauBail {
         this.choix_prevision.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
         this.choix_depot_garantie.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
         this.valider.addActionListener(modele.CreationBail());
+        this.choix_ville.addActionListener(modele.getVilleActionListener(mapVillesAdresses));
+        this.choix_adresse.addActionListener(modele.getAdresseActionListener(mapAdressesComplement));
         quitter.addActionListener(modele.quitterPage());
     }
 
@@ -482,7 +491,10 @@ public class PageNouveauBail {
         return choix_surface;
     }
 
+    public int getQuotite_actuelle(){return quotite_actuelle;}
 
+    public void setQuotite_actuelle(int quotite){this.quotite_actuelle -= quotite;}
+    public JTable getTable(){return this.table;}
     public JCheckBox getSolde_tout_compte() {
         return solde_tout_compte;
     }
