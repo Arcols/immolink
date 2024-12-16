@@ -16,15 +16,10 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class ModelePageNouveauBail {
@@ -32,9 +27,11 @@ public class ModelePageNouveauBail {
     private PageNouveauBail pageNouveauBail;
     private List<Locataire> Locataireselected=new LinkedList<Locataire>();
     private List<Integer> ListQuotite = new LinkedList<Integer>();
+    private int quotite_actuelle;
 
     public ModelePageNouveauBail(PageNouveauBail pageNouveauBail) {
         this.pageNouveauBail = pageNouveauBail;
+        this.quotite_actuelle =100;
     }
 
     public ActionListener getAjouterLocataire() {
@@ -90,10 +87,10 @@ public class ModelePageNouveauBail {
 
                             Locataireselected.add(new DAO.jdbc.LocataireDAO().getLocataireByNomPrénomTel(nom,prenom,telephone));
                             int quotite=setQuotite();
-                            pageNouveauBail.setQuotite_actuelle(quotite);
+                            setQuotite(quotite);
                             ListQuotite.add(quotite);
                             pageNouveauBail.getTableModel().addRow(new String[]{prenom,nom, telephone,String.valueOf(quotite)+"%"});
-                            pageNouveauBail.checkFields();
+                            checkFields();
 
                             // Fermer la fenêtre popup
                             popupFrame.dispose();
@@ -157,9 +154,15 @@ public class ModelePageNouveauBail {
 
                                 Locataireselected.remove(new DAO.jdbc.LocataireDAO().getLocataireByNomPrénomTel(nom,prenom,telephone));
                                 int num_ligne_suppr = getLigneByValue(new String[]{nom, prenom, telephone});
-                                pageNouveauBail.setQuotite_actuelle((Integer) pageNouveauBail.getTableModel().getValueAt(num_ligne_suppr,3));
+                                //Récupère la en INT le pourcentage de quotité du baileur supprimé
+                                int quotite_du_loc = Integer.parseInt(pageNouveauBail.getTable().getValueAt(num_ligne_suppr,3).toString().replace("%", ""));
+
+                                //Retire la quotité du locataire supprimer (valeur récupérée sur la table de pageNouveauBail)
+                                ListQuotite.remove((Object) quotite_du_loc);
+
+                                setQuotite(-quotite_du_loc);
                                 pageNouveauBail.getTableModel().removeRow(num_ligne_suppr);
-                                pageNouveauBail.checkFields();
+                                checkFields();
 
                                 // Fermer la fenêtre popup
                                 popupFrame.dispose();
@@ -184,7 +187,7 @@ public class ModelePageNouveauBail {
 
         JSpinner quotiteSpinner = new JSpinner();
         quotiteSpinner.setBounds(220, 30, 100, 25);
-        quotiteSpinner.setModel(new SpinnerNumberModel(pageNouveauBail.getQuotite_actuelle(), 0, pageNouveauBail.getQuotite_actuelle(), 1));
+        quotiteSpinner.setModel(new SpinnerNumberModel(this.quotite_actuelle, 0, this.quotite_actuelle, 1));
 
         dialog.add(quotiteSpinner);
 
@@ -213,25 +216,76 @@ public class ModelePageNouveauBail {
             this.pageNouveauBail.getChoix_nb_piece().setText(nbpiece.toString());
         };
     }
+    public int getQuotite(){
+        return this.quotite_actuelle;
+    }
+
+    public void setQuotite(int remove){
+        this.quotite_actuelle -=remove;
+    }
+
     public DocumentListener getTextFieldDocumentListener() {
         return new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                pageNouveauBail.checkFields();
+                checkFields();
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                pageNouveauBail.checkFields();
+                checkFields();
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                pageNouveauBail.checkFields();
+                checkFields();
             }
         };
     }
+    public FocusListener getFocus() {
+        return new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
 
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                removeMoins();
+            }
+        };
+    }
+    public void removeMoins() {
+        String text_loyer = pageNouveauBail.getChoix_loyer().getText();
+        String text_prevision = pageNouveauBail.getChoix_prevision().getText();
+        String text_depot = pageNouveauBail.getChoix_depot_garantie().getText();
+        // Vérifier si le premier caractère est un '-'
+        if (!pageNouveauBail.getChoix_loyer().getText().trim().isEmpty() && text_loyer.charAt(0) == '-') {
+            // Supprimer le premier caractère
+            pageNouveauBail.getChoix_loyer().setText(text_loyer.substring(1));
+        }
+        if (!pageNouveauBail.getChoix_prevision().getText().trim().isEmpty() && text_prevision.charAt(0) == '-') {
+            // Supprimer le premier caractère
+            pageNouveauBail.getChoix_prevision().setText(text_prevision.substring(1));
+        }
+        if (!pageNouveauBail.getChoix_depot_garantie().getText().trim().isEmpty() && text_depot.charAt(0) == '-') {
+            // Supprimer le premier caractère
+            pageNouveauBail.getChoix_depot_garantie().setText(text_depot.substring(1));
+        }
+    }
+    public void checkFields() {
+        boolean isFilled;
+
+        isFilled = !pageNouveauBail.getChoix_loyer().getText().trim().isEmpty()
+                && !pageNouveauBail.getChoix_prevision().getText().trim().isEmpty()
+                && !pageNouveauBail.getChoix_depot_garantie().getText().trim().isEmpty()
+                &&!pageNouveauBail.getChoix_date_debut().getText().trim().isEmpty()
+                &&!pageNouveauBail.getChoix_date_fin().getText().trim().isEmpty()
+                &&!(pageNouveauBail.getTable().getRowCount()==0);
+
+        // Active ou désactive le bouton "Valider"
+        pageNouveauBail.getValider().setEnabled(isFilled);
+    }
     public ActionListener CreationBail(){
         return e -> {
             String ville=(String) this.pageNouveauBail.getChoix_ville().getSelectedItem();

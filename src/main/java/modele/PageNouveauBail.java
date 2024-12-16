@@ -20,6 +20,8 @@ import java.util.Set;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
 import static ihm.Charte.*;
@@ -46,7 +48,6 @@ public class PageNouveauBail {
     private Map<String, List<String>> mapAdressesComplement;
     private Set<String> setVilles;
     private Set<String> setAdresse;
-    private Integer quotite_actuelle;
 
 
     /**
@@ -84,7 +85,6 @@ public class PageNouveauBail {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        this.quotite_actuelle = 100;
         this.setVilles = this.mapVillesAdresses.keySet();
 
         this.mapAdressesComplement =new BienLouableDAO().getAllComplNoBail();
@@ -330,7 +330,12 @@ public class PageNouveauBail {
         gbl_panel_east.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
         panel_east.setLayout(gbl_panel_east);
 
-        tableModel = new DefaultTableModel(new String[] { "Prénom", "Nom", "Téléphone","Quotité" }, 0);
+        tableModel = new DefaultTableModel(new String[] { "Prénom", "Nom", "Téléphone","Quotité" }, 0){
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false; // Toutes les cellules sont non éditables
+            }
+        };
 
         JPanel panel_locataire = new JPanel();
         GridBagConstraints gbc_panel_locataire = new GridBagConstraints();
@@ -435,8 +440,11 @@ public class PageNouveauBail {
         this.choix_date_fin.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
         this.choix_date_debut.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
         this.choix_loyer.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
+        this.choix_loyer.addFocusListener(modele.getFocus());
         this.choix_prevision.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
+        this.choix_prevision.addFocusListener(modele.getFocus());
         this.choix_depot_garantie.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
+        this.choix_depot_garantie.addFocusListener(modele.getFocus());
         this.valider.addActionListener(modele.CreationBail());
         this.choix_ville.addActionListener(modele.getVilleActionListener(mapVillesAdresses));
         this.choix_adresse.addActionListener(modele.getAdresseActionListener(mapAdressesComplement));
@@ -475,6 +483,8 @@ public class PageNouveauBail {
         return choix_loyer;
     }
 
+    public JButton getValider() {return valider;}
+
     public JTextField getChoix_prevision() {
         return choix_prevision;
     }
@@ -491,25 +501,10 @@ public class PageNouveauBail {
         return choix_surface;
     }
 
-    public int getQuotite_actuelle(){return quotite_actuelle;}
-
-    public void setQuotite_actuelle(int quotite){this.quotite_actuelle -= quotite;}
     public JTable getTable(){return this.table;}
     public JCheckBox getSolde_tout_compte() {
         return solde_tout_compte;
     }
 
-    public void checkFields() {
-        boolean isFilled;
 
-        isFilled = !this.choix_loyer.getText().trim().isEmpty()
-                && !this.choix_prevision.getText().trim().isEmpty()
-                && !this.choix_depot_garantie.getText().trim().isEmpty()
-                &&!this.choix_date_debut.getText().trim().isEmpty()
-                &&!this.choix_date_fin.getText().trim().isEmpty()
-                &&!(this.table.getRowCount()==0);
-
-        // Active ou désactive le bouton "Valider"
-        this.valider.setEnabled(isFilled);
-    }
 }
