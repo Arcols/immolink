@@ -68,7 +68,7 @@ public class ModelePageMonBien {
 
             if (bienLouable != null) {
                 // Mise à jour des labels avec les informations du bien
-                page.setAffichageNumeroFiscal(bienLouable.getNumero_fiscal());
+                page.getAffichageNumeroFiscal(bienLouable.getNumero_fiscal());
                 page.getAffichageVille().setText(bienLouable.getVille());
                 page.getAffichageAdresse().setText(bienLouable.getAdresse());
                 page.getAffichageComplement().setText(bienLouable.getComplement_adresse());

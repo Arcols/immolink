@@ -345,7 +345,7 @@ public class PageMonBien {
         return tableModel;
     }
 
-    public void setAffichageNumeroFiscal(String valeur) {
+    public void getAffichageNumeroFiscal(String valeur) {
         this.affichageNumeroFiscal.setText(valeur);
     }
 
