@@ -104,6 +104,11 @@ public interface BienLouableDAO {
 	 */
 	String getFiscFromCompl(String ville,String adresse, String complement);
 
+	/**
+	 * Récupère le garage associé à un bien louable
+	 * @param bien
+	 * @return
+	 */
     Bail getBailFromBien(BienLouable bien);
 
     /**

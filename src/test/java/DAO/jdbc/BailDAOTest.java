@@ -87,4 +87,5 @@ public class BailDAOTest {
         assertTrue(baux.contains(bail1));
         assertTrue(baux.contains(bail2));
     }
+
 }

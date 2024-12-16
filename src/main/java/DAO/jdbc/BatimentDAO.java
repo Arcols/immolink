@@ -54,6 +54,7 @@ public class BatimentDAO implements DAO.BatimentDAO {
 		}
 		return batiment;
 	}
+
 	@Override
 	public Batiment readId(int id) throws DAOException {
 		Batiment batiment = null;
