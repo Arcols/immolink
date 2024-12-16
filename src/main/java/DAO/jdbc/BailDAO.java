@@ -152,5 +152,20 @@ public class BailDAO implements DAO.BailDAO {
         }
         return bail;
     }
+
+    @Override
+    public void updateLoyer(int idBail, double loyer) {
+        try {
+            Connection cn = ConnectionDB.getInstance();
+            String query = "UPDATE bail SET loyer = ? WHERE id = ?";
+            PreparedStatement pstmt = cn.prepareStatement(query);
+            pstmt.setDouble(1, loyer);
+            pstmt.setInt(2, idBail);
+            pstmt.executeUpdate();
+            pstmt.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
 

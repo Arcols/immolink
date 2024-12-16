@@ -320,6 +320,7 @@ public class PageUnBail {
         gbc_btnModifierLoyer.gridx = 0;
         gbc_btnModifierLoyer.gridy = 0;
         panelModifs.add(btnModifierLoyer, gbc_btnModifierLoyer);
+        btnModifierLoyer.addActionListener(modele.getActionListenerForModifierLoyer(frame,new BailDAO().getId(bail)));
 
         JButton btnAjoutLocataire = new JButton("Ajouter un locataire");
         GridBagConstraints gbc_btnAjoutLocataire = new GridBagConstraints();
@@ -336,6 +337,7 @@ public class PageUnBail {
         JButton btnQuitter = new JButton("Quitter");
         btnQuitter.setHorizontalAlignment(SwingConstants.LEFT);
         panelQuitter.add(btnQuitter);
+        btnQuitter.addActionListener(modele.quitterPage());
 
         try {
             // Instanciation du DAO

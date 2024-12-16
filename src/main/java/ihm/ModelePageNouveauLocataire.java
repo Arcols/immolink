@@ -13,6 +13,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.List;
@@ -27,14 +28,24 @@ public class ModelePageNouveauLocataire {
 
     public ActionListener getAjouterLocataireListener() {
         return e -> {
-            java.sql.Date sqlDate = java.sql.Date.valueOf(pageNouveauLocataire.getDateValeur().getText());
-            Locataire l = new Locataire(pageNouveauLocataire.getNomValeur().getText(),
-                    pageNouveauLocataire.getPrenomValeur().getText(),
-                    pageNouveauLocataire.getTelephoneValeur().getText(),
-                    pageNouveauLocataire.getMailValeur().getText(), sqlDate,
-                    (String) pageNouveauLocataire.getGenreValeur().getSelectedItem());
-            LocataireDAO locataireDAO = new LocataireDAO();
-            locataireDAO.addLocataire(l);
+            try {
+                java.sql.Date sqlDate = java.sql.Date.valueOf(pageNouveauLocataire.getDateValeur().getText());
+                Locataire l = new Locataire(pageNouveauLocataire.getNomValeur().getText(),
+                        pageNouveauLocataire.getPrenomValeur().getText(),
+                        pageNouveauLocataire.getTelephoneValeur().getText(),
+                        pageNouveauLocataire.getMailValeur().getText(), sqlDate,
+                        (String) pageNouveauLocataire.getGenreValeur().getSelectedItem());
+                LocataireDAO locataireDAO = new LocataireDAO();
+                locataireDAO.addLocataire(l);
+                JOptionPane.showMessageDialog(null,"Le locataire a été ajouté avec succès.","Information",JOptionPane.INFORMATION_MESSAGE);
+                refreshPage(e);
+            } catch (IllegalArgumentException ex) {
+                // Gestion d'une date invalide ou autre erreur
+                JOptionPane.showMessageDialog(null, "Erreur : Veuillez entrer une date valide.", "Erreur", JOptionPane.ERROR_MESSAGE);
+            } catch (Exception ex) {
+                // Gestion d'erreurs inattendues
+                JOptionPane.showMessageDialog(null, "Une erreur est survenue : " + ex.getMessage(), "Erreur", JOptionPane.ERROR_MESSAGE);
+            }
         };
     }
 
@@ -77,5 +88,12 @@ public class ModelePageNouveauLocataire {
             PageAccueil PageAccueil = new PageAccueil();
             PageAccueil.main(null);
         };
+    }
+
+    private void refreshPage(ActionEvent e) {
+        JFrame ancienneFenetre = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
+        ancienneFenetre.dispose();
+        PageNouveauLocataire nouvellePage = new PageNouveauLocataire();
+        nouvellePage.getFrame().setVisible(true);
     }
 }
