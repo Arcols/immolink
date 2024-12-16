@@ -85,16 +85,33 @@ public class LocataireTest {
 
     @Test
     public void testEquals() {
-        Locataire locataire2 = new Locataire("Doe", "John","0606060606","ee.ee@ee.ee",   Date.valueOf("2020-01-01"), "M");
-        assertTrue(locataire.equals(locataire2));
+        // Same object reference
+        assertTrue(locataire.equals(locataire));
 
-        Locataire locataire3 = new Locataire("Smith", "Jane","0707070707","jj.jj@jj.jj",   Date.valueOf("2021-01-01"), "F");
-        assertFalse(locataire.equals(locataire3));
+        // Null object
+        assertFalse(locataire.equals(null));
 
-        Locataire locataire4 = new Locataire("Doe", "John", "0606060606", Date.valueOf("2020-01-01"), "M");
-        assertTrue(locataire.equals(locataire4));
+        // Different class
+        assertFalse(locataire.equals("Some String"));
 
-        Locataire locataire5 = new Locataire("Doe", "John", "0606060606", Date.valueOf("2020-01-01"), "F");
-        assertFalse(locataire.equals(locataire5));
+        // Different nom
+        Locataire locataireDifferentNom = new Locataire("Smith", "John", "0606060606", "ee.ee@ee.ee", Date.valueOf("2020-01-01"), "M");
+        assertFalse(locataire.equals(locataireDifferentNom));
+
+        // Different prénom
+        Locataire locataireDifferentPrenom = new Locataire("Doe", "Jane", "0606060606", "ee.ee@ee.ee", Date.valueOf("2020-01-01"), "M");
+        assertFalse(locataire.equals(locataireDifferentPrenom));
+
+        // Different téléphone
+        Locataire locataireDifferentTelephone = new Locataire("Doe", "John", "0707070707", "ee.ee@ee.ee", Date.valueOf("2020-01-01"), "M");
+        assertFalse(locataire.equals(locataireDifferentTelephone));
+
+        // Different genre
+        Locataire locataireDifferentGenre = new Locataire("Doe", "John", "0606060606", "ee.ee@ee.ee", Date.valueOf("2020-01-01"), "F");
+        assertFalse(locataire.equals(locataireDifferentGenre));
+
+        // All fields same
+        Locataire locataireSame = new Locataire("Doe", "John", "0606060606", "ee.ee@ee.ee", Date.valueOf("2020-01-01"), "M");
+        assertTrue(locataire.equals(locataireSame));
     }
 }

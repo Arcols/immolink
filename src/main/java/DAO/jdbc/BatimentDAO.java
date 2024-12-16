@@ -28,7 +28,7 @@ public class BatimentDAO implements DAO.BatimentDAO {
 			pstmt.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -50,7 +50,7 @@ public class BatimentDAO implements DAO.BatimentDAO {
 			pstmt.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 		return batiment;
 	}
@@ -73,7 +73,7 @@ public class BatimentDAO implements DAO.BatimentDAO {
 			pstmt.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 		return batiment;
 	}
@@ -92,7 +92,7 @@ public class BatimentDAO implements DAO.BatimentDAO {
 			pstmt.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -107,7 +107,7 @@ public class BatimentDAO implements DAO.BatimentDAO {
 			pstmt.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -128,13 +128,14 @@ public class BatimentDAO implements DAO.BatimentDAO {
 			rs.close();
 			pstmt.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 		return batiments;
 	}
 
 	@Override
 	public int getIdBat(String ville, String adresse) throws DAOException {
+		int id = -1;
 		try {
 			Connection cn = ConnectionDB.getInstance();
 			String query_id_batiment = "SELECT id FROM batiment WHERE adresse = ? AND ville = ?";
@@ -145,15 +146,13 @@ public class BatimentDAO implements DAO.BatimentDAO {
 			pstmt_id_batiment.setString(2, ville);
 			rs = pstmt_id_batiment.executeQuery();
 			if (rs.next()) { // Vérifie s'il y a un résultat
-				return rs.getInt("id");
-			} else {
-				throw new SQLException("Pas de données pour ce couple ville adresse (bizarre)");
+				id = rs.getInt("id");
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return -1;
+			throw new RuntimeException(e);
 		}
+		return id;
 	}
 
 }

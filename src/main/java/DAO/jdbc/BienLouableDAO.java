@@ -31,8 +31,7 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
             
 
         } catch (SQLException | DAOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -79,7 +78,7 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
         } catch (SQLException e) {
             // TODO Auto-generated c
             //  patch block
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return bien;
     }
@@ -114,7 +113,7 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
 
     @Override
     public Integer getId(String num_fiscal) throws DAOException {
-        Integer id = null;
+        Integer id = 0;
         try {
             Connection cn = ConnectionDB.getInstance();
             String query = "SELECT id FROM bienlouable WHERE numero_fiscal = ? AND type_logement = ?";
@@ -128,7 +127,7 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
             pstmt.close();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return id;
     }
@@ -171,7 +170,7 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
             pstmt.close();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return Allbien;
     }
@@ -317,11 +316,10 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
             rs.close();
             pstmt.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return adresses;
     }
-
 
     /*public List<Devis> finAllTravaux(){
         List<Devis> list = new ArrayList<>();

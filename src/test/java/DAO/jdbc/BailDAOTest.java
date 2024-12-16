@@ -54,11 +54,23 @@ public class BailDAOTest {
         int id = bailDAO.getId(bail);
         assertNotEquals(0, id);
     }
+    @Test
+    public void testCreateRuntimeException() throws DAOException {
+        Bail bail = new Bail(true, "BL3456789101", 1000.0, 200.0, 500.0, Date.valueOf("2024-01-01"), Date.valueOf("2024-12-31"));
+        bailDAO.create(bail);
+        try {
+            bailDAO.create(bail);
+            fail("Aucune exception levée, mais une exception était attendue.");
+        } catch (RuntimeException e) {
+            // Si RuntimeException est levée, le test passe
+            assertTrue(e instanceof RuntimeException);
+        }
+    }
 
     @Test
     public void testGetAllLoyer() throws SQLException, DAOException {
         Bail bail1 = new Bail(true, "BL3456789101", 1000.0, 200.0, 500.0, Date.valueOf("2024-01-01"), Date.valueOf("2024-12-31"));
-        Bail bail2 = new Bail(true, "BL3456789101", 1500.0, 300.0, 600.0, Date.valueOf("2024-02-01"), Date.valueOf("2024-11-30"));
+        Bail bail2 = new Bail(true, "BL3456789101", 1500.0, 300.0, 600.0, Date.valueOf("2025-01-01"), Date.valueOf("2025-11-30"));
         bailDAO.create(bail1);
         bailDAO.create(bail2);
 
@@ -78,7 +90,7 @@ public class BailDAOTest {
     @Test
     public void testGetAllBaux() throws SQLException, DAOException {
         Bail bail1 = new Bail(true, "BL3456789101", 1000.0, 200.0, 500.0, Date.valueOf("2024-01-01"), Date.valueOf("2024-12-31"));
-        Bail bail2 = new Bail(true, "BL3456789101", 1500.0, 300.0, 600.0, Date.valueOf("2024-02-01"), Date.valueOf("2024-11-30"));
+        Bail bail2 = new Bail(true, "BL3456789101", 1500.0, 300.0, 600.0, Date.valueOf("2025-01-01"), Date.valueOf("2025-11-30"));
         bailDAO.create(bail1);
         bailDAO.create(bail2);
 

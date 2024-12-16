@@ -5,6 +5,7 @@ import DAO.db.ConnectionDB;
 import classes.Batiment;
 import classes.BienLouable;
 import classes.Devis;
+import classes.Garage;
 import enumeration.TypeLogement;
 import org.junit.After;
 import org.junit.Before;
@@ -33,6 +34,7 @@ public class TravauxAssocieDAOTest {
     public void setUp() throws SQLException, DAOException {
         Connection cn = ConnectionDB.getInstance();
         cn.setAutoCommit(false);
+
         travauxAssocieDAO = new TravauxAssocieDAO();
         devisDAO = new DevisDAO();
         bienLouableDAO = new BienLouableDAO();
@@ -53,9 +55,34 @@ public class TravauxAssocieDAOTest {
     }
 
     @Test
-    public void testFindAll() throws DAOException {
+    public void testFindAllForAppartement() throws DAOException {
         String numFiscal = bienLouable.getNumero_fiscal();
         List<Integer> devisIds = travauxAssocieDAO.findAll(numFiscal, TypeLogement.APPARTEMENT);
+        assertNotNull(devisIds);
+        assertEquals(1, devisIds.size());
+    }
+
+    @Test
+    public void testFindAllForBatiment() throws DAOException {
+        Batiment batiment = new Batiment("123456789103", "Lyon", "456 Rue de la Liberté", "69000");
+        BatimentDAO batimentDAO = new BatimentDAO();
+        batimentDAO.create(batiment);
+        Devis devisBatiment = new Devis("123456789016", 2000.0f, "Construction", 300.0f, Date.valueOf("2024-02-01"), Date.valueOf("2024-07-01"), "TypeB", "456 Rue de la Liberté", "Entreprise B");
+        devisDAO.create(devisBatiment, "123456789103", TypeLogement.BATIMENT);
+
+        List<Integer> devisIds = travauxAssocieDAO.findAll("123456789103", TypeLogement.BATIMENT);
+        assertNotNull(devisIds);
+        assertEquals(1, devisIds.size());
+    }
+
+    @Test
+    public void testFindAllForGarage() throws DAOException {
+        GarageDAO garageDAO = new GarageDAO();
+        garageDAO.create(new Garage("123456789104", "Paris", "123 Rue de la Paix", "31000"));
+        Devis devisGarage = new Devis("123456789017", 1500.0f, "Réparation", 250.0f, Date.valueOf("2024-03-01"), Date.valueOf("2024-08-01"), "TypeC", "789 Rue de la Mer", "Entreprise C");
+        devisDAO.create(devisGarage, "123456789104", TypeLogement.GARAGE);
+
+        List<Integer> devisIds = travauxAssocieDAO.findAll("123456789104", TypeLogement.GARAGE);
         assertNotNull(devisIds);
         assertEquals(1, devisIds.size());
     }

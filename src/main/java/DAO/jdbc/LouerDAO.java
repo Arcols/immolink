@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LouerDAO implements DAO.LouerDAO{
-    @Override
-    public void create(Locataire locataire, Bail bail, int quotite) throws DAOException {
+        @Override
+        public void create(Locataire locataire, Bail bail, int quotite) throws DAOException {
             try {
                 Connection cn = ConnectionDB.getInstance();
                 String query = "INSERT INTO louer (id_bail,id_locataire,quotite) VALUES (?,?,?)";
@@ -26,9 +26,10 @@ public class LouerDAO implements DAO.LouerDAO{
                 pstmt.close();
             } catch (SQLException e) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         }
+
         @Override
         public List<Integer> getIdLoc(int idBail){
             List<Integer> idLocataires = new ArrayList<>() ;
@@ -47,4 +48,23 @@ public class LouerDAO implements DAO.LouerDAO{
             }
             return  idLocataires;
         }
+
+    @Override
+    public Integer getQutotié(int idBail, int idLocataire) {
+        Integer quotite = -1;
+        try {
+            Connection cn = ConnectionDB.getInstance();
+            String query = "SELECT quotite FROM louer WHERE id_bail = ? AND id_locataire = ?";
+            PreparedStatement pstmt = cn.prepareStatement(query);
+            pstmt.setInt(1,idBail);
+            pstmt.setInt(2,idLocataire);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()){
+                quotite = rs.getInt("quotite");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return quotite;
     }
+}

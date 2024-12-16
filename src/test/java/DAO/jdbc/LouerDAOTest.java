@@ -9,7 +9,9 @@ import classes.Locataire;
 import enumeration.TypeLogement;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -17,8 +19,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class LouerDAOTest {
 
@@ -78,4 +79,15 @@ public class LouerDAOTest {
     }
 
 
+    @Test
+    public void testCreateRuntimeException() throws DAOException {
+        louerDAO.create(locataire, bail, 1);
+        try {
+            louerDAO.create(locataire, bail, 100);
+            fail("Aucune exception levée, mais une exception était attendue.");
+        } catch (RuntimeException e) {
+            // Si RuntimeException est levée, le test passe
+            assertTrue(e instanceof RuntimeException);
+        }
+    }
 }

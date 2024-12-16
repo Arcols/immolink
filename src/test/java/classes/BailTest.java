@@ -59,4 +59,53 @@ public class BailTest {
         assertEquals(bail1.hashCode(), bail2.hashCode());
         assertNotEquals(bail1.hashCode(), bail3.hashCode());
     }
+
+    @Test
+    public void testBailEquals() {
+        Date dateDebut = Date.valueOf("2024-01-01");
+        Date dateFin = Date.valueOf("2024-12-31");
+        Bail bail1 = new Bail(true, "BL3456789101", 1000.0, 200.0, 500.0, dateDebut, dateFin);
+        Bail bail2 = new Bail(true, "BL3456789101", 1000.0, 200.0, 500.0, dateDebut, dateFin);
+        Bail bail3 = new Bail(false, "BL9876543210", 1500.0, 300.0, 600.0, Date.valueOf("2024-02-01"), Date.valueOf("2024-11-30"));
+
+        // Same object reference
+        assertTrue(bail1.equals(bail1));
+
+        // Null object
+        assertFalse(bail1.equals(null));
+
+        // Different class
+        assertFalse(bail1.equals("Some String"));
+
+        // Different solde_de_compte
+        Bail bailDifferentSolde = new Bail(false, "BL3456789101", 1000.0, 200.0, 500.0, dateDebut, dateFin);
+        assertFalse(bail1.equals(bailDifferentSolde));
+
+        // Different fisc_bien
+        Bail bailDifferentFisc = new Bail(true, "BL9876543210", 1000.0, 200.0, 500.0, dateDebut, dateFin);
+        assertFalse(bail1.equals(bailDifferentFisc));
+
+        // Different loyer
+        Bail bailDifferentLoyer = new Bail(true, "BL3456789101", 1500.0, 200.0, 500.0, dateDebut, dateFin);
+        assertFalse(bail1.equals(bailDifferentLoyer));
+
+        // Different charge
+        Bail bailDifferentCharge = new Bail(true, "BL3456789101", 1000.0, 300.0, 500.0, dateDebut, dateFin);
+        assertFalse(bail1.equals(bailDifferentCharge));
+
+        // Different depot_garantie
+        Bail bailDifferentDepot = new Bail(true, "BL3456789101", 1000.0, 200.0, 600.0, dateDebut, dateFin);
+        assertFalse(bail1.equals(bailDifferentDepot));
+
+        // Different date_debut
+        Bail bailDifferentDateDebut = new Bail(true, "BL3456789101", 1000.0, 200.0, 500.0, Date.valueOf("2024-02-01"), dateFin);
+        assertFalse(bail1.equals(bailDifferentDateDebut));
+
+        // Different date_fin
+        Bail bailDifferentDateFin = new Bail(true, "BL3456789101", 1000.0, 200.0, 500.0, dateDebut, Date.valueOf("2024-11-30"));
+        assertFalse(bail1.equals(bailDifferentDateFin));
+
+        // All fields same
+        assertTrue(bail1.equals(bail2));
+    }
 }

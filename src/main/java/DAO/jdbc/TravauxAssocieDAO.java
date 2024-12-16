@@ -37,7 +37,6 @@ public class TravauxAssocieDAO implements DAO.TravauxAssocieDAO {
         try{
             Connection cn = ConnectionDB.getInstance();
             String requete = "INSERT INTO TravauxAssocie (id_devis,id_bien) VALUES (?,?)";
-            System.out.println("test");
             PreparedStatement pstmt = cn.prepareStatement(requete);
             pstmt.setInt(1,idDevis);
             pstmt.setInt(2,id);

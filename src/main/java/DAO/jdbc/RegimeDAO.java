@@ -22,7 +22,6 @@ public class RegimeDAO implements DAO.RegimeDAO {
                 valeur = rs.getFloat("valeur");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             throw new RuntimeException("Erreur lors de la récupération de la valeur du régime microfoncier.", e);
         }
         return valeur;
@@ -38,7 +37,6 @@ public class RegimeDAO implements DAO.RegimeDAO {
             pstmt.setInt(2, idRegime);
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
             throw new RuntimeException("Erreur lors de la mise à jour de la valeur du régime microfoncier.", e);
         }
     }
