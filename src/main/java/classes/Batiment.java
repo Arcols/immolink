@@ -13,10 +13,15 @@ public class Batiment extends BienImmobilier {
 	private String code_postal;
 	public List<BienLouable> bien_louable;
 
-	// Un batiment est initialisé sans bien louable
+	/**
+	 *  Constructeur de la classe Batiment
+	 * @param numero_fiscal le numéro fiscal du bien
+	 * @param ville la ville du bien
+	 * @param adresse l'adresse du bien
+	 * @param code_postal le code postal du bien
+	 */
 	public Batiment(String numero_fiscal, String ville, String adresse,String code_postal) {
 		if(code_postal.length()!=5){
-			System.out.println(code_postal);
 			throw new IllegalArgumentException("Code postal invalide");
 		}
 		if (numero_fiscal.length() != 12) {
@@ -71,6 +76,10 @@ public class Batiment extends BienImmobilier {
 
 	public String getCodePostal() {return this.code_postal;}
 
+	/**
+	 * Méthode permettant de récupérer le type de logement
+	 * @return le type de logement
+	 */
 	public TypeLogement getTypeLogement(){
 		return TypeLogement.BATIMENT;
 	}

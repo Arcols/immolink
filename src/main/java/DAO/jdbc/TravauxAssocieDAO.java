@@ -1,7 +1,6 @@
 package DAO.jdbc;
 
 import DAO.DAOException;
-import DAO.TrauxAssocieDAO;
 import DAO.db.ConnectionDB;
 import classes.Batiment;
 import classes.BienLouable;
@@ -13,7 +12,7 @@ import java.util.ArrayList;
 import java.sql.*;
 import java.util.List;
 
-public class TravauxAssocieDAO implements TrauxAssocieDAO {
+public class TravauxAssocieDAO implements DAO.TravauxAssocieDAO {
 
     @Override
     public void create(String num_fiscal, Devis devis,TypeLogement typeLogement) throws DAOException {
@@ -38,6 +37,7 @@ public class TravauxAssocieDAO implements TrauxAssocieDAO {
         try{
             Connection cn = ConnectionDB.getInstance();
             String requete = "INSERT INTO TravauxAssocie (id_devis,id_bien) VALUES (?,?)";
+            System.out.println("test");
             PreparedStatement pstmt = cn.prepareStatement(requete);
             pstmt.setInt(1,idDevis);
             pstmt.setInt(2,id);

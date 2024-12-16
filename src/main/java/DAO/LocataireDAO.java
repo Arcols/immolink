@@ -70,5 +70,10 @@ public interface LocataireDAO {
      */
     int getId(Locataire locataire);
 
+    /**
+     * Récupère un locataire de la base de données en utilisant son identifiant
+     * @param id L'identifiant
+     * @return  L'objet Locataire trouvé, ou null si aucun locataire n'est trouvé
+     */
     Locataire getLocFromId(int id);
 }

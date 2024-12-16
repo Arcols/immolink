@@ -18,6 +18,16 @@ public class Bail {
 
     private Date date_fin;
 
+    /**
+     * Constructeur de la classe Bail
+     * @param solde_de_compte le solde de compte
+     * @param fisc_bien le numéro fiscal du bien
+     * @param loyer le loyer
+     * @param charge les charges
+     * @param depot_garantie le dépôt de garantie
+     * @param date_debut la date de début
+     * @param date_fin la date de fin
+     */
     public Bail(boolean solde_de_compte, String fisc_bien, double loyer, double charge, double depot_garantie, Date date_debut, Date date_fin) {
         this.solde_de_compte = solde_de_compte;
         this.fisc_bien = fisc_bien;
@@ -84,6 +94,11 @@ public class Bail {
         this.solde_de_compte = solde_de_compte;
     }
 
+    /**
+     * Méthode permettant de comparer deux objets de type Bail
+     * @param o l'objet à comparer
+     * @return true si les deux objets sont égaux, false sinon
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -98,6 +113,10 @@ public class Bail {
                 Objects.equals(date_fin, bail.date_fin);
     }
 
+    /**
+     * Méthode permettant de générer un code de hachage pour un objet de type Bail
+     * @return le code de hachage
+     */
     @Override
     public int hashCode() {
         return Objects.hash(solde_de_compte, fisc_bien, loyer, charge, depot_garantie, date_debut, date_fin);

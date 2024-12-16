@@ -104,11 +104,16 @@ public interface BienLouableDAO {
 	 */
 	String getFiscFromCompl(String ville,String adresse, String complement);
 
+	/**
+	 * Récupère le Bail associé à un bien louable
+	 * @param bien le bien louable
+	 * @return le bail associé
+	 */
     Bail getBailFromBien(BienLouable bien);
 
     /**
-	 * Récupère le garage associé à un bien louable
-	 * @return l'identifiant du garage associé
+	 * Récupère tous les compléments d'adresse de la base de données.
+	 * @return Une map de tous les compléments d'adresse Map : Adresse -> List<Complement>
 	 * @throws SQLException
 	 */
     Map<String, List<String>> getAllcomplements() throws SQLException;

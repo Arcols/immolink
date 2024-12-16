@@ -11,7 +11,12 @@ public class Diagnostic {
 	private String pdfPath;
 	private Date dateInvalidite;
 
-	// Constructor without dateInvalidite
+	/**
+	 * Constructor without dateInvalidite
+	 * @param reference the reference of the diagnostic
+	 * @param pdfPath the path to the PDF file
+	 * @throws IOException if the file path is invalid
+	 */
 	public Diagnostic(String reference, String pdfPath) throws IOException {
 		this.reference = reference;
 		File file = new File(pdfPath);
@@ -22,7 +27,13 @@ public class Diagnostic {
 		this.dateInvalidite = null;
 	}
 
-	// Constructor with dateInvalidite
+	/**
+	 * Constructor with dateInvalidite
+	 * @param reference the reference of the diagnostic
+	 * @param pdfPath the path to the PDF file
+	 * @param dateInvalidite the date of invalidity
+	 * @throws IOException if the file path is invalid
+	 */
 	public Diagnostic(String reference, String pdfPath, Date dateInvalidite) throws IOException {
 		this.reference = reference;
 		File file = new File(pdfPath);
@@ -33,10 +44,19 @@ public class Diagnostic {
 		this.dateInvalidite = dateInvalidite;
 	}
 
+	/**
+	 * Updates the diagnostic with the new diagnostic
+	 * @param diagnostic the new diagnostic
+	 */
 	public void miseAJourDiagnostic(Diagnostic diagnostic) {
 		this.pdfPath = diagnostic.getPdfPath();
 	}
 
+	/**
+	 * Checks if the diagnostic has the same reference as the given diagnostic
+	 * @param diagnostic the diagnostic to compare
+	 * @return true if the references are the same, false otherwise
+	 */
 	public boolean isSameRef(Diagnostic diagnostic) {
 		return this.reference.equals(diagnostic.getReference());
 	}
@@ -53,20 +73,28 @@ public class Diagnostic {
 		return this.dateInvalidite;
 	}
 
+	/**
+	 * Checks if the diagnostic is expired
+	 * @return true if the diagnostic is expired, false otherwise
+	 */
 	public boolean estExpire() {
 		if (this.dateInvalidite == null) {
-			return false; // If dateInvalidite is null, the diagnostic does not expire
+			return false;
 		}
 		Date currentDate = new Date(System.currentTimeMillis());
 		return currentDate.after(this.dateInvalidite); // Returns true if the current date is after dateInvalidite
 	}
 
+	/**
+	 * Opens the PDF file
+	 * @throws IOException if the file does not exist
+	 */
 	public void ouvrirPdf() throws IOException {
 		File pdfFile = new File(this.pdfPath);
 		if (Desktop.isDesktopSupported()) {
 			Desktop.getDesktop().open(pdfFile);
 		} else {
-			System.out.println("Desktop opening is not supported.");
+			throw new IOException("Desktop is not supported");
 		}
 	}
 }
