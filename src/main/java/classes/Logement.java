@@ -12,7 +12,17 @@ public class Logement extends BienLouable {
 	private int nb_piece;
 	private double surface;
 
-	// Constructeur si il n'y a pas de garage présent
+	/**
+	 * Constructeur de la classe Logement
+	 * @param nb_piece le nombre de pièces
+	 * @param surface la surface
+	 * @param numero_fiscal le numéro fiscal du bien
+	 * @param ville la ville du bien
+	 * @param adresse l'adresse du bien
+	 * @param complement_adresse le complément d'adresse du bien
+	 * @param diagnostic la liste des diagnostics du bien
+	 * @throws IllegalArgumentException si la surface est inférieure à 9m²
+	 */
 	public Logement(int nb_piece, double surface, String numero_fiscal, String ville, String adresse,
 			String complement_adresse, List<Diagnostic> diagnostic)
 			throws IllegalArgumentException {

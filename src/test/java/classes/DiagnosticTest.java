@@ -2,8 +2,10 @@ package classes;
 
 import static org.junit.Assert.*;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.Date;
@@ -121,4 +123,16 @@ public class DiagnosticTest {
         Diagnostic diagnostic = new Diagnostic("RéfTest", tempFile.getAbsolutePath(), dateInvalidite);
         assertTrue(diagnostic.estExpire()); // Should be expired
     }
+
+    @Test
+    public void testConstructeurAvecDateInvaliditeCheminInvalide() {
+        Date dateInvalidite = new Date(System.currentTimeMillis());
+        try {
+            new Diagnostic("RéfTest", "chemin_invalide.pdf", dateInvalidite);
+            fail("Une exception aurait dû être levée pour un chemin de fichier invalide.");
+        } catch (IOException e) {
+            assertTrue(e.getMessage().contains("Invalid file path"));
+        }
+    }
+
 }

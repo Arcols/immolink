@@ -1,7 +1,6 @@
 package DAO.jdbc;
 
 import DAO.DAOException;
-import DAO.TrauxAssocieDAO;
 import DAO.db.ConnectionDB;
 import classes.Devis;
 import enumeration.TypeLogement;
@@ -29,7 +28,8 @@ public class DevisDAO implements DAO.DevisDAO {
             pstmt.setString(9, devis.getNomEntreprise());
             pstmt.executeUpdate();
             pstmt.close();
-            TravauxAssocieDAO travauxAssocieDAO = new TravauxAssocieDAO();
+            TravauxAssocieDAO travauxAssocieDAO;
+            travauxAssocieDAO = new TravauxAssocieDAO();
             travauxAssocieDAO.create(num_fiscal,devis,typeLogement);
         } catch (SQLException e) {
             throw new RuntimeException(e);

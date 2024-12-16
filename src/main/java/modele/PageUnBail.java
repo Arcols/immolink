@@ -114,8 +114,6 @@ public class PageUnBail {
         locataires.setHorizontalAlignment(SwingConstants.CENTER);
         panel_locataires.add(locataires, BorderLayout.NORTH);
 
-        System.out.println(bail.getFisc_bien());
-
         List<Integer> idLocataires = new LouerDAO().getIdLoc(new DAO.jdbc.BailDAO().getId(bail));
         String[] nomlocataires = new String[idLocataires.size()];
         int i =0;

@@ -33,7 +33,7 @@ public class LogementDAO implements DAO.LogementDAO {
 			pstmt.executeUpdate();
 			pstmt.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -61,7 +61,7 @@ public class LogementDAO implements DAO.LogementDAO {
 			}
 			pstmt.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 		return l;
 	}
@@ -76,7 +76,7 @@ public class LogementDAO implements DAO.LogementDAO {
 			pstmt.executeUpdate();
 			pstmt.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 
 	}

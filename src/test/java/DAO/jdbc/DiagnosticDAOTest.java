@@ -50,7 +50,7 @@ public class DiagnosticDAOTest {
         ConnectionDB.rollback();
         ConnectionDB.setAutoCommit(true);
         ConnectionDB.destroy();
-        Files.deleteIfExists(tempFilePath); // Clean up the temporary file
+        Files.deleteIfExists(tempFilePath);
     }
 
     @Test

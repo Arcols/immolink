@@ -1,7 +1,6 @@
 package DAO.jdbc;
 
 import DAO.DAOException;
-import DAO.TrauxAssocieDAO;
 import DAO.db.ConnectionDB;
 import classes.Batiment;
 import classes.BienLouable;
@@ -13,7 +12,7 @@ import java.util.ArrayList;
 import java.sql.*;
 import java.util.List;
 
-public class TravauxAssocieDAO implements TrauxAssocieDAO {
+public class TravauxAssocieDAO implements DAO.TravauxAssocieDAO {
 
     @Override
     public void create(String num_fiscal, Devis devis,TypeLogement typeLogement) throws DAOException {

@@ -17,5 +17,26 @@ public interface LouerDAO {
      */
     void create(Locataire locataire, Bail bail, int quotite) throws DAOException;
 
+    /**
+     * Récupère la liste des id d'un locataire d'un bail dans la base de données.
+     * @param idBail l'id du bail
+     * @return l'id des locations
+     */
     List<Integer> getIdLoc(int idBail);
+
+    /**
+     * Récupère la quotité d'un locataire dans un bail.
+     * @param idBail
+     * @param idLocataire
+     * @return la quotité de la location
+     */
+    Integer getQutotié(int idBail, int idLocataire);
+
+    /**
+     * Récupère la quotité d'une location dans la base de données.
+     * @param idBail L'identifiant du bail à récupérer
+     * @param idLocataire L'identifiant du locataire à récupérer
+     * @param quotite La quotité de la location
+     */
+    void updateQuotite(int idBail,int idLocataire, int quotite);
 }

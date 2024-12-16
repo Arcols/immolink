@@ -274,7 +274,7 @@ public class PageMonBien {
             this.tableau_diagnostic.add(label, gbc_diag);
 
             // Créer le bouton "Importer" pour chaque diagnostic
-            JButton bouton = new JButton("Importer");
+            JButton bouton = new JButton("Télécharger");
             bouton.addActionListener(modele.openDiag(diagnostic, idBien));
             gbc_diag.gridx = 1; // Deuxième colonne pour le bouton
             this.tableau_diagnostic.add(bouton, gbc_diag);

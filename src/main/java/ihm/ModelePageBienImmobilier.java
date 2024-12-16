@@ -278,7 +278,6 @@ public class ModelePageBienImmobilier {
 					this.pageNouveauBienImmobilier.getMap_diagnostic().put(diag.name(),
 							new Diagnostic(diagnostic, selectedFile.getAbsolutePath(), date));
 					if (isMapDiagnosticFull()) {
-						System.out.println(this.pageNouveauBienImmobilier.getMap_diagnostic());
 						pageNouveauBienImmobilier.checkFields();
 					}
 
@@ -286,8 +285,6 @@ public class ModelePageBienImmobilier {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-			} else {
-				System.out.println("Aucun fichier sélectionné.");
 			}
 		};
 	}

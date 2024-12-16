@@ -57,7 +57,6 @@ public interface DevisDAO {
      */
     double getMontantTotalTravaux(String num_fiscal, TypeLogement typeLogement);
 
-
     /**
      * Récupère un devis à partir de son identifiant
      * @param id l'identifiant du devis
