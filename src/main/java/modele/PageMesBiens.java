@@ -114,28 +114,22 @@ public class PageMesBiens {
         gbl_panel.rowWeights = new double[] { 0.0, 1.0, 1.0 };
         panel.setLayout(gbl_panel);
 
-
-
         try {
-            String[] columns = {"Adresse","Complement","Ville","Type"};
-            tableModel = new DefaultTableModel(ModelePageMesBiens.loadDataBienImmoToTable(), columns) {
-                @Override
-                public boolean isCellEditable(int row, int column) {
-                    return false; // Toutes les cellules sont non éditables
-                }
-            };
+            tableModel = ModelePageMesBiens.loadDataBienImmoToTable();
             table = new JTable(tableModel);
         } catch (SQLException | DAOException e) {
             JOptionPane.showMessageDialog(frame, "Erreur lors du chargement des données : " + e.getMessage(),
                     "Erreur", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
-        GridBagConstraints gbc_table = new GridBagConstraints();
-        gbc_table.insets = new Insets(0, 0, 5, 0);
-        gbc_table.fill = GridBagConstraints.BOTH;
-        gbc_table.gridx = 1;
-        gbc_table.gridy = 1;
-        panel.add(table, gbc_table);
+
+        JScrollPane scrollPane = new JScrollPane(table);
+        GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+        gbc_scrollPane.insets = new Insets(0, 0, 5, 0);
+        gbc_scrollPane.fill = GridBagConstraints.BOTH;
+        gbc_scrollPane.gridx = 1;
+        gbc_scrollPane.gridy = 1;
+        panel.add(scrollPane, gbc_scrollPane);
 
         JPanel panel_1 = new JPanel();
         GridBagConstraints gbc_panel_1 = new GridBagConstraints();

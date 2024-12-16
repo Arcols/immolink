@@ -38,27 +38,31 @@ public class ModelePageMesBiens {
      * @return DefaultTableModel rempli avec les données des locataires.
      * @throws SQLException si une erreur survient lors de la récupération des données.
      */
-    public static String[][] loadDataBienImmoToTable() throws SQLException, DAOException {
+    public static DefaultTableModel loadDataBienImmoToTable() throws SQLException, DAOException {
+        String[] columns = {"Adresse","Complement","Ville"};
+
+        DefaultTableModel model = new DefaultTableModel(columns, 0){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Toutes les cellules sont non éditables
+            }
+        };
 
         // Récupération des locataires
         BienLouableDAO bienLouableDAO = new BienLouableDAO();
         List<BienLouable> biensLouables = bienLouableDAO.findAll();
 
         // Remplissage du modèle avec les données des locataires
-        int i = 0;
-        String[][] rowData = new String[biensLouables.size()][];
-        String[] ligne;
         for (BienLouable bien : biensLouables) {
-             ligne = new String[]{
+            Object[] rowData= {
                      bien.getAdresse(),
                      bien.getComplement_adresse(),
                      bien.getVille()
-             };
-             rowData[i] = ligne;
-             i++;
+            };
+            model.addRow(rowData);
         }
 
-        return rowData; // Retourne le modèle rempli
+        return model; // Retourne le modèle rempli
     }
 
 
