@@ -69,4 +69,6 @@ public interface BatimentDAO {
 	 * @throws DAOException en cas d'erreur lors de la lecture des biens immobiliers
 	 */
 	Map<String, List<String>> searchAllBatiments() throws SQLException;
+
+	Map<String, List<String>> searchAllBatimentsWithCompl() throws SQLException;
 }

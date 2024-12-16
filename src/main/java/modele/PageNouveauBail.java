@@ -13,12 +13,15 @@ import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
 import static ihm.Charte.*;
@@ -67,29 +70,24 @@ public class PageNouveauBail {
     /**
      * Create the application.
      */
-    public PageNouveauBail() {
+    public PageNouveauBail() throws SQLException {
         initialize();
     }
 
     /**
      * Initialize the contents of the frame.
      */
-    private void initialize() {
+    private void initialize() throws SQLException {
 
         try {
-            this.mapVillesAdresses = new BatimentDAO().searchAllBatiments();
+            this.mapVillesAdresses = new BatimentDAO().searchAllBatimentsWithCompl();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
         this.setVilles = this.mapVillesAdresses.keySet();
 
-        try {
-            this.mapAdressesComplement = new BienLouableDAO().getAllcomplements();
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        this.mapAdressesComplement =new BienLouableDAO().getAllcomplements();
         this.setAdresse = this.mapAdressesComplement.keySet();
 
         ModelePageNouveauBail modele = new ModelePageNouveauBail(this);
@@ -332,7 +330,12 @@ public class PageNouveauBail {
         gbl_panel_east.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
         panel_east.setLayout(gbl_panel_east);
 
-        tableModel = new DefaultTableModel(new String[] { "Prénom", "Nom", "Téléphone","Quotité" }, 0);
+        tableModel = new DefaultTableModel(new String[] { "Prénom", "Nom", "Téléphone","Quotité" }, 0){
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false; // Toutes les cellules sont non éditables
+            }
+        };
 
         JPanel panel_locataire = new JPanel();
         GridBagConstraints gbc_panel_locataire = new GridBagConstraints();
@@ -365,6 +368,15 @@ public class PageNouveauBail {
         panel_locataire.add(btn_ajouter_locataire, gbc_btn_ajouter_locataire);
 
         btn_ajouter_locataire.addActionListener(modele.getAjouterLocataire());
+
+        JButton btn_supprimer_locataire = new JButton("Supprimer un locataire");
+        GridBagConstraints gbc_btn_supprimer_locataire = new GridBagConstraints();
+        gbc_btn_supprimer_locataire.anchor = GridBagConstraints.NORTH;
+        gbc_btn_supprimer_locataire.gridx = 0;
+        gbc_btn_supprimer_locataire.gridy = 2;
+        panel_locataire.add(btn_supprimer_locataire, gbc_btn_supprimer_locataire);
+
+        btn_supprimer_locataire.addActionListener(modele.supprimerLocataire());
 
         JPanel panel_date = new JPanel();
         GridBagConstraints gbc_panel_date = new GridBagConstraints();
@@ -428,9 +440,14 @@ public class PageNouveauBail {
         this.choix_date_fin.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
         this.choix_date_debut.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
         this.choix_loyer.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
+        this.choix_loyer.addFocusListener(modele.getFocus());
         this.choix_prevision.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
+        this.choix_prevision.addFocusListener(modele.getFocus());
         this.choix_depot_garantie.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
+        this.choix_depot_garantie.addFocusListener(modele.getFocus());
         this.valider.addActionListener(modele.CreationBail());
+        this.choix_ville.addActionListener(modele.getVilleActionListener(mapVillesAdresses));
+        this.choix_adresse.addActionListener(modele.getAdresseActionListener(mapAdressesComplement));
         quitter.addActionListener(modele.quitterPage());
     }
 
@@ -466,6 +483,8 @@ public class PageNouveauBail {
         return choix_loyer;
     }
 
+    public JButton getValider() {return valider;}
+
     public JTextField getChoix_prevision() {
         return choix_prevision;
     }
@@ -482,22 +501,10 @@ public class PageNouveauBail {
         return choix_surface;
     }
 
-
+    public JTable getTable(){return this.table;}
     public JCheckBox getSolde_tout_compte() {
         return solde_tout_compte;
     }
 
-    public void checkFields() {
-        boolean isFilled;
 
-        isFilled = !this.choix_loyer.getText().trim().isEmpty()
-                && !this.choix_prevision.getText().trim().isEmpty()
-                && !this.choix_depot_garantie.getText().trim().isEmpty()
-                &&!this.choix_date_debut.getText().trim().isEmpty()
-                &&!this.choix_date_fin.getText().trim().isEmpty()
-                &&!(this.table.getRowCount()==0);
-
-        // Active ou désactive le bouton "Valider"
-        this.valider.setEnabled(isFilled);
-    }
 }
