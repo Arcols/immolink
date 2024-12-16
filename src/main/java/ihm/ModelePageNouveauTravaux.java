@@ -49,7 +49,7 @@ public class ModelePageNouveauTravaux {
         return e -> {
             pageNouveauTravaux.getFrame().dispose();
             try {
-                PageMonBien pageMesBiens = new PageMonBien(idBien);
+                PageMonBien pageMonBiens = new PageMonBien(idBien);
             } catch (DAOException | SQLException ex) {
                 throw new RuntimeException(ex);
             }
