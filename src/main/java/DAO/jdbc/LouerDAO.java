@@ -47,4 +47,20 @@ public class LouerDAO implements DAO.LouerDAO{
             }
             return  idLocataires;
         }
+
+    @Override
+    public void updateQuotite(int idBail,int idLocataire, int quotite) {
+        try {
+            Connection cn = ConnectionDB.getInstance();
+            String query = "UPDATE louer SET quotite = ? WHERE id_bail = ? AND id_locataire = ?";
+            PreparedStatement pstmt = cn.prepareStatement(query);
+            pstmt.setInt(1,quotite);
+            pstmt.setInt(2,idBail);
+            pstmt.setInt(3,idLocataire);
+            pstmt.executeUpdate();
+            pstmt.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
+}

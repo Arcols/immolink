@@ -49,4 +49,11 @@ public interface BailDAO {
          * @return L'objet Bail trouvé, ou null si aucun bail n'est trouvé
          */
         Bail getBailFromId(int idBail);
+
+        /**
+         * Met à jour le loyer d'un bail dans la base de données.
+         * @param idBail L'identifiant du bail à mettre à jour
+         * @param loyer  Le nouveau loyer
+         */
+        void updateLoyer(int idBail, double loyer);
 }
