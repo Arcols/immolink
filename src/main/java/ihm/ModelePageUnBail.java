@@ -1,10 +1,7 @@
 package ihm;
 
 import DAO.DAOException;
-import DAO.jdbc.BailDAO;
-import DAO.jdbc.BienLouableDAO;
-import DAO.jdbc.DevisDAO;
-import DAO.jdbc.LogementDAO;
+import DAO.jdbc.*;
 import classes.Bail;
 import classes.BienLouable;
 import classes.Locataire;
@@ -13,10 +10,17 @@ import enumeration.TypeLogement;
 import modele.*;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public class ModelePageUnBail {
     private PageUnBail pageUnBail;
@@ -24,6 +28,8 @@ public class ModelePageUnBail {
     public ModelePageUnBail(PageUnBail pageUnBail){
         this.pageUnBail = pageUnBail;
     }
+    private List<Locataire> Locataireselected=new LinkedList<Locataire>();
+    private List<Integer> ListQuotite = new LinkedList<Integer>();
 
     public void chargerDonneesBail(int idBail, PageUnBail page) throws DAOException {
         try {
@@ -118,13 +124,168 @@ public class ModelePageUnBail {
         };
     }
 
-    private static void refreshPage(ActionEvent e, int idBail) {
+    public ActionListener getAjouterLocataire(int idBail) {
+        return e -> {
+
+            LouerDAO louerDAO = new DAO.jdbc.LouerDAO();
+
+            BailDAO bailDAO = new DAO.jdbc.BailDAO();
+            Bail bail = bailDAO.getBailFromId(idBail);
+
+            // Données fictives pour les locataires
+            List<Locataire> listlocataires = new DAO.jdbc.LocataireDAO().getAllLocataire();
+            String[][] locataires = new String[listlocataires.size()-Locataireselected.size()][];
+            String[] ligne;
+            int i = 0;
+            for (Locataire l : listlocataires) {
+                if (!Locataireselected.contains(l)) {
+                    ligne = new String[]{l.getNom(), l.getPrénom(), l.getTéléphone()};
+                    locataires[i] = ligne;
+                    i++;
+                }
+            }
+            // Colonnes de la table
+            String[] columns = {"Nom", "Prénom", "Téléphone"};
+
+            // Modèle pour la table
+            DefaultTableModel model = new DefaultTableModel(locataires, columns){
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false; // Toutes les cellules sont non éditables
+                }
+            };
+            JTable selectionTable = new JTable(model);
+            selectionTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+            // ScrollPane pour la table
+            JScrollPane scrollPanePopUp = new JScrollPane(selectionTable);
+
+            // Création d'une fenêtre popup
+            JFrame popupFrame = new JFrame("Sélectionner un locataire");
+            popupFrame.setSize(400, 300);
+            popupFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            popupFrame.add(scrollPanePopUp);
+            popupFrame.setLocationRelativeTo(this.pageUnBail.getFrame());
+
+            // Ajout d'un MouseListener pour détecter le double-clic
+            selectionTable.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent me) {
+                    if (me.getClickCount() == 2) { // Double-clic
+                        int selectedRow = selectionTable.getSelectedRow();
+                        if (selectedRow >= 0) {
+                            // Récupérer les données du locataire sélectionné
+                            String nom = model.getValueAt(selectedRow, 0).toString();
+                            String prenom = model.getValueAt(selectedRow, 1).toString();
+                            String telephone = model.getValueAt(selectedRow, 2).toString();
+
+                            Locataireselected.add(new DAO.jdbc.LocataireDAO().getLocataireByNomPrénomTel(nom,prenom,telephone));
+                            try {
+                                new LouerDAO().create(new LocataireDAO().getLocataireByNomPrénomTel(nom,prenom,telephone),bail,0);
+                            } catch (DAOException ex) {
+                                throw new RuntimeException(ex);
+                            }
+                            setQuotite(idBail);
+
+                            // Fermer la fenêtre popup
+                            popupFrame.dispose();
+                            refreshPage(e, idBail);
+                        }
+                    }
+                }
+            });
+
+            // Afficher la fenêtre popup
+            popupFrame.setVisible(true);
+        };
+    }
+
+    public void setQuotite(int idBail) {
+        locatairesDuBail(idBail);
+        JDialog dialog = new JDialog((Frame) null, "Saisir la quotité des locataires", true);
+        dialog.setSize(300, 200);
+        dialog.setLayout(new BorderLayout());
+
+        LocataireDAO locataireDAO = new DAO.jdbc.LocataireDAO();
+
+        // Panel contenant les locataires et les quotités
+        JPanel panelLocataires = new JPanel();
+        panelLocataires.setLayout(new BoxLayout(panelLocataires, BoxLayout.Y_AXIS));
+
+        // Liste des locataires avec champs de quotité
+        List<JSpinner> quotiteSpinners = new LinkedList<>();
+        List<Locataire> locataires = Locataireselected;  // Liste des locataires sélectionnés
+        Map<Locataire, JSpinner> quotiteMap = new HashMap<>();  // Map pour associer chaque locataire à sa quotité
+
+        for (Locataire locataire : locataires) {
+            JPanel locatairePanel = new JPanel();
+            locatairePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+            // Afficher le nom du locataire
+            JLabel nomLocataireLabel = new JLabel(locataire.getNom() + " " + locataire.getPrénom());
+            locatairePanel.add(nomLocataireLabel);
+
+            // Créer un JSpinner pour la quotité de ce locataire
+            JSpinner quotiteSpinner = new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
+            quotiteSpinner.setValue(100);  // Valeur initiale de 100% (modifiable)
+            locatairePanel.add(quotiteSpinner);
+
+            // Ajouter le locataire et son spinner dans la map
+            quotiteMap.put(locataire, quotiteSpinner);
+
+            // Ajouter au panel
+            panelLocataires.add(locatairePanel);
+        }
+
+        JScrollPane scrollPane = new JScrollPane(panelLocataires);
+        dialog.add(scrollPane, BorderLayout.CENTER);
+
+        // Bouton de validation
+        JButton validerButton = new JButton("Valider");
+        dialog.add(validerButton, BorderLayout.SOUTH);
+
+        validerButton.addActionListener(event -> {
+            // Récupérer les quotités pour chaque locataire et les mettre à jour dans la base
+            LouerDAO louerDAO = new LouerDAO();  // Création de l'instance du DAO pour la mise à jour
+            for (Locataire locataire : locataires) {
+                int quotite = (Integer) quotiteMap.get(locataire).getValue();  // Récupérer la quotité pour ce locataire
+
+                // Mettre à jour la quotité dans la base de données
+                louerDAO.updateQuotite(idBail, new LocataireDAO().getId(locataire), quotite);
+            }
+
+            dialog.dispose();
+
+        });
+
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
+    }
+
+    private void locatairesDuBail(int idBail){
+        this.Locataireselected.clear();
+        List<Integer> idLocs =new LouerDAO().getIdLoc(idBail);
+        for (Integer idLoc : idLocs){
+            this.Locataireselected.add(new LocataireDAO().getLocFromId(idLoc));
+        }
+    }
+
+
+    private void refreshPage(ActionEvent e, int idBail) {
         BailDAO bailDAO = new DAO.jdbc.BailDAO();
         Bail bail = bailDAO.getBailFromId(idBail);
+
+        // Obtenez la fenêtre actuelle à partir de l'événement
         JFrame ancienneFenetre = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
-        ancienneFenetre.dispose();
+
+        // Assurez-vous de fermer l'ancienne fenêtre avant de créer une nouvelle page
+        if (ancienneFenetre != null) {
+            ancienneFenetre.dispose();  // Ferme l'ancienne fenêtre
+        }
+
+        // Créez une nouvelle page avec les données du bail
         PageUnBail nouvellePage = new PageUnBail(bail);
-        nouvellePage.getFrame().setVisible(true);
+        nouvellePage.getFrame().setVisible(true);  // Affiche la nouvelle page
     }
 
     public ActionListener quitterPage(){

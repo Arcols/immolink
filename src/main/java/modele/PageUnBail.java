@@ -328,6 +328,7 @@ public class PageUnBail {
         gbc_btnAjoutLocataire.gridx = 1;
         gbc_btnAjoutLocataire.gridy = 0;
         panelModifs.add(btnAjoutLocataire, gbc_btnAjoutLocataire);
+        btnAjoutLocataire.addActionListener(modele.getAjouterLocataire(new BailDAO().getId(bail)));
 
         JPanel panelQuitter = new JPanel();
         basPage.add(panelQuitter);
