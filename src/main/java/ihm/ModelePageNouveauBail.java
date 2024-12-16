@@ -18,6 +18,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -294,28 +295,32 @@ public class ModelePageNouveauBail {
             String numfisc=new DAO.jdbc.BienLouableDAO().getFiscFromCompl(ville,adresse,compl);
             java.sql.Date sqlDateDebut = java.sql.Date.valueOf(pageNouveauBail.getChoix_date_debut().getText());
             java.sql.Date sqlDateFin = java.sql.Date.valueOf(pageNouveauBail.getChoix_date_fin().getText());
-            Bail bail=new Bail(this.pageNouveauBail.getSolde_tout_compte().isSelected(),
-                    numfisc,
-                    Double.parseDouble(this.pageNouveauBail.getChoix_loyer().getText()),
-                    Double.parseDouble(this.pageNouveauBail.getChoix_prevision().getText()),
-                    Double.parseDouble(this.pageNouveauBail.getChoix_depot_garantie().getText()),
-                    sqlDateDebut,
-                    sqlDateFin);
-            try {
-                new BailDAO().create(bail);
-                for(int i=0;i<Locataireselected.size();i++) {
-                    new LouerDAO().create(Locataireselected.get(i),bail,ListQuotite.get(i));
+            if(sqlDateDebut.after(sqlDateFin)||sqlDateDebut.equals(sqlDateFin)){
+                JOptionPane.showMessageDialog(null, "Vos dates ne sont pas correctes, veuillez les vérifier.", "Erreur", JOptionPane.ERROR_MESSAGE);
+            } else {
+                Bail bail = new Bail(this.pageNouveauBail.getSolde_tout_compte().isSelected(),
+                        numfisc,
+                        Double.parseDouble(this.pageNouveauBail.getChoix_loyer().getText()),
+                        Double.parseDouble(this.pageNouveauBail.getChoix_prevision().getText()),
+                        Double.parseDouble(this.pageNouveauBail.getChoix_depot_garantie().getText()),
+                        sqlDateDebut,
+                        sqlDateFin);
+                try {
+                    new BailDAO().create(bail);
+                    for (int i = 0; i < Locataireselected.size(); i++) {
+                        new LouerDAO().create(Locataireselected.get(i), bail, ListQuotite.get(i));
+                    }
+                    JOptionPane.showMessageDialog(null, "Le Bail a été ajouté et lié à vos locataires !", "Succès",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    refreshPage(e);
+                } catch (DAOException | SQLException ex) {
+                    JOptionPane.showMessageDialog(null, "Une erreur est survenue lors de la création du bail.", "Erreur", JOptionPane.ERROR_MESSAGE);
                 }
-                JOptionPane.showMessageDialog(null, "Le Bail a été ajouté et lié à vos locataires !", "Succès",
-                        JOptionPane.INFORMATION_MESSAGE);
-                refreshPage(e);
-            } catch (DAOException ex) {
-                JOptionPane.showMessageDialog(null, "Une erreur est survenue lors de la création du bail.", "Erreur", JOptionPane.ERROR_MESSAGE);
             }
         };
     }
 
-    private void refreshPage(ActionEvent e) {
+    private void refreshPage(ActionEvent e) throws SQLException {
         JFrame ancienneFenetre = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
         ancienneFenetre.dispose();
         PageNouveauBail nouvellePage = new PageNouveauBail();

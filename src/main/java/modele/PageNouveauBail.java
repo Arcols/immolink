@@ -70,14 +70,14 @@ public class PageNouveauBail {
     /**
      * Create the application.
      */
-    public PageNouveauBail() {
+    public PageNouveauBail() throws SQLException {
         initialize();
     }
 
     /**
      * Initialize the contents of the frame.
      */
-    private void initialize() {
+    private void initialize() throws SQLException {
 
         try {
             this.mapVillesAdresses = new BatimentDAO().searchAllBatimentsWithCompl();
@@ -87,7 +87,7 @@ public class PageNouveauBail {
         }
         this.setVilles = this.mapVillesAdresses.keySet();
 
-        this.mapAdressesComplement =new BienLouableDAO().getAllComplNoBail();
+        this.mapAdressesComplement =new BienLouableDAO().getAllcomplements();
         this.setAdresse = this.mapAdressesComplement.keySet();
 
         ModelePageNouveauBail modele = new ModelePageNouveauBail(this);
