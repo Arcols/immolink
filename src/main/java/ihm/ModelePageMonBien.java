@@ -87,7 +87,7 @@ public class ModelePageMonBien {
                     BienLouableDAO bienLouableDAO = new BienLouableDAO();
                     String num_fisc = bienLouableDAO.readId(idBien).getNumero_fiscal();
                     DiagnosticDAO diagnosticDAO = new DiagnosticDAO();
-                    Diagnostic diag = diagnosticDAO.read(num_fisc,reference);
+                    Diagnostic diag = diagnosticDAO.read(num_fisc,refDiagnosticSansDate(reference));
                     if (diag != null) {
                         diag.ouvrirPdf();
                     }
@@ -113,5 +113,14 @@ public class ModelePageMonBien {
 
             }
         };
+    }
+
+    public String refDiagnosticSansDate(String ref) {
+        String refSansDate = "";
+        while (ref.length() > 0 && ref.charAt(0) != '-') {
+            refSansDate += ref.charAt(0);
+            ref = ref.substring(1);
+        }
+        return refSansDate;
     }
 }
