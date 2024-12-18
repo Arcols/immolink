@@ -30,6 +30,7 @@ import javax.swing.border.LineBorder;
 
 import DAO.jdbc.LocataireDAO;
 import classes.Locataire;
+import com.toedter.calendar.JDateChooser;
 import ihm.Charte;
 import ihm.Menu;
 import ihm.ModelePageNouveauLocataire;
@@ -43,7 +44,7 @@ public class PageNouveauLocataire {
     private JTextField prenomValeur;
     private JTextField telephoneValeur;
     private JTextField mailValeur;
-    private JTextField dateValeur;
+    private JDateChooser dateChooser;
     private JComboBox villeValeur;
     private JComboBox genreValeur;
     private JComboBox adresseValeur;
@@ -235,14 +236,14 @@ public class PageNouveauLocataire {
         gbc_labelDate.gridy = 2;
         donnees_loca.add(labelDate, gbc_labelDate);
 
-        dateValeur = new JTextField();
-        GridBagConstraints gbc_dateValeur = new GridBagConstraints();
-        gbc_dateValeur.fill = GridBagConstraints.HORIZONTAL;
-        gbc_dateValeur.insets = new Insets(0, 0, 5, 5);
-        gbc_dateValeur.gridx = 4;
-        gbc_dateValeur.gridy = 2;
-        donnees_loca.add(dateValeur, gbc_dateValeur);
-        dateValeur.setColumns(10);
+        dateChooser = new JDateChooser();
+        GridBagConstraints gbc_dateChooserDebut = new GridBagConstraints();
+        gbc_dateChooserDebut.anchor = GridBagConstraints.WEST;
+        gbc_dateChooserDebut.insets = new Insets(0, 0, 5, 0);
+        gbc_dateChooserDebut.gridx = 4;
+        gbc_dateChooserDebut.gridy = 2;
+        donnees_loca.add(dateChooser, gbc_dateChooserDebut);
+
 
         JLabel labelGenre = new JLabel("Genre");
         GridBagConstraints gbc_labelGenre = new GridBagConstraints();
@@ -278,7 +279,7 @@ public class PageNouveauLocataire {
         enregistrerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                java.sql.Date sqlDate = java.sql.Date.valueOf(dateValeur.getText());
+                java.sql.Date sqlDate = new java.sql.Date(getDateChooser().getDate().getTime());
                 daoLoc = new LocataireDAO();
                 Locataire l = new Locataire(nomValeur.getText(), prenomValeur.getText(), telephoneValeur.getText(),
                         mailValeur.getText(), sqlDate, (String) genreValeur.getSelectedItem());
@@ -309,12 +310,8 @@ public class PageNouveauLocataire {
         nomValeur.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
         prenomValeur.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
         telephoneValeur.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
-        dateValeur.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
+        dateChooser.getDateEditor().addPropertyChangeListener("date", evt -> modele.getTextFieldDocumentListener().insertUpdate(null));
         quitter.addActionListener(modele.quitterBouton());
-    }
-
-    public JTextField getDateValeur() {
-        return dateValeur;
     }
 
     public JTextField getNomValeur() {
@@ -345,10 +342,12 @@ public class PageNouveauLocataire {
         return villeValeur;
     }
 
+    public JDateChooser getDateChooser() {return dateChooser;}
+
     public void checkFields() {
         // Vérification si tous les champs sont remplis
         boolean isFilled = !nomValeur.getText().trim().isEmpty() && !prenomValeur.getText().trim().isEmpty()
-                && !telephoneValeur.getText().trim().isEmpty() && !dateValeur.getText().trim().isEmpty();
+                && !telephoneValeur.getText().trim().isEmpty() && dateChooser.getDate() != null;
 
         // Active ou désactive le bouton "Valider"
         enregistrerButton.setEnabled(isFilled);

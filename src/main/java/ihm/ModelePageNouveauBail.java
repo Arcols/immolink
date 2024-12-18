@@ -280,8 +280,8 @@ public class ModelePageNouveauBail {
         isFilled = !pageNouveauBail.getChoix_loyer().getText().trim().isEmpty()
                 && !pageNouveauBail.getChoix_prevision().getText().trim().isEmpty()
                 && !pageNouveauBail.getChoix_depot_garantie().getText().trim().isEmpty()
-                &&!pageNouveauBail.getChoix_date_debut().getText().trim().isEmpty()
-                &&!pageNouveauBail.getChoix_date_fin().getText().trim().isEmpty()
+                && pageNouveauBail.getChoix_date_debut().getDate()!=null
+                && pageNouveauBail.getChoix_date_fin().getDate()!=null
                 &&!(pageNouveauBail.getTable().getRowCount()==0);
 
         // Active ou désactive le bouton "Valider"
@@ -293,8 +293,8 @@ public class ModelePageNouveauBail {
             String adresse=(String) this.pageNouveauBail.getChoix_adresse().getSelectedItem();
             String compl=(String) this.pageNouveauBail.getChoix_complement().getSelectedItem();
             String numfisc=new DAO.jdbc.BienLouableDAO().getFiscFromCompl(ville,adresse,compl);
-            java.sql.Date sqlDateDebut = java.sql.Date.valueOf(pageNouveauBail.getChoix_date_debut().getText());
-            java.sql.Date sqlDateFin = java.sql.Date.valueOf(pageNouveauBail.getChoix_date_fin().getText());
+            java.sql.Date sqlDateDebut = new java.sql.Date(pageNouveauBail.getChoix_date_debut().getDate().getTime());
+            java.sql.Date sqlDateFin = new java.sql.Date(pageNouveauBail.getChoix_date_fin().getDate().getTime());
             if(sqlDateDebut.after(sqlDateFin)||sqlDateDebut.equals(sqlDateFin)){
                 JOptionPane.showMessageDialog(null, "Vos dates ne sont pas correctes, veuillez les vérifier.", "Erreur", JOptionPane.ERROR_MESSAGE);
             } else {
