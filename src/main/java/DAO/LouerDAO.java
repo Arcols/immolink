@@ -1,10 +1,10 @@
 package DAO;
 
-import classes.Bail;
-import classes.Locataire;
-
 import java.util.List;
 import java.util.Map;
+
+import classes.Bail;
+import classes.Locataire;
 
 public interface LouerDAO {
 

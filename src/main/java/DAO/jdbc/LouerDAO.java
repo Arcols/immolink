@@ -1,10 +1,5 @@
 package DAO.jdbc;
 
-import DAO.DAOException;
-import DAO.db.ConnectionDB;
-import classes.Bail;
-import classes.Locataire;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,6 +8,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import DAO.DAOException;
+import DAO.db.ConnectionDB;
+import classes.Bail;
+import classes.Locataire;
 
 public class LouerDAO implements DAO.LouerDAO{
         @Override

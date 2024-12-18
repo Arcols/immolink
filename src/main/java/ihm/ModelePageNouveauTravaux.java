@@ -1,20 +1,20 @@
 package ihm;
 
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+
 import DAO.BienLouableDAO;
 import DAO.DAOException;
 import DAO.jdbc.DevisDAO;
-import classes.Bail;
 import classes.BienLouable;
 import classes.Devis;
 import enumeration.TypeLogement;
-import modele.PageNouveauBienImmobilier;
 import modele.PageNouveauTravaux;
-import modele.PageUnBail;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class ModelePageNouveauTravaux {
     private PageNouveauTravaux pageNouveauTravaux;

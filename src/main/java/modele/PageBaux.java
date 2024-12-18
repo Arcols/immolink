@@ -16,6 +16,7 @@ import ihm.ResizedImage;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.sql.Date;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -153,12 +154,13 @@ public class PageBaux {
 					logement.getComplement_adresse(),
 					logement.getVille(),
 					noms,
-					String.valueOf(b.getLoyer())
+					String.valueOf(b.getLoyer()),
+					b.getDate_debut().toString()
 			};
 			data[i] = ligne;
 			i++;
 		}
-		String[] columns = { "Adresse", "Complément", "Ville", "Locataire(s)", "Loyer", "Statut" };
+		String[] columns = { "Adresse", "Complément", "Ville", "Locataire(s)", "Loyer","Date début", "Statut" };
 		// Créer le modèle de table avec les données
 		DefaultTableModel tableModel = new DefaultTableModel(data, columns) {
 			@Override
@@ -227,10 +229,13 @@ public class PageBaux {
 						String adresse = (String) tableModel.getValueAt(row, 0);
 						String complement = (String) tableModel.getValueAt(row, 1);
 						String ville = (String) tableModel.getValueAt(row, 2);
+						String date_str = (String) tableModel.getValueAt(row, 5);
+
+						Date date = java.sql.Date.valueOf(date_str);
 
                         try {
                             BienLouable bien = new BienLouableDAO().readFisc(new BienLouableDAO().getFiscFromCompl(ville,adresse,complement));
-							Bail bail =  new BienLouableDAO().getBailFromBien(bien);
+							Bail bail =  new BailDAO().getBailFromBienEtDate(bien,date);
 							frame.dispose();
 							PageUnBail PageUnBail = new PageUnBail(bail);
 
