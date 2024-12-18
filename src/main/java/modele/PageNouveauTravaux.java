@@ -309,6 +309,7 @@ public class PageNouveauTravaux {
         frame.setVisible(true);
         btnValider.addActionListener(modele.getAjouterTravauxListener(id));
     }
+
     public JTextField getValueNumDevis() {
         return valueNumDevis;
     }

@@ -22,15 +22,18 @@ import java.util.stream.Collectors;
 
 public class ModelePageUnBail {
     private PageUnBail pageUnBail;
-    private List<Locataire> Locataireselected=new LinkedList<Locataire>();
+    private List<Locataire> Locataireselected = new LinkedList<Locataire>();
     private int quotite_actuelle;
     private List<Integer> quotites = new LinkedList<>();
-    private  List<JSpinner> listSpinner;
-    private List<JSpinner> spinners_selec =new ArrayList<>();
+    private List<JSpinner> listSpinner;
+    private List<JSpinner> spinners_selec = new ArrayList<>();
+    private int idBail;
+    private Boolean validation_quotités;
 
-    public ModelePageUnBail(PageUnBail pageUnBail){
+    public ModelePageUnBail(PageUnBail pageUnBail) {
         this.pageUnBail = pageUnBail;
         this.quotite_actuelle = 100;
+        this.idBail = new BailDAO().getId(pageUnBail.getBail());
     }
 
 
@@ -46,7 +49,7 @@ public class ModelePageUnBail {
             LogementDAO logementDAO = new DAO.jdbc.LogementDAO();
             Logement logement = logementDAO.read(bailDAO.getIdBienLouable(idBail));
 
-            DevisDAO devisDAO =new DevisDAO();
+            DevisDAO devisDAO = new DevisDAO();
 
             if (bail != null) {
                 // Mise à jour des labels avec les informations du bien
@@ -112,7 +115,7 @@ public class ModelePageUnBail {
                             "Confirmation",
                             JOptionPane.INFORMATION_MESSAGE);
                     dialog.dispose();
-                    refreshPage(e,idBail);
+                    refreshPage(e, idBail);
 
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(dialog,
@@ -140,22 +143,23 @@ public class ModelePageUnBail {
 
 
             try {
-                String numFisc = new BienLouableDAO().getFiscFromCompl(ville,adresse,complement);
+                String numFisc = new BienLouableDAO().getFiscFromCompl(ville, adresse, complement);
                 BienLouable bien = new BienLouableDAO().readFisc(numFisc);
                 Bail bail_actu = new BailDAO().getBailFromId(idBail);
                 List<Integer> idLocBail = new LouerDAO().getIdLoc(new BailDAO().getId(bail_actu));
 
-                for (int id: idLocBail){
+                for (int id : idLocBail) {
                     Locataireselected.add(new LocataireDAO().getLocFromId(id));
-                    quotites.add(new LouerDAO().getQuotité(new BailDAO().getId(bail_actu),id));
+                    quotites.add(new LouerDAO().getQuotité(new BailDAO().getId(bail_actu), id));
                 }
             } catch (DAOException ex) {
                 throw new RuntimeException(ex);
             }
 
             // Données fictives pour les locataires
+            locatairesDuBail(idBail);
             List<Locataire> listlocataires = new DAO.jdbc.LocataireDAO().getAllLocataire();
-            String[][] locataires = new String[listlocataires.size()-Locataireselected.size()][];
+            String[][] locataires = new String[listlocataires.size() - Locataireselected.size()][];
             String[] ligne;
             int i = 0;
             for (Locataire l : listlocataires) {
@@ -169,7 +173,7 @@ public class ModelePageUnBail {
             String[] columns = {"Nom", "Prénom", "Téléphone"};
 
             // Modèle pour la table
-            DefaultTableModel model = new DefaultTableModel(locataires, columns){
+            DefaultTableModel model = new DefaultTableModel(locataires, columns) {
                 @Override
                 public boolean isCellEditable(int row, int column) {
                     return false; // Toutes les cellules sont non éditables
@@ -199,22 +203,21 @@ public class ModelePageUnBail {
                             String nom = model.getValueAt(selectedRow, 0).toString();
                             String prenom = model.getValueAt(selectedRow, 1).toString();
                             String telephone = model.getValueAt(selectedRow, 2).toString();
-
-                            Locataireselected.add(new DAO.jdbc.LocataireDAO().getLocataireByNomPrénomTel(nom,prenom,telephone));
-                            try {
-                                new LouerDAO().create(new LocataireDAO().getLocataireByNomPrénomTel(nom,prenom,telephone),bail,0);
-                            } catch (DAOException ex) {
-                                throw new RuntimeException(ex);
-                            }
+                            Locataireselected.add(new DAO.jdbc.LocataireDAO().getLocataireByNomPrénomTel(nom, prenom, telephone));
                             setQuotite(idBail);
-
-                            // Fermer la fenêtre popup
+                            if (validation_quotités){
+                                try {
+                                    new LouerDAO().create(new LocataireDAO().getLocataireByNomPrénomTel(nom, prenom, telephone), bail, 0);
+                                } catch (DAOException ex) {
+                                    throw new RuntimeException(ex);
+                                }
+                            }
                             popupFrame.dispose();
-                            refreshPage(e, idBail);
                         }
                     }
                 }
             });
+            popupFrame.addWindowListener(whenClosed(e, idBail));
 
             // Afficher la fenêtre popup
             popupFrame.setVisible(true);
@@ -222,7 +225,7 @@ public class ModelePageUnBail {
     }
 
     public void setQuotite(int idBail) {
-        locatairesDuBail(idBail);
+        validation_quotités = false;//Est vrai si la quotité des locataires a été mise à jour
         JDialog dialog = new JDialog((Frame) null, "Saisir la quotité des locataires", true);
         dialog.setSize(300, 200);
         dialog.setLayout(new BorderLayout());
@@ -232,7 +235,6 @@ public class ModelePageUnBail {
         // Panel contenant les locataires et les quotités
         JPanel panelLocataires = new JPanel();
         panelLocataires.setLayout(new BoxLayout(panelLocataires, BoxLayout.Y_AXIS));
-
         // Liste des locataires avec champs de quotité
         List<JSpinner> quotiteSpinners = new LinkedList<>();
         List<Locataire> locataires = Locataireselected;  // Liste des locataires sélectionnés
@@ -259,8 +261,8 @@ public class ModelePageUnBail {
         }
 
         this.listSpinner = new ArrayList<>(quotiteMap.values());
-        for (JSpinner j:listSpinner){
-            j.addChangeListener( e-> limitQuotité(e));
+        for (JSpinner j : listSpinner) {
+            j.addChangeListener(e -> limitQuotité(e));
         }
 
         JScrollPane scrollPane = new JScrollPane(panelLocataires);
@@ -277,24 +279,24 @@ public class ModelePageUnBail {
                         "Erreur",
                         JOptionPane.ERROR_MESSAGE);
                 return; // Arrête l'exécution si la quotité n'est pas entierement repartie
+            } else {
+                // Récupérer les quotités pour chaque locataire et les mettre à jour dans la base
+                LouerDAO louerDAO = new LouerDAO();  // Création de l'instance du DAO pour la mise à jour
+                for (Locataire locataire : locataires) {
+                    int quotite = (Integer) quotiteMap.get(locataire).getValue();  // Récupérer la quotité pour ce locataire
+
+                    // Mettre à jour la quotité dans la base de données
+                    louerDAO.updateQuotite(idBail, new LocataireDAO().getId(locataire), quotite);
+                    validation_quotités = true;
+                }
+
+                dialog.dispose();
             }
-            // Récupérer les quotités pour chaque locataire et les mettre à jour dans la base
-            LouerDAO louerDAO = new LouerDAO();  // Création de l'instance du DAO pour la mise à jour
-            for (Locataire locataire : locataires) {
-                int quotite = (Integer) quotiteMap.get(locataire).getValue();  // Récupérer la quotité pour ce locataire
-
-                // Mettre à jour la quotité dans la base de données
-                louerDAO.updateQuotite(idBail, new LocataireDAO().getId(locataire), quotite);
-            }
-
-            dialog.dispose();
-
         });
 
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
     }
-
 
 
     public void limitQuotité(ChangeEvent e) {
@@ -311,7 +313,6 @@ public class ModelePageUnBail {
         quotite_actuelle = 100 - spinners_selec.stream()
                 .mapToInt(spinner -> (Integer) spinner.getValue())
                 .sum();
-        System.out.println(quotite_actuelle);
 
         // Vérifier que la quotité reste valide
         if (quotite_actuelle < 0) {
@@ -336,6 +337,7 @@ public class ModelePageUnBail {
     }
 
 
+
     private void locatairesDuBail(int idBail){
         this.Locataireselected.clear();
         List<Integer> idLocs =new LouerDAO().getIdLoc(idBail);
@@ -352,11 +354,10 @@ public class ModelePageUnBail {
                 int locataireId = Integer.parseInt(bouton.getActionCommand());
 
                 // Récupérer l'ID du bail
-                int bailId = new BailDAO().getId(pageUnBail.getBail());
+                int bailId = idBail;
 
-                locatairesDuBail(bailId);
                 JDialog dialog = new JDialog((Frame) null, "Redistribuez la quotité sur les locataires restants", true);
-                dialog.setSize(300, 200);
+                dialog.setSize(350, 200);
                 dialog.setLayout(new BorderLayout());
 
                 LocataireDAO locataireDAO = new DAO.jdbc.LocataireDAO();
@@ -366,7 +367,7 @@ public class ModelePageUnBail {
                 panelLocataires.setLayout(new BoxLayout(panelLocataires, BoxLayout.Y_AXIS));
 
                 // Liste des locataires avec champs de quotité
-                List<JSpinner> quotiteSpinners = new LinkedList<>();
+                locatairesDuBail(idBail);
                 List<Locataire> locataires = Locataireselected;  // Liste des locataires sélectionnés
                 Map<Locataire, JSpinner> quotiteMap = new HashMap<>();  // Map pour associer chaque locataire à sa quotité
 
@@ -415,7 +416,9 @@ public class ModelePageUnBail {
                     } else {
                         // Récupérer les quotités pour chaque locataire et les mettre à jour dans la base
                         LouerDAO louerDAO = new LouerDAO();// Création de l'instance du DAO pour la mise à jour
-                        locataires.remove(new LocataireDAO().getLocFromId(locataireId));
+                        Locataire loc_to_remove = new LocataireDAO().getLocFromId(locataireId);
+                        locataires.remove(loc_to_remove);
+                        Locataireselected.remove(loc_to_remove);
                         for (Locataire locataire : locataires) {
                             int quotite = (Integer) quotiteMap.get(locataire).getValue();  // Récupérer la quotité pour ce locataire
 
@@ -424,7 +427,7 @@ public class ModelePageUnBail {
                     }
                         new LouerDAO().delete(bailId, locataireId);
                         dialog.dispose();
-                        refreshPage(e,new BailDAO().getId(pageUnBail.getBail()));
+                        refreshPage(e,idBail);
                     }
                 });
                 dialog.setLocationRelativeTo(null);
@@ -433,6 +436,7 @@ public class ModelePageUnBail {
                 JOptionPane.showMessageDialog(null, "Il ne reste qu'un seul locataire sur ce bail, veuillez supprimer le bail ou ajouter un nouveau locataire", "Erreur", JOptionPane.ERROR_MESSAGE);
             }
         };
+
     }
     private void refreshPage(ActionEvent e, int idBail) {
         BailDAO bailDAO = new DAO.jdbc.BailDAO();
@@ -440,12 +444,12 @@ public class ModelePageUnBail {
 
         // Obtenez la fenêtre actuelle à partir de l'événement
         JFrame ancienneFenetre = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
+        JFrame ancetre = (JFrame) SwingUtilities.getWindowAncestor(ancienneFenetre);
 
         // Assurez-vous de fermer l'ancienne fenêtre avant de créer une nouvelle page
         if (ancienneFenetre != null) {
             ancienneFenetre.dispose();  // Ferme l'ancienne fenêtre
         }
-
         // Créez une nouvelle page avec les données du bail
         PageUnBail nouvellePage = new PageUnBail(bail);
         nouvellePage.getFrame().setVisible(true);  // Affiche la nouvelle page
@@ -458,4 +462,14 @@ public class ModelePageUnBail {
             PageBaux.main(null);
         };
     }
+
+    public WindowListener whenClosed(ActionEvent e, int idBail) {
+            return (new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent we) {
+                    // Appeler refreshPage lorsque la fenêtre est fermée
+                    refreshPage(e, idBail);
+                }
+            });
+        }
 }

@@ -3,6 +3,7 @@ package ihm;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -14,6 +15,9 @@ import DAO.jdbc.DevisDAO;
 import classes.BienLouable;
 import classes.Devis;
 import enumeration.TypeLogement;
+import modele.PageAccueil;
+import modele.PageBaux;
+import modele.PageMonBien;
 import modele.PageNouveauTravaux;
 
 public class ModelePageNouveauTravaux {
@@ -52,5 +56,17 @@ public class ModelePageNouveauTravaux {
         ancienneFenetre.dispose();
         PageNouveauTravaux nouvellePage = new PageNouveauTravaux(idBail);
         nouvellePage.getFrame().setVisible(true);
+    }
+    public ActionListener quitterPage(int id){
+        return e -> {
+            pageNouveauTravaux.getFrame().dispose();
+            try {
+                new PageMonBien(id);
+            } catch (DAOException ex) {
+                throw new RuntimeException(ex);
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+        };
     }
 }
