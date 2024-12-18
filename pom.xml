@@ -12,6 +12,14 @@
   </properties>
   <name>s3s4-2024-2025-ibla-acol-crev-zrey</name>
   <url>http://maven.apache.org</url>
+
+  <repositories>
+    <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
+    </repository>
+  </repositories>
+
   <dependencies>
     <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
     <dependency>
@@ -33,7 +41,30 @@
       <artifactId>commons-lang3</artifactId>
       <version>3.12.0</version>
     </dependency>
+
+    <!-- dépendance pour que  la dépendence qui sert à ce que l'application soit plus belle fonctionne -->
+    <dependency>
+      <groupId>com.github.jiconfont</groupId>
+      <artifactId>jiconfont-swing</artifactId>
+      <version>1.0.1</version>
+      <scope>runtime</scope>
+    </dependency>
+
+    <!-- dépendance pour que  la dépendence qui sert à ce que l'application soit plus belle fonctionne -->
+    <dependency>
+      <groupId>org.swinglabs</groupId>
+      <artifactId>swingx</artifactId>
+      <version>1.6.1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.formdev</groupId>
+      <artifactId>flatlaf</artifactId>
+      <version>3.2</version>
+    </dependency>
+    
   </dependencies>
+
   <build>
     <plugins>
       <!-- Plugin pour voir le coverage des tests-->
