@@ -271,6 +271,13 @@ public class ModelePageUnBail {
         dialog.add(validerButton, BorderLayout.SOUTH);
 
         validerButton.addActionListener(event -> {
+            if (quotite_actuelle > 0) {
+                JOptionPane.showMessageDialog(dialog,
+                        "100% de la quotité doit être répartie sur les différents locataires",
+                        "Erreur",
+                        JOptionPane.ERROR_MESSAGE);
+                return; // Arrête l'exécution si la quotité n'est pas entierement repartie
+            }
             // Récupérer les quotités pour chaque locataire et les mettre à jour dans la base
             LouerDAO louerDAO = new LouerDAO();  // Création de l'instance du DAO pour la mise à jour
             for (Locataire locataire : locataires) {
@@ -304,6 +311,7 @@ public class ModelePageUnBail {
         quotite_actuelle = 100 - spinners_selec.stream()
                 .mapToInt(spinner -> (Integer) spinner.getValue())
                 .sum();
+        System.out.println(quotite_actuelle);
 
         // Vérifier que la quotité reste valide
         if (quotite_actuelle < 0) {
@@ -338,7 +346,92 @@ public class ModelePageUnBail {
 
     public ActionListener supprimerLoc(){
         return e->{
-            new LouerDAO().delete(new BailDAO().getId(pageUnBail.getBail()),pageUnBail.);
+            if(pageUnBail.getTableau_locataire().getComponentCount()/2 >1) {
+                // Récupérer l'ID du locataire depuis l'ActionCommand
+                JButton bouton = (JButton) e.getSource();
+                int locataireId = Integer.parseInt(bouton.getActionCommand());
+
+                // Récupérer l'ID du bail
+                int bailId = new BailDAO().getId(pageUnBail.getBail());
+
+                locatairesDuBail(bailId);
+                JDialog dialog = new JDialog((Frame) null, "Redistribuez la quotité sur les locataires restants", true);
+                dialog.setSize(300, 200);
+                dialog.setLayout(new BorderLayout());
+
+                LocataireDAO locataireDAO = new DAO.jdbc.LocataireDAO();
+
+                // Panel contenant les locataires et les quotités
+                JPanel panelLocataires = new JPanel();
+                panelLocataires.setLayout(new BoxLayout(panelLocataires, BoxLayout.Y_AXIS));
+
+                // Liste des locataires avec champs de quotité
+                List<JSpinner> quotiteSpinners = new LinkedList<>();
+                List<Locataire> locataires = Locataireselected;  // Liste des locataires sélectionnés
+                Map<Locataire, JSpinner> quotiteMap = new HashMap<>();  // Map pour associer chaque locataire à sa quotité
+
+                for (Locataire locataire : locataires) {
+                    int loc_restant = new LocataireDAO().getId(locataire);
+                    if( loc_restant != locataireId){
+                    JPanel locatairePanel = new JPanel();
+                    locatairePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+                    // Afficher le nom du locataire
+                    JLabel nomLocataireLabel = new JLabel(locataire.getNom() + " " + locataire.getPrénom());
+                    locatairePanel.add(nomLocataireLabel);
+
+                    // Créer un JSpinner pour la quotité de ce locataire
+                    JSpinner quotiteSpinner = new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
+                    quotiteSpinner.setValue(0);  // Valeur initiale de 100% (modifiable)
+                    locatairePanel.add(quotiteSpinner);
+
+                    // Ajouter le locataire et son spinner dans la map
+                    quotiteMap.put(locataire, quotiteSpinner);
+
+                    // Ajouter au panel
+                    panelLocataires.add(locatairePanel);
+                    }
+                }
+
+                this.listSpinner = new ArrayList<>(quotiteMap.values());
+                for (JSpinner j:listSpinner){
+                    j.addChangeListener( y-> limitQuotité(y));
+                }
+
+                JScrollPane scrollPane = new JScrollPane(panelLocataires);
+                dialog.add(scrollPane, BorderLayout.CENTER);
+
+                // Bouton de validation
+                JButton validerButton = new JButton("Valider");
+                dialog.add(validerButton, BorderLayout.SOUTH);
+
+                validerButton.addActionListener(event -> {
+                    if (quotite_actuelle > 0) {
+                        JOptionPane.showMessageDialog(dialog,
+                                "100% de la quotité doit être répartie sur les différents locataires",
+                                "Erreur",
+                                JOptionPane.ERROR_MESSAGE);
+                        return; // Arrête l'exécution si la quotité n'est pas entierement repartie
+                    } else {
+                        // Récupérer les quotités pour chaque locataire et les mettre à jour dans la base
+                        LouerDAO louerDAO = new LouerDAO();// Création de l'instance du DAO pour la mise à jour
+                        locataires.remove(new LocataireDAO().getLocFromId(locataireId));
+                        for (Locataire locataire : locataires) {
+                            int quotite = (Integer) quotiteMap.get(locataire).getValue();  // Récupérer la quotité pour ce locataire
+
+                            // Mettre à jour la quotité dans la base de données
+                            louerDAO.updateQuotite(bailId, new LocataireDAO().getId(locataire), quotite);
+                    }
+                        new LouerDAO().delete(bailId, locataireId);
+                        dialog.dispose();
+                        refreshPage(e,new BailDAO().getId(pageUnBail.getBail()));
+                    }
+                });
+                dialog.setLocationRelativeTo(null);
+                dialog.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(null, "Il ne reste qu'un seul locataire sur ce bail, veuillez supprimer le bail ou ajouter un nouveau locataire", "Erreur", JOptionPane.ERROR_MESSAGE);
+            }
         };
     }
     private void refreshPage(ActionEvent e, int idBail) {

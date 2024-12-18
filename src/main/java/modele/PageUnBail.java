@@ -295,19 +295,27 @@ public class PageUnBail {
 
         int row = 0; // Initialiser le compteur de ligne pour GridBagLayout
 
-        for (String locataire : nomlocataires) {
-            // Créer le label pour chaque diagnostic
-            JLabel label_loc = new JLabel(locataire);
+        for (int j = 0; j < nomlocataires.length; j++) {
+            // Récupérer l'ID du locataire correspondant
+            int locataireId = idLocataires.get(j);
+
+            // Créer le label pour chaque locataire
+            JLabel label_loc = new JLabel(nomlocataires[j]);
             gbc_loc.gridx = 0; // Première colonne pour le label
             gbc_loc.gridy = row;
             this.tableau_locataire.add(label_loc, gbc_loc);
 
-            // Créer le bouton "Importer" pour chaque diagnostic
+            // Créer le bouton "Supprimer" pour chaque locataire
             JButton supprimer = new JButton("Supprimer");
             gbc_loc.gridx = 1; // Deuxième colonne pour le bouton
             this.tableau_locataire.add(supprimer, gbc_loc);
+
+            // Associer l'ID du locataire au bouton
+            supprimer.setActionCommand(String.valueOf(locataireId));
+
+            // Ajouter l'ActionListener
             supprimer.addActionListener(modele.supprimerLoc());
-            row++; // Incrémenter la ligne pour le prochain diagnostic
+            row++; // Incrémenter la ligne pour le prochain locataire
         }
 
         JScrollPane scrollPane = new JScrollPane(this.tableau_locataire);
@@ -419,6 +427,10 @@ public class PageUnBail {
 
     public Bail getBail() {
         return bail;
+    }
+
+    public JPanel getTableau_locataire() {
+        return tableau_locataire;
     }
 }
 
