@@ -36,7 +36,6 @@ public class BailDAOTest {
         Batiment batiment = new Batiment("123456789101", "Paris", "123 Rue de la Paix","31000");
         batimentDAO.create(batiment);
 
-        // Create and insert a BienLouable
         bienLouable = new BienLouable("BL3456789101", "Paris", "123 Rue de la Paix", "31000", new ArrayList<>(), null);
         bienLouableDAO.create(bienLouable, TypeLogement.APPARTEMENT, 3, 75.0);
     }
@@ -49,13 +48,31 @@ public class BailDAOTest {
     }
 
     @Test
-    public void testCreate() throws SQLException, DAOException {
+    public void testCreateWithSoldeDeCompteTrue() throws SQLException, DAOException {
         Bail bail = new Bail(true, "BL3456789101", 1000.0, 200.0, 500.0, Date.valueOf("2024-01-01"), Date.valueOf("2024-12-31"));
         bailDAO.create(bail);
 
         int id = bailDAO.getId(bail);
         assertNotEquals(0, id);
+
+        Bail createdBail = bailDAO.getBailFromId(id);
+        assertTrue(createdBail.isSolde_de_compte());
+        assertEquals(1000.0, createdBail.getLoyer(), 0.0);
     }
+
+    @Test
+    public void testCreateWithSoldeDeCompteFalse() throws SQLException, DAOException {
+        Bail bail = new Bail(false, "BL3456789101", 1500.0, 300.0, 600.0, Date.valueOf("2025-01-01"), Date.valueOf("2025-11-30"));
+        bailDAO.create(bail);
+
+        int id = bailDAO.getId(bail);
+        assertNotEquals(0, id);
+
+        Bail createdBail = bailDAO.getBailFromId(id);
+        assertFalse(createdBail.isSolde_de_compte());
+        assertEquals(1500.0, createdBail.getLoyer(), 0.0);
+    }
+
     @Test
     public void testCreateRuntimeException() throws DAOException {
         Bail bail = new Bail(true, "BL3456789101", 1000.0, 200.0, 500.0, Date.valueOf("2024-01-01"), Date.valueOf("2024-12-31"));
@@ -64,7 +81,6 @@ public class BailDAOTest {
             bailDAO.create(bail);
             fail("Aucune exception levée, mais une exception était attendue.");
         } catch (RuntimeException e) {
-            // Si RuntimeException est levée, le test passe
             assertTrue(e instanceof RuntimeException);
         }
     }
@@ -139,20 +155,54 @@ public class BailDAOTest {
         louerDAO.create(locataire1, bail, 50);
         louerDAO.create(locataire2, bail, 50);
 
-        // Verify the association exists
         List<Integer> idLocs = louerDAO.getIdLoc(idBail);
         assertNotNull(idLocs);
         assertEquals(2, idLocs.size());
 
-        // Delete the bail
         bailDAO.delete(idBail);
 
-        // Verify the bail and associations are removed
         Bail deletedBail = bailDAO.getBailFromId(idBail);
         assertNull(deletedBail);
 
         idLocs = louerDAO.getIdLoc(idBail);
         assertTrue(idLocs.isEmpty());
+    }
+
+    @Test
+    public void testUpdateLoyer() throws SQLException, DAOException {
+        Bail bail = new Bail(true, "BL3456789101", 1000.0, 200.0, 500.0, Date.valueOf("2024-01-01"), Date.valueOf("2024-12-31"));
+        bailDAO.create(bail);
+
+        int idBail = bailDAO.getId(bail);
+
+        double newLoyer = 1200.0;
+        bailDAO.updateLoyer(idBail, newLoyer);
+
+        Bail updatedBail = bailDAO.getBailFromId(idBail);
+
+        assertEquals(newLoyer, updatedBail.getLoyer(), 0.0);
+    }
+
+    @Test
+    public void testGetIDBeaux() throws SQLException, DAOException {
+        Batiment batimentTest = new Batiment("987654321987", "Paris", "124 Rue de la Paix", "31000");
+        new BatimentDAO().create(batimentTest);
+
+        BienLouable bienLouableTest = new BienLouable("BL3456789102", "Paris", "124 Rue de la Paix", "31000", new ArrayList<>(), null);
+        new BienLouableDAO().create(bienLouableTest, TypeLogement.APPARTEMENT, 3, 75.0);
+
+        Bail bail1 = new Bail(true, "BL3456789102", 1000.0, 200.0, 500.0, Date.valueOf("2024-01-01"), Date.valueOf("2024-12-31"));
+        Bail bail2 = new Bail(true, "BL3456789102", 1500.0, 300.0, 600.0, Date.valueOf("2025-01-01"), Date.valueOf("2025-11-30"));
+
+        BailDAO bailDAO = new BailDAO();
+        bailDAO.create(bail1);
+        bailDAO.create(bail2);
+
+        List<Integer> idBaux = bailDAO.getIDBeaux(new BienLouableDAO().getId("BL3456789102"));
+
+        assertEquals(2, idBaux.size());
+        assertTrue(idBaux.contains(bailDAO.getId(bail1)));
+        assertTrue(idBaux.contains(bailDAO.getId(bail2)));
     }
 
 }

@@ -71,4 +71,12 @@ public interface BatimentDAO {
 	Map<String, List<String>> searchAllBatiments() throws SQLException;
 
 	Map<String, List<String>> searchAllBatimentsWithCompl() throws SQLException;
+
+	/**
+	 * Récupère tous les ids des biens louables d'un batiment
+	 * @param idBat l'id du batiment
+	 * @return la liste des ids des biens louables
+	 * @throws DAOException
+	 */
+	List<Integer> getIdBienLouables(Integer idBat) throws DAOException;
 }

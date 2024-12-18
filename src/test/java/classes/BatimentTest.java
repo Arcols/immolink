@@ -20,7 +20,6 @@ public class BatimentTest {
 
     @Before
     public void setUp() throws IOException {
-        // Create a temporary file for testing
         tempFile = File.createTempFile("testFile", ".pdf");
         Files.write(tempFile.toPath(), "Test PDF Data".getBytes());
 

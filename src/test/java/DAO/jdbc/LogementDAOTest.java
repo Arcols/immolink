@@ -32,7 +32,6 @@ public class LogementDAOTest {
         batimentDAO = new BatimentDAO();
         garageDAO = new GarageDAO();
 
-        // Create a temporary building
         Batiment batiment = new Batiment("123456789101", "Paris", "123 Rue de la Paix", "31000");
         batimentDAO.create(batiment);
     }

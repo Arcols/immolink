@@ -31,7 +31,7 @@ public interface BailDAO {
          * @param id_bien l'identifiant du bien
          * @return la liste des identifiants des baux associés à un bien
          */
-        List<Integer> getIDBeaux(String id_bien);
+        List<Integer> getIDBeaux(Integer id_bien);
 
         /**
          * Récupère un bail de la base de données en utilisant son identifiant.
