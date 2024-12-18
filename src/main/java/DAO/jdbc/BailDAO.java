@@ -15,6 +15,7 @@ import classes.Bail;
 import classes.BienLouable;
 
 public class BailDAO implements DAO.BailDAO {
+
     @Override
     public void create(Bail bail) throws DAOException {
         try {
@@ -61,7 +62,7 @@ public class BailDAO implements DAO.BailDAO {
 
     @Override
     public int getId(Bail bail){
-        Integer idBail = (Integer) null;
+        Integer idBail = -1;
         try {
             Connection cn = ConnectionDB.getInstance();
             String query = "SELECT id FROM bail WHERE date_debut = ? AND date_fin = ? AND id_bien_louable = ? ";
@@ -132,8 +133,12 @@ public class BailDAO implements DAO.BailDAO {
     }
 
     @Override
-    public void deleteBail(int idBail) {
+    public void delete(int idBail) {
+        List<Integer> idLocataires = new LouerDAO().getIdLoc(idBail);
         try {
+            for(int idLocataire : idLocataires){
+                new LouerDAO().delete(idBail,idLocataire);
+            }
             Connection cn = ConnectionDB.getInstance();
             String query = "DELETE FROM bail WHERE id = ?";
             PreparedStatement pstmt = cn.prepareStatement(query);

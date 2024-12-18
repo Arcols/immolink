@@ -19,7 +19,7 @@ public class ResizedImage {
 
 
 
-			ImageIcon imic = new ImageIcon("src/main/resource/images/"+imagePath);
+			ImageIcon imic = new ImageIcon("src/resource/images/"+imagePath);
 
             Image im = imic.getImage();
 

@@ -52,4 +52,12 @@ public interface GarageDAO {
 	 */
 	List<Garage> findAll() throws DAOException;
 
+	/**
+	 * Récupère l'id du garage associé à un bien louable
+	 * @param numero_fiscal le numéro fiscal du bien louable
+	 * @return Integer id du garage associé
+	 * @throws DAOException
+	 */
+	Integer readIdGarageFromBien(String numero_fiscal) throws DAOException;
+
 }

@@ -25,4 +25,12 @@ public interface TravauxAssocieDAO {
      */
     List<Integer> findAll(String num_fiscal, TypeLogement typeLogement) throws DAOException;
 
+    /**
+     * Supprime une association entre un devis et un bien louable dans la base de données.
+     * @param id_devis l'id du devis
+     * @param id_bien l'id du bien louable
+     * @throws DAOException
+     */
+    void delete (Integer id_devis, Integer id_bien) throws DAOException;
+
 }

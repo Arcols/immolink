@@ -110,7 +110,6 @@ public class DiagnosticDAO implements DAO.DiagnosticDAO{
             pstmt.setString(2, reference);
             pstmt.executeUpdate();
             pstmt.close();
-            
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
