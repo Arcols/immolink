@@ -180,10 +180,10 @@ public class PageBaux {
 		bas_de_page.setLayout(new BorderLayout(0, 0));
 
 		Double totalrevenu = new BailDAO().getAllLoyer();
-		JLabel revenu_immobilier = new JLabel("Total revenu immobilier : "+String.valueOf(totalrevenu)+" €");
+		JLabel revenu_immobilier = new JLabel(" Total revenu immobilier : "+String.valueOf(totalrevenu)+" €");
 		revenu_immobilier.setHorizontalTextPosition(SwingConstants.LEFT);
 		revenu_immobilier.setVerticalTextPosition(SwingConstants.TOP);
-		revenu_immobilier.setVerticalAlignment(SwingConstants.BOTTOM);
+		revenu_immobilier.setVerticalAlignment(SwingConstants.CENTER);
 		bas_de_page.add(revenu_immobilier, BorderLayout.WEST);
 
 		JButton ajouter = new JButton("Nouveau bail");
