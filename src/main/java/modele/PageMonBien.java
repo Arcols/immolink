@@ -114,7 +114,7 @@ public class PageMonBien {
         b_biens.setCursor(new Cursor(Cursor.HAND_CURSOR));
         menu_bouttons.add(b_biens);
         menu_bouttons.add(b_biens);
-
+        b_biens.addActionListener(m);
 
         JPanel body = new JPanel();
         frame.getContentPane().add(body, BorderLayout.CENTER);
@@ -274,8 +274,8 @@ public class PageMonBien {
             this.tableau_diagnostic.add(label, gbc_diag);
 
             // Créer le bouton "Importer" pour chaque diagnostic
-            JButton bouton = new JButton("Importer");
-            bouton.addActionListener(modele.openDiag(diagnostic, idBien));
+            JButton bouton = new JButton("Télécharger");
+            bouton.addActionListener(modele.openDiag(diagnostic,idBien));
             gbc_diag.gridx = 1; // Deuxième colonne pour le bouton
             this.tableau_diagnostic.add(bouton, gbc_diag);
 
@@ -372,6 +372,5 @@ public class PageMonBien {
     public JLabel getAffichageCoutTravaux() {
         return this.affichageCoutTravaux;
     }
-
 
 }

@@ -1,27 +1,37 @@
 package modele;
 
+import static ihm.Charte.ENTETE;
+import static ihm.Charte.FOND;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.Menu;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.util.List;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
+
 import DAO.DAOException;
 import DAO.jdbc.BailDAO;
-import DAO.jdbc.BienLouableDAO;
 import DAO.jdbc.LocataireDAO;
 import DAO.jdbc.LouerDAO;
 import classes.Bail;
-import classes.BienLouable;
 import classes.Locataire;
-import ihm.*;
-import ihm.Menu;
-
-import javax.swing.*;
-import javax.swing.border.LineBorder;
-import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.sql.Date;
-import java.util.List;
-
-import static ihm.Charte.ENTETE;
-import static ihm.Charte.FOND;
 
 
 public class PageUnBail {
@@ -262,9 +272,7 @@ public class PageUnBail {
         locataires.setHorizontalAlignment(SwingConstants.CENTER);
         panel_locataires.add(locataires, BorderLayout.NORTH);
 
-        System.out.println(bail.getFisc_bien());
-
-        List<Integer> idLocataires = new LouerDAO().getIdLoc(new BailDAO().getId(bail));
+        List<Integer> idLocataires = new LouerDAO().getIdLoc(new DAO.jdbc.BailDAO().getId(bail));
         String[] nomlocataires = new String[idLocataires.size()];
         int i =0;
         for (int id : idLocataires) {

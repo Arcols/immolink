@@ -1,29 +1,23 @@
 package ihm;
 
-import DAO.DAOException;
-import DAO.LogementDAO;
-import DAO.jdbc.BienLouableDAO;
-import DAO.jdbc.DevisDAO;
-import DAO.jdbc.DiagnosticDAO;
-import DAO.jdbc.LocataireDAO;
-import classes.*;
-import enumeration.TypeLogement;
-import modele.PageBaux;
-import modele.PageMesBiens;
-import modele.PageMonBien;
-import modele.PageNouveauTravaux;
-
-import javax.swing.*;
-
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.List;
+
+import javax.swing.table.DefaultTableModel;
+import javax.tools.Diagnostic;
+
+import DAO.DAOException;
+import DAO.jdbc.BienLouableDAO;
+import DAO.jdbc.DevisDAO;
+import DAO.jdbc.DiagnosticDAO;
+import classes.*;
+import enumeration.TypeLogement;
+import modele.PageMesBiens;
+import modele.PageMonBien;
+import modele.PageNouveauTravaux;
 
 public class ModelePageMonBien {
 
@@ -88,7 +82,7 @@ public class ModelePageMonBien {
                     BienLouableDAO bienLouableDAO = new BienLouableDAO();
                     String num_fisc = bienLouableDAO.readId(idBien).getNumero_fiscal();
                     DiagnosticDAO diagnosticDAO = new DiagnosticDAO();
-                    Diagnostic diag = diagnosticDAO.read(num_fisc,reference);
+                    Diagnostic diag = diagnosticDAO.read(num_fisc,refDiagnosticSansDate(reference));
                     if (diag != null) {
                         diag.ouvrirPdf();
                     }
@@ -114,6 +108,15 @@ public class ModelePageMonBien {
 
             }
         };
+    }
+
+    public String refDiagnosticSansDate(String ref) {
+        String refSansDate = "";
+        while (ref.length() > 0 && ref.charAt(0) != '-') {
+            refSansDate += ref.charAt(0);
+            ref = ref.substring(1);
+        }
+        return refSansDate;
     }
     public ActionListener quitterPage(){
         return e -> {

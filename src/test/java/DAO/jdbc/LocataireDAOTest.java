@@ -95,4 +95,18 @@ public class LocataireDAOTest {
         assertEquals("M", locataireRecupere.getGenre());
     }
 
+    @Test
+    public void testGetLocFromId() throws SQLException {
+        Locataire locataireRecupere = locataireDAO.getLocFromId(locataireDAO.getId(locataire));
+        assertNotNull(locataireRecupere);
+        assertEquals("Doe", locataireRecupere.getNom());
+        assertEquals("John", locataireRecupere.getPrénom());
+        assertEquals("0606060606", locataireRecupere.getTéléphone());
+        assertEquals("ee.ee@ee.ee", locataireRecupere.getMail());
+        assertEquals(java.sql.Date.valueOf("2020-01-01"), locataireRecupere.getDateArrive());
+        assertEquals("M", locataireRecupere.getGenre());
+
+        Locataire locataireInexistant = locataireDAO.getLocFromId(-1);
+        assertNull(locataireInexistant);
+    }
 }

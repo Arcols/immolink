@@ -1,6 +1,8 @@
 package classes;
 
 import static org.junit.Assert.*;
+
+import enumeration.TypeLogement;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -36,7 +38,7 @@ public class BienLouableTest {
         diagnostics.add(diagnostic1);
 
         // Initialize BienLouable
-        bienLouable = new BienLouable("123456789101", "Paris", "123 Rue de la Paix", "Appartement 12B", diagnostics,null);
+        bienLouable = new BienLouable("123456789101", "Paris", "123 Rue de la Paix", "Appartement 12B", diagnostics, null);
     }
 
     @Test
@@ -48,6 +50,7 @@ public class BienLouableTest {
         assertEquals(1, bienLouable.getDiagnostic().size());
         assertEquals(diagnostic1, bienLouable.getDiagnostic().get(0));
         assertTrue(bienLouable.getTravaux().isEmpty());
+        assertNull(bienLouable.getIdgarage());
     }
 
     @Test
@@ -62,7 +65,7 @@ public class BienLouableTest {
         String adresse = "123 Rue de Paris";
         String nom_entreprise = "EntrepriseA";
 
-        Devis devis = new Devis(num_devis, montant, nature, montant_nondeductible, date_debut, date_fin, type,adresse,nom_entreprise);
+        Devis devis = new Devis(num_devis, montant, nature, montant_nondeductible, date_debut, date_fin, type, adresse, nom_entreprise);
 
         bienLouable.ajouterTravaux(devis);
         assertEquals(1, bienLouable.getTravaux().size());
@@ -108,11 +111,16 @@ public class BienLouableTest {
         String adresse = "123 Rue de Paris";
         String nom_entreprise = "EntrepriseA";
 
-        Devis devis = new Devis(num_devis, montant, nature, montant_nondeductible, date_debut, date_fin, type,adresse,nom_entreprise);
+        Devis devis = new Devis(num_devis, montant, nature, montant_nondeductible, date_debut, date_fin, type, adresse, nom_entreprise);
 
         bienLouable.ajouterTravaux(devis);
         assertEquals(1, bienLouable.getTravaux().size());
         assertEquals(devis, bienLouable.getTravaux().get(0));
+    }
+
+    @Test
+    public void testGetTypeLogement() {
+        assertEquals(TypeLogement.APPARTEMENT, bienLouable.getTypeLogement());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -120,6 +128,6 @@ public class BienLouableTest {
         List<Diagnostic> diagnostics = new ArrayList<>();
         diagnostics.add(diagnostic1);
 
-        new BienLouable("123456", "Paris", "123 Rue de la Paix", "Appartement 12B", diagnostics,null);
+        new BienLouable("123456", "Paris", "123 Rue de la Paix", "Appartement 12B", diagnostics, null);
     }
 }

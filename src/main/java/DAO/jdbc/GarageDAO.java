@@ -33,7 +33,7 @@ public class GarageDAO implements DAO.GarageDAO {
 			pstmt.executeUpdate();
 			pstmt.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 
 	}
@@ -78,7 +78,7 @@ public class GarageDAO implements DAO.GarageDAO {
 			rs.close();
 			pstmt.close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 		return idGarage;
 	}
@@ -93,7 +93,7 @@ public class GarageDAO implements DAO.GarageDAO {
 			pstmt.executeUpdate();
 			pstmt.close();
 		}catch (SQLException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 
 	}
@@ -118,7 +118,7 @@ public class GarageDAO implements DAO.GarageDAO {
 				all_garage.add(garage);
 			}
 		}catch (SQLException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 		return all_garage;
 	}
