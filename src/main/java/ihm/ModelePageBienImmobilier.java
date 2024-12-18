@@ -285,6 +285,8 @@ public class ModelePageBienImmobilier {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+				JButton btn = (JButton) e.getSource();
+				btn.setText(btn.getText()+" \u2705");
 			}
 		};
 	}
