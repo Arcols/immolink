@@ -23,8 +23,8 @@ public class ModelePageNouveauTravaux {
         BienLouableDAO bienLouableDAO = new DAO.jdbc.BienLouableDAO();
         BienLouable bienLouable = bienLouableDAO.readId(id);
         return e -> {
-            java.sql.Date sqlDateDebut = java.sql.Date.valueOf(pageNouveauTravaux.getValueDateDebut().getText());
-            java.sql.Date sqlDateFin = java.sql.Date.valueOf(pageNouveauTravaux.getValueDateFin().getText());
+            java.sql.Date sqlDateDebut = new java.sql.Date(pageNouveauTravaux.getDateChooserDebut().getDate().getTime());
+            java.sql.Date sqlDateFin = new java.sql.Date(pageNouveauTravaux.getDateChooserFin().getDate().getTime());
             Devis d = new Devis(pageNouveauTravaux.getValueNumDevis().getText(),
                     Float.valueOf(pageNouveauTravaux.getValueMontantDevis().getText()),
                     pageNouveauTravaux.getValueNature().getText(),

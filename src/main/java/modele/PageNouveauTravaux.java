@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
 import DAO.DAOException;
+import com.toedter.calendar.JDateChooser;
 import ihm.*;
 
 import javax.swing.SwingConstants;
@@ -42,9 +43,9 @@ public class PageNouveauTravaux {
     private JTextField ValueAdresse;
     private JTextField valueNom;
     private JTextField valueType;
-    private JTextField valueDateDebut;
-    private JTextField valueDateFin;
 
+    private JDateChooser dateChooserDebut;
+    private JDateChooser dateChooserFin;
 
     /**
      * Create the application.
@@ -257,14 +258,13 @@ public class PageNouveauTravaux {
         gbc_labelDateDebut.gridy = 7;
         valeurs.add(labelDateDebut, gbc_labelDateDebut);
 
-        valueDateDebut = new JTextField();
-        GridBagConstraints gbc_valueDateDebut = new GridBagConstraints();
-        gbc_valueDateDebut.anchor = GridBagConstraints.WEST;
-        gbc_valueDateDebut.insets = new Insets(0, 0, 5, 0);
-        gbc_valueDateDebut.gridx = 1;
-        gbc_valueDateDebut.gridy = 7;
-        valeurs.add(valueDateDebut, gbc_valueDateDebut);
-        valueDateDebut.setColumns(10);
+        dateChooserDebut = new JDateChooser();
+        GridBagConstraints gbc_dateChooserDebut = new GridBagConstraints();
+        gbc_dateChooserDebut.anchor = GridBagConstraints.WEST;
+        gbc_dateChooserDebut.insets = new Insets(0, 0, 5, 0);
+        gbc_dateChooserDebut.gridx = 1;
+        gbc_dateChooserDebut.gridy = 7;
+        valeurs.add(dateChooserDebut, gbc_dateChooserDebut);
 
         JLabel labelDateFin = new JLabel("Date de fin");
         GridBagConstraints gbc_labelDateFin = new GridBagConstraints();
@@ -274,14 +274,13 @@ public class PageNouveauTravaux {
         gbc_labelDateFin.gridy = 8;
         valeurs.add(labelDateFin, gbc_labelDateFin);
 
-        valueDateFin = new JTextField();
-        GridBagConstraints gbc_valueDateFin = new GridBagConstraints();
-        gbc_valueDateFin.insets = new Insets(0, 0, 5, 0);
-        gbc_valueDateFin.anchor = GridBagConstraints.WEST;
-        gbc_valueDateFin.gridx = 1;
-        gbc_valueDateFin.gridy = 8;
-        valeurs.add(valueDateFin, gbc_valueDateFin);
-        valueDateFin.setColumns(10);
+        dateChooserFin = new JDateChooser();
+        GridBagConstraints gbc_dateChooserFin = new GridBagConstraints();
+        gbc_dateChooserFin.anchor = GridBagConstraints.WEST;
+        gbc_dateChooserFin.insets = new Insets(0, 0, 5, 0);
+        gbc_dateChooserFin.gridx = 1;
+        gbc_dateChooserFin.gridy = 8;
+        valeurs.add(dateChooserFin, gbc_dateChooserFin);
 
         JPanel panelValider = new JPanel();
         Body.add(panelValider, BorderLayout.SOUTH);
@@ -343,11 +342,11 @@ public class PageNouveauTravaux {
         return valueType;
     }
 
-    public JTextField getValueDateDebut() {
-        return valueDateDebut;
+    public JDateChooser getDateChooserDebut() {
+        return dateChooserDebut;
     }
 
-    public JTextField getValueDateFin() {
-        return valueDateFin;
+    public JDateChooser getDateChooserFin() {
+        return dateChooserFin;
     }
 }

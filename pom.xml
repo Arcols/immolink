@@ -50,7 +50,7 @@
       <scope>runtime</scope>
     </dependency>
 
-    <!-- dépendance pour que  la dépendence qui sert à ce que l'application soit plus belle fonctionne -->
+    <!-- dépendance pour que  l'on ai tous le meme swing -->
     <dependency>
       <groupId>org.swinglabs</groupId>
       <artifactId>swingx</artifactId>
@@ -62,7 +62,13 @@
       <artifactId>flatlaf</artifactId>
       <version>3.2</version>
     </dependency>
-    
+
+    <dependency>
+      <groupId>com.toedter</groupId>
+      <artifactId>jcalendar</artifactId>
+      <version>1.4</version>
+    </dependency>
+
   </dependencies>
 
   <build>
