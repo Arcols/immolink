@@ -1,11 +1,6 @@
 package modele;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.IOException;
@@ -19,14 +14,11 @@ import javax.swing.border.LineBorder;
 import DAO.DAOException;
 import com.toedter.calendar.JDateChooser;
 import ihm.*;
+import ihm.Menu;
 
 import javax.swing.SwingConstants;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
 import javax.swing.JTextField;
-import java.awt.Insets;
 import javax.swing.BoxLayout;
-import java.awt.FlowLayout;
 
 public class PageNouveauTravaux {
 
@@ -259,6 +251,7 @@ public class PageNouveauTravaux {
         valeurs.add(labelDateDebut, gbc_labelDateDebut);
 
         dateChooserDebut = new JDateChooser();
+        dateChooserDebut.setPreferredSize(new Dimension(115, 22));
         GridBagConstraints gbc_dateChooserDebut = new GridBagConstraints();
         gbc_dateChooserDebut.anchor = GridBagConstraints.WEST;
         gbc_dateChooserDebut.insets = new Insets(0, 0, 5, 0);
@@ -275,6 +268,7 @@ public class PageNouveauTravaux {
         valeurs.add(labelDateFin, gbc_labelDateFin);
 
         dateChooserFin = new JDateChooser();
+        dateChooserFin.setPreferredSize(new Dimension(115, 22));
         GridBagConstraints gbc_dateChooserFin = new GridBagConstraints();
         gbc_dateChooserFin.anchor = GridBagConstraints.WEST;
         gbc_dateChooserFin.insets = new Insets(0, 0, 5, 0);
