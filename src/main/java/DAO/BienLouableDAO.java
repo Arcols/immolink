@@ -17,7 +17,7 @@ public interface BienLouableDAO {
 	 * @param bien L'objet BienLouable à créer
 	 * @throws DAOException en cas d'erreur lors de la création du bien immobilier
 	 */
-	public void create(BienLouable bien, TypeLogement type, int nb_piece, double surface)
+	void create(BienLouable bien, TypeLogement type, int nb_piece, double surface)
 			throws DAOException, IllegalArgumentException, SQLException;
 
 	/**
@@ -25,7 +25,7 @@ public interface BienLouableDAO {
 	 * @param garage Garage object
 	 * @param bien BienLouable object
 	 */
-	 void lierUnGarageAuBienLouable(BienLouable bien,Garage garage) throws  DAOException;
+	void lierUnGarageAuBienLouable(BienLouable bien,Garage garage) throws  DAOException;
 
 	/**
 	 * Récupère un BienLouable de la base de données en utilisant son numéro fiscal.
@@ -53,7 +53,6 @@ public interface BienLouableDAO {
 
 	/**
 	 * Supprime un BienLouable de la base de données en utilisant son identifiant.
-	 *
 	 * @param id L'identifiant unique du bien immobilier à supprimer
 	 * @throws DAOException en cas d'erreur lors de la suppression du bien
 	 *                      immobilier
@@ -118,5 +117,24 @@ public interface BienLouableDAO {
 	 */
     Map<String, List<String>> getAllcomplements() throws SQLException;
 
+	/**
+	 * Récupère le type de logement associé à un bien louable
+	 * @return le type de logement
+	 */
 	Map<String, List<String>> getAllComplNoBail();
+
+	/**
+	 * Boolean si le bien louable a un garage associé
+	 * @param id l'identifiant du bien louable
+	 * @return true si le bien louable a un garage associé
+	 */
+	boolean haveGarage(Integer id);
+
+	/**
+	 * Récupère la liste des id des Beaux associés à un bien louable
+	 * @param bien le bien louable
+	 * @return la liste des beaux associés
+	 */
+	List<Integer> getListeBeauxFromBien(BienLouable bien);
+
 }

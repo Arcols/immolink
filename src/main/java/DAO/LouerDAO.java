@@ -4,6 +4,7 @@ import classes.Bail;
 import classes.Locataire;
 
 import java.util.List;
+import java.util.Map;
 
 public interface LouerDAO {
 
@@ -33,10 +34,24 @@ public interface LouerDAO {
     Integer getQutotié(int idBail, int idLocataire);
 
     /**
+     * Supprime une location dans la base de données.
+     * @param idBail
+     * @param idLocataire
+     */
+    void delete(int idBail, int idLocataire);
+
+    /**
      * Récupère la quotité d'une location dans la base de données.
      * @param idBail L'identifiant du bail à récupérer
      * @param idLocataire L'identifiant du locataire à récupérer
      * @param quotite La quotité de la location
      */
     void updateQuotite(int idBail,int idLocataire, int quotite);
+
+    /**
+     * Récupère une map IdBail : liste des locataires de tous les beaux dans la base de données.
+     * @return la liste des locataires pour chaque bail (Map<IdBail, List<IdLocataire>>)
+     */
+    Map<Integer,List<Integer>> getAllLocatairesDesBeaux();
+
 }

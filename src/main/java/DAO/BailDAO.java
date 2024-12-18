@@ -43,7 +43,7 @@ public interface BailDAO {
          * Supprime un bail de la base de données en utilisant son identifiant.
          * @param id_bail L'identifiant unique du bail à supprimer
          */
-        void deleteBail(int id_bail);
+        void delete(int id_bail);
 
         /**
          * Récupère un bail de la base de données en utilisant son identifiant.

@@ -10,7 +10,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class LouerDAO implements DAO.LouerDAO{
         @Override
@@ -69,6 +71,20 @@ public class LouerDAO implements DAO.LouerDAO{
     }
 
     @Override
+    public void delete(int idBail, int idLocataire) {
+        try {
+            Connection cn = ConnectionDB.getInstance();
+            String query = "DELETE FROM louer WHERE id_bail = ? AND id_locataire = ?";
+            PreparedStatement pstmt = cn.prepareStatement(query);
+            pstmt.setInt(1,idBail);
+            pstmt.setInt(2,idLocataire);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public void updateQuotite(int idBail, int idLocataire, int quotite) {
         try {
             Connection cn = ConnectionDB.getInstance();
@@ -82,4 +98,30 @@ public class LouerDAO implements DAO.LouerDAO{
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public Map<Integer, List<Integer>> getAllLocatairesDesBeaux() {
+            Map<Integer, List<Integer>> locataires = new HashMap<>();
+            try {
+                Connection cn = ConnectionDB.getInstance();
+                String query = "SELECT id_bail,id_locataire FROM louer";
+                PreparedStatement pstmt = cn.prepareStatement(query);
+                ResultSet rs = pstmt.executeQuery();
+                while (rs.next()){
+                    int idBail = rs.getInt("id_bail");
+                    int idLocataire = rs.getInt("id_locataire");
+                    if (locataires.containsKey(idBail)){
+                        locataires.get(idBail).add(idLocataire);
+                    } else {
+                        List<Integer> locataire = new ArrayList<>();
+                        locataire.add(idLocataire);
+                        locataires.put(idBail,locataire);
+                    }
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        return locataires;
+    }
+
 }

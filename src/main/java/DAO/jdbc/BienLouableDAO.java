@@ -32,8 +32,6 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
             pstmt.setNull(7, java.sql.Types.INTEGER);  // si on veut ajouter un garagon on utilisera ajouterUnGarageAuBienLouable par la suite
             pstmt.executeUpdate();
             pstmt.close();
-            
-
         } catch (SQLException | DAOException e) {
             throw new RuntimeException(e);
         }
@@ -136,18 +134,49 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
         return id;
     }
 
-
     @Override
     public void delete(int id) throws DAOException {
+        List<Devis> lDevis = new DevisDAO().getAllDevisFromABien(readId(id).getNumero_fiscal(),TypeLogement.APPARTEMENT);
+        List<Integer> idBeaux = getListeBeauxFromBien(readId(id));
+        List<Diagnostic> lDiags = new DiagnosticDAO().readAllDiag(id);
+
         try {
             Connection cn = ConnectionDB.getInstance();
-            String query = "DELETE FROM bienlouable WHERE id = ?";
-            PreparedStatement pstmt = cn.prepareStatement(query);
-            pstmt.setInt(1, id);
-            pstmt.executeUpdate();
-            pstmt.close();
+            Runnable supprimerBL = new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        String query = "DELETE FROM bienlouable WHERE id = ?";
+                        PreparedStatement pstmt = cn.prepareStatement(query);
+                        pstmt.setInt(1, id);
+                        pstmt.executeUpdate();
+                        pstmt.close();
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            };
+            for(Diagnostic diag : lDiags){
+                new DiagnosticDAO().delete(readId(id).getNumero_fiscal(),diag.getReference());
+            }
+            for (Devis d : lDevis) {
+                Integer id_devis = new DevisDAO().getId(d);
+                new DevisDAO().delete(id_devis);
+                new TravauxAssocieDAO().delete(id_devis, id);
+            }
+            for (Integer id_beau : idBeaux) {
+                new BailDAO().delete(id_beau);
+            }
 
-        } catch (SQLException e) {
+            if (haveGarage(id)) {
+                GarageDAO garageDAO = new GarageDAO();
+                Integer idGarage = garageDAO.readIdGarageFromBien(readId(id).getNumero_fiscal());
+                supprimerBL.run();
+                garageDAO.delete(idGarage);
+            }else{
+                supprimerBL.run();
+            }
+        } catch (DAOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -326,37 +355,63 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
     }
 
     @Override
-    public Map<String, List<String>> getAllComplNoBail(){
+    public Map<String, List<String>> getAllComplNoBail() {
         Map<String, List<String>> complements = new HashMap<>();
-
         String query = "SELECT b.adresse, bl.complement_adresse FROM batiment b, bienlouable bl WHERE b.id IN (SELECT idBat FROM bienlouable) AND b.id = bl.idBat AND bl.id NOT IN (SELECT id_bien_louable FROM bail);";
-
-        try (Connection cn = ConnectionDB.getInstance();
-             PreparedStatement pstmt = cn.prepareStatement(query);
-             ResultSet rs = pstmt.executeQuery()) {
-
+        try {
+            Connection cn = ConnectionDB.getInstance();
+            PreparedStatement pstmt = cn.prepareStatement(query);
+            ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 String adresse = rs.getString("adresse");
                 String complement = rs.getString("complement_adresse");
-
                 // Ajoute le complément à la liste associée à l'adresse
                 complements.computeIfAbsent(adresse, k -> new ArrayList<>()).add(complement);
             }
-
+            rs.close();
+            pstmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return complements;
     }
 
-    /*public List<Devis> finAllTravaux(){
-        List<Devis> list = new ArrayList<>();
-        try{
-
-        }catch (SQLException e){
+    @Override
+    public boolean haveGarage(Integer id) {
+        boolean garage = false;
+        try {
+            Connection cn = ConnectionDB.getInstance();
+            String query = "SELECT * FROM bienlouable WHERE id = ?";
+            PreparedStatement pstmt = cn.prepareStatement(query);
+            pstmt.setInt(1,id);
+            ResultSet rs = pstmt.executeQuery();
+            if(rs.next()){
+                garage = rs.getInt("garage_assoc") != 0;
+            }
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return list;
-    }*/
+        return garage;
+    }
+
+    @Override
+    public List<Integer> getListeBeauxFromBien(BienLouable bien) {
+        List<Integer> id_beaux = new ArrayList<>();
+        try {
+            Connection cn = ConnectionDB.getInstance();
+            String query = "SELECT id FROM bail WHERE id_bien_louable = ?";
+            PreparedStatement pstmt = cn.prepareStatement(query);
+            pstmt.setInt(1, new BienLouableDAO().getId(bien.getNumero_fiscal()));
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                id_beaux.add(rs.getInt("id"));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
+        return id_beaux;
+    }
 
 }

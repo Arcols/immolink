@@ -81,4 +81,19 @@ public class TravauxAssocieDAO implements DAO.TravauxAssocieDAO {
         return idDevis;
     }
 
+    @Override
+    public void delete(Integer id_devis, Integer id_bien) throws DAOException {
+        try{
+            Connection cn = ConnectionDB.getInstance();
+            String requete = "DELETE FROM TravauxAssocie WHERE id_devis = ? AND id_bien = ?";
+            PreparedStatement pstmt = cn.prepareStatement(requete);
+            pstmt.setInt(1,id_devis);
+            pstmt.setInt(2,id_bien);
+            pstmt.executeUpdate();
+            pstmt.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

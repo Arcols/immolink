@@ -73,6 +73,20 @@ public class DevisDAO implements DAO.DevisDAO {
     }
 
     @Override
+    public void delete(Integer id) {
+        try{
+            Connection cn = ConnectionDB.getInstance();
+            String requete = "DELETE FROM Devis WHERE id = ?";
+            PreparedStatement pstmt = cn.prepareStatement(requete);
+            pstmt.setInt(1,id);
+            pstmt.executeUpdate();
+            pstmt.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public Integer getId(Devis devis){
         Integer id = 0;
         try{

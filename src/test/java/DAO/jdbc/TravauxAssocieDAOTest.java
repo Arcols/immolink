@@ -86,4 +86,5 @@ public class TravauxAssocieDAOTest {
         assertNotNull(devisIds);
         assertEquals(1, devisIds.size());
     }
+
 }

@@ -18,6 +18,7 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -78,7 +79,6 @@ public class LouerDAOTest {
         assertEquals(locataireDAO.getId(locataire), idLocs.get(0).intValue());
     }
 
-
     @Test
     public void testCreateRuntimeException() throws DAOException {
         louerDAO.create(locataire, bail, 1);
@@ -90,4 +90,38 @@ public class LouerDAOTest {
             assertTrue(e instanceof RuntimeException);
         }
     }
+
+    @Test
+    public void testGetAllLocatairesDesBeaux() throws DAOException {
+        Locataire locataire2 = new Locataire("Smith", "Jane", "0707070707", "jj.jj@jj.jj", java.sql.Date.valueOf("2021-01-01"), "F");
+        locataireDAO.addLocataire(locataire2);
+        louerDAO.create(locataire2, bail, 50);
+        louerDAO.create(locataire, bail, 50);
+
+        Map<Integer, List<Integer>> locatairesDunBail = louerDAO.getAllLocatairesDesBeaux();
+        int bailId = bailDAO.getId(bail);
+
+        assertNotNull(locatairesDunBail);
+        assertTrue(locatairesDunBail.containsKey(bailId));
+        List<Integer> locataires = locatairesDunBail.get(bailId);
+        assertNotNull(locataires);
+        assertEquals(2, locataires.size());
+        assertTrue(locataires.contains(locataireDAO.getId(locataire)));
+        assertTrue(locataires.contains(locataireDAO.getId(locataire2)));
+    }
+
+    @Test
+    public void testDelete() throws DAOException {
+        louerDAO.create(locataire, bail, 100);
+        List<Integer> idLocs = louerDAO.getIdLoc(bailDAO.getId(bail));
+        assertNotNull(idLocs);
+        assertEquals(1, idLocs.size());
+
+        louerDAO.delete(bailDAO.getId(bail), locataireDAO.getId(locataire));
+
+        idLocs = louerDAO.getIdLoc(bailDAO.getId(bail));
+        assertNotNull(idLocs);
+        assertTrue(idLocs.isEmpty());
+    }
+
 }
