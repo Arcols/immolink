@@ -338,7 +338,7 @@ public class ModelePageUnBail {
 
     public ActionListener supprimerLoc(){
         return e->{
-
+            new LouerDAO().delete(new BailDAO().getId(pageUnBail.getBail()),pageUnBail.);
         };
     }
     private void refreshPage(ActionEvent e, int idBail) {

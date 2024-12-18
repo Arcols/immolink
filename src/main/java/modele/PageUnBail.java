@@ -40,7 +40,7 @@ public class PageUnBail {
 
     private JFrame frame;
     private JLabel logo;
-    private JPanel tableau_diagnostic;
+    private JPanel tableau_locataire;
     private JLabel affichageVille;
     private JLabel affichageAdresse;
     private JLabel affichageComplement;
@@ -49,11 +49,13 @@ public class PageUnBail {
     private JLabel affichageProvision;
     private JLabel affichageNbPieces;
     private JLabel affichageGarantie;
+    private Bail bail;
 
     /**
      * Create the application.
      */
     public PageUnBail(Bail bail) {
+        this.bail = bail;
         this.initialize(bail);
     }
 
@@ -284,31 +286,31 @@ public class PageUnBail {
         }
 
         // Panel principal (avec un défilement si nécessaire)
-        this.tableau_diagnostic = new JPanel(new GridBagLayout()); // Remplacer GridLayout par GridBagLayout
+        this.tableau_locataire = new JPanel(new GridBagLayout()); // Remplacer GridLayout par GridBagLayout
 
         // Créer un GridBagConstraints pour gérer le placement des composants
-        GridBagConstraints gbc_diag = new GridBagConstraints();
-        gbc_diag.fill = GridBagConstraints.HORIZONTAL;
-        gbc_diag.insets = new Insets(5, 5, 5, 5); // Espacement entre les composants
+        GridBagConstraints gbc_loc = new GridBagConstraints();
+        gbc_loc.fill = GridBagConstraints.HORIZONTAL;
+        gbc_loc.insets = new Insets(5, 5, 5, 5); // Espacement entre les composants
 
         int row = 0; // Initialiser le compteur de ligne pour GridBagLayout
 
         for (String locataire : nomlocataires) {
             // Créer le label pour chaque diagnostic
-            JLabel label = new JLabel(locataire);
-            gbc_diag.gridx = 0; // Première colonne pour le label
-            gbc_diag.gridy = row;
-            this.tableau_diagnostic.add(label, gbc_diag);
+            JLabel label_loc = new JLabel(locataire);
+            gbc_loc.gridx = 0; // Première colonne pour le label
+            gbc_loc.gridy = row;
+            this.tableau_locataire.add(label_loc, gbc_loc);
 
             // Créer le bouton "Importer" pour chaque diagnostic
             JButton supprimer = new JButton("Supprimer");
-            gbc_diag.gridx = 1; // Deuxième colonne pour le bouton
-            this.tableau_diagnostic.add(supprimer, gbc_diag);
+            gbc_loc.gridx = 1; // Deuxième colonne pour le bouton
+            this.tableau_locataire.add(supprimer, gbc_loc);
             supprimer.addActionListener(modele.supprimerLoc());
             row++; // Incrémenter la ligne pour le prochain diagnostic
         }
 
-        JScrollPane scrollPane = new JScrollPane(this.tableau_diagnostic);
+        JScrollPane scrollPane = new JScrollPane(this.tableau_locataire);
         panel_locataires.add(scrollPane, BorderLayout.CENTER);
 
         JPanel basPage = new JPanel();
@@ -413,6 +415,10 @@ public class PageUnBail {
 
     public JLabel getAffichageGarantie() {
         return affichageGarantie;
+    }
+
+    public Bail getBail() {
+        return bail;
     }
 }
 
