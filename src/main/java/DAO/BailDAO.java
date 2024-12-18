@@ -1,8 +1,10 @@
 package DAO;
 
+import java.sql.Date;
 import java.util.List;
 
 import classes.Bail;
+import classes.BienLouable;
 
 public interface BailDAO {
 
@@ -59,6 +61,7 @@ public interface BailDAO {
          */
         Bail getBailFromId(int idBail);
 
+        Bail getBailFromBienEtDate(BienLouable bien, Date date_debut);
         /**
          * Met à jour le loyer d'un bail dans la base de données.
          * @param idBail L'identifiant du bail à mettre à jour

@@ -30,7 +30,7 @@ public interface LouerDAO {
      * @param idLocataire
      * @return la quotité de la location
      */
-    Integer getQutotié(int idBail, int idLocataire);
+    Integer getQuotité(int idBail, int idLocataire);
 
     /**
      * Récupère la quotité d'une location dans la base de données.

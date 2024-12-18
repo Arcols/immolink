@@ -12,6 +12,7 @@ import java.util.List;
 import DAO.DAOException;
 import DAO.db.ConnectionDB;
 import classes.Bail;
+import classes.BienLouable;
 
 public class BailDAO implements DAO.BailDAO {
     @Override
@@ -183,6 +184,34 @@ public class BailDAO implements DAO.BailDAO {
                 bail = new Bail((solde_de_compte==1),new LogementDAO().read(id_bien_louable).getNumero_fiscal(),loyer,charges,depot_garantie,date_debut,date_fin);
             }
             pstmt.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
+        return bail;
+    }
+
+    @Override
+    public Bail getBailFromBienEtDate(BienLouable bien, Date date_debut_bail) {
+        Bail bail = null;
+        try {
+            Connection cn = ConnectionDB.getInstance();
+            String query = "SELECT * FROM bail WHERE id_bien_louable = ? AND date_debut = ?";
+            PreparedStatement pstmt = cn.prepareStatement(query);
+            pstmt.setInt(1,new BienLouableDAO().getId(bien.getNumero_fiscal()));
+            pstmt.setDate(2,date_debut_bail);
+            ResultSet rs = pstmt.executeQuery();
+
+            if(rs.next()){
+                Integer solde_de_compte = rs.getInt("solde_de_compte");
+                Double loyer = rs.getDouble("loyer");
+                Double charges = rs.getDouble("charges");
+                Double depot_garantie = rs.getDouble("depot_garantie");
+                Date date_debut = rs.getDate("date_debut");
+                Date date_fin = rs.getDate("date_fin");
+                bail = new Bail((solde_de_compte==1),bien.getNumero_fiscal(),loyer,charges,depot_garantie,date_debut,date_fin);
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (DAOException e) {

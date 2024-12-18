@@ -12,7 +12,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.Menu;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.util.List;
@@ -32,6 +31,9 @@ import DAO.jdbc.LocataireDAO;
 import DAO.jdbc.LouerDAO;
 import classes.Bail;
 import classes.Locataire;
+import ihm.Menu;
+import ihm.ModelePageUnBail;
+import ihm.ResizedImage;
 
 
 public class PageUnBail {
@@ -299,10 +301,10 @@ public class PageUnBail {
             this.tableau_diagnostic.add(label, gbc_diag);
 
             // Créer le bouton "Importer" pour chaque diagnostic
-            JButton bouton = new JButton("Importer");
+            JButton supprimer = new JButton("Supprimer");
             gbc_diag.gridx = 1; // Deuxième colonne pour le bouton
-            this.tableau_diagnostic.add(bouton, gbc_diag);
-
+            this.tableau_diagnostic.add(supprimer, gbc_diag);
+            supprimer.addActionListener(modele.supprimerLoc());
             row++; // Incrémenter la ligne pour le prochain diagnostic
         }
 

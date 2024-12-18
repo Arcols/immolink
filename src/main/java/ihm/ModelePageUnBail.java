@@ -10,26 +10,29 @@ import enumeration.TypeLogement;
 import modele.*;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.html.StyleSheet;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ModelePageUnBail {
     private PageUnBail pageUnBail;
+    private List<Locataire> Locataireselected=new LinkedList<Locataire>();
+    private int quotite_actuelle;
+    private List<Integer> quotites = new LinkedList<>();
+    private  List<JSpinner> listSpinner;
+    private List<JSpinner> spinners_selec =new ArrayList<>();
 
     public ModelePageUnBail(PageUnBail pageUnBail){
         this.pageUnBail = pageUnBail;
+        this.quotite_actuelle = 100;
     }
-    private List<Locataire> Locataireselected=new LinkedList<Locataire>();
-    private List<Integer> ListQuotite = new LinkedList<Integer>();
+
 
     public void chargerDonneesBail(int idBail, PageUnBail page) throws DAOException {
         try {
@@ -131,6 +134,24 @@ public class ModelePageUnBail {
 
             BailDAO bailDAO = new DAO.jdbc.BailDAO();
             Bail bail = bailDAO.getBailFromId(idBail);
+            String ville = pageUnBail.getAffichageVille().getText();
+            String adresse = pageUnBail.getAffichageAdresse().getText();
+            String complement = pageUnBail.getAffichageComplement().getText();
+
+
+            try {
+                String numFisc = new BienLouableDAO().getFiscFromCompl(ville,adresse,complement);
+                BienLouable bien = new BienLouableDAO().readFisc(numFisc);
+                Bail bail_actu = new BailDAO().getBailFromId(idBail);
+                List<Integer> idLocBail = new LouerDAO().getIdLoc(new BailDAO().getId(bail_actu));
+
+                for (int id: idLocBail){
+                    Locataireselected.add(new LocataireDAO().getLocFromId(id));
+                    quotites.add(new LouerDAO().getQuotité(new BailDAO().getId(bail_actu),id));
+                }
+            } catch (DAOException ex) {
+                throw new RuntimeException(ex);
+            }
 
             // Données fictives pour les locataires
             List<Locataire> listlocataires = new DAO.jdbc.LocataireDAO().getAllLocataire();
@@ -227,7 +248,7 @@ public class ModelePageUnBail {
 
             // Créer un JSpinner pour la quotité de ce locataire
             JSpinner quotiteSpinner = new JSpinner(new SpinnerNumberModel(0, 0, 100, 1));
-            quotiteSpinner.setValue(100);  // Valeur initiale de 100% (modifiable)
+            quotiteSpinner.setValue(0);  // Valeur initiale de 100% (modifiable)
             locatairePanel.add(quotiteSpinner);
 
             // Ajouter le locataire et son spinner dans la map
@@ -235,6 +256,11 @@ public class ModelePageUnBail {
 
             // Ajouter au panel
             panelLocataires.add(locatairePanel);
+        }
+
+        this.listSpinner = new ArrayList<>(quotiteMap.values());
+        for (JSpinner j:listSpinner){
+            j.addChangeListener( e-> limitQuotité(e));
         }
 
         JScrollPane scrollPane = new JScrollPane(panelLocataires);
@@ -262,6 +288,46 @@ public class ModelePageUnBail {
         dialog.setVisible(true);
     }
 
+
+
+    public void limitQuotité(ChangeEvent e) {
+        Object source = e.getSource();
+        JSpinner spinner_last_mod = (JSpinner) source;
+
+        // Ajouter le spinner modifié à la liste des sélectionnés
+        if (!spinners_selec.contains(spinner_last_mod)) {
+            spinners_selec.add(spinner_last_mod);
+        }
+
+        // Mettre à jour la quotité actuelle en fonction de la nouvelle valeur
+        int valeur_spinner = (Integer) spinner_last_mod.getValue();
+        quotite_actuelle = 100 - spinners_selec.stream()
+                .mapToInt(spinner -> (Integer) spinner.getValue())
+                .sum();
+
+        // Vérifier que la quotité reste valide
+        if (quotite_actuelle < 0) {
+            JOptionPane.showMessageDialog(null,
+                    "La somme des quotités ne peut pas dépasser 100.",
+                    "Erreur de saisie",
+                    JOptionPane.ERROR_MESSAGE);
+            spinner_last_mod.setValue(0);
+            return;
+        }
+
+        // Mettre à jour les modèles des autres JSpinner
+        for (JSpinner j : listSpinner) {
+            if (!j.equals(spinner_last_mod)) {
+                SpinnerNumberModel model = (SpinnerNumberModel) j.getModel();
+                int currentValue = (Integer) j.getValue();
+
+                // Ajuster la borne supérieure en fonction de la quotité restante
+                model.setMaximum(quotite_actuelle + currentValue);
+            }
+        }
+    }
+
+
     private void locatairesDuBail(int idBail){
         this.Locataireselected.clear();
         List<Integer> idLocs =new LouerDAO().getIdLoc(idBail);
@@ -270,7 +336,11 @@ public class ModelePageUnBail {
         }
     }
 
+    public ActionListener supprimerLoc(){
+        return e->{
 
+        };
+    }
     private void refreshPage(ActionEvent e, int idBail) {
         BailDAO bailDAO = new DAO.jdbc.BailDAO();
         Bail bail = bailDAO.getBailFromId(idBail);
