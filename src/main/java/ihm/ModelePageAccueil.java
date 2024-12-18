@@ -37,7 +37,12 @@ public class ModelePageAccueil {
         String[] columnNames = {"Nom", "Prénom", "Téléphone", "Mail", "Genre", "Date d'arrivée"};
 
         // Création du modèle de table
-        DefaultTableModel model = new DefaultTableModel(columnNames, 0); // `0` pour aucune ligne au départ
+        DefaultTableModel model = new DefaultTableModel(columnNames, 0){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Toutes les cellules sont non éditables
+            }
+        };
 
         // Récupération des locataires
         LocataireDAO locataireDAO = new LocataireDAO();
