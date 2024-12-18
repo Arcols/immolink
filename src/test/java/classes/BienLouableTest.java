@@ -30,14 +30,12 @@ public class BienLouableTest {
         tempFile2 = File.createTempFile("testFile2", ".pdf");
         Files.write(tempFile2.toPath(), "New PDF Data".getBytes());
 
-        // Initialize diagnostics
         diagnostic1 = new Diagnostic("RefDiag1", tempFile.getAbsolutePath());
         diagnostic2 = new Diagnostic("RefDiag2", tempFile2.getAbsolutePath());
 
         List<Diagnostic> diagnostics = new ArrayList<>();
         diagnostics.add(diagnostic1);
 
-        // Initialize BienLouable
         bienLouable = new BienLouable("123456789101", "Paris", "123 Rue de la Paix", "Appartement 12B", diagnostics, null);
     }
 
@@ -77,7 +75,6 @@ public class BienLouableTest {
         Diagnostic updatedDiagnostic = new Diagnostic("RefDiag1", tempFile2.getAbsolutePath());
         bienLouable.modifierDiagnostic(updatedDiagnostic);
 
-        // Verify that the diagnostic has been updated with the new PDF data
         assertEquals(tempFile2.getAbsolutePath(), bienLouable.getDiagnostic().get(0).getPdfPath());
     }
 
@@ -86,7 +83,6 @@ public class BienLouableTest {
         Diagnostic newDiagnostic = new Diagnostic("RefDiag3", tempFile2.getAbsolutePath());
         bienLouable.modifierDiagnostic(newDiagnostic);
 
-        // Verify that the list of diagnostics remains unchanged
         assertEquals(1, bienLouable.getDiagnostic().size());
         assertEquals(diagnostic1, bienLouable.getDiagnostic().get(0));
         assertEquals(tempFile.getAbsolutePath(), bienLouable.getDiagnostic().get(0).getPdfPath());

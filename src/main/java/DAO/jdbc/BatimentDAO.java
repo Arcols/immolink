@@ -99,8 +99,13 @@ public class BatimentDAO implements DAO.BatimentDAO {
 
 	@Override
 	public void delete(String num_fisc) throws DAOException {
+		Batiment bat = readFisc(num_fisc);
+		List<Integer> listIdBienLouables = getIdBienLouables(getIdBat(bat.getVille(), bat.getAdresse()));
 		try {
 			Connection cn = ConnectionDB.getInstance();
+			for (Integer id : listIdBienLouables) {
+				new BienLouableDAO().delete(id);
+			}
 			String query = "DELETE FROM batiment WHERE numero_fiscal = ?";
 			PreparedStatement pstmt = cn.prepareStatement(query);
 			pstmt.setString(1, num_fisc);
@@ -176,6 +181,27 @@ public class BatimentDAO implements DAO.BatimentDAO {
 			e.printStackTrace();
 		}
 		return batiments;
+	}
+
+	@Override
+	public List<Integer> getIdBienLouables(Integer idBat) throws DAOException {
+		List<Integer> idBienLouables = new ArrayList<>();
+		try {
+			Connection cn = ConnectionDB.getInstance();
+			String query = "SELECT id FROM bienlouable WHERE idBat = ?";
+			PreparedStatement pstmt = cn.prepareStatement(query);
+			pstmt.setInt(1, idBat);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				idBienLouables.add(rs.getInt("id"));
+			}
+			rs.close();
+			pstmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			throw new RuntimeException(e);
+		}
+		return idBienLouables;
 	}
 
 }

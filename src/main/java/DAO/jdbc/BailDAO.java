@@ -81,13 +81,13 @@ public class BailDAO implements DAO.BailDAO {
     }
 
     @Override
-    public List<Integer> getIDBeaux(String id_bien) {
+    public List<Integer> getIDBeaux(Integer id_bien) {
         List<Integer> idBaux = new ArrayList<>();
         try {
             Connection cn = ConnectionDB.getInstance();
             String query = "SELECT id FROM bail WHERE id_bien_louable = ?";
             PreparedStatement pstmt = cn.prepareStatement(query);
-            pstmt.setString(1, id_bien);
+            pstmt.setInt(1, id_bien);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 idBaux.add(rs.getInt("id"));

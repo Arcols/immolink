@@ -20,7 +20,6 @@ public class LogementTest {
 
     @Before
     public void setUp() throws IOException {
-        // Create temporary files for diagnostics
         tempFile = File.createTempFile("testFile", ".pdf");
         Files.write(tempFile.toPath(), "Test PDF Data".getBytes());
 
@@ -38,7 +37,6 @@ public class LogementTest {
 
         Logement logement = new Logement(2, 25.0, "123456789101", "Paris", "123 Rue de la Paix", "Appartement 12B", diagnostics);
 
-        // Vérification des attributs du constructeur
         assertEquals(2, logement.getNbPiece());
         assertEquals(25.0, logement.getSurface(), 0.01);
     }
@@ -50,7 +48,6 @@ public class LogementTest {
 
         Logement logement = new Logement(3, 45.0, "123456789101", "Paris", "123 Rue de la Paix", "Appartement 12B", diagnostics);
 
-        // Vérification des attributs spécifiques
         assertEquals(3, logement.getNbPiece());
         assertEquals(45.0, logement.getSurface(), 0.01);
         }

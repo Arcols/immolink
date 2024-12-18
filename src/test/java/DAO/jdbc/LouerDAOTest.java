@@ -41,7 +41,6 @@ public class LouerDAOTest {
         Batiment batiment = new Batiment("123456789101", "Paris", "123 Rue de la Paix","31000");
         batimentDAO.create(batiment);
 
-        // Create and insert a BienLouable
         BienLouable bienLouable = new BienLouable("BL3456789101", "Paris", "123 Rue de la Paix", "31000", new ArrayList<>(), null);
         bienLouableDAO.create(bienLouable, TypeLogement.APPARTEMENT, 3, 75.0);
 
@@ -122,6 +121,48 @@ public class LouerDAOTest {
         idLocs = louerDAO.getIdLoc(bailDAO.getId(bail));
         assertNotNull(idLocs);
         assertTrue(idLocs.isEmpty());
+    }
+
+    @Test
+    public void testUpdateQuotite() throws SQLException, DAOException {
+        BienLouable bienLouable = new BienLouable("BL3456789102", "Paris", "123 Rue de la Paix", "31000", new ArrayList<>(), null);
+        bienLouableDAO.create(bienLouable, TypeLogement.APPARTEMENT, 3, 75.0);
+        Bail bail = new Bail(true, "BL3456789102", 1000.0, 200.0, 500.0, Date.valueOf("2024-01-01"), Date.valueOf("2024-12-31"));
+        bailDAO.create(bail);
+        int idBail = bailDAO.getId(bail);
+
+        Locataire locataire = new Locataire("Doe", "John", "0606060606", "john.doe@example.com", Date.valueOf("2021-01-01"), "M");
+        locataireDAO.addLocataire(locataire);
+        int idLocataire = locataireDAO.getId(locataire);
+
+        louerDAO.create(locataire, bail, 50);
+
+        int newQuotite = 75;
+        louerDAO.updateQuotite(idBail, idLocataire, newQuotite);
+
+        int updatedQuotite = louerDAO.getQuotité(idBail, idLocataire);
+
+        assertEquals(newQuotite, updatedQuotite);
+    }
+
+    @Test
+    public void testGetQuotite() throws SQLException, DAOException {
+        BienLouable bienLouable = new BienLouable("BL3456789102", "Paris", "123 Rue de la Paix", "31000", new ArrayList<>(), null);
+        bienLouableDAO.create(bienLouable, TypeLogement.APPARTEMENT, 3, 75.0);
+        Bail bail = new Bail(true, "BL3456789102", 1000.0, 200.0, 500.0, Date.valueOf("2024-01-01"), Date.valueOf("2024-12-31"));
+        bailDAO.create(bail);
+        int idBail = bailDAO.getId(bail);
+
+        Locataire locataire = new Locataire("Doe", "John", "0606060606", "john.doe@example.com", Date.valueOf("2021-01-01"), "M");
+        locataireDAO.addLocataire(locataire);
+        int idLocataire = locataireDAO.getId(locataire);
+
+        louerDAO.create(locataire, bail, 50);
+
+        int quotite = louerDAO.getQuotité(idBail, idLocataire);
+
+
+        assertEquals(50, quotite);
     }
 
 }

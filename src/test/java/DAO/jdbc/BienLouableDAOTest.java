@@ -152,7 +152,7 @@ public class BienLouableDAOTest {
         BienLouable bienLouableWithDiagnostic = new BienLouable("123456789111", "Paris", "130 Rue de la Paix", "Apt 1", new ArrayList<>(),null);
         bienLouableDAO = new BienLouableDAO();
         bienLouableDAO.create(bienLouableWithDiagnostic, TypeLogement.APPARTEMENT, 3, 100.0);
-        // Create a temporary file to use as a valid PDF path
+
         File tempFilePath = Files.createTempFile("test", ".pdf").toFile();
         Diagnostic diagnostic = new Diagnostic("D123", tempFilePath.toString(), Date.valueOf("2025-01-01"));
         diagnosticDAO.create(diagnostic, "123456789111");
@@ -277,10 +277,8 @@ public class BienLouableDAOTest {
         bailDAO.create(bail1);
         bailDAO.create(bail2);
 
-        // Retrieve all bails for the specific BienLouable
         List<Integer> idBeaux = bienLouableDAO.getListeBeauxFromBien(bienLouable);
 
-        // Verify the results
         assertNotNull(idBeaux);
         assertEquals(3, idBeaux.size());
         assertTrue(idBeaux.contains(bailDAO.getId(this.bail)));

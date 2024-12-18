@@ -52,7 +52,7 @@ public class LouerDAO implements DAO.LouerDAO{
         }
 
     @Override
-    public Integer getQutotié(int idBail, int idLocataire) {
+    public Integer getQuotité(int idBail, int idLocataire) {
         Integer quotite = -1;
         try {
             Connection cn = ConnectionDB.getInstance();

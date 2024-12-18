@@ -27,11 +27,9 @@ public class DiagnosticTest {
 
     @Before
     public void setUp() throws IOException, SQLException {
-        // Create a temporary file before each test
         tempFile = File.createTempFile("testFile", ".pdf");
         Files.write(tempFile.toPath(), "Test PDF Data".getBytes());
 
-        // Second file for update tests
         tempFile2 = File.createTempFile("testFile2", ".pdf");
         Files.write(tempFile2.toPath(), "New PDF Data".getBytes());
 
@@ -87,7 +85,6 @@ public class DiagnosticTest {
 
     @Test
     public void testConstructeurAvecDateInvalidite() throws IOException, SQLException {
-        // Create an invalidity date for today
         Date dateInvalidite = new Date(System.currentTimeMillis());
         Diagnostic diagnostic = new Diagnostic("RéfTest", tempFile.getAbsolutePath(), dateInvalidite);
 
@@ -104,24 +101,22 @@ public class DiagnosticTest {
 
     @Test
     public void testEstExpireAvecDateInvaliditeNonExpiree() throws IOException, SQLException {
-        // Create a future invalidity date
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_MONTH, 5); // 5 days in the future
         Date dateInvalidite = new Date(calendar.getTimeInMillis());
 
         Diagnostic diagnostic = new Diagnostic("RéfTest", tempFile.getAbsolutePath(), dateInvalidite);
-        assertFalse(diagnostic.estExpire()); // Should not be expired
+        assertFalse(diagnostic.estExpire());
     }
 
     @Test
     public void testEstExpireAvecDateInvaliditeExpiree() throws IOException, SQLException {
-        // Create a past invalidity date
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_MONTH, -5); // 5 days in the past
         Date dateInvalidite = new Date(calendar.getTimeInMillis());
 
         Diagnostic diagnostic = new Diagnostic("RéfTest", tempFile.getAbsolutePath(), dateInvalidite);
-        assertTrue(diagnostic.estExpire()); // Should be expired
+        assertTrue(diagnostic.estExpire());
     }
 
     @Test

@@ -85,32 +85,24 @@ public class LocataireTest {
 
     @Test
     public void testEquals() {
-        // Same object reference
         assertTrue(locataire.equals(locataire));
 
-        // Null object
         assertFalse(locataire.equals(null));
 
-        // Different class
         assertFalse(locataire.equals("Some String"));
 
-        // Different nom
         Locataire locataireDifferentNom = new Locataire("Smith", "John", "0606060606", "ee.ee@ee.ee", Date.valueOf("2020-01-01"), "M");
         assertFalse(locataire.equals(locataireDifferentNom));
 
-        // Different prénom
         Locataire locataireDifferentPrenom = new Locataire("Doe", "Jane", "0606060606", "ee.ee@ee.ee", Date.valueOf("2020-01-01"), "M");
         assertFalse(locataire.equals(locataireDifferentPrenom));
 
-        // Different téléphone
         Locataire locataireDifferentTelephone = new Locataire("Doe", "John", "0707070707", "ee.ee@ee.ee", Date.valueOf("2020-01-01"), "M");
         assertFalse(locataire.equals(locataireDifferentTelephone));
 
-        // Different genre
         Locataire locataireDifferentGenre = new Locataire("Doe", "John", "0606060606", "ee.ee@ee.ee", Date.valueOf("2020-01-01"), "F");
         assertFalse(locataire.equals(locataireDifferentGenre));
 
-        // All fields same
         Locataire locataireSame = new Locataire("Doe", "John", "0606060606", "ee.ee@ee.ee", Date.valueOf("2020-01-01"), "M");
         assertTrue(locataire.equals(locataireSame));
     }
