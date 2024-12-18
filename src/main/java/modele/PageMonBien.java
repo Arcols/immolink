@@ -1,9 +1,12 @@
 package modele;
 
 import DAO.DAOException;
+import DAO.DevisDAO;
 import DAO.jdbc.BailDAO;
 import DAO.jdbc.DiagnosticDAO;
 import DAO.jdbc.LogementDAO;
+import classes.BienLouable;
+import classes.Devis;
 import classes.Diagnostic;
 import ihm.*;
 import ihm.Menu;
@@ -53,20 +56,15 @@ public class PageMonBien {
         this.affichageComplement = new JLabel("New label");
         this.affichageCoutTravaux = new JLabel("New label");
         this.tableDiagnostics= new JTable();
-        ModelePageMonBien modele = new  ModelePageMonBien(this);
         this.frame = new JFrame();
         this.frame.setBounds(100, 100, 1000, 600);
         this.frame.getContentPane().setBackground(Charte.FOND.getCouleur());
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+        ModelePageMonBien modele = new  ModelePageMonBien(this);
 
         try {
-            // Instanciation du DAO
-
             // Chargement des données du bien
             modele.chargerDonneesBien(idBien, this);
-
-
         } catch (DAOException e) {
             JOptionPane.showMessageDialog(frame, "Erreur lors du chargement des données du bien : " + e.getMessage(),
                     "Erreur", JOptionPane.ERROR_MESSAGE);
@@ -335,6 +333,38 @@ public class PageMonBien {
             }
         });
         frame.setVisible(true);
+
+        tableTravaux.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                // Vérifier s'il s'agit d'un double-clic
+                if (evt.getClickCount() == 2) {
+                    // Obtenir l'index de la ligne sélectionnée
+                    int selectedRow = tableTravaux.getSelectedRow();
+                    if (selectedRow != -1) {
+                        // Récupérer l'ID du travail correspondant depuis le modèle de table
+                        String numDevis = (String) tableTravaux.getValueAt(selectedRow, 0);
+                        int idTravail = 0;
+                        try {
+                            idTravail = new DAO.jdbc.DevisDAO().getId(new DAO.jdbc.DevisDAO().read(numDevis));
+                        } catch (DAOException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                        try {
+                            // Ouvrir la page correspondante
+                            frame.dispose();
+                            new PageUnTravail(idBien, idTravail);
+                        } catch (DAOException e) {
+                            JOptionPane.showMessageDialog(frame,
+                                    "Erreur lors de l'ouverture de la page du travail : " + e.getMessage(),
+                                    "Erreur", JOptionPane.ERROR_MESSAGE);
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        });
     }
 
     public JFrame getFrame() {

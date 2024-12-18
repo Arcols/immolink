@@ -10,21 +10,15 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.IOException;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.LineBorder;
 
 import DAO.DAOException;
 import ihm.*;
 
-import javax.swing.SwingConstants;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
-import javax.swing.JTextField;
 import java.awt.Insets;
-import javax.swing.BoxLayout;
 import java.awt.FlowLayout;
 
 public class PageUnTravail {
@@ -57,7 +51,25 @@ public class PageUnTravail {
      * Initialize the contents of the frame.
      */
     private void initialize(Integer id, Integer idTravail) throws DAOException {
-        ModelePageUnTravail modele = new ModelePageUnTravail(this);
+        this.valueNumDevis = new JLabel();
+        valueMontantDevis = new JLabel();
+        valueMontantTravaux = new JLabel();
+        valueNature = new JLabel();
+        ValueAdresse = new JLabel();
+        valueNom = new JLabel();
+        valueType = new JLabel();
+        valueDateDebut = new JLabel();
+        valueDateFin = new JLabel();
+
+        ModelePageUnTravail modele = new  ModelePageUnTravail(this);
+        try {
+            // Chargement des données du bien
+            modele.chargerDonneesTravail(idTravail, this);
+        } catch (DAOException e) {
+            JOptionPane.showMessageDialog(frame, "Erreur lors du chargement des données du bien : " + e.getMessage(),
+                    "Erreur", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
         this.frame = new JFrame();
         this.frame.setBounds(100, 100, 750, 400);
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -138,7 +150,7 @@ public class PageUnTravail {
         gbc_labelNumDevis.gridy = 0;
         valeurs.add(labelNumDevis, gbc_labelNumDevis);
 
-        valueNumDevis = new JLabel();
+
         GridBagConstraints gbc_valueNumDevis = new GridBagConstraints();
         gbc_valueNumDevis.insets = new Insets(0, 0, 5, 0);
         gbc_valueNumDevis.anchor = GridBagConstraints.WEST;
@@ -154,7 +166,7 @@ public class PageUnTravail {
         gbc_labelMontantDevis.gridy = 1;
         valeurs.add(labelMontantDevis, gbc_labelMontantDevis);
 
-        valueMontantDevis = new JLabel();
+
         GridBagConstraints gbc_valueMontantDevis = new GridBagConstraints();
         gbc_valueMontantDevis.anchor = GridBagConstraints.WEST;
         gbc_valueMontantDevis.insets = new Insets(0, 0, 5, 0);
@@ -170,7 +182,7 @@ public class PageUnTravail {
         gbc_labelMontantTeavaux.gridy = 2;
         valeurs.add(labelMontantTeavaux, gbc_labelMontantTeavaux);
 
-        valueMontantTravaux = new JLabel();
+
         GridBagConstraints gbc_valueMontantTravaux = new GridBagConstraints();
         gbc_valueMontantTravaux.anchor = GridBagConstraints.WEST;
         gbc_valueMontantTravaux.insets = new Insets(0, 0, 5, 0);
@@ -186,7 +198,7 @@ public class PageUnTravail {
         gbc_labelNature.gridy = 3;
         valeurs.add(labelNature, gbc_labelNature);
 
-        valueNature = new JLabel();
+
         GridBagConstraints gbc_valueNature = new GridBagConstraints();
         gbc_valueNature.anchor = GridBagConstraints.WEST;
         gbc_valueNature.insets = new Insets(0, 0, 5, 0);
@@ -202,7 +214,7 @@ public class PageUnTravail {
         gbc_labelAdresse.gridy = 4;
         valeurs.add(labelAdresse, gbc_labelAdresse);
 
-        ValueAdresse = new JLabel();
+
         GridBagConstraints gbc_valueAdresse = new GridBagConstraints();
         gbc_valueAdresse.anchor = GridBagConstraints.WEST;
         gbc_valueAdresse.insets = new Insets(0, 0, 5, 0);
@@ -218,7 +230,7 @@ public class PageUnTravail {
         gbc_LabelNom.gridy = 5;
         valeurs.add(LabelNom, gbc_LabelNom);
 
-        valueNom = new JLabel();
+
         GridBagConstraints gbc_valueNom = new GridBagConstraints();
         gbc_valueNom.anchor = GridBagConstraints.WEST;
         gbc_valueNom.insets = new Insets(0, 0, 5, 0);
@@ -234,7 +246,7 @@ public class PageUnTravail {
         gbc_labelType.gridy = 6;
         valeurs.add(labelType, gbc_labelType);
 
-        valueType = new JLabel();
+
         GridBagConstraints gbc_valueType = new GridBagConstraints();
         gbc_valueType.anchor = GridBagConstraints.WEST;
         gbc_valueType.insets = new Insets(0, 0, 5, 0);
@@ -250,7 +262,7 @@ public class PageUnTravail {
         gbc_labelDateDebut.gridy = 7;
         valeurs.add(labelDateDebut, gbc_labelDateDebut);
 
-        valueDateDebut = new JLabel();
+
         GridBagConstraints gbc_valueDateDebut = new GridBagConstraints();
         gbc_valueDateDebut.anchor = GridBagConstraints.WEST;
         gbc_valueDateDebut.insets = new Insets(0, 0, 5, 0);
@@ -266,7 +278,7 @@ public class PageUnTravail {
         gbc_labelDateFin.gridy = 8;
         valeurs.add(labelDateFin, gbc_labelDateFin);
 
-        valueDateFin = new JLabel();
+        
         GridBagConstraints gbc_valueDateFin = new GridBagConstraints();
         gbc_valueDateFin.insets = new Insets(0, 0, 5, 0);
         gbc_valueDateFin.anchor = GridBagConstraints.WEST;
@@ -282,7 +294,7 @@ public class PageUnTravail {
         panelValider.add(btnQuitter, BorderLayout.WEST);
         btnQuitter.addActionListener(modele.quitterPage(id));
 
-        JButton btnSupprimer = new JButton("Valider");
+        JButton btnSupprimer = new JButton("Supprimer");
         panelValider.add(btnSupprimer, BorderLayout.EAST);
         b_biens.addActionListener(m);
 
@@ -305,7 +317,9 @@ public class PageUnTravail {
             }
         });
         frame.setVisible(true);
-        btnSupprimer.addActionListener(modele.getSupprimerTravauxListener(id,idTravail));
+        btnSupprimer.addActionListener(modele.getSupprimerTravauxListener(idTravail,id));
+
+
     }
     public JLabel getValueNumDevis() {
         return valueNumDevis;

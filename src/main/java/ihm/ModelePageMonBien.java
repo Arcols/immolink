@@ -33,10 +33,15 @@ public class ModelePageMonBien {
     }
     public static DefaultTableModel loadDataTravauxToTable(Integer id) throws SQLException, DAOException {
         // Liste des colonnes
-        String[] columnNames = { "Montant", "Nature", "Type" };
+        String[] columnNames = { "Devis","Montant", "Nature", "Type" };
 
         // Création du modèle de table
-        DefaultTableModel model = new DefaultTableModel(columnNames, 0); // `0` pour aucune ligne au départ
+        DefaultTableModel model = new DefaultTableModel(columnNames, 0){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Toutes les cellules sont non éditables
+            }
+        };
 
         DAO.BienLouableDAO bienLouableDAO = new DAO.jdbc.BienLouableDAO();
         BienLouable bienLouable = bienLouableDAO.readId(id);
@@ -48,6 +53,7 @@ public class ModelePageMonBien {
         // Remplissage du modèle avec les données des locataires
         for (Devis devi : devis) {
             Object[] rowData = {
+                    devi.getNumDevis(),
                     devi.getMontantTravaux(),
                     devi.getNature(),
                     devi.getType()
