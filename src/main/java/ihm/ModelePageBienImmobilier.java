@@ -309,6 +309,7 @@ public class ModelePageBienImmobilier {
 		dialog.add(label);
 
 		JTextField seuilField = new JTextField();
+		seuilField.setPreferredSize(new Dimension(100, 22));
 		seuilField.setBounds(220, 30, 100, 25);
 
 		dialog.add(seuilField);

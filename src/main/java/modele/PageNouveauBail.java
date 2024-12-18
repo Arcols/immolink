@@ -392,12 +392,14 @@ public class PageNouveauBail {
         panel_date.add(date_debut);
 
         this.choix_date_debut = new JDateChooser();
+        choix_date_debut.setPreferredSize(new Dimension(100, 22));
         panel_date.add(choix_date_debut);
 
         JLabel date_fin = new JLabel("Date fin");
         panel_date.add(date_fin);
 
         this.choix_date_fin = new JDateChooser();
+        choix_date_fin.setPreferredSize(new Dimension(100, 22));
         panel_date.add(choix_date_fin);
 
         JPanel bas_de_page = new JPanel();

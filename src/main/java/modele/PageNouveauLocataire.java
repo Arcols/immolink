@@ -1,14 +1,6 @@
 package modele;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
@@ -237,6 +229,7 @@ public class PageNouveauLocataire {
         donnees_loca.add(labelDate, gbc_labelDate);
 
         dateChooser = new JDateChooser();
+        dateChooser.setPreferredSize(new Dimension(100, 22));
         GridBagConstraints gbc_dateChooserDebut = new GridBagConstraints();
         gbc_dateChooserDebut.anchor = GridBagConstraints.WEST;
         gbc_dateChooserDebut.insets = new Insets(0, 0, 5, 0);
