@@ -9,6 +9,7 @@ import classes.Batiment;
 import classes.Diagnostic;
 import classes.Garage;
 import classes.Logement;
+import com.toedter.calendar.JDateChooser;
 import enumeration.NomsDiags;
 import enumeration.TypeLogement;
 import modele.*;
@@ -26,11 +27,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class ModelePageBienImmobilier {
+public class ModelePageNouveauBienImmobilier {
 
 	private PageNouveauBienImmobilier pageNouveauBienImmobilier;
 
-	public ModelePageBienImmobilier(PageNouveauBienImmobilier pageNouveauBienImmobilier) {
+	public ModelePageNouveauBienImmobilier(PageNouveauBienImmobilier pageNouveauBienImmobilier) {
 		this.pageNouveauBienImmobilier = pageNouveauBienImmobilier;
 	}
 
@@ -310,7 +311,7 @@ public class ModelePageBienImmobilier {
 		label.setBounds(20, 30, 200, 25);
 		dialog.add(label);
 
-		JTextField seuilField = new JTextField();
+		JDateChooser seuilField = new JDateChooser();
 		seuilField.setPreferredSize(new Dimension(100, 22));
 		seuilField.setBounds(220, 30, 100, 25);
 
@@ -322,7 +323,8 @@ public class ModelePageBienImmobilier {
 
 		validerButton.addActionListener(event -> {
 			try {
-				date.set(Date.valueOf(seuilField.getText()));
+				java.sql.Date sqlDate = new java.sql.Date(seuilField.getDate().getTime());
+				date.set(sqlDate);
 				JOptionPane.showMessageDialog(dialog,
 						"La date de péremption du diagnostic a été mis à jour à " + date + ".",
 						"Confirmation",

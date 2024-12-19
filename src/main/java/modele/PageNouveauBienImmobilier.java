@@ -24,12 +24,11 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
 import DAO.jdbc.BatimentDAO;
-import classes.Batiment;
 import classes.Diagnostic;
 import enumeration.NomsDiags;
 import ihm.Charte;
 import ihm.Menu;
-import ihm.ModelePageBienImmobilier;
+import ihm.ModelePageNouveauBienImmobilier;
 import ihm.ResizedImage;
 
 public class PageNouveauBienImmobilier {
@@ -92,7 +91,7 @@ public class PageNouveauBienImmobilier {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		ModelePageBienImmobilier modele = new ModelePageBienImmobilier(this);
+		ModelePageNouveauBienImmobilier modele = new ModelePageNouveauBienImmobilier(this);
 		this.map_diagnostic = new HashMap<>();
 		initialiseMapDiagnostic();
 		this.liste_diagnostic = new ArrayList<>();
