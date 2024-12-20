@@ -284,7 +284,9 @@ public class ModelePageNouveauBienImmobilier {
 					e1.printStackTrace();
 				}
 				JButton btn = (JButton) e.getSource();
-				btn.setText(btn.getText()+" \u2705");
+				if (!btn.getText().contains("\u2705")) {
+					btn.setText(btn.getText() + " \u2705");
+				}
 			}
 		};
 	}
