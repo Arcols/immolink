@@ -195,7 +195,11 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
                 String adresse = new BatimentDAO().readId(id_bat).getAdresse();
                 List<Diagnostic> lDiags = new DiagnosticDAO().readAllDiag(rs.getInt("id"));
                 GarageDAO garageDAO = new GarageDAO();
-                Allbien.add(new BienLouable(num_fisc,ville,adresse,compl,lDiags,garageDAO.getIdGarage(num_fisc,TypeLogement.GARAGE_ASSOCIE),getTypeFromId(id_bat)));
+                Integer type_logement = rs.getInt("type_logement");
+                TypeLogement type = TypeLogement.fromInt(type_logement);
+                if(type.estBienLouable()){
+                    Allbien.add(new BienLouable(num_fisc,ville,adresse,compl,lDiags,garageDAO.getIdGarage(num_fisc,TypeLogement.GARAGE_ASSOCIE),getTypeFromId(id_bat)));
+                }
             }
             rs.close();
             pstmt.close();
