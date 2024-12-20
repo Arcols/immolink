@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import DAO.BienLouableDAO;
 import DAO.DAOException;
@@ -69,4 +71,23 @@ public class ModelePageNouveauTravaux {
             }
         };
     }
+    public DocumentListener getTextFieldDocumentListener() {
+        return new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                pageNouveauTravaux.checkFields();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                pageNouveauTravaux.checkFields();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                pageNouveauTravaux.checkFields();
+            }
+        };
+    }
+
 }

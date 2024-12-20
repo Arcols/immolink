@@ -5,6 +5,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.IOException;
 
+import javax.management.ValueExp;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -35,6 +36,7 @@ public class PageNouveauTravaux {
     private JTextField ValueAdresse;
     private JTextField valueNom;
     private JTextField valueType;
+    private JButton btnValider;
 
     private JDateChooser dateChooserDebut;
     private JDateChooser dateChooserFin;
@@ -284,8 +286,9 @@ public class PageNouveauTravaux {
         panelValider.add(btnQuitter, BorderLayout.WEST);
         btnQuitter.addActionListener(modele.quitterPage(id));
 
-        JButton btnValider = new JButton("Valider");
-        panelValider.add(btnValider, BorderLayout.EAST);
+        this.btnValider = new JButton("Valider");
+        this.btnValider.setEnabled(false);
+        panelValider.add(this.btnValider, BorderLayout.EAST);
         b_biens.addActionListener(m);
 
         this.frame.addComponentListener(new ComponentAdapter() {
@@ -307,6 +310,15 @@ public class PageNouveauTravaux {
             }
         });
         frame.setVisible(true);
+        valueNumDevis.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
+        valueMontantDevis.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
+        valueMontantTravaux.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
+        valueNature.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
+        ValueAdresse.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
+        valueNom.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
+        valueType.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
+        dateChooserDebut.getDateEditor().addPropertyChangeListener("date", evt -> modele.getTextFieldDocumentListener().insertUpdate(null));
+        dateChooserFin.getDateEditor().addPropertyChangeListener("date", evt -> modele.getTextFieldDocumentListener().insertUpdate(null));
         btnValider.addActionListener(modele.getAjouterTravauxListener(id));
     }
 
@@ -344,5 +356,18 @@ public class PageNouveauTravaux {
 
     public JDateChooser getDateChooserFin() {
         return dateChooserFin;
+    }
+
+    public void checkFields() {
+        // Vérification si tous les champs sont remplis
+        boolean isFilled = !valueMontantDevis.getText().trim().isEmpty() && !valueMontantDevis.getText().trim().isEmpty()
+                && !valueMontantTravaux.getText().trim().isEmpty() && !valueNature.getText().trim().isEmpty()
+                && !ValueAdresse.getText().trim().isEmpty()
+                && !valueNom.getText().trim().isEmpty()
+                && getDateChooserDebut().getDate() != null
+                && getDateChooserFin().getDate() != null;
+
+        // Active ou désactive le bouton "Valider"
+        this.btnValider.setEnabled(isFilled);
     }
 }

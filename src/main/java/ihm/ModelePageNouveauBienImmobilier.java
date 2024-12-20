@@ -139,9 +139,6 @@ public class ModelePageNouveauBienImmobilier {
 				pageNouveauBienImmobilier.getChoix_complement_adresse().getText());
 		GarageDAO garageDAO = new GarageDAO();
 		garageDAO.create(garage);
-		LogementDAO logementDAO = new LogementDAO();
-		Integer idLogement = logementDAO.getId(pageNouveauBienImmobilier.getChoix_num_fiscal().getText());
-		logementDAO.lierUnGarageAuBienLouable(logementDAO.read(idLogement), garage);
 		JOptionPane.showMessageDialog(null, "Le Garage a été ajouté et lié à votre appartement !", "Succès",
 				JOptionPane.INFORMATION_MESSAGE);
 		refreshPage(e);

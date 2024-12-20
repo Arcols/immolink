@@ -19,6 +19,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.PlainDocument;
 
 import DAO.jdbc.LocataireDAO;
 import classes.Locataire;
@@ -202,6 +205,14 @@ public class PageNouveauLocataire {
         gbc_telephoneValeur.gridy = 1;
         donnees_loca.add(telephoneValeur, gbc_telephoneValeur);
         telephoneValeur.setColumns(10);
+        this.telephoneValeur.setDocument(new PlainDocument() {
+            @Override
+            public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+                if (str == null || getLength() + str.length() <= 10) {
+                    super.insertString(offs, str, a);
+                }
+            }
+        });
 
         JLabel labelMail = new JLabel("Mail");
         GridBagConstraints gbc_labelMail = new GridBagConstraints();
@@ -247,7 +258,7 @@ public class PageNouveauLocataire {
         donnees_loca.add(labelGenre, gbc_labelGenre);
 
         this.genreValeur = new JComboBox();
-        this.genreValeur.setModel(new DefaultComboBoxModel(new String[] { "H", "F", "O" }));
+        this.genreValeur.setModel(new DefaultComboBoxModel(new String[] { "H", "F" }));
         GridBagConstraints gbc_genreValeur = new GridBagConstraints();
         gbc_genreValeur.fill = GridBagConstraints.HORIZONTAL;
         gbc_genreValeur.insets = new Insets(0, 0, 5, 5);

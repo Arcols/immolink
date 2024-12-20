@@ -32,7 +32,7 @@ public class ModelePageNouveauBail {
 
     public ModelePageNouveauBail(PageNouveauBail pageNouveauBail) {
         this.pageNouveauBail = pageNouveauBail;
-        this.quotite_actuelle =100;
+        this.quotite_actuelle=0;
     }
 
     public ActionListener getAjouterLocataire() {
@@ -188,7 +188,7 @@ public class ModelePageNouveauBail {
 
         JSpinner quotiteSpinner = new JSpinner();
         quotiteSpinner.setBounds(220, 30, 100, 25);
-        quotiteSpinner.setModel(new SpinnerNumberModel(this.quotite_actuelle, 0, this.quotite_actuelle, 1));
+        quotiteSpinner.setModel(new SpinnerNumberModel(100-this.quotite_actuelle, 0, 100-this.quotite_actuelle, 1));
 
         dialog.add(quotiteSpinner);
 
@@ -217,12 +217,9 @@ public class ModelePageNouveauBail {
             this.pageNouveauBail.getChoix_nb_piece().setText(nbpiece.toString());
         };
     }
-    public int getQuotite(){
-        return this.quotite_actuelle;
-    }
 
     public void setQuotite(int remove){
-        this.quotite_actuelle -=remove;
+        this.quotite_actuelle +=remove;
     }
 
     public DocumentListener getTextFieldDocumentListener() {
@@ -289,33 +286,37 @@ public class ModelePageNouveauBail {
     }
     public ActionListener CreationBail(){
         return e -> {
-            String ville=(String) this.pageNouveauBail.getChoix_ville().getSelectedItem();
-            String adresse=(String) this.pageNouveauBail.getChoix_adresse().getSelectedItem();
-            String compl=(String) this.pageNouveauBail.getChoix_complement().getSelectedItem();
-            String numfisc=new DAO.jdbc.BienLouableDAO().getFiscFromCompl(ville,adresse,compl);
-            java.sql.Date sqlDateDebut = new java.sql.Date(pageNouveauBail.getChoix_date_debut().getDate().getTime());
-            java.sql.Date sqlDateFin = new java.sql.Date(pageNouveauBail.getChoix_date_fin().getDate().getTime());
-            if(sqlDateDebut.after(sqlDateFin)||sqlDateDebut.equals(sqlDateFin)){
-                JOptionPane.showMessageDialog(null, "Vos dates ne sont pas correctes, veuillez les vérifier.", "Erreur", JOptionPane.ERROR_MESSAGE);
-            } else {
-                Bail bail = new Bail(this.pageNouveauBail.getSolde_tout_compte().isSelected(),
-                        numfisc,
-                        Double.parseDouble(this.pageNouveauBail.getChoix_loyer().getText()),
-                        Double.parseDouble(this.pageNouveauBail.getChoix_prevision().getText()),
-                        Double.parseDouble(this.pageNouveauBail.getChoix_depot_garantie().getText()),
-                        sqlDateDebut,
-                        sqlDateFin);
-                try {
-                    new BailDAO().create(bail);
-                    for (int i = 0; i < Locataireselected.size(); i++) {
-                        new LouerDAO().create(Locataireselected.get(i), bail, ListQuotite.get(i));
+            if(this.quotite_actuelle==100) {
+                String ville = (String) this.pageNouveauBail.getChoix_ville().getSelectedItem();
+                String adresse = (String) this.pageNouveauBail.getChoix_adresse().getSelectedItem();
+                String compl = (String) this.pageNouveauBail.getChoix_complement().getSelectedItem();
+                String numfisc = new DAO.jdbc.BienLouableDAO().getFiscFromCompl(ville, adresse, compl);
+                java.sql.Date sqlDateDebut = new java.sql.Date(pageNouveauBail.getChoix_date_debut().getDate().getTime());
+                java.sql.Date sqlDateFin = new java.sql.Date(pageNouveauBail.getChoix_date_fin().getDate().getTime());
+                if (sqlDateDebut.after(sqlDateFin) || sqlDateDebut.equals(sqlDateFin)) {
+                    JOptionPane.showMessageDialog(null, "Vos dates ne sont pas correctes, veuillez les vérifier.", "Erreur", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    Bail bail = new Bail(this.pageNouveauBail.getSolde_tout_compte().isSelected(),
+                            numfisc,
+                            Double.parseDouble(this.pageNouveauBail.getChoix_loyer().getText()),
+                            Double.parseDouble(this.pageNouveauBail.getChoix_prevision().getText()),
+                            Double.parseDouble(this.pageNouveauBail.getChoix_depot_garantie().getText()),
+                            sqlDateDebut,
+                            sqlDateFin);
+                    try {
+                        new BailDAO().create(bail);
+                        for (int i = 0; i < Locataireselected.size(); i++) {
+                            new LouerDAO().create(Locataireselected.get(i), bail, ListQuotite.get(i));
+                        }
+                        JOptionPane.showMessageDialog(null, "Le Bail a été ajouté et lié à vos locataires !", "Succès",
+                                JOptionPane.INFORMATION_MESSAGE);
+                        refreshPage(e);
+                    } catch (DAOException | SQLException ex) {
+                        JOptionPane.showMessageDialog(null, "Une erreur est survenue lors de la création du bail.", "Erreur", JOptionPane.ERROR_MESSAGE);
                     }
-                    JOptionPane.showMessageDialog(null, "Le Bail a été ajouté et lié à vos locataires !", "Succès",
-                            JOptionPane.INFORMATION_MESSAGE);
-                    refreshPage(e);
-                } catch (DAOException | SQLException ex) {
-                    JOptionPane.showMessageDialog(null, "Une erreur est survenue lors de la création du bail.", "Erreur", JOptionPane.ERROR_MESSAGE);
                 }
+            } else {
+                JOptionPane.showMessageDialog(null, "La quotité du bail n'est pas à 100% !", "Erreur", JOptionPane.ERROR_MESSAGE);
             }
         };
     }
