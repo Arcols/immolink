@@ -42,7 +42,7 @@ public class ModelePageMonBien {
 
         // Récupération des Travaux
         DevisDAO devisDAO = new DevisDAO();
-        List<Devis> devis = devisDAO.getAllDevisFromABien(bienLouable.getNumero_fiscal(),TypeLogement.APPARTEMENT);
+        List<Devis> devis = devisDAO.getAllDevisFromABien(bienLouable.getNumero_fiscal(),bienLouableDAO.getTypeFromId(id));
 
         // Remplissage du modèle avec les données des locataires
         for (Devis devi : devis) {
@@ -72,7 +72,7 @@ public class ModelePageMonBien {
                 page.getAffichageVille().setText(bienLouable.getVille());
                 page.getAffichageAdresse().setText(bienLouable.getAdresse());
                 page.getAffichageComplement().setText(bienLouable.getComplement_adresse());
-                page.getAffichageCoutTravaux().setText(String.valueOf(devisDAO.getMontantTotalTravaux(bienLouable.getNumero_fiscal(), TypeLogement.APPARTEMENT))+" €");
+                page.getAffichageCoutTravaux().setText(String.valueOf(devisDAO.getMontantTotalTravaux(bienLouable.getNumero_fiscal(), bienLouableDAO.getTypeFromId(idBien)))+" €");
             }
         } catch (DAOException e) {
             throw new DAOException("Erreur lors du chargement des informations du bien : " + e.getMessage(), e);

@@ -3,6 +3,7 @@ package classes;
 import DAO.db.ConnectionDB;
 import enumeration.TypeLogement;
 
+import java.lang.reflect.Type;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,6 +19,7 @@ public class BienLouable extends BienImmobilier {
 	private String adresse;
 	private String ville;
 	private Integer id_garage_asosscie;
+	private TypeLogement typeLogement;
 
 	/**
 	 * Constructeur de la classe BienLouable
@@ -27,10 +29,11 @@ public class BienLouable extends BienImmobilier {
 	 * @param complement_adresse le complément d'adresse du bien
 	 * @param diagnostic la liste des diagnostics du bien
 	 * @param id_garage_associe l'identifiant du garage associé
+	 * @param typeLogement le type de logement
 	 * @throws IllegalArgumentException si le numéro fiscal n'est pas valide
 	 */
 	public BienLouable(String numero_fiscal, String ville, String adresse, String complement_adresse,
-					   List<Diagnostic> diagnostic, Integer id_garage_associe) throws IllegalArgumentException {
+					   List<Diagnostic> diagnostic, Integer id_garage_associe,TypeLogement typeLogement) throws IllegalArgumentException {
 		if (numero_fiscal.length() != 12) {
 			throw new IllegalArgumentException("Numéro fiscal invalide");
 		}
@@ -41,6 +44,7 @@ public class BienLouable extends BienImmobilier {
 		this.ville = ville;
 		this.travaux = new ArrayList<Devis>();
 		this.id_garage_asosscie = (id_garage_associe != null) ? id_garage_associe : null;
+		this.typeLogement = typeLogement;
 	}
 
 	public String getNumero_fiscal() {
@@ -80,7 +84,7 @@ public class BienLouable extends BienImmobilier {
 	 *  @return le type de logement
 	 */
 	public TypeLogement getTypeLogement(){
-		return TypeLogement.APPARTEMENT;
+		return typeLogement;
 	}
 
 	/**

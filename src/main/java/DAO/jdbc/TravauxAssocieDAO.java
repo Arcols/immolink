@@ -27,9 +27,9 @@ public class TravauxAssocieDAO implements DAO.TravauxAssocieDAO {
                 Batiment batiment = batimentDAO.readFisc(num_fiscal);
                 id = batimentDAO.getIdBat(batiment.getVille(), batiment.getAdresse());
                 break;
-            case GARAGE:
+            case GARAGE_PAS_ASSOCIE:
                 GarageDAO garageDAO = new GarageDAO();
-                id = garageDAO.getIdGarage(num_fiscal);
+                id = garageDAO.getIdGarage(num_fiscal,TypeLogement.GARAGE_PAS_ASSOCIE);
                 break;
         }
         DevisDAO devisDAO = new DevisDAO();
@@ -61,9 +61,9 @@ public class TravauxAssocieDAO implements DAO.TravauxAssocieDAO {
                 Batiment batiment = batimentDAO.readFisc(num_fiscal);
                 id = batimentDAO.getIdBat(batiment.getVille(),batiment.getAdresse());
                 break;
-            case GARAGE:
+            case GARAGE_PAS_ASSOCIE:
                 GarageDAO garageDAO = new GarageDAO();
-                id = garageDAO.getIdGarage(num_fiscal);
+                id = garageDAO.getIdGarage(num_fiscal,TypeLogement.GARAGE_PAS_ASSOCIE);
                 break;
         }
         try{

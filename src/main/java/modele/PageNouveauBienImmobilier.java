@@ -186,7 +186,7 @@ public class PageNouveauBienImmobilier {
 		this.panel_caracteristique.add(type_de_bien, gbc_type_de_bien);
 		this.choix_type_de_bien = new JComboBox();
 		this.choix_type_de_bien
-				.setModel(new DefaultComboBoxModel(new String[] { "Appartement", "Bâtiment", "Garage" }));
+				.setModel(new DefaultComboBoxModel(new String[] { "Appartement", "Bâtiment", "Garage","Maison" }));
 		GridBagConstraints gbc_choix_type_de_bien = new GridBagConstraints();
 		gbc_choix_type_de_bien.fill = GridBagConstraints.HORIZONTAL;
 		gbc_choix_type_de_bien.insets = new Insets(0, 0, 5, 0);
@@ -548,7 +548,7 @@ public class PageNouveauBienImmobilier {
 			// remplis
 			isFilled = !this.getTexte_ville().getText().trim().isEmpty()
 					&& !this.getTexte_adresse().getText().trim().isEmpty();
-		} else if ("Appartement".equals(selectedType)) {
+		} else if ("Appartement".equals(selectedType) || "Maison".equals(selectedType)) {
 			// Critères pour les autres types de bien : vérifier choix_complement_adresse et
 			// choix_num_fiscal
 			isFilled = !this.getChoix_complement_adresse().getText().trim().isEmpty()

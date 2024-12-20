@@ -1,19 +1,14 @@
 package modele;
 
 import DAO.DAOException;
-import DAO.DevisDAO;
-import DAO.jdbc.BailDAO;
+import DAO.jdbc.BienLouableDAO;
 import DAO.jdbc.DiagnosticDAO;
-import DAO.jdbc.LogementDAO;
-import classes.BienLouable;
-import classes.Devis;
 import classes.Diagnostic;
+import enumeration.TypeLogement;
 import ihm.*;
 import ihm.Menu;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.sql.SQLException;
@@ -118,7 +113,11 @@ public class PageMonBien {
         frame.getContentPane().add(body, BorderLayout.CENTER);
         body.setLayout(new BorderLayout(0, 0));
 
-        JLabel lblNewLabel = new JLabel("Mon bien");
+        JLabel lblNewLabel = new JLabel("");
+        String titrePage = TypeLogement.getString(new BienLouableDAO().readId(idBien).getTypeLogement());
+        titrePage += " - " + new BienLouableDAO().readId(idBien).getAdresse();
+        lblNewLabel.setText(titrePage);
+        lblNewLabel.setFont(new Font("Arial", Font.PLAIN, 30));
         lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
         body.add(lblNewLabel, BorderLayout.NORTH);
 

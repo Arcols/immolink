@@ -45,8 +45,8 @@ public interface BienLouableDAO {
 
 	/**
 	 *  Récupère l'id d'un bien louable en utilisant son numéro fiscal
-	 * @param num_fiscal
-	 * @return
+	 * @param num_fiscal le numéro fiscal du bien louable
+	 * @return l'identifiant du bien louable
 	 * @throws DAOException
 	 */
 	Integer getId(String num_fiscal) throws DAOException;
@@ -136,5 +136,12 @@ public interface BienLouableDAO {
 	 * @return la liste des beaux associés
 	 */
 	List<Integer> getListeBeauxFromBien(BienLouable bien);
+
+	/**
+	 * Récupère le type de logement associé à un bien louable
+	 * @param id l'identifiant du bien louable
+	 * @return le type de logement
+	 */
+	TypeLogement getTypeFromId(int id);
 
 }

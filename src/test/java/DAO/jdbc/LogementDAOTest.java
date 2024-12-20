@@ -19,7 +19,7 @@ import java.util.Optional;
 
 import static org.junit.Assert.*;
 
-public class LogementDAOTest {
+public class ogementDAOTest {
     private LogementDAO logementDAO;
     private BatimentDAO batimentDAO;
     private GarageDAO garageDAO;
