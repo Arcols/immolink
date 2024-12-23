@@ -33,7 +33,7 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
             pstmt.executeUpdate();
             pstmt.close();
         } catch (SQLException | DAOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
 

@@ -11,6 +11,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.sql.SQLException;
@@ -25,6 +27,7 @@ import javax.swing.text.PlainDocument;
 
 import DAO.jdbc.BatimentDAO;
 import classes.Diagnostic;
+import classes.Garage;
 import enumeration.NomsDiags;
 import ihm.Charte;
 import ihm.Menu;
@@ -53,11 +56,12 @@ public class PageNouveauBienImmobilier {
 	private JFormattedTextField texte_code_postal;
 	private JSpinner choix_nb_piece;
 	private JSpinner choix_surface;
-	private JCheckBox check_garage;
+	private JButton addGarageButton = new JButton("Lier un garage");
 	private List<Diagnostic> liste_diagnostic;
 	private Map<String, Diagnostic> map_diagnostic;
 	private Set<String> setVilles;
 	private Map<String, List<String>> mapVillesAdresses;
+	private Garage garageLie = null;
 
 	/**
 	 * Launch the application.
@@ -341,14 +345,23 @@ public class PageNouveauBienImmobilier {
 		this.choix_nb_piece
 				.setModel(new SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
 
-		this.check_garage = new JCheckBox("Ajouter un garage");
+
+
+		this.addGarageButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				showGaragePopup();
+			}
+		});
 		GridBagConstraints gbc_check_garage = new GridBagConstraints();
 		gbc_check_garage.fill = GridBagConstraints.HORIZONTAL;
-		gbc_check_garage.gridx = 1;
+		gbc_check_garage.gridwidth = 2;
+		gbc_check_garage.insets = new Insets(10, 0, 0, 0);
+		gbc_check_garage.gridx = 0;
 		gbc_check_garage.gridy = 7;
-		this.panel_caracteristique.add(this.check_garage, gbc_check_garage);
-		this.check_garage.setAlignmentY(Component.BOTTOM_ALIGNMENT);
-		this.check_garage.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		this.panel_caracteristique.add(this.addGarageButton, gbc_check_garage);
+		this.addGarageButton.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+		this.addGarageButton.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
 		JPanel panel_diagnostic = new JPanel();
 		contenu.add(panel_diagnostic);
@@ -481,8 +494,8 @@ public class PageNouveauBienImmobilier {
 		return this.valider;
 	}
 
-	public JCheckBox getCheck_garage() {
-		return this.check_garage;
+	public JButton getAddGarageButton() {
+		return this.addGarageButton;
 	}
 
 	public JSpinner getChoix_nb_piece() {
@@ -519,6 +532,10 @@ public class PageNouveauBienImmobilier {
 
 	public JLabel getCode_postalLabel() {
 		return code_postal;
+	}
+
+	public Garage getGarageLie() {
+		return garageLie;
 	}
 
 	public void initialiseMapDiagnostic() {
@@ -560,6 +577,18 @@ public class PageNouveauBienImmobilier {
 
 		// Active ou désactive le bouton "Valider"
 		this.getValider().setEnabled(isFilled);
+	}
+
+	public void addGarage(Garage garage) {
+		// Handle the created garage object
+		System.out.println("Garage created: " + garage);
+		// Add your logic to handle the garage object here
+		this.garageLie = garage;
+	}
+
+	private void showGaragePopup() {
+		PopUpCreationGarageLieBL popup = new PopUpCreationGarageLieBL(this);
+		popup.getFrame().setVisible(true);
 	}
 
 }

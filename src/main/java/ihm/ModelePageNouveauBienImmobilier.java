@@ -68,8 +68,13 @@ public class ModelePageNouveauBienImmobilier {
 						break;
 				}
 			} catch (Exception ex) {
-				JOptionPane.showMessageDialog(null, "Une erreur est survenue lors de la création du bien immobilier.",
-						"Erreur", JOptionPane.ERROR_MESSAGE);
+				if (ex.getMessage().contains("numero_fiscal")){
+					JOptionPane.showMessageDialog(null, "Le numéro fiscal est déjà utilisé pour un autre bien louable.",
+							"Erreur", JOptionPane.ERROR_MESSAGE);
+				} else{
+					JOptionPane.showMessageDialog(null, "Une erreur est survenue lors de la création du bien immobilier.\n "+ex.getMessage(),
+							"Erreur", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		};
 	}
@@ -90,6 +95,9 @@ public class ModelePageNouveauBienImmobilier {
 	}
 
 	private void handleAppartementCreation(ActionEvent e) throws Exception {
+		if(isGarageLinkedToSameFiscalNumber()){
+			return;
+		}
 		Logement logement = new Logement(
 				(Integer) pageNouveauBienImmobilier.getChoix_nb_piece().getValue(),
 				((Double) pageNouveauBienImmobilier.getChoix_surface().getValue()),
@@ -102,16 +110,11 @@ public class ModelePageNouveauBienImmobilier {
 		LogementDAO logementDAO = new LogementDAO();
 		logementDAO.create(logement,TypeLogement.APPARTEMENT);
 		addDiagnostics(logement.getNumero_fiscal());
-		if (pageNouveauBienImmobilier.getCheck_garage().isSelected()) {
-			Garage garage = new Garage(
-					pageNouveauBienImmobilier.getChoix_num_fiscal().getText(),
-					(String) pageNouveauBienImmobilier.getChoix_ville().getSelectedItem(),
-					(String) pageNouveauBienImmobilier.getChoix_adresse().getSelectedItem(),
-					pageNouveauBienImmobilier.getChoix_complement_adresse().getText(),
-					TypeLogement.GARAGE_ASSOCIE);
+		if (pageNouveauBienImmobilier.getGarageLie()!=null) {
+
 			GarageDAO garageDAO = new GarageDAO();
-			garageDAO.create(garage);
-			logementDAO.lierUnGarageAuBienLouable(logement, garage, TypeLogement.APPARTEMENT);
+			garageDAO.create(pageNouveauBienImmobilier.getGarageLie());
+			logementDAO.lierUnGarageAuBienLouable(logement, pageNouveauBienImmobilier.getGarageLie(), TypeLogement.APPARTEMENT);
 			JOptionPane.showMessageDialog(null, "L'appartement ainsi que son garage ont été ajoutés !", "Succès",
 					JOptionPane.INFORMATION_MESSAGE);
 		} else {
@@ -122,6 +125,9 @@ public class ModelePageNouveauBienImmobilier {
 	}
 
 	private void handleMaisonCreation(ActionEvent e) throws DAOException {
+		if(isGarageLinkedToSameFiscalNumber()){
+			return;
+		}
 		Logement logement = new Logement(
 				(Integer) pageNouveauBienImmobilier.getChoix_nb_piece().getValue(),
 				((Double) pageNouveauBienImmobilier.getChoix_surface().getValue()),
@@ -134,16 +140,10 @@ public class ModelePageNouveauBienImmobilier {
 		LogementDAO logementDAO = new LogementDAO();
 		logementDAO.create(logement,TypeLogement.MAISON);
 		addDiagnostics(logement.getNumero_fiscal());
-		if (pageNouveauBienImmobilier.getCheck_garage().isSelected()) {
-			Garage garage = new Garage(
-					pageNouveauBienImmobilier.getChoix_num_fiscal().getText(),
-					(String) pageNouveauBienImmobilier.getChoix_ville().getSelectedItem(),
-					(String) pageNouveauBienImmobilier.getChoix_adresse().getSelectedItem(),
-					pageNouveauBienImmobilier.getChoix_complement_adresse().getText(),
-					TypeLogement.GARAGE_ASSOCIE);
+		if (pageNouveauBienImmobilier.getGarageLie()!=null) {
 			GarageDAO garageDAO = new GarageDAO();
-			garageDAO.create(garage);
-			logementDAO.lierUnGarageAuBienLouable(logement, garage, TypeLogement.MAISON);
+			garageDAO.create(pageNouveauBienImmobilier.getGarageLie());
+			logementDAO.lierUnGarageAuBienLouable(logement, pageNouveauBienImmobilier.getGarageLie(), TypeLogement.MAISON);
 			JOptionPane.showMessageDialog(null, "La maison ainsi que son garage ont été ajoutés !", "Succès",
 					JOptionPane.INFORMATION_MESSAGE);
 		} else {
@@ -221,7 +221,7 @@ public class ModelePageNouveauBienImmobilier {
 			this.pageNouveauBienImmobilier.getChoix_nb_piece().setVisible(isAppartement);
 			this.pageNouveauBienImmobilier.getComplement_adresse().setVisible(!isBatiment);
 			this.pageNouveauBienImmobilier.getChoix_complement_adresse().setVisible(!isBatiment);
-			this.pageNouveauBienImmobilier.getCheck_garage().setVisible(isAppartement);
+			this.pageNouveauBienImmobilier.getAddGarageButton().setVisible(isAppartement);
 
 			// Remplacer les JComboBox par JTextField pour "Bâtiment"
 			GridBagConstraints gbc = new GridBagConstraints();
@@ -374,6 +374,7 @@ public class ModelePageNouveauBienImmobilier {
 		dialog.setVisible(true);
 		return date.get();
 	}
+
 	public ActionListener quitterPage(){
 		return e -> {
 			pageNouveauBienImmobilier.getFrame().dispose();
@@ -381,4 +382,18 @@ public class ModelePageNouveauBienImmobilier {
 			PageMesBiens.main(null);
 		};
 	}
+
+	private boolean isGarageLinkedToSameFiscalNumber() {
+		System.out.println("Garage : "+pageNouveauBienImmobilier.getGarageLie());
+		System.out.println("Garage : "+pageNouveauBienImmobilier.getGarageLie().getNumero_fiscal());
+		System.out.println("BL : "+pageNouveauBienImmobilier.getChoix_num_fiscal().getText());
+		if (pageNouveauBienImmobilier.getGarageLie() != null &&
+				pageNouveauBienImmobilier.getGarageLie().getNumero_fiscal().equals(pageNouveauBienImmobilier.getChoix_num_fiscal().getText())) {
+			JOptionPane.showMessageDialog(null, "Un garage ne peut pas être lié avec le même numéro fiscal qu'un bien louable", "Erreur",
+					JOptionPane.ERROR_MESSAGE);
+			return true;
+		}
+		return false;
+	}
+
 }
