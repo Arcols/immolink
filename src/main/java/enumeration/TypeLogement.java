@@ -1,7 +1,7 @@
 package enumeration;
 
 public enum TypeLogement {
-	APPARTEMENT(0),MAISON(1),GARAGE_PAS_ASSOCIE(2),GARAGE_ASSOCIE(3), BATIMENT(4) ;
+	APPARTEMENT(0),MAISON(1),GARAGE_PAS_ASSOCIE(2),GARAGE_ASSOCIE(3), BATIMENT(4),NONE(-1); ;
 	// je veux que avec APPARTEMENT on puisse accéder à "Appartement" et avec MAISON à "Maison" etc...
 
 	private final int value;
@@ -73,6 +73,19 @@ public enum TypeLogement {
 			default:
 				throw new IllegalArgumentException("Unknown name: " + name);
 		}
+	}
+
+	public boolean egal(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
+			return true;
+		}
+		if (obj.getClass() != this.getClass()) {
+			return false;
+		}
+		return this.value == ((TypeLogement) obj).value;
 	}
 
 }

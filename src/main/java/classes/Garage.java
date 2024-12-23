@@ -28,6 +28,6 @@ public class Garage extends classes.BienLouable {
 				&& this.getVille().equals(garage.getVille())
 				&& this.getAdresse().equals(garage.getAdresse())
 				&& this.getComplement_adresse().equals(garage.getComplement_adresse())
-				&& this.getTypeLogement().equals(garage.getTypeLogement());
+				&& this.getTypeLogement().egal(garage.getTypeLogement()) ;
 	}
 }

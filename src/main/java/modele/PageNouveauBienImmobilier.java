@@ -29,6 +29,7 @@ import DAO.jdbc.BatimentDAO;
 import classes.Diagnostic;
 import classes.Garage;
 import enumeration.NomsDiags;
+import enumeration.TypeLogement;
 import ihm.Charte;
 import ihm.Menu;
 import ihm.ModelePageNouveauBienImmobilier;
@@ -61,7 +62,7 @@ public class PageNouveauBienImmobilier {
 	private Map<String, Diagnostic> map_diagnostic;
 	private Set<String> setVilles;
 	private Map<String, List<String>> mapVillesAdresses;
-	private Garage garageLie = new Garage("            ", "", "", "", null);
+	private Garage garageLie = new Garage("            ", "", "", "", TypeLogement.NONE);
 
 	/**
 	 * Launch the application.

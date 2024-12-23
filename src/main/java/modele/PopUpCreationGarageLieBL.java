@@ -121,7 +121,7 @@ public class PopUpCreationGarageLieBL {
                 handleTableDoubleClick(evt);
             }
         });
-
+        this.frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
     private void handleTableDoubleClick(java.awt.event.MouseEvent evt) {
         // Vérifier s'il s'agit d'un double-clic

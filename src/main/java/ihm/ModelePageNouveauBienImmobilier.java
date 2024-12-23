@@ -110,7 +110,7 @@ public class ModelePageNouveauBienImmobilier {
 		LogementDAO logementDAO = new LogementDAO();
 		logementDAO.create(logement,TypeLogement.APPARTEMENT);
 		addDiagnostics(logement.getNumero_fiscal());
-		if (!(pageNouveauBienImmobilier.getGarageLie()).equals(new Garage("            ", "", "", "", null))) {
+		if (!(pageNouveauBienImmobilier.getGarageLie()).equals(new Garage("            ", "", "", "", TypeLogement.NONE))) {
 			logementDAO.lierUnGarageAuBienLouable(logement, pageNouveauBienImmobilier.getGarageLie(), TypeLogement.APPARTEMENT);
 			JOptionPane.showMessageDialog(null, "L'appartement ainsi que son garage ont été ajoutés !", "Succès",
 					JOptionPane.INFORMATION_MESSAGE);
@@ -137,7 +137,8 @@ public class ModelePageNouveauBienImmobilier {
 		LogementDAO logementDAO = new LogementDAO();
 		logementDAO.create(logement,TypeLogement.MAISON);
 		addDiagnostics(logement.getNumero_fiscal());
-		if (!(pageNouveauBienImmobilier.getGarageLie()).equals(new Garage("            ", "", "", "", null))) {
+		if (!(pageNouveauBienImmobilier.getGarageLie()).equals(new Garage("            ", "", "", "", TypeLogement.NONE))) {
+			System.out.println("ezrf")	;
 			logementDAO.lierUnGarageAuBienLouable(logement, pageNouveauBienImmobilier.getGarageLie(), TypeLogement.MAISON);
 			JOptionPane.showMessageDialog(null, "La maison ainsi que son garage ont été ajoutés !", "Succès",
 					JOptionPane.INFORMATION_MESSAGE);
