@@ -61,7 +61,7 @@ public class PageNouveauBienImmobilier {
 	private Map<String, Diagnostic> map_diagnostic;
 	private Set<String> setVilles;
 	private Map<String, List<String>> mapVillesAdresses;
-	private Garage garageLie = null;
+	private Garage garageLie = new Garage("            ", "", "", "", null);
 
 	/**
 	 * Launch the application.
@@ -534,9 +534,7 @@ public class PageNouveauBienImmobilier {
 		return code_postal;
 	}
 
-	public Garage getGarageLie() {
-		return garageLie;
-	}
+	public Garage getGarageLie() {return this.garageLie;}
 
 	public void initialiseMapDiagnostic() {
 		for (NomsDiags diag : NomsDiags.values()) {
@@ -580,9 +578,6 @@ public class PageNouveauBienImmobilier {
 	}
 
 	public void addGarage(Garage garage) {
-		// Handle the created garage object
-		System.out.println("Garage created: " + garage);
-		// Add your logic to handle the garage object here
 		this.garageLie = garage;
 	}
 

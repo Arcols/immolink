@@ -18,5 +18,11 @@ public class Garage extends classes.BienLouable {
 	public Garage(String numero_fiscal, String ville, String adresse, String complement_adresse,TypeLogement typeLogement) {
 		super(numero_fiscal, ville, adresse, complement_adresse, null,null,typeLogement);
 	}
-
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Garage garage = (Garage) o;
+		return this.getNumero_fiscal().equals(garage.getNumero_fiscal());
+	}
 }
