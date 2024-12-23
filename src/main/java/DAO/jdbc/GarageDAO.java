@@ -25,7 +25,7 @@ public class GarageDAO implements DAO.GarageDAO {
 			PreparedStatement pstmt = cn.prepareStatement(requete);
 			pstmt.setString(1, garage.getNumero_fiscal());
 			pstmt.setString(2, garage.getComplement_adresse());
-			pstmt.setInt(3, TypeLogement.GARAGE_PAS_ASSOCIE.getValue());
+			pstmt.setInt(3, garage.getTypeLogement().getValue());
 			pstmt.setString(4, null);
 			pstmt.setString(5, null);
 			pstmt.setString(7, null);
@@ -101,6 +101,22 @@ public class GarageDAO implements DAO.GarageDAO {
 	}
 
 	@Override
+	public void updateTypeGarage(int id, TypeLogement typeActuel, TypeLogement typeApres) throws DAOException {
+		try {
+			Connection cn = ConnectionDB.getInstance();
+			String query = "UPDATE bienlouable SET type_logement = ? WHERE id = ? AND type_logement = ?";
+			PreparedStatement pstmt = cn.prepareStatement(query);
+			pstmt.setInt(1, typeApres.getValue());
+			pstmt.setInt(2, id);
+			pstmt.setInt(3, typeActuel.getValue());
+			pstmt.executeUpdate();
+			pstmt.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+        @Override
 	public List<Garage> findAll() throws DAOException {
 		List<Garage> all_garage = new ArrayList<>();
 		all_garage.addAll(findAllGarageAssoc());
@@ -165,7 +181,7 @@ public class GarageDAO implements DAO.GarageDAO {
 			Connection cn = ConnectionDB.getInstance();
 			String query = "SELECT garage_assoc FROM bienlouable WHERE numero_fiscal = ?";
 			PreparedStatement pstmt = cn.prepareStatement(query);
-			pstmt.setInt(1, idBien);
+			pstmt.setString(1, new BienLouableDAO().readId(idBien).getNumero_fiscal());
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
 				idGarage = rs.getInt("garage_assoc");

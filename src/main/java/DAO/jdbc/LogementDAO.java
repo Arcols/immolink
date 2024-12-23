@@ -115,6 +115,7 @@ public class LogementDAO implements DAO.LogementDAO {
 			pstmt.setInt(3, typeLogement.getValue());
 			pstmt.executeUpdate();
 			pstmt.close();
+			new GarageDAO().updateTypeGarage(idGarage,TypeLogement.GARAGE_PAS_ASSOCIE,TypeLogement.GARAGE_ASSOCIE);
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}

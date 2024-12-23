@@ -36,7 +36,7 @@ public class BienLouableTest {
         List<Diagnostic> diagnostics = new ArrayList<>();
         diagnostics.add(diagnostic1);
 
-        bienLouable = new BienLouable("123456789101", "Paris", "123 Rue de la Paix", "Appartement 12B", diagnostics, null);
+        bienLouable = new BienLouable("123456789101", "Paris", "123 Rue de la Paix", "Appartement 12B", diagnostics, null,TypeLogement.MAISON);
     }
 
     @Test
@@ -116,7 +116,7 @@ public class BienLouableTest {
 
     @Test
     public void testGetTypeLogement() {
-        assertEquals(TypeLogement.APPARTEMENT, bienLouable.getTypeLogement());
+        assertEquals(TypeLogement.MAISON, bienLouable.getTypeLogement());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -124,6 +124,6 @@ public class BienLouableTest {
         List<Diagnostic> diagnostics = new ArrayList<>();
         diagnostics.add(diagnostic1);
 
-        new BienLouable("123456", "Paris", "123 Rue de la Paix", "Appartement 12B", diagnostics, null);
+        new BienLouable("123456", "Paris", "123 Rue de la Paix", "Appartement 12B", diagnostics, null,TypeLogement.MAISON);
     }
 }

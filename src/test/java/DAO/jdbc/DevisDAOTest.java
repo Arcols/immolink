@@ -32,7 +32,7 @@ public class DevisDAOTest {
         Batiment batiment = new Batiment("123456789101", "Paris", "123 Rue de la Paix", "31000");
         batimentDAO.create(batiment);
 
-        BienLouable bienLouable = new BienLouable("123456789101", "Paris", "123 Rue de la Paix", "31000", new ArrayList<>(), null);
+        BienLouable bienLouable = new BienLouable("123456789101", "Paris", "123 Rue de la Paix", "31000", new ArrayList<>(), null,TypeLogement.APPARTEMENT);
         bienLouableDAO.create(bienLouable, TypeLogement.APPARTEMENT, 3, 75.0);
     }
 

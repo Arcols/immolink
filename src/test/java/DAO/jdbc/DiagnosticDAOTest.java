@@ -38,7 +38,7 @@ public class DiagnosticDAOTest {
         Batiment batiment = new Batiment("123456789101", "Paris", "123 Rue de la Paix","31000");
         batimentDAO.create(batiment);
 
-        BienLouable bienLouable = new BienLouable("123456789101", "Paris", "123 Rue de la Paix", "Apt 1", new ArrayList<>(),null);
+        BienLouable bienLouable = new BienLouable("123456789101", "Paris", "123 Rue de la Paix", "Apt 1", new ArrayList<>(),null,TypeLogement.APPARTEMENT);
         bienLouableDAO = new BienLouableDAO();
         bienLouableDAO.create(bienLouable, TypeLogement.APPARTEMENT, 3, 100.0);
 

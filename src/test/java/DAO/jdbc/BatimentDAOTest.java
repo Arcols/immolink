@@ -115,8 +115,8 @@ public class BatimentDAOTest {
         Batiment batiment = new Batiment("123456789101", "Paris", "123 Rue de la Paix", "31000");
         batimentDAO.create(batiment);
 
-        BienLouable bienLouable1 = new BienLouable("123456789102", "Paris", "123 Rue de la Paix", "Appartement 1", new ArrayList<>(), null);
-        BienLouable bienLouable2 = new BienLouable("123456789103", "Paris", "123 Rue de la Paix", "Appartement 2", new ArrayList<>(), null);
+        BienLouable bienLouable1 = new BienLouable("123456789102", "Paris", "123 Rue de la Paix", "Appartement 1", new ArrayList<>(), null,TypeLogement.APPARTEMENT);
+        BienLouable bienLouable2 = new BienLouable("123456789103", "Paris", "123 Rue de la Paix", "Appartement 2", new ArrayList<>(), null,TypeLogement.APPARTEMENT);
         new BienLouableDAO().create(bienLouable1, TypeLogement.APPARTEMENT, 3, 105.0);
         new BienLouableDAO().create(bienLouable2, TypeLogement.APPARTEMENT, 3, 105.0);
 
@@ -135,8 +135,8 @@ public class BatimentDAOTest {
         batimentDAO.create(batiment1);
         batimentDAO.create(batiment2);
 
-        BienLouable bienLouable1 = new BienLouable("123456789103", "Paris", "123 Rue de la Paix", "Appartement 1", new ArrayList<>(), null);
-        BienLouable bienLouable2 = new BienLouable("123456789104", "Lyon", "456 Rue de Lyon", "Appartement 2", new ArrayList<>(), null);
+        BienLouable bienLouable1 = new BienLouable("123456789103", "Paris", "123 Rue de la Paix", "Appartement 1", new ArrayList<>(), null,TypeLogement.APPARTEMENT);
+        BienLouable bienLouable2 = new BienLouable("123456789104", "Lyon", "456 Rue de Lyon", "Appartement 2", new ArrayList<>(), null,TypeLogement.APPARTEMENT);
         new BienLouableDAO().create(bienLouable1, TypeLogement.APPARTEMENT, 3, 105.0);
         new BienLouableDAO().create(bienLouable2, TypeLogement.APPARTEMENT, 3, 105.0);
 

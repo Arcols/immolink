@@ -44,11 +44,13 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
             String query = "UPDATE bienlouable SET garage_assoc = ? WHERE numero_fiscal = ? AND type_logement = ?";
             PreparedStatement pstmt = cn.prepareStatement(query);
             GarageDAO garageDAO = new GarageDAO();
-            pstmt.setInt(1, garageDAO.getIdGarage(garage.getNumero_fiscal(),TypeLogement.GARAGE_PAS_ASSOCIE));
+            Integer idGarage = garageDAO.getIdGarage(garage.getNumero_fiscal(),TypeLogement.GARAGE_PAS_ASSOCIE);
+            pstmt.setInt(1, idGarage);
             pstmt.setString(2, bien.getNumero_fiscal());
             pstmt.setInt(3, getTypeFromId(getId(bien.getNumero_fiscal())).getValue());
             pstmt.executeUpdate();
             pstmt.close();
+            garageDAO.updateTypeGarage(idGarage,TypeLogement.GARAGE_PAS_ASSOCIE,TypeLogement.GARAGE_ASSOCIE);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

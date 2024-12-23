@@ -45,6 +45,15 @@ public interface GarageDAO {
 	void delete(int id) throws DAOException;
 
 	/**
+	 *
+	 * @param id
+	 * @param typeActuel
+	 * @param typeApres
+	 * @throws DAOException
+	 */
+	void updateTypeGarage(int id,TypeLogement typeActuel,TypeLogement typeApres) throws DAOException;
+
+	/**
 	 * Récupère tous les biens immobiliers de la base de données.
 	 *
 	 * @return Une liste de tous les objets Garage
