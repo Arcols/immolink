@@ -390,7 +390,7 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
             pstmt.setInt(1,id);
             ResultSet rs = pstmt.executeQuery();
             if(rs.next()){
-                garage = rs.getInt("garage_assoc") != 0;
+                garage = rs.getInt("garage_assoc") != 0 || rs.getObject("garage_assoc") != null ;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -434,6 +434,24 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
             throw new RuntimeException(e);
         }
         return type;
+    }
+
+    @Override
+    public void délierGarage(Integer idBien) throws DAOException {
+        Integer idGarage = new GarageDAO().readIdGarageFromBien(idBien);
+        try {
+            Connection cn = ConnectionDB.getInstance();
+            String query = "UPDATE bienlouable SET garage_assoc = ? WHERE id = ?";
+            PreparedStatement pstmt = cn.prepareStatement(query);
+            pstmt.setNull(1, java.sql.Types.INTEGER);
+            pstmt.setInt(2, idBien);
+            pstmt.executeUpdate();
+            pstmt.close();
+            new GarageDAO().updateTypeGarage(idGarage,TypeLogement.GARAGE_ASSOCIE,TypeLogement.GARAGE_PAS_ASSOCIE);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

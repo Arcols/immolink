@@ -18,6 +18,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.junit.Assert.*;
 
@@ -284,5 +285,24 @@ public class BienLouableDAOTest {
         assertTrue(idBeaux.contains(bailDAO.getId(this.bail)));
         assertTrue(idBeaux.contains(bailDAO.getId(bail1)));
         assertTrue(idBeaux.contains(bailDAO.getId(bail2)));
+    }
+
+    @Test
+    public void testDélierGarage() throws DAOException {
+
+        Garage garage = new Garage("G12345678910", "Paris", "123 Rue de la Paix", "Garage 1", TypeLogement.GARAGE_PAS_ASSOCIE);
+        garageDAO.create(garage);
+        bienLouableDAO.lierUnGarageAuBienLouable(bienLouable, garage);
+
+        // Verify the Garage is associated
+        BienLouable bienLouableRecupere = bienLouableDAO.readFisc("101010101010");
+        assertNotNull(bienLouableRecupere.getIdgarage());
+
+        // Disassociate the Garage
+        bienLouableDAO.délierGarage(bienLouableDAO.getId("101010101010"));
+
+        // Verify the Garage is no longer associated
+        bienLouableRecupere = bienLouableDAO.readFisc("101010101010");
+        assertEquals(Optional.ofNullable(0), Optional.ofNullable(bienLouableRecupere.getIdgarage()));
     }
 }

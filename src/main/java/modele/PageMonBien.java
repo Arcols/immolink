@@ -3,7 +3,9 @@ package modele;
 import DAO.DAOException;
 import DAO.jdbc.BienLouableDAO;
 import DAO.jdbc.DiagnosticDAO;
+import DAO.jdbc.GarageDAO;
 import classes.Diagnostic;
+import classes.Garage;
 import enumeration.TypeLogement;
 import ihm.*;
 import ihm.Menu;
@@ -24,6 +26,7 @@ public class PageMonBien {
     private JFrame frame;
     private JLabel logo;
     private JLabel affichageNumeroFiscal;
+    private JLabel affichageNumeroFiscalGarage;
     private JLabel affichageVille;
     private JLabel affichageAdresse;
     private JLabel affichageComplement;
@@ -33,6 +36,7 @@ public class PageMonBien {
     private DefaultTableModel tableModel;
     private JPanel tableau_diagnostic;
     private JLabel diagnostics;
+    private JButton garageButton;
 
     /**
      * Create the application.
@@ -218,13 +222,47 @@ public class PageMonBien {
         gbc_labelCoutTravaux.gridy = 4;
         panel.add(labelCoutTravaux, gbc_labelCoutTravaux);
 
-
         GridBagConstraints gbc_affichageCoutTravaux = new GridBagConstraints();
         gbc_affichageCoutTravaux.anchor = GridBagConstraints.WEST;
         gbc_affichageCoutTravaux.insets = new Insets(0, 0, 5, 5);
         gbc_affichageCoutTravaux.gridx = 1;
         gbc_affichageCoutTravaux.gridy = 4;
         panel.add(this.affichageCoutTravaux, gbc_affichageCoutTravaux);
+
+        garageButton = new JButton();
+        GridBagConstraints gbc_buttonGarage = new GridBagConstraints();
+        gbc_buttonGarage.anchor = GridBagConstraints.WEST;
+        gbc_buttonGarage.insets = new Insets(0, 0, 5, 5);
+        gbc_buttonGarage.gridwidth = 2;
+        gbc_buttonGarage.gridx = 0;
+        gbc_buttonGarage.gridy = 5;
+        panel.add(garageButton, gbc_buttonGarage);
+        // bouton ajouter garage
+        if(new BienLouableDAO().haveGarage(idBien)){
+            Garage garage = new GarageDAO().read(new GarageDAO().readIdGarageFromBien(idBien));
+            this.affichageNumeroFiscalGarage = new JLabel(garage.getNumero_fiscal());
+
+            JLabel labelNumeroFiscalGarage = new JLabel("Numero fiscal");
+            GridBagConstraints gbc_labelNumeroFiscalGarage = new GridBagConstraints();
+            gbc_labelNumeroFiscalGarage.anchor = GridBagConstraints.WEST;
+            gbc_labelNumeroFiscalGarage.insets = new Insets(0, 0, 5, 5);
+            gbc_labelNumeroFiscalGarage.gridx = 0;
+            gbc_labelNumeroFiscalGarage.gridy = 6;
+            panel.add(labelNumeroFiscalGarage, gbc_labelNumeroFiscalGarage);
+
+            GridBagConstraints gbcaffichageNumeroFiscalGarage = new GridBagConstraints();
+            gbcaffichageNumeroFiscalGarage.anchor = GridBagConstraints.WEST;
+            gbcaffichageNumeroFiscalGarage.insets = new Insets(0, 0, 5, 5);
+            gbcaffichageNumeroFiscalGarage.gridx = 1;
+            gbcaffichageNumeroFiscalGarage.gridy = 6;
+            panel.add(this.affichageNumeroFiscalGarage, gbcaffichageNumeroFiscalGarage);
+
+            garageButton.setText("Délier mon Garage");
+            garageButton.addActionListener(modele.delierGarage(idBien));
+        }else{
+            garageButton.setText("Ajouter Garage");
+            //garageButton.addActionListener(modele.ouvrirPageNouveauGarage(idBien));
+        }
 
         JPanel panel_diagnostic = new JPanel();
         GridBagConstraints gbc_diagnostic = new GridBagConstraints();

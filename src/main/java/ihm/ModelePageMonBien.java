@@ -130,4 +130,23 @@ public class ModelePageMonBien {
             PageMesBiens.main(null);
         };
     }
+
+    public ActionListener delierGarage(int idBien) {
+        return new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    BienLouableDAO bienLouableDAO = new BienLouableDAO();
+                    bienLouableDAO.délierGarage(idBien);
+                    pageMonBien.getFrame().dispose();
+                    pageMonBien = new PageMonBien(idBien);
+                    new PageMesBiens();
+                } catch (DAOException ex) {
+                    throw new RuntimeException(ex);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        };
+    }
 }

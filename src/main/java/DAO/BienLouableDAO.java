@@ -143,4 +143,10 @@ public interface BienLouableDAO {
 	 */
 	TypeLogement getTypeFromId(int id);
 
+	/**
+	 * Délie un garage à son bien louable
+	 * @param idBien l'identifiant du bien louable
+	 * @throws DAOException
+	 */
+	void délierGarage(Integer idBien) throws DAOException;
 }

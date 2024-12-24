@@ -50,7 +50,7 @@ public class TravauxAssocieDAO implements DAO.TravauxAssocieDAO {
     @Override
     public List<Integer> findAll(String num_fiscal, TypeLogement typeLogement) throws DAOException {
         List<Integer> idDevis = new ArrayList<Integer>();
-        Integer id = 0;
+        Integer id = null;
         switch (typeLogement){
             case APPARTEMENT:
                 BienLouableDAO bienDAO = new BienLouableDAO();
