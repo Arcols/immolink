@@ -1,37 +1,32 @@
 package modele;
 
 import DAO.DAOException;
-import DAO.jdbc.BatimentDAO;
+import DAO.jdbc.BienLouableDAO;
 import DAO.jdbc.GarageDAO;
 import classes.BienLouable;
-import classes.Diagnostic;
 import classes.Garage;
 import enumeration.TypeLogement;
 import ihm.Charte;
-import ihm.ModelePageMesBiens;
 import ihm.ModelePopUpCreationGarageBL;
+import ihm.ModelePopUpLierGarageAuBien;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.text.AttributeSet;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.PlainDocument;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
-public class PopUpCreationGarageLieBL {
+public class PopUpLierGarageAuBien {
+
+    private final PageMonBien mainPage;
+    private final Integer idGarage;
     private JFrame frame;
-    private PageNouveauBienImmobilier mainPage;
     private DefaultTableModel tableModel;
     private JTable table;
+    private BienLouable bien;
 
-    public PopUpCreationGarageLieBL(PageNouveauBienImmobilier mainPage) {
-        this.mainPage = mainPage;
+    public PopUpLierGarageAuBien(PageMonBien pageMonBien, Integer idGarage) {
+        this.mainPage = pageMonBien;
+        this.idGarage = idGarage;
         this.initialize();
     }
 
@@ -39,12 +34,8 @@ public class PopUpCreationGarageLieBL {
         return this.frame;
     }
 
-    public PopUpCreationGarageLieBL() {
-        this.initialize();
-    }
-
     private void initialize(){
-        ModelePopUpCreationGarageBL modele = new ModelePopUpCreationGarageBL();
+        ModelePopUpLierGarageAuBien modele = new ModelePopUpLierGarageAuBien();
         // Initialisation du JFrame
         this.frame = new JFrame();
         this.frame.setBounds(150, 150, 600, 400);
@@ -59,7 +50,7 @@ public class PopUpCreationGarageLieBL {
         FlowLayout fl_titre = (FlowLayout) titre.getLayout();
         this.frame.getContentPane().add(titre, BorderLayout.NORTH);
 
-        JLabel titrePage = new JLabel("Garage à lier au bien louable");
+        JLabel titrePage = new JLabel("Bien louable à lier au garage");
         titrePage.setFont(new Font("Arial", Font.PLAIN, 25));
         titrePage.setAlignmentY(0.0f);
         titrePage.setAlignmentX(0.5f);
@@ -75,7 +66,7 @@ public class PopUpCreationGarageLieBL {
         panel.setLayout(gbl_panel);
 
         try {
-            tableModel = ModelePopUpCreationGarageBL.loadDataGaragesPasAssosToTable();
+            tableModel = modele.loadDataBienLouablePasAssosToTable();
             table = new JTable(tableModel);
         } catch (SQLException | DAOException e) {
             JOptionPane.showMessageDialog(frame, "Erreur lors du chargement des données : " + e.getMessage(),
@@ -118,35 +109,39 @@ public class PopUpCreationGarageLieBL {
         table.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                handleTableDoubleClick(evt);
+                try {
+                    handleTableDoubleClick(evt);
+                } catch (DAOException | SQLException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
         this.frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
-    private void handleTableDoubleClick(java.awt.event.MouseEvent evt) {
+
+    private void handleTableDoubleClick(java.awt.event.MouseEvent evt) throws DAOException, SQLException {
         // Vérifier s'il s'agit d'un double-clic
         if (evt.getClickCount() == 2) {
             // Obtenir l'index de la ligne cliquée
             int row = table.getSelectedRow();
-
             // Récupérer les données de la ligne sélectionnée
             if (row != -1) {
                 String num_fisc = (String) tableModel.getValueAt(row, 0);
-                Integer Id_garage = -1;
+                Integer idBien = -1;
                 try {
-                    Id_garage = new GarageDAO().getIdGarage(num_fisc, TypeLogement.GARAGE_PAS_ASSOCIE);
+                    bien = new BienLouableDAO().readFisc(num_fisc);
                 } catch (DAOException e) {
                     throw new RuntimeException(e);
                 }
-                Garage garage = null;
-                try {
-                    garage = new GarageDAO().read(Id_garage);
-                } catch (DAOException e) {
-                    throw new RuntimeException(e);
-                }
-                mainPage.addGarage(garage);
+
+                new BienLouableDAO().lierUnGarageAuBienLouable(bien,new GarageDAO().read(this.idGarage));
+                this.mainPage.getFrame().dispose();
                 this.frame.dispose();
+                PageMesBiens pageMesBiens = new PageMesBiens();
+                PageMesBiens.main(null);
             }
         }
     }
+    public PageMonBien getMainPage(){ return this.mainPage; }
+
 }

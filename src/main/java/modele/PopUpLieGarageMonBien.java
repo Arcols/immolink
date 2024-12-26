@@ -140,8 +140,8 @@ public class PopUpLieGarageMonBien {
                     throw new RuntimeException(e);
                 }
                 new BienLouableDAO().lierUnGarageAuBienLouable(new BienLouableDAO().readId(this.idBien),garage);
-                frame.setVisible(false);
                 this.mainPage.getFrame().dispose();
+                this.frame.dispose();
                 PageMonBien page = new PageMonBien(idBien);
             }
         }

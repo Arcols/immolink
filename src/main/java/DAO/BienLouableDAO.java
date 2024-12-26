@@ -149,4 +149,11 @@ public interface BienLouableDAO {
 	 * @throws DAOException
 	 */
 	void délierGarage(Integer idBien) throws DAOException;
+
+	/**
+	 * Récupère la liste des biens louables sans garage associé
+	 * @return la liste des biens louables sans garage associé
+	 * @throws DAOException
+	 */
+	List<BienLouable> getAllBienLouableNoGarageLink() throws DAOException;
 }

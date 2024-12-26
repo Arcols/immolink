@@ -32,7 +32,7 @@ public class BienLouableDAOTest {
     private Connection cn;
     @Before
     public void setUp() throws SQLException, DAOException {
-         cn = ConnectionDB.getInstance();
+        cn = ConnectionDB.getInstance();
         cn.setAutoCommit(false);
         bienLouableDAO = new BienLouableDAO();
         batimentDAO = new BatimentDAO();
@@ -305,4 +305,32 @@ public class BienLouableDAOTest {
         bienLouableRecupere = bienLouableDAO.readFisc("101010101010");
         assertEquals(Optional.ofNullable(0), Optional.ofNullable(bienLouableRecupere.getIdgarage()));
     }
+    @Test
+    public void testGetAllBienLouableNoGarageLink() throws DAOException, SQLException {
+        
+        batimentDAO = new BatimentDAO();
+        Batiment batiment5 = new Batiment("123456789108", "Paris", "129 Rue de la Paix","31000");
+        Batiment batiment6 = new Batiment("123456789108", "Paris", "130 Rue de la Paix","31000");
+        batimentDAO.create(batiment5);
+        batimentDAO.create(batiment6);
+
+        BienLouable bienLouableNoGarage2 = new BienLouable("987654321102", "Paris", "129 Rue de la Paix", "Apt 8", new ArrayList<>(), null, TypeLogement.MAISON);
+        bienLouableDAO.create(bienLouableNoGarage2, TypeLogement.MAISON, 5, 120.0);
+
+        BienLouable bienLouableWithGarage = new BienLouable("987654321103", "Paris", "130 Rue de la Paix", "Apt 9", new ArrayList<>(), null, TypeLogement.APPARTEMENT);
+        bienLouableDAO.create(bienLouableWithGarage, TypeLogement.APPARTEMENT, 4, 95.0);
+
+        Garage garage = new Garage("G12345678911", "Paris", "130 Rue de la Paix", "Garage 2", TypeLogement.GARAGE_PAS_ASSOCIE);
+        garageDAO.create(garage);
+        bienLouableDAO.lierUnGarageAuBienLouable(bienLouableWithGarage, garage);
+
+        List<BienLouable> bienLouablesNoGarage = bienLouableDAO.getAllBienLouableNoGarageLink();
+
+        assertNotNull(bienLouablesNoGarage);
+        assertEquals(2, bienLouablesNoGarage.size());
+        assertTrue(bienLouablesNoGarage.stream().anyMatch(b -> b.getNumero_fiscal().equals("101010101010")));
+        assertTrue(bienLouablesNoGarage.stream().anyMatch(b -> b.getNumero_fiscal().equals("987654321102")));
+        assertFalse(bienLouablesNoGarage.stream().anyMatch(b -> b.getNumero_fiscal().equals("987654321103")));
+    }
+
 }

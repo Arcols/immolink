@@ -454,4 +454,34 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
         }
     }
 
+    @Override
+    public List<BienLouable> getAllBienLouableNoGarageLink() throws DAOException {
+        List<BienLouable> listBienlouable = new ArrayList<>();
+        try {
+            Connection cn = ConnectionDB.getInstance();
+            String query = "SELECT * FROM bienlouable WHERE (garage_assoc = -1 OR garage_assoc = 0 OR garage_assoc IS NULL) AND (type_logement = ? OR type_logement = ?)";
+            PreparedStatement pstmt = cn.prepareStatement(query);
+            pstmt.setInt(1, TypeLogement.APPARTEMENT.getValue());
+            pstmt.setInt(2, TypeLogement.MAISON.getValue());
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                String num_fisc = rs.getString("numero_fiscal");
+                String compl = rs.getString("complement_adresse");
+                Integer id_bat = rs.getInt("IdBat");
+                String ville = new BatimentDAO().readId(id_bat).getVille();
+                String adresse = new BatimentDAO().readId(id_bat).getAdresse();
+                List<Diagnostic> lDiags = new DiagnosticDAO().readAllDiag(rs.getInt("id"));
+                GarageDAO garageDAO = new GarageDAO();
+                Integer type_logement = rs.getInt("type_logement");
+                TypeLogement type = TypeLogement.fromInt(type_logement);
+                if (type.equals(TypeLogement.APPARTEMENT)
+                        || type.equals(TypeLogement.MAISON)) {
+                    listBienlouable.add(new BienLouable(num_fisc, ville, adresse, compl, lDiags, garageDAO.getIdGarage(num_fisc, TypeLogement.GARAGE_ASSOCIE), getTypeFromId(getId(num_fisc))));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return listBienlouable;
+    }
 }
