@@ -27,8 +27,6 @@ public class ModelePageNouveauTravaux {
         this.pageNouveauTravaux = pageNouveauTravaux;
     }
 
-
-
     public ActionListener getAjouterTravauxListener(Integer id) throws DAOException {
         BienLouableDAO bienLouableDAO = new DAO.jdbc.BienLouableDAO();
         BienLouable bienLouable = bienLouableDAO.readId(id);

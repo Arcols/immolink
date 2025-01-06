@@ -44,7 +44,7 @@ public class PopUpCreationGarageLieBL {
     }
 
     private void initialize(){
-        ModelePopUpCreationGarageBL modele = new ModelePopUpCreationGarageBL();
+        ModelePopUpCreationGarageBL modele = new ModelePopUpCreationGarageBL(this);
         // Initialisation du JFrame
         this.frame = new JFrame();
         this.frame.setBounds(150, 150, 600, 400);
@@ -114,6 +114,7 @@ public class PopUpCreationGarageLieBL {
         quitter.setVerticalTextPosition(SwingConstants.TOP);
         quitter.setVerticalAlignment(SwingConstants.BOTTOM);
         bas_de_page.add(quitter, BorderLayout.WEST);
+        quitter.addActionListener(modele.quitterPage());
 
         table.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override

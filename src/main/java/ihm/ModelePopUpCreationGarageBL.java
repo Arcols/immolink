@@ -1,10 +1,10 @@
 package ihm;
 
 import DAO.DAOException;
-import DAO.jdbc.BienLouableDAO;
 import DAO.jdbc.GarageDAO;
-import classes.BienLouable;
 import classes.Garage;
+import modele.PageNouveauTravaux;
+import modele.PopUpCreationGarageLieBL;
 
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionListener;
@@ -12,6 +12,10 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class ModelePopUpCreationGarageBL {
+    PopUpCreationGarageLieBL popUpCreationGarageLieBL;
+    public ModelePopUpCreationGarageBL (PopUpCreationGarageLieBL popUpCreationGarageLieBL) {
+        this.popUpCreationGarageLieBL = popUpCreationGarageLieBL;
+    }
     public static DefaultTableModel loadDataGaragesPasAssosToTable() throws SQLException, DAOException {
         String[] columns = {"Numéro Fiscal","Adresse","Complement","Ville"};
 
@@ -37,5 +41,10 @@ public class ModelePopUpCreationGarageBL {
             model.addRow(rowData);
         }
         return model; // Retourne le modèle rempli
+    }
+    public ActionListener quitterPage() {
+        return e -> {
+            popUpCreationGarageLieBL.getFrame().dispose();
+        };
     }
 }

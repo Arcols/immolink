@@ -7,6 +7,7 @@ import classes.Garage;
 import enumeration.TypeLogement;
 import ihm.Charte;
 import ihm.ModelePopUpCreationGarageBL;
+import ihm.ModelePopUpLieGarageMonBien;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -35,7 +36,7 @@ public class PopUpLieGarageMonBien {
     }
 
     private void initialize(){
-        ModelePopUpCreationGarageBL modele = new ModelePopUpCreationGarageBL();
+        ModelePopUpLieGarageMonBien modele = new ModelePopUpLieGarageMonBien(this);
         // Initialisation du JFrame
         this.frame = new JFrame();
         this.frame.setBounds(150, 150, 600, 400);
@@ -105,6 +106,7 @@ public class PopUpLieGarageMonBien {
         quitter.setVerticalTextPosition(SwingConstants.TOP);
         quitter.setVerticalAlignment(SwingConstants.BOTTOM);
         bas_de_page.add(quitter, BorderLayout.WEST);
+        quitter.addActionListener(modele.quitterPage(this.idBien));
 
         table.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
