@@ -56,6 +56,10 @@ public class TravauxAssocieDAO implements DAO.TravauxAssocieDAO {
                 BienLouableDAO bienDAO = new BienLouableDAO();
                 id = bienDAO.getId(num_fiscal);
                 break;
+            case MAISON:
+                BienLouableDAO maisonDAO = new BienLouableDAO();
+                id = maisonDAO.getId(num_fiscal);
+                break;
             case BATIMENT:
                 BatimentDAO batimentDAO = new BatimentDAO();
                 Batiment batiment = batimentDAO.readFisc(num_fiscal);
