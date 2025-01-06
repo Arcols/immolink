@@ -186,9 +186,9 @@ public class PageMesBiens {
 
                     // Récupérer les données de la ligne sélectionnée
                     if (row != -1) {
-                        String adresse = (String) tableModel.getValueAt(row, 0);
-                        String complement = (String) tableModel.getValueAt(row, 1);
-                        String ville = (String) tableModel.getValueAt(row, 2);
+                        String adresse = (String) tableModel.getValueAt(row, 2);
+                        String complement = (String) tableModel.getValueAt(row, 3);
+                        String ville = (String) tableModel.getValueAt(row, 1);
 
                         try {
                             BienLouable bien = new DAO.jdbc.BienLouableDAO().readFisc(new DAO.jdbc.BienLouableDAO().getFiscFromCompl(ville, adresse, complement));

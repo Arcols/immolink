@@ -138,7 +138,6 @@ public class ModelePageNouveauBienImmobilier {
 		logementDAO.create(logement,TypeLogement.MAISON);
 		addDiagnostics(logement.getNumero_fiscal());
 		if (!(pageNouveauBienImmobilier.getGarageLie()).equals(new Garage("            ", "", "", "", TypeLogement.NONE))) {
-			System.out.println("ezrf")	;
 			logementDAO.lierUnGarageAuBienLouable(logement, pageNouveauBienImmobilier.getGarageLie(), TypeLogement.MAISON);
 			JOptionPane.showMessageDialog(null, "La maison ainsi que son garage ont été ajoutés !", "Succès",
 					JOptionPane.INFORMATION_MESSAGE);
