@@ -35,6 +35,10 @@ public enum TypeLogement {
 		return this == APPARTEMENT || this == MAISON  || this == GARAGE_PAS_ASSOCIE;
 	}
 
+	public boolean estLogement() {
+		return this == APPARTEMENT || this == MAISON;
+	}
+
 	/**
 	 * Retourne le string du logement correspondant au type du logement rentré en paramètre
 	 * @param typeLogement

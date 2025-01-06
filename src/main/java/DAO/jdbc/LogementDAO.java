@@ -87,8 +87,10 @@ public class LogementDAO implements DAO.LogementDAO {
 		List<Logement> lApparts = new ArrayList<>();
 		try {
 			Connection cn = ConnectionDB.getInstance();
-			String query = "SELECT id FROM BienLouable";
+			String query = "SELECT id FROM bienlouable WHERE type_logement = ? OR type_logement = ?";
 			PreparedStatement pstmt = cn.prepareStatement(query);
+			pstmt.setInt(1, TypeLogement.APPARTEMENT.getValue());
+			pstmt.setInt(2, TypeLogement.MAISON.getValue());
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				int id = rs.getInt("id");
