@@ -42,7 +42,7 @@ public class ModelePageMonBien {
 
         // Récupération des Travaux
         DevisDAO devisDAO = new DevisDAO();
-        List<Devis> devis = devisDAO.getAllDevisFromABien(bienLouable.getNumero_fiscal(),TypeLogement.APPARTEMENT);
+        List<Devis> devis = devisDAO.getAllDevisFromABien(bienLouable.getNumero_fiscal(),bienLouableDAO.getTypeFromId(id));
 
         // Remplissage du modèle avec les données des locataires
         for (Devis devi : devis) {
@@ -72,7 +72,7 @@ public class ModelePageMonBien {
                 page.getAffichageVille().setText(bienLouable.getVille());
                 page.getAffichageAdresse().setText(bienLouable.getAdresse());
                 page.getAffichageComplement().setText(bienLouable.getComplement_adresse());
-                page.getAffichageCoutTravaux().setText(String.valueOf(devisDAO.getMontantTotalTravaux(bienLouable.getNumero_fiscal(), TypeLogement.APPARTEMENT))+" €");
+                page.getAffichageCoutTravaux().setText(String.valueOf(devisDAO.getMontantTotalTravaux(bienLouable.getNumero_fiscal(), bienLouableDAO.getTypeFromId(idBien)))+" €");
             }
         } catch (DAOException e) {
             throw new DAOException("Erreur lors du chargement des informations du bien : " + e.getMessage(), e);
@@ -128,6 +128,25 @@ public class ModelePageMonBien {
             pageMonBien.getFrame().dispose();
             PageMesBiens pageMesBiens = new PageMesBiens();
             PageMesBiens.main(null);
+        };
+    }
+
+    public ActionListener delierGarage(int idBien) {
+        return new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    BienLouableDAO bienLouableDAO = new BienLouableDAO();
+                    bienLouableDAO.délierGarage(idBien);
+                    pageMonBien.getFrame().dispose();
+                    pageMonBien = new PageMonBien(idBien);
+                    new PageMesBiens();
+                } catch (DAOException ex) {
+                    throw new RuntimeException(ex);
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
         };
     }
 }

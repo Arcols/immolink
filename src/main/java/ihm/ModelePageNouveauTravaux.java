@@ -42,7 +42,7 @@ public class ModelePageNouveauTravaux {
             DevisDAO devisDAO = new DevisDAO();
             try {
                 // Enregistrer le devis dans la base de données
-                devisDAO.create(d, bienLouable.getNumero_fiscal(), TypeLogement.APPARTEMENT);
+                devisDAO.create(d, bienLouable.getNumero_fiscal(), bienLouableDAO.getTypeFromId(id));
 
                 // Afficher une popup de confirmation
                 JOptionPane.showMessageDialog(null, "Les travaux ont été enregistrés avec succès.", "Confirmation", JOptionPane.INFORMATION_MESSAGE);

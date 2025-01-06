@@ -151,8 +151,8 @@ public class BailDAO implements DAO.BailDAO {
     }
 
     @Override
-    public int getIdBienLouable(int idBail) {
-        int idBienLouable = 0;
+    public Integer getIdBienLouable(int idBail) {
+        Integer idBienLouable = 0;
         try {
             Connection cn = ConnectionDB.getInstance();
             String query = "SELECT id_bien_louable FROM bail WHERE id = ?";

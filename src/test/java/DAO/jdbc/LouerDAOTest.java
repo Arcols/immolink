@@ -41,7 +41,7 @@ public class LouerDAOTest {
         Batiment batiment = new Batiment("123456789101", "Paris", "123 Rue de la Paix","31000");
         batimentDAO.create(batiment);
 
-        BienLouable bienLouable = new BienLouable("BL3456789101", "Paris", "123 Rue de la Paix", "31000", new ArrayList<>(), null);
+        BienLouable bienLouable = new BienLouable("BL3456789101", "Paris", "123 Rue de la Paix", "31000", new ArrayList<>(), null,TypeLogement.APPARTEMENT);
         bienLouableDAO.create(bienLouable, TypeLogement.APPARTEMENT, 3, 75.0);
 
         bail = new Bail(true, "BL3456789101", 1000.0, 200.0, 500.0, Date.valueOf("2024-01-01"), Date.valueOf("2024-12-31"));
@@ -125,7 +125,7 @@ public class LouerDAOTest {
 
     @Test
     public void testUpdateQuotite() throws SQLException, DAOException {
-        BienLouable bienLouable = new BienLouable("BL3456789102", "Paris", "123 Rue de la Paix", "31000", new ArrayList<>(), null);
+        BienLouable bienLouable = new BienLouable("BL3456789102", "Paris", "123 Rue de la Paix", "31000", new ArrayList<>(), null,TypeLogement.APPARTEMENT);
         bienLouableDAO.create(bienLouable, TypeLogement.APPARTEMENT, 3, 75.0);
         Bail bail = new Bail(true, "BL3456789102", 1000.0, 200.0, 500.0, Date.valueOf("2024-01-01"), Date.valueOf("2024-12-31"));
         bailDAO.create(bail);
@@ -147,7 +147,7 @@ public class LouerDAOTest {
 
     @Test
     public void testGetQuotite() throws SQLException, DAOException {
-        BienLouable bienLouable = new BienLouable("BL3456789102", "Paris", "123 Rue de la Paix", "31000", new ArrayList<>(), null);
+        BienLouable bienLouable = new BienLouable("BL3456789102", "Paris", "123 Rue de la Paix", "31000", new ArrayList<>(), null,TypeLogement.APPARTEMENT);
         bienLouableDAO.create(bienLouable, TypeLogement.APPARTEMENT, 3, 75.0);
         Bail bail = new Bail(true, "BL3456789102", 1000.0, 200.0, 500.0, Date.valueOf("2024-01-01"), Date.valueOf("2024-12-31"));
         bailDAO.create(bail);

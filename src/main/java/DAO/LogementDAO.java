@@ -5,6 +5,7 @@ import java.util.List;
 import classes.BienLouable;
 import classes.Garage;
 import classes.Logement;
+import enumeration.TypeLogement;
 
 public interface LogementDAO {
 
@@ -12,9 +13,10 @@ public interface LogementDAO {
 	 * Crée un nouveau BienLouable dans la base de données.
 	 *
 	 * @param logement L'objet Logement à insérer
+	 * @param typeLogement le type de logement
 	 * @throws DAOException en cas d'erreur lors de la création du bien immobilier
 	 */
-	void create(Logement logement) throws DAOException;
+	void create(Logement logement, TypeLogement typeLogement) throws DAOException;
 
 	/**
 	 * Récupère un BienLouable de la base de données en utilisant son identifiant.
@@ -45,25 +47,28 @@ public interface LogementDAO {
 	/**
 	 *  Récupère l'id d'un logement en utilisant son numéro fiscal
 	 * Lier un garage à un logement
-	 * @param logement
-	 * @param garage
+	 * @param logement le logement
+	 * @param garage le garage
+	 * @param typeLogement le type de logement
 	 * @throws DAOException
 	 */
-	void lierUnGarageAuBienLouable(Logement logement, Garage garage) throws DAOException;
+	void lierUnGarageAuBienLouable(Logement logement, Garage garage,TypeLogement typeLogement) throws DAOException;
 
 	/**
 	 * Récupère l'identifiant d'un bien louable en utilisant son numéro fiscal.
 	 * @param num_fiscal le numéro fiscal du bien louable
+	 * @param typeLogement le type de logement
 	 * @return l'identifiant du bien louable
 	 * @throws DAOException
 	 */
-	Integer getId(String num_fiscal) throws DAOException;
+	Integer getId(String num_fiscal,TypeLogement typeLogement) throws DAOException;
 
 	/**
 	 * Récupère le garage associé à un logement
 	 * @param logement le logement
+	 * @param typeLogement le type de logement
 	 * @return l'identifiant du garage associé
 	 */
-	Integer getGarageAssocie(Logement logement);
+	Integer getGarageAssocie(Logement logement,TypeLogement typeLogement);
 
 }

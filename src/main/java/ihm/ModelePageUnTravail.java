@@ -51,8 +51,6 @@ public class ModelePageUnTravail {
             TravauxAssocieDAO travauxAssocieDAO = new TravauxAssocieDAO();
             try {
                 // Enregistrer le devis dans la base de données
-                System.out.println("id travail : "+idTravail);
-                System.out.println("id bien : "+idBien);
                 devisDAO.delete(idTravail);
                 travauxAssocieDAO.delete(idTravail,idBien);
 

@@ -13,9 +13,8 @@ public interface BienLouableDAO {
 
 	/**
 	 * Crée un nouveau BienLouable dans la base de données.
-	 *
 	 * @param bien L'objet BienLouable à créer
-	 * @throws DAOException en cas d'erreur lors de la création du bien immobilier
+	 * @throws DAOException en cas d'erreur lors de la création du bien louable
 	 */
 	void create(BienLouable bien, TypeLogement type, int nb_piece, double surface)
 			throws DAOException, IllegalArgumentException, SQLException;
@@ -45,8 +44,8 @@ public interface BienLouableDAO {
 
 	/**
 	 *  Récupère l'id d'un bien louable en utilisant son numéro fiscal
-	 * @param num_fiscal
-	 * @return
+	 * @param num_fiscal le numéro fiscal du bien louable
+	 * @return l'identifiant du bien louable
 	 * @throws DAOException
 	 */
 	Integer getId(String num_fiscal) throws DAOException;
@@ -137,4 +136,24 @@ public interface BienLouableDAO {
 	 */
 	List<Integer> getListeBeauxFromBien(BienLouable bien);
 
+	/**
+	 * Récupère le type de logement associé à un bien louable
+	 * @param id l'identifiant du bien louable
+	 * @return le type de logement
+	 */
+	TypeLogement getTypeFromId(int id);
+
+	/**
+	 * Délie un garage à son bien louable
+	 * @param idBien l'identifiant du bien louable
+	 * @throws DAOException
+	 */
+	void délierGarage(Integer idBien) throws DAOException;
+
+	/**
+	 * Récupère la liste des biens louables sans garage associé
+	 * @return la liste des biens louables sans garage associé
+	 * @throws DAOException
+	 */
+	List<BienLouable> getAllBienLouableNoGarageLink() throws DAOException;
 }

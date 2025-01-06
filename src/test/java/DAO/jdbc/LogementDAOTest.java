@@ -5,6 +5,7 @@ import DAO.db.ConnectionDB;
 import classes.Batiment;
 import classes.Garage;
 import classes.Logement;
+import enumeration.TypeLogement;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -45,9 +46,9 @@ public class LogementDAOTest {
 
     @Test
     public void testCreate() throws SQLException, DAOException {
-        Logement logement = new Logement(3, 75.0, "101010101010", "Paris", "123 Rue de la Paix", "Apt 1", new ArrayList<>());
-        logementDAO.create(logement);
-        Integer id = logementDAO.getId("101010101010");
+        Logement logement = new Logement(3, 75.0, "101010101010", "Paris", "123 Rue de la Paix", "Apt 1", new ArrayList<>(), TypeLogement.APPARTEMENT);
+        logementDAO.create(logement,TypeLogement.APPARTEMENT);
+        Integer id = logementDAO.getId("101010101010",TypeLogement.APPARTEMENT);
         Logement logementRecupere = logementDAO.read(id);
         assertEquals("101010101010", logementRecupere.getNumero_fiscal());
         assertEquals("Apt 1", logementRecupere.getComplement_adresse());
@@ -55,30 +56,30 @@ public class LogementDAOTest {
 
     @Test
     public void testRead() throws SQLException, DAOException {
-        Logement logement = new Logement(3, 75.0, "101010101010", "Paris", "123 Rue de la Paix", "Apt 1", new ArrayList<>());
-        logementDAO.create(logement);
+        Logement logement = new Logement(3, 75.0, "101010101010", "Paris", "123 Rue de la Paix", "Apt 1", new ArrayList<>(),TypeLogement.APPARTEMENT);
+        logementDAO.create(logement,TypeLogement.APPARTEMENT);
 
-        Logement logementRecupere = logementDAO.read(logementDAO.getId("101010101010"));
+        Logement logementRecupere = logementDAO.read(logementDAO.getId("101010101010",TypeLogement.APPARTEMENT));
         assertEquals("101010101010", logementRecupere.getNumero_fiscal());
         assertEquals("Apt 1", logementRecupere.getComplement_adresse());
     }
 
     @Test
     public void testDelete() throws SQLException, DAOException {
-        Logement logement = new Logement(3, 75.0, "101010101010", "Paris", "123 Rue de la Paix", "Apt 1", new ArrayList<>());
-        logementDAO.create(logement);
+        Logement logement = new Logement(3, 75.0, "101010101010", "Paris", "123 Rue de la Paix", "Apt 1", new ArrayList<>(),TypeLogement.APPARTEMENT);
+        logementDAO.create(logement,TypeLogement.APPARTEMENT);
 
-        Integer id = logementDAO.getId("101010101010");
+        Integer id = logementDAO.getId("101010101010",TypeLogement.APPARTEMENT);
         logementDAO.delete(id);
         assertNull(logementDAO.read(id));
     }
 
     @Test
     public void testFindAll() throws SQLException, DAOException {
-        Logement logement1 = new Logement(3, 75.0, "123456789101", "Paris", "123 Rue de la Paix", "Apt 1", new ArrayList<>());
-        Logement logement2 = new Logement(3, 80.0, "123456789102", "Paris", "123 Rue de la Paix", "Apt 2", new ArrayList<>());
-        logementDAO.create(logement1);
-        logementDAO.create(logement2);
+        Logement logement1 = new Logement(3, 75.0, "123456789101", "Paris", "123 Rue de la Paix", "Apt 1", new ArrayList<>(),TypeLogement.APPARTEMENT);
+        Logement logement2 = new Logement(3, 80.0, "123456789102", "Paris", "123 Rue de la Paix", "Apt 2", new ArrayList<>(),TypeLogement.APPARTEMENT);
+        logementDAO.create(logement1,TypeLogement.APPARTEMENT);
+        logementDAO.create(logement2,TypeLogement.APPARTEMENT);
 
         List<Logement> logements = logementDAO.findAll();
         assertEquals(2, logements.size());
@@ -87,17 +88,17 @@ public class LogementDAOTest {
     @Test
     public void testLierUnGarageAuBienLouable() throws SQLException, DAOException {
 
-        Logement logement = new Logement(3, 75.0, "101010101010", "Paris", "123 Rue de la Paix", "Apt 1", new ArrayList<>());
-        logementDAO.create(logement);
+        Logement logement = new Logement(3, 75.0, "101010101010", "Paris", "123 Rue de la Paix", "Apt 1", new ArrayList<>(),TypeLogement.APPARTEMENT);
+        logementDAO.create(logement,TypeLogement.APPARTEMENT);
 
-        Garage garage = new Garage("G12345678910", "Paris", "123 Rue de la Paix", "Garage 1");
+        Garage garage = new Garage("G12345678910", "Paris", "123 Rue de la Paix", "Garage 1",TypeLogement.GARAGE_PAS_ASSOCIE);
         garageDAO.create(garage);
-        logementDAO.lierUnGarageAuBienLouable(logement, garage);
+        logementDAO.lierUnGarageAuBienLouable(logement, garage,TypeLogement.APPARTEMENT);
 
-        Logement logementRecupere = logementDAO.read(logementDAO.getId(logement.getNumero_fiscal()));
-        Integer idGarage = logementDAO.getGarageAssocie(logementRecupere);
+        Logement logementRecupere = logementDAO.read(logementDAO.getId(logement.getNumero_fiscal(),TypeLogement.APPARTEMENT));
+        Integer idGarage = logementDAO.getGarageAssocie(logementRecupere,TypeLogement.APPARTEMENT);
         assertNotNull(logementRecupere);
-        assertEquals((Integer) garageDAO.getIdGarage(garage.getNumero_fiscal()),idGarage);
+        assertEquals((Integer) garageDAO.getIdGarage(garage.getNumero_fiscal(),TypeLogement.GARAGE_ASSOCIE),idGarage);
     }
 
 }

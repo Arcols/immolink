@@ -27,9 +27,9 @@ public class TravauxAssocieDAO implements DAO.TravauxAssocieDAO {
                 Batiment batiment = batimentDAO.readFisc(num_fiscal);
                 id = batimentDAO.getIdBat(batiment.getVille(), batiment.getAdresse());
                 break;
-            case GARAGE:
+            case GARAGE_PAS_ASSOCIE:
                 GarageDAO garageDAO = new GarageDAO();
-                id = garageDAO.getIdGarage(num_fiscal);
+                id = garageDAO.getIdGarage(num_fiscal,TypeLogement.GARAGE_PAS_ASSOCIE);
                 break;
         }
         DevisDAO devisDAO = new DevisDAO();
@@ -50,7 +50,7 @@ public class TravauxAssocieDAO implements DAO.TravauxAssocieDAO {
     @Override
     public List<Integer> findAll(String num_fiscal, TypeLogement typeLogement) throws DAOException {
         List<Integer> idDevis = new ArrayList<Integer>();
-        Integer id = 0;
+        Integer id = null;
         switch (typeLogement){
             case APPARTEMENT:
                 BienLouableDAO bienDAO = new BienLouableDAO();
@@ -61,9 +61,9 @@ public class TravauxAssocieDAO implements DAO.TravauxAssocieDAO {
                 Batiment batiment = batimentDAO.readFisc(num_fiscal);
                 id = batimentDAO.getIdBat(batiment.getVille(),batiment.getAdresse());
                 break;
-            case GARAGE:
+            case GARAGE_PAS_ASSOCIE:
                 GarageDAO garageDAO = new GarageDAO();
-                id = garageDAO.getIdGarage(num_fiscal);
+                id = garageDAO.getIdGarage(num_fiscal,TypeLogement.GARAGE_PAS_ASSOCIE);
                 break;
         }
         try{

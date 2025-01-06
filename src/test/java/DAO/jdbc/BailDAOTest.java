@@ -36,8 +36,8 @@ public class BailDAOTest {
         Batiment batiment = new Batiment("123456789101", "Paris", "123 Rue de la Paix","31000");
         batimentDAO.create(batiment);
 
-        bienLouable = new BienLouable("BL3456789101", "Paris", "123 Rue de la Paix", "31000", new ArrayList<>(), null);
-        bienLouableDAO.create(bienLouable, TypeLogement.APPARTEMENT, 3, 75.0);
+        bienLouable = new BienLouable("BL3456789101", "Paris", "123 Rue de la Paix", "31000", new ArrayList<>(), null,TypeLogement.APPARTEMENT);
+        bienLouableDAO.create(bienLouable, bienLouable.getTypeLogement(), 3, 75.0);
     }
 
     @After
@@ -188,7 +188,7 @@ public class BailDAOTest {
         Batiment batimentTest = new Batiment("987654321987", "Paris", "124 Rue de la Paix", "31000");
         new BatimentDAO().create(batimentTest);
 
-        BienLouable bienLouableTest = new BienLouable("BL3456789102", "Paris", "124 Rue de la Paix", "31000", new ArrayList<>(), null);
+        BienLouable bienLouableTest = new BienLouable("BL3456789102", "Paris", "124 Rue de la Paix", "31000", new ArrayList<>(), null,TypeLogement.APPARTEMENT);
         new BienLouableDAO().create(bienLouableTest, TypeLogement.APPARTEMENT, 3, 75.0);
 
         Bail bail1 = new Bail(true, "BL3456789102", 1000.0, 200.0, 500.0, Date.valueOf("2024-01-01"), Date.valueOf("2024-12-31"));
@@ -203,6 +203,17 @@ public class BailDAOTest {
         assertEquals(2, idBaux.size());
         assertTrue(idBaux.contains(bailDAO.getId(bail1)));
         assertTrue(idBaux.contains(bailDAO.getId(bail2)));
+    }
+
+    @Test
+    public void testGetBailFromBienEtDate() throws DAOException {
+        Date dateDebut = Date.valueOf("2024-01-01");
+        Bail bail = new Bail(true, "BL3456789101", 1000.0, 200.0, 500.0, dateDebut, Date.valueOf("2024-12-31"));
+        bailDAO.create(bail);
+
+        Bail retrievedBail = bailDAO.getBailFromBienEtDate(bienLouable, dateDebut);
+        assertNotNull(retrievedBail);
+        assertEquals(bail, retrievedBail);
     }
 
 }

@@ -4,12 +4,12 @@ import java.sql.SQLException;
 import java.util.List;
 
 import classes.Garage;
+import enumeration.TypeLogement;
 
 public interface GarageDAO {
 
 	/**
-	 * Crée un nouveau Garage dans la base de données.
-	 *
+	 * Crée un nouveau Garage non associé à un bien louable dans la base de données.
 	 * @param garage L'objet Garage à insérer
 	 * @throws DAOException             en cas d'erreur lors de la création du bien
 	 *                                  immobilier
@@ -24,7 +24,7 @@ public interface GarageDAO {
 	 * @return Integer id du garage demandé
 	 * @throws DAOException
 	 */
-	Integer getIdGarage(String numero_fiscal) throws DAOException;
+	Integer getIdGarage(String numero_fiscal, TypeLogement typeGarage) throws DAOException;
 
 	/**
 	 * Récupère un Garage de la base de données en utilisant son identifiant.
@@ -45,6 +45,15 @@ public interface GarageDAO {
 	void delete(int id) throws DAOException;
 
 	/**
+	 *
+	 * @param id
+	 * @param typeActuel
+	 * @param typeApres
+	 * @throws DAOException
+	 */
+	void updateTypeGarage(int id,TypeLogement typeActuel,TypeLogement typeApres) throws DAOException;
+
+	/**
 	 * Récupère tous les biens immobiliers de la base de données.
 	 *
 	 * @return Une liste de tous les objets Garage
@@ -53,11 +62,26 @@ public interface GarageDAO {
 	List<Garage> findAll() throws DAOException;
 
 	/**
+	 * Récupère tous les garages qui ne sont pas associés à un bien louable
+	 * @return List<Garage> liste des garages non associés
+	 * @throws DAOException
+	 */
+	List<Garage> findAllGaragePasAssoc() throws DAOException;
+
+	/**
+	 * Récupère tous les garages qui sont associés à un bien louable
+	 * @return List<Garage> liste des garages associés
+	 * @throws DAOException
+	 */
+	List<Garage> findAllGarageAssoc() throws DAOException;
+
+	/**
+	 *
 	 * Récupère l'id du garage associé à un bien louable
-	 * @param numero_fiscal le numéro fiscal du bien louable
+	 * @param idBien id du bien louable
 	 * @return Integer id du garage associé
 	 * @throws DAOException
 	 */
-	Integer readIdGarageFromBien(String numero_fiscal) throws DAOException;
+	Integer readIdGarageFromBien(Integer idBien) throws DAOException;
 
 }
