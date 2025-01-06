@@ -200,7 +200,7 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
                 Integer type_logement = rs.getInt("type_logement");
                 TypeLogement type = TypeLogement.fromInt(type_logement);
                 if(type.estBienLouable()){
-                    Allbien.add(new BienLouable(num_fisc,ville,adresse,compl,lDiags,garageDAO.getIdGarage(num_fisc,TypeLogement.GARAGE_ASSOCIE),getTypeFromId(id_bat)));
+                    Allbien.add(new BienLouable(num_fisc,ville,adresse,compl,lDiags,garageDAO.getIdGarage(num_fisc,TypeLogement.GARAGE_ASSOCIE),type));
                 }
             }
             rs.close();
@@ -476,7 +476,7 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
                 TypeLogement type = TypeLogement.fromInt(type_logement);
                 if (type.equals(TypeLogement.APPARTEMENT)
                         || type.equals(TypeLogement.MAISON)) {
-                    listBienlouable.add(new BienLouable(num_fisc, ville, adresse, compl, lDiags, garageDAO.getIdGarage(num_fisc, TypeLogement.GARAGE_ASSOCIE), getTypeFromId(getId(num_fisc))));
+                    listBienlouable.add(new BienLouable(num_fisc, ville, adresse, compl, lDiags, garageDAO.getIdGarage(num_fisc, TypeLogement.GARAGE_ASSOCIE), type));
                 }
             }
         } catch (SQLException e) {

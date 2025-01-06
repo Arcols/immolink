@@ -5,6 +5,7 @@ import DAO.jdbc.BienLouableDAO;
 import DAO.jdbc.LocataireDAO;
 import classes.BienLouable;
 import classes.Locataire;
+import enumeration.TypeLogement;
 import modele.PageMesBiens;
 import modele.PageNouveauBail;
 import modele.PageNouveauBienImmobilier;
@@ -39,7 +40,7 @@ public class ModelePageMesBiens {
      * @throws SQLException si une erreur survient lors de la récupération des données.
      */
     public static DefaultTableModel loadDataBienImmoToTable() throws SQLException, DAOException {
-        String[] columns = {"Adresse","Complement","Ville"};
+        String[] columns = {"Type","Ville","Adresse","Complement"};
 
         DefaultTableModel model = new DefaultTableModel(columns, 0){
             @Override
@@ -48,16 +49,17 @@ public class ModelePageMesBiens {
             }
         };
 
-        // Récupération des locataires
+        // Récupération des biens louables
         BienLouableDAO bienLouableDAO = new BienLouableDAO();
         List<BienLouable> biensLouables = bienLouableDAO.findAll();
 
-        // Remplissage du modèle avec les données des locataires
+        // Remplissage du modèle avec les données des biens louables
         for (BienLouable bien : biensLouables) {
             Object[] rowData= {
-                     bien.getAdresse(),
-                     bien.getComplement_adresse(),
-                     bien.getVille()
+                    TypeLogement.getString(bien.getTypeLogement()),
+                    bien.getVille(),
+                    bien.getAdresse(),
+                    bien.getComplement_adresse()
             };
             model.addRow(rowData);
         }

@@ -63,7 +63,6 @@ public class ModelePageMonBien {
             // Récupération des informations du bien via le DAO
             BienLouableDAO bienLouableDAO = new DAO.jdbc.BienLouableDAO();
             BienLouable bienLouable = bienLouableDAO.readId(idBien);
-
             DevisDAO devisDAO =new DevisDAO();
 
             if (bienLouable != null) {
