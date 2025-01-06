@@ -35,7 +35,7 @@ public class PopUpLierGarageAuBien {
     }
 
     private void initialize(){
-        ModelePopUpLierGarageAuBien modele = new ModelePopUpLierGarageAuBien();
+        ModelePopUpLierGarageAuBien modele = new ModelePopUpLierGarageAuBien(this);
         // Initialisation du JFrame
         this.frame = new JFrame();
         this.frame.setBounds(150, 150, 600, 400);
@@ -105,6 +105,7 @@ public class PopUpLierGarageAuBien {
         quitter.setVerticalTextPosition(SwingConstants.TOP);
         quitter.setVerticalAlignment(SwingConstants.BOTTOM);
         bas_de_page.add(quitter, BorderLayout.WEST);
+        quitter.addActionListener(modele.quitterPage());
 
         table.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override

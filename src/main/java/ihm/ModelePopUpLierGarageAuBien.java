@@ -5,12 +5,20 @@ import DAO.jdbc.BienLouableDAO;
 import DAO.jdbc.GarageDAO;
 import classes.BienLouable;
 import classes.Garage;
+import modele.PageMonBien;
+import modele.PopUpCreationGarageLieBL;
+import modele.PopUpLierGarageAuBien;
 
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.List;
 
 public class ModelePopUpLierGarageAuBien {
+    PopUpLierGarageAuBien popUpLierGarageAuBien;
+    public ModelePopUpLierGarageAuBien (PopUpLierGarageAuBien popUpLierGarageAuBien) {
+        this.popUpLierGarageAuBien = popUpLierGarageAuBien;
+    }
     public static DefaultTableModel loadDataBienLouablePasAssosToTable() throws SQLException, DAOException {
         String[] columns = {"Numéro Fiscal","Adresse","Complement","Ville"};
 
@@ -36,5 +44,11 @@ public class ModelePopUpLierGarageAuBien {
             model.addRow(rowData);
         }
         return model; // Retourne le modèle rempli
+    }
+
+    public ActionListener quitterPage() {
+        return e -> {
+            popUpLierGarageAuBien.getFrame().dispose();
+        };
     }
 }
