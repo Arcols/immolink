@@ -35,7 +35,6 @@ import ihm.Menu;
 import ihm.ModelePageUnBail;
 import ihm.ResizedImage;
 
-
 public class PageUnBail {
 
     private JFrame frame;
@@ -320,6 +319,8 @@ public class PageUnBail {
 
         JScrollPane scrollPane = new JScrollPane(this.tableau_locataire);
         panel_locataires.add(scrollPane, BorderLayout.CENTER);
+<<<<<<< Updated upstream
+=======
 
         JPanel basPage = new JPanel();
         body.add(basPage, BorderLayout.SOUTH);
@@ -345,10 +346,18 @@ public class PageUnBail {
         JButton btnAjoutLocataire = new JButton("Ajouter un locataire");
         GridBagConstraints gbc_btnAjoutLocataire = new GridBagConstraints();
         gbc_btnAjoutLocataire.insets = new Insets(0, 0, 5, 0);
-        gbc_btnAjoutLocataire.gridx = 1;
+        gbc_btnAjoutLocataire.gridx = 2;
         gbc_btnAjoutLocataire.gridy = 0;
         panelModifs.add(btnAjoutLocataire, gbc_btnAjoutLocataire);
         btnAjoutLocataire.addActionListener(modele.getAjouterLocataire(new BailDAO().getId(bail)));
+
+        JButton btnAjoutCharges = new JButton("Ajouter des charges");
+        GridBagConstraints gbc_btnAjoutCharges = new GridBagConstraints();
+        gbc_btnAjoutCharges.insets = new Insets(0,0,5,5);
+        gbc_btnAjoutCharges.gridx = 1;
+        gbc_btnAjoutCharges.gridy = 0;
+        panelModifs.add(btnAjoutCharges,gbc_btnAjoutCharges);
+
 
         JPanel panelQuitter = new JPanel();
         basPage.add(panelQuitter);
@@ -373,6 +382,7 @@ public class PageUnBail {
             e.printStackTrace();
         }
 
+>>>>>>> Stashed changes
         frame.setVisible(true);
         this.frame.addComponentListener(new ComponentAdapter() {
             @Override
@@ -393,6 +403,7 @@ public class PageUnBail {
             }
         });
     }
+
     public JLabel getAffichageVille() {
         return affichageVille;
     }
@@ -433,4 +444,3 @@ public class PageUnBail {
         return tableau_locataire;
     }
 }
-
