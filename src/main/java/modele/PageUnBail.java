@@ -152,6 +152,70 @@ public class PageUnBail {
 
         JScrollPane scrollPane = new JScrollPane(this.tableau_diagnostic);
         panel_locataires.add(scrollPane, BorderLayout.CENTER);
+<<<<<<< Updated upstream
+=======
+
+        JPanel basPage = new JPanel();
+        body.add(basPage, BorderLayout.SOUTH);
+        basPage.setLayout(new GridLayout(2, 0, 0, 0));
+
+        JPanel panelModifs = new JPanel();
+        basPage.add(panelModifs);
+        GridBagLayout gbl_panelModifs = new GridBagLayout();
+        gbl_panelModifs.columnWidths = new int[] {0};
+        gbl_panelModifs.rowHeights = new int[] {0};
+        gbl_panelModifs.columnWeights = new double[]{0.0, 0.0};
+        gbl_panelModifs.rowWeights = new double[]{0.0};
+        panelModifs.setLayout(gbl_panelModifs);
+
+        JButton btnModifierLoyer = new JButton("Modifier le loyer");
+        GridBagConstraints gbc_btnModifierLoyer = new GridBagConstraints();
+        gbc_btnModifierLoyer.insets = new Insets(0, 0, 5, 5);
+        gbc_btnModifierLoyer.gridx = 0;
+        gbc_btnModifierLoyer.gridy = 0;
+        panelModifs.add(btnModifierLoyer, gbc_btnModifierLoyer);
+        btnModifierLoyer.addActionListener(modele.getActionListenerForModifierLoyer(frame,new BailDAO().getId(bail)));
+
+        JButton btnAjoutLocataire = new JButton("Ajouter un locataire");
+        GridBagConstraints gbc_btnAjoutLocataire = new GridBagConstraints();
+        gbc_btnAjoutLocataire.insets = new Insets(0, 0, 5, 0);
+        gbc_btnAjoutLocataire.gridx = 2;
+        gbc_btnAjoutLocataire.gridy = 0;
+        panelModifs.add(btnAjoutLocataire, gbc_btnAjoutLocataire);
+        btnAjoutLocataire.addActionListener(modele.getAjouterLocataire(new BailDAO().getId(bail)));
+
+        JButton btnAjoutCharges = new JButton("Ajouter des charges");
+        GridBagConstraints gbc_btnAjoutCharges = new GridBagConstraints();
+        gbc_btnAjoutCharges.insets = new Insets(0,0,5,5);
+        gbc_btnAjoutCharges.gridx = 1;
+        gbc_btnAjoutCharges.gridy = 0;
+        panelModifs.add(btnAjoutCharges,gbc_btnAjoutCharges);
+
+
+        JPanel panelQuitter = new JPanel();
+        basPage.add(panelQuitter);
+        FlowLayout fl_panelQuitter = new FlowLayout(FlowLayout.LEFT, 5, 5);
+        panelQuitter.setLayout(fl_panelQuitter);
+
+        JButton btnQuitter = new JButton("Quitter");
+        btnQuitter.setHorizontalAlignment(SwingConstants.LEFT);
+        panelQuitter.add(btnQuitter);
+        btnQuitter.addActionListener(modele.quitterPage());
+
+        try {
+            // Instanciation du DAO
+
+            // Chargement des données du bien
+            modele.chargerDonneesBail(new BailDAO().getId(bail), this);
+
+
+        } catch (DAOException e) {
+            JOptionPane.showMessageDialog(frame, "Erreur lors du chargement des données du bien : " + e.getMessage(),
+                    "Erreur", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+
+>>>>>>> Stashed changes
         frame.setVisible(true);
         this.frame.addComponentListener(new ComponentAdapter() {
             @Override
