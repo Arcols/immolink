@@ -16,6 +16,7 @@ import DAO.DAOException;
 import com.toedter.calendar.JDateChooser;
 import enumeration.TypeLogement;
 import ihm.*;
+import ihm.Menu;
 
 public class PageNouveauTravaux {
 
@@ -77,7 +78,6 @@ public class PageNouveauTravaux {
         entete.add(this.logo, BorderLayout.WEST);
 
         Menu m = new Menu(this.frame);
-
 
         entete.add(menu_bouttons, BorderLayout.CENTER);
         menu_bouttons.setLayout(new GridLayout(0, 3, 0, 0));

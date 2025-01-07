@@ -47,13 +47,13 @@ public class PageUnTravail {
      * Create the application.
      */
     public PageUnTravail(Integer id, TypeLogement typeLogement, Integer idTravail) throws DAOException {
-        this.initialize(id,typeLogement, idTravail);
+        this.initialize(id, idTravail,typeLogement);
     }
 
     /**
      * Initialize the contents of the frame.
      */
-    private void initialize(Integer id, Integer idTravail, TypeLogement typeLogement) throws DAOException {
+    private void initialize(Integer id, Integer idTravail, TypeLogement typelogement) throws DAOException {
         valueNumDevis = new JLabel();
         valueNumFacture = new JLabel();
         valueMontantDevis = new JLabel();
@@ -338,7 +338,6 @@ public class PageUnTravail {
         });
         frame.setVisible(true);
         btnSupprimer.addActionListener(modele.getSupprimerTravauxListener(idTravail,id,typelogement));
-
 
     }
     public JLabel getValueNumDevis() {
