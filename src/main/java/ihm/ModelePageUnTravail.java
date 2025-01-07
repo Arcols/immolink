@@ -45,8 +45,7 @@ public class ModelePageUnTravail {
         }
     }
 
-    public ActionListener getSupprimerTravauxListener(Integer idTravail, Integer idBien, TypeLogement typeLogement) throws DAOException {
-
+    public ActionListener getSupprimerTravauxListener(Integer idTravail, Integer idBien,TypeLogement typeLogement) throws DAOException {
         return e -> {
             DevisDAO devisDAO = new DevisDAO();
             TravauxAssocieDAO travauxAssocieDAO = new TravauxAssocieDAO();
@@ -57,25 +56,25 @@ public class ModelePageUnTravail {
 
                 // Afficher une popup de confirmation
                 JOptionPane.showMessageDialog(null, "Le travail a été supprimé avec succès.", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
-                refreshPage(e,idBien);
+                refreshPage(e,idBien,typeLogement);
             } catch (DAOException | SQLException ex) {
                 throw new RuntimeException(ex);
             }
         };
     }
 
-    private void refreshPage(ActionEvent e, Integer idBail) throws DAOException, SQLException {
+    private void refreshPage(ActionEvent e, Integer idBail,TypeLogement typeLogement) throws DAOException, SQLException {
         JFrame ancienneFenetre = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
         ancienneFenetre.dispose();
-        PageMonBien nouvellePage = new PageMonBien(idBail);
+        PageMonBien nouvellePage = new PageMonBien(idBail,typeLogement);
         nouvellePage.getFrame().setVisible(true);
     }
 
-    public ActionListener quitterPage(Integer idBien){
+    public ActionListener quitterPage(Integer idBien,TypeLogement typeLogement){
         return e -> {
             pageUnTravail.getFrame().dispose();
             try {
-                PageMonBien pageMonBien = new PageMonBien(idBien);
+                PageMonBien pageMonBien = new PageMonBien(idBien,typeLogement);
             } catch (DAOException ex) {
                 throw new RuntimeException(ex);
             } catch (SQLException ex) {

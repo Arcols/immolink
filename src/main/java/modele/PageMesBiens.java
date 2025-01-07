@@ -10,9 +10,12 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 import DAO.DAOException;
+import DAO.jdbc.BatimentDAO;
 import DAO.jdbc.BienLouableDAO;
 import classes.Bail;
+import classes.Batiment;
 import classes.BienLouable;
+import enumeration.TypeLogement;
 import ihm.*;
 import ihm.Menu;
 
@@ -189,12 +192,16 @@ public class PageMesBiens {
                         String adresse = (String) tableModel.getValueAt(row, 2);
                         String complement = (String) tableModel.getValueAt(row, 3);
                         String ville = (String) tableModel.getValueAt(row, 1);
-
+                        TypeLogement type = TypeLogement.fromString((String) tableModel.getValueAt(row, 0));
                         try {
-                            BienLouable bien = new DAO.jdbc.BienLouableDAO().readFisc(new DAO.jdbc.BienLouableDAO().getFiscFromCompl(ville, adresse, complement));
-                            frame.dispose();
-                            new PageMonBien(new DAO.jdbc.BienLouableDAO().getId(bien.getNumero_fiscal()));
-
+                            if(type.estBienLouable()) {
+                                BienLouable bien = new BienLouableDAO().readFisc(new BienLouableDAO().getFiscFromCompl(ville, adresse, complement));
+                                frame.dispose();
+                                new PageMonBien(new BienLouableDAO().getId(bien.getNumero_fiscal()),type);
+                            }else{
+                                Integer IdBat = new BatimentDAO().getIdBat(ville,adresse);
+                                new PageMonBien(IdBat,type);
+                            }
                         } catch (DAOException e) {
                             throw new RuntimeException(e);
                         } catch (SQLException e) {

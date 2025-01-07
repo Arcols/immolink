@@ -79,4 +79,10 @@ public interface BatimentDAO {
 	 * @throws DAOException
 	 */
 	List<Integer> getIdBienLouables(Integer idBat) throws DAOException;
+
+	/**
+	 * Récupère tous les batiments de la base de données
+	 * @return la liste des batiments
+	 */
+    List<Batiment> findAll();
 }

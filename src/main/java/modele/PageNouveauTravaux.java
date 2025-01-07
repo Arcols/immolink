@@ -6,20 +6,16 @@ import java.awt.event.ComponentEvent;
 import java.io.IOException;
 
 import javax.management.ValueExp;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.LineBorder;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.PlainDocument;
 
 import DAO.DAOException;
 import com.toedter.calendar.JDateChooser;
+import enumeration.TypeLogement;
 import ihm.*;
-import ihm.Menu;
-
-import javax.swing.SwingConstants;
-import javax.swing.JTextField;
-import javax.swing.BoxLayout;
 
 public class PageNouveauTravaux {
 
@@ -45,14 +41,14 @@ public class PageNouveauTravaux {
     /**
      * Create the application.
      */
-    public PageNouveauTravaux(Integer id) throws DAOException {
-        this.initialize(id);
+    public PageNouveauTravaux(Integer id, TypeLogement typeLogement) throws DAOException {
+        this.initialize(id,typeLogement);
     }
 
     /**
      * Initialize the contents of the frame.
      */
-    private void initialize(Integer id) throws DAOException {
+    private void initialize(Integer id,TypeLogement typeLogement) throws DAOException {
         ModelePageNouveauTravaux modele = new ModelePageNouveauTravaux(this);
         this.frame = new JFrame();
         this.frame.setBounds(100, 100, 750, 400);
@@ -134,7 +130,16 @@ public class PageNouveauTravaux {
         gbc_labelNumDevis.gridy = 0;
         valeurs.add(labelNumDevis, gbc_labelNumDevis);
 
-        valueNumDevis = new JTextField();
+        valueNumDevis = new JFormattedTextField();
+        valueNumDevis.setColumns(12);
+        valueNumDevis.setDocument(new PlainDocument() {
+            @Override
+            public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+                if (str == null || getLength() + str.length() <= 12) {
+                    super.insertString(offs, str, a);
+                }
+            }
+        });
         GridBagConstraints gbc_valueNumDevis = new GridBagConstraints();
         gbc_valueNumDevis.insets = new Insets(0, 0, 5, 0);
         gbc_valueNumDevis.anchor = GridBagConstraints.WEST;
@@ -302,7 +307,7 @@ public class PageNouveauTravaux {
 
         JButton btnQuitter = new JButton("Quitter");
         panelValider.add(btnQuitter, BorderLayout.WEST);
-        btnQuitter.addActionListener(modele.quitterPage(id));
+        btnQuitter.addActionListener(modele.quitterPage(id,typeLogement));
 
         this.btnValider = new JButton("Valider");
         this.btnValider.setEnabled(false);
@@ -338,7 +343,7 @@ public class PageNouveauTravaux {
         valueType.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
         dateChooserDebut.getDateEditor().addPropertyChangeListener("date", evt -> modele.getTextFieldDocumentListener().insertUpdate(null));
         dateChooserFacture.getDateEditor().addPropertyChangeListener("date", evt -> modele.getTextFieldDocumentListener().insertUpdate(null));
-        btnValider.addActionListener(modele.getAjouterTravauxListener(id));
+        btnValider.addActionListener(modele.getAjouterTravauxListener(id,typeLogement));
     }
 
     public JTextField getValueNumDevis() {

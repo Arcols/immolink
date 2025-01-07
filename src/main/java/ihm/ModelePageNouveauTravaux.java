@@ -13,7 +13,9 @@ import javax.swing.event.DocumentListener;
 
 import DAO.BienLouableDAO;
 import DAO.DAOException;
+import DAO.jdbc.BatimentDAO;
 import DAO.jdbc.DevisDAO;
+import classes.Batiment;
 import classes.BienLouable;
 import classes.Devis;
 import enumeration.TypeLogement;
@@ -29,9 +31,7 @@ public class ModelePageNouveauTravaux {
         this.pageNouveauTravaux = pageNouveauTravaux;
     }
 
-    public ActionListener getAjouterTravauxListener(Integer id) throws DAOException {
-        BienLouableDAO bienLouableDAO = new DAO.jdbc.BienLouableDAO();
-        BienLouable bienLouable = bienLouableDAO.readId(id);
+    public ActionListener getAjouterTravauxListener(Integer id,TypeLogement typeLogement) throws DAOException {
         return e -> {
             java.sql.Date sqlDateDebut = new java.sql.Date(pageNouveauTravaux.getDateChooserDebut().getDate().getTime());
             java.sql.Date sqlDateFacture = new java.sql.Date(pageNouveauTravaux.getDateChooserFacture().getDate().getTime());
@@ -39,29 +39,36 @@ public class ModelePageNouveauTravaux {
 
             DevisDAO devisDAO = new DevisDAO();
             try {
-                // Enregistrer le devis dans la base de données
-                devisDAO.create(d, bienLouable.getNumero_fiscal(), bienLouableDAO.getTypeFromId(id));
+                if(typeLogement == TypeLogement.BATIMENT){
+                    BatimentDAO batimentDAO = new DAO.jdbc.BatimentDAO();
+                    Batiment batiment = batimentDAO.readId(id);
+                    devisDAO.create(d, batiment.getNumeroFiscal(), typeLogement);
+                }else{
+                    BienLouableDAO bienLouableDAO = new DAO.jdbc.BienLouableDAO();
+                    BienLouable bienLouable = bienLouableDAO.readId(id);
+                    devisDAO.create(d, bienLouable.getNumero_fiscal(), typeLogement);
+                }
 
                 // Afficher une popup de confirmation
                 JOptionPane.showMessageDialog(null, "Les travaux ont été enregistrés avec succès.", "Confirmation", JOptionPane.INFORMATION_MESSAGE);
-                refreshPage(e,id);
+                refreshPage(e,id,typeLogement);
             } catch (DAOException ex) {
                 throw new RuntimeException(ex);
             }
         };
     }
 
-    private void refreshPage(ActionEvent e, Integer idBail) throws DAOException {
+    private void refreshPage(ActionEvent e, Integer IdBien,TypeLogement typeLogement) throws DAOException {
         JFrame ancienneFenetre = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
         ancienneFenetre.dispose();
-        PageNouveauTravaux nouvellePage = new PageNouveauTravaux(idBail);
+        PageNouveauTravaux nouvellePage = new PageNouveauTravaux(IdBien,typeLogement);
         nouvellePage.getFrame().setVisible(true);
     }
-    public ActionListener quitterPage(int id){
+    public ActionListener quitterPage(int id,TypeLogement typeLogement){
         return e -> {
             pageNouveauTravaux.getFrame().dispose();
             try {
-                new PageMonBien(id);
+                new PageMonBien(id,typeLogement);
             } catch (DAOException ex) {
                 throw new RuntimeException(ex);
             } catch (SQLException ex) {

@@ -15,6 +15,7 @@ import javax.swing.border.LineBorder;
 
 import DAO.DAOException;
 import enumeration.TypeLogement;
+import enumeration.TypeLogement;
 import ihm.*;
 
 import java.awt.GridBagLayout;
@@ -45,8 +46,8 @@ public class PageUnTravail {
     /**
      * Create the application.
      */
-    public PageUnTravail(Integer id, Integer idTravail, TypeLogement typeLogement) throws DAOException {
-        this.initialize(id, idTravail, typeLogement);
+    public PageUnTravail(Integer id, TypeLogement typeLogement, Integer idTravail) throws DAOException {
+        this.initialize(id,typeLogement, idTravail);
     }
 
     /**
@@ -311,7 +312,7 @@ public class PageUnTravail {
 
         JButton btnQuitter = new JButton("Quitter");
         panelValider.add(btnQuitter, BorderLayout.WEST);
-        btnQuitter.addActionListener(modele.quitterPage(id));
+        btnQuitter.addActionListener(modele.quitterPage(id,typelogement));
 
         JButton btnSupprimer = new JButton("Supprimer");
         panelValider.add(btnSupprimer, BorderLayout.EAST);
@@ -336,7 +337,7 @@ public class PageUnTravail {
             }
         });
         frame.setVisible(true);
-        btnSupprimer.addActionListener(modele.getSupprimerTravauxListener(idTravail,id, typeLogement));
+        btnSupprimer.addActionListener(modele.getSupprimerTravauxListener(idTravail,id,typelogement));
 
 
     }

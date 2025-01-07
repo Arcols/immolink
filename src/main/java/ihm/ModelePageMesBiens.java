@@ -1,8 +1,10 @@
 package ihm;
 
 import DAO.DAOException;
+import DAO.jdbc.BatimentDAO;
 import DAO.jdbc.BienLouableDAO;
 import DAO.jdbc.LocataireDAO;
+import classes.Batiment;
 import classes.BienLouable;
 import classes.Locataire;
 import enumeration.TypeLogement;
@@ -49,17 +51,29 @@ public class ModelePageMesBiens {
             }
         };
 
-        // Récupération des biens louables
         BienLouableDAO bienLouableDAO = new BienLouableDAO();
         List<BienLouable> biensLouables = bienLouableDAO.findAll();
-
+        Object[] rowData = new Object[4];
         // Remplissage du modèle avec les données des biens louables
         for (BienLouable bien : biensLouables) {
-            Object[] rowData= {
+            rowData = new Object[]{
                     TypeLogement.getString(bien.getTypeLogement()),
                     bien.getVille(),
                     bien.getAdresse(),
                     bien.getComplement_adresse()
+            };
+            model.addRow(rowData);
+        }
+
+        BatimentDAO batimentDAO = new BatimentDAO();
+        List<Batiment> batiments = batimentDAO.findAll();
+        // Remplissage du modèle avec les données des bâtiments
+        for (Batiment bat : batiments) {
+            rowData = new Object[]{
+                    TypeLogement.getString(TypeLogement.BATIMENT),
+                    bat.getVille(),
+                    bat.getAdresse(),
+                    ""
             };
             model.addRow(rowData);
         }

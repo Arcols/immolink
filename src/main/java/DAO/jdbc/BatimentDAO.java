@@ -204,4 +204,27 @@ public class BatimentDAO implements DAO.BatimentDAO {
 		return idBienLouables;
 	}
 
+	@Override
+	public List<Batiment> findAll() {
+		List<Batiment> batiments = new ArrayList<>();
+		try {
+			Connection cn = ConnectionDB.getInstance();
+			String query = "SELECT numero_fiscal, adresse, code_postal, ville FROM batiment";
+			PreparedStatement pstmt = cn.prepareStatement(query);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				String num_fisc = rs.getString("numero_fiscal");
+				String adresse = rs.getString("adresse");
+				String code_postal = rs.getString("code_postal");
+				String ville = rs.getString("ville");
+				batiments.add(new Batiment(num_fisc,ville,adresse,code_postal));
+			}
+			rs.close();
+			pstmt.close();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+		return batiments;
+	}
+
 }

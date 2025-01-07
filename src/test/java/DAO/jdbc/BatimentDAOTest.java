@@ -147,4 +147,21 @@ public class BatimentDAOTest {
         assertTrue(batiments.get("Lyon").contains("456 Rue de Lyon"));
     }
 
+    @Test
+    public void testFindAll() throws SQLException, DAOException {
+        // Create Batiment objects
+        Batiment batiment1 = new Batiment("123456789101", "Paris", "123 Rue de la Paix", "31000");
+        Batiment batiment2 = new Batiment("123456789102", "Lyon", "456 Rue de Lyon", "69000");
+        batimentDAO.create(batiment1);
+        batimentDAO.create(batiment2);
+
+        // Retrieve all Batiment objects
+        List<Batiment> batiments = batimentDAO.findAll();
+
+        // Verify the results
+        assertNotNull(batiments);
+        assertEquals(2, batiments.size());
+        assertTrue(batiments.stream().anyMatch(b -> b.getNumeroFiscal().equals("123456789101")));
+        assertTrue(batiments.stream().anyMatch(b -> b.getNumeroFiscal().equals("123456789102")));
+    }
 }

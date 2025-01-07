@@ -47,14 +47,14 @@ public class PageMonBien {
     /**
      * Create the application.
      */
-    public PageMonBien(int idBien) throws DAOException, SQLException {
-        initialize(idBien);
+    public PageMonBien(int idBien,TypeLogement typeLogement) throws DAOException, SQLException {
+        initialize(idBien,typeLogement);
     }
 
     /**
      * Initialize the contents of the frame.
      */
-    private void initialize(int idBien) throws DAOException, SQLException {
+    private void initialize(int idBien,TypeLogement typeLogement) throws DAOException, SQLException {
         this.affichageNumeroFiscal = new JLabel("New label");
         this.affichageVille = new JLabel("New label");
         this.affichageAdresse = new JLabel("New label");
@@ -69,7 +69,7 @@ public class PageMonBien {
 
         try {
             // Chargement des données du bien
-            modele.chargerDonneesBien(idBien, this);
+            modele.chargerDonneesBien(idBien,typeLogement, this);
         } catch (DAOException e) {
             JOptionPane.showMessageDialog(frame, "Erreur lors du chargement des données du bien : " + e.getMessage(),
                     "Erreur", JOptionPane.ERROR_MESSAGE);
@@ -124,8 +124,13 @@ public class PageMonBien {
         body.setLayout(new BorderLayout(0, 0));
 
         JLabel lblNewLabel = new JLabel("");
-        String titrePage = TypeLogement.getString(new BienLouableDAO().readId(idBien).getTypeLogement());
-        titrePage += " - " + new BienLouableDAO().readId(idBien).getAdresse();
+        String titrePage = TypeLogement.getString(typeLogement);
+        if(typeLogement.equals(TypeLogement.BATIMENT)){
+            titrePage += " - " + new DAO.jdbc.BatimentDAO().readId(idBien).getAdresse();
+        }
+        else{
+            titrePage += " - " + new BienLouableDAO().readId(idBien).getAdresse();
+        }
         lblNewLabel.setText(titrePage);
         lblNewLabel.setFont(new Font("Arial", Font.PLAIN, 30));
         lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -235,7 +240,7 @@ public class PageMonBien {
         gbc_affichageCoutTravaux.gridy = 4;
         panel.add(this.affichageCoutTravaux, gbc_affichageCoutTravaux);
 
-        if(new BienLouableDAO().getTypeFromId(idBien).estBienLouable()){
+        if(typeLogement.estBienLouable()){
             garageButton = new JButton();
             GridBagConstraints gbc_buttonGarage = new GridBagConstraints();
             gbc_buttonGarage.anchor = GridBagConstraints.WEST;
@@ -328,7 +333,7 @@ public class PageMonBien {
                     panel.add(garageButton, gbc_buttonGarage);
 
                     garageButton.setText("Délier mon Garage");
-                    garageButton.addActionListener(modele.delierGarage(idBien));
+                    garageButton.addActionListener(modele.delierGarage(idBien,typeLogement));
                 } else {
                     panel.add(garageButton, gbc_buttonGarage);
                     garageButton.setText("Ajouter Garage");
@@ -420,7 +425,7 @@ public class PageMonBien {
         scrollPane_1.setViewportView(this.tableTravaux);
         this.tableTravaux.setModel(model);
         try {
-            DefaultTableModel modele2 = ModelePageMonBien.loadDataTravauxToTable(idBien);
+            DefaultTableModel modele2 = ModelePageMonBien.loadDataTravauxToTable(idBien,typeLogement);
             tableTravaux.setModel(modele2);
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(frame, "Erreur lors du chargement des données : " + e.getMessage(),
@@ -446,7 +451,7 @@ public class PageMonBien {
         ajouter.setVerticalAlignment(SwingConstants.BOTTOM);
         bas_de_page.add(ajouter, BorderLayout.EAST);
 
-        ajouter.addActionListener(modele.ouvrirPageNouveauTravaux(idBien));
+        ajouter.addActionListener(modele.ouvrirPageNouveauTravaux(idBien,typeLogement));
         this.frame.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -487,9 +492,7 @@ public class PageMonBien {
                         try {
                             // Ouvrir la page correspondante
                             frame.dispose();
-                            DAO.BienLouableDAO bienLouableDAO = new DAO.jdbc.BienLouableDAO();
-                            BienLouable bienLouable = bienLouableDAO.readId(idBien);
-                            new PageUnTravail(idBien, idTravail, bienLouable.getTypeLogement());
+                            new PageUnTravail(idBien,typeLogement, idTravail);
                         } catch (DAOException e) {
                             JOptionPane.showMessageDialog(frame,
                                     "Erreur lors de l'ouverture de la page du travail : " + e.getMessage(),
