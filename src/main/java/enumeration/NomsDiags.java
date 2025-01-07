@@ -6,7 +6,8 @@ public enum NomsDiags {
     AMIANTE("Dossier amiante parties privatives"),
     PLOMB("Constat de risque d'exposition au plomb avant location"),
     RISQUES_POLLUTIONS_NUISANCES("État des risques, pollutions et des nuisances sonores aériennes"),
-    ELECTRICITE("Diagnostique de l'état de l'installation d'électricité");
+    ELECTRICITE("Diagnostique de l'état de l'installation d'électricité"),
+    GAZ("Diagnostique de l'état de l'installation de gaz"),;
 
     private final String description;
 

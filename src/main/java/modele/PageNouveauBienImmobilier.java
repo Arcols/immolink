@@ -345,9 +345,6 @@ public class PageNouveauBienImmobilier {
 		this.choix_nb_piece.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		this.choix_nb_piece
 				.setModel(new SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
-
-
-
 		this.addGarageButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -374,7 +371,8 @@ public class PageNouveauBienImmobilier {
 		String[] nomdiagnostics = { "Certificat de surface habitable", "Diagnostique de performance énergétique",
 				"Dossier amiante parties privatives", "Constat de risque d'exposition au plomb avant location",
 				"État des risques, pollutions et des nuisances sonores aériennes",
-				"Diagnostique de l'état de l'installation d'électricité" };
+				"Diagnostique de l'état de l'installation d'électricité",
+				"Diagnostique de l'état de l'installation de gaz"};
 
 		// Panel principal (avec un défilement si nécessaire)
 		this.tableau_diagnostic = new JPanel(new GridBagLayout()); // Remplacer GridLayout par GridBagLayout
@@ -545,7 +543,7 @@ public class PageNouveauBienImmobilier {
 
 	public boolean isMapDiagnosticFull() {
 		for (Map.Entry<String, Diagnostic> entry : this.map_diagnostic.entrySet()) {
-			if (entry.getValue() == null) {
+			if (!entry.getKey().equals("GAZ") && entry.getValue() == null) {
 				return false;
 			}
 		}

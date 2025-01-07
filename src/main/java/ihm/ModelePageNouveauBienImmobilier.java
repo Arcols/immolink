@@ -83,6 +83,9 @@ public class ModelePageNouveauBienImmobilier {
 		DiagnosticDAO diagnosticDAO = new DiagnosticDAO();
 		for (Diagnostic d : pageNouveauBienImmobilier.getMap_diagnostic().values()) {
 			try {
+				if(d == null){
+					continue;
+				}
 				diagnosticDAO.create(d, numero_fiscal);
 			} catch (DAOException e) {
 				JOptionPane.showMessageDialog(null, "Problème lors de l'ajout d'un de vos diagnostics", "Erreur",
@@ -298,7 +301,8 @@ public class ModelePageNouveauBienImmobilier {
 				File selectedFile = fileChooser.getSelectedFile();
 				try {
 					if (diagnostic == NomsDiags.PERFORMANCE_ENERGETIQUE.getDescription()
-							|| diagnostic == NomsDiags.ELECTRICITE.getDescription()) {
+							|| diagnostic == NomsDiags.ELECTRICITE.getDescription()
+							|| diagnostic == NomsDiags.GAZ.getDescription()) {
 						date = setDateDiag();
 					}
 					// Ajouter le diagnostic à la map
@@ -323,7 +327,7 @@ public class ModelePageNouveauBienImmobilier {
 
 	public boolean isMapDiagnosticFull() {
 		for (Map.Entry<String, Diagnostic> entry : this.pageNouveauBienImmobilier.getMap_diagnostic().entrySet()) {
-			if (entry.getValue() == null) {
+			if (!entry.getKey().equals("GAZ") && entry.getValue() == null) {
 				return false;
 			}
 		}
