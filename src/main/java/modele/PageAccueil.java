@@ -27,6 +27,10 @@ import ihm.Menu;
 import ihm.ModelePageAccueil;
 import ihm.ResizedImage;
 
+import javax.swing.*; // Composants Swing classiques
+import com.formdev.flatlaf.FlatLightLaf;
+
+
 public class PageAccueil {
 
 	private JFrame frame;
@@ -38,7 +42,12 @@ public class PageAccueil {
 	 * Lance l'application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(() -> {
+        try {
+			UIManager.setLookAndFeel(new FlatLightLaf());
+		} catch (UnsupportedLookAndFeelException e) {
+			throw new RuntimeException(e);
+		}
+        EventQueue.invokeLater(() -> {
 			try {
 				PageAccueil window = new PageAccueil();
 				window.frame.setVisible(true);

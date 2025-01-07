@@ -30,7 +30,7 @@ public class DiagnosticDAO implements DAO.DiagnosticDAO{
             pstmt.executeUpdate();
             pstmt.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -110,7 +110,6 @@ public class DiagnosticDAO implements DAO.DiagnosticDAO{
             pstmt.setString(2, reference);
             pstmt.executeUpdate();
             pstmt.close();
-            
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -138,7 +137,7 @@ public class DiagnosticDAO implements DAO.DiagnosticDAO{
 
         } catch (SQLException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

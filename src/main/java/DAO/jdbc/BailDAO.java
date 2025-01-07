@@ -1,15 +1,21 @@
 package DAO.jdbc;
 
-import DAO.DAOException;
-import DAO.db.ConnectionDB;
-import classes.Bail;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import DAO.DAOException;
+import DAO.db.ConnectionDB;
+import classes.Bail;
+import classes.BienLouable;
+
 public class BailDAO implements DAO.BailDAO {
+
     @Override
     public void create(Bail bail) throws DAOException {
         try {
@@ -32,7 +38,7 @@ public class BailDAO implements DAO.BailDAO {
             pstmt.close();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -56,7 +62,7 @@ public class BailDAO implements DAO.BailDAO {
 
     @Override
     public int getId(Bail bail){
-        Integer idBail = (Integer) null;
+        Integer idBail = -1;
         try {
             Connection cn = ConnectionDB.getInstance();
             String query = "SELECT id FROM bail WHERE date_debut = ? AND date_fin = ? AND id_bien_louable = ? ";
@@ -76,6 +82,26 @@ public class BailDAO implements DAO.BailDAO {
             throw new RuntimeException(e);
         }
         return idBail;
+    }
+
+    @Override
+    public List<Integer> getIDBeaux(Integer id_bien) {
+        List<Integer> idBaux = new ArrayList<>();
+        try {
+            Connection cn = ConnectionDB.getInstance();
+            String query = "SELECT id FROM bail WHERE id_bien_louable = ?";
+            PreparedStatement pstmt = cn.prepareStatement(query);
+            pstmt.setInt(1, id_bien);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                idBaux.add(rs.getInt("id"));
+            }
+            rs.close();
+            pstmt.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return idBaux;
     }
 
     @Override
@@ -99,11 +125,120 @@ public class BailDAO implements DAO.BailDAO {
             rs.close();
             pstmt.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         } catch (DAOException e) {
             throw new RuntimeException(e);
         }
         return baux;
     }
+
+    @Override
+    public void delete(int idBail) {
+        List<Integer> idLocataires = new LouerDAO().getIdLoc(idBail);
+        try {
+            for(int idLocataire : idLocataires){
+                new LouerDAO().delete(idBail,idLocataire);
+            }
+            Connection cn = ConnectionDB.getInstance();
+            String query = "DELETE FROM bail WHERE id = ?";
+            PreparedStatement pstmt = cn.prepareStatement(query);
+            pstmt.setInt(1, idBail);
+            pstmt.executeUpdate();
+            pstmt.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Integer getIdBienLouable(int idBail) {
+        Integer idBienLouable = 0;
+        try {
+            Connection cn = ConnectionDB.getInstance();
+            String query = "SELECT id_bien_louable FROM bail WHERE id = ?";
+            PreparedStatement pstmt = cn.prepareStatement(query);
+            pstmt.setInt(1, idBail);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()){
+                idBienLouable = rs.getInt("id_bien_louable");
+            }
+            pstmt.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return idBienLouable;
+    }
+
+    @Override
+    public Bail getBailFromId(int idBail) {
+        Bail bail = null;
+        try {
+            Connection cn = ConnectionDB.getInstance();
+            String query = "SELECT * FROM bail WHERE id = ?";
+            PreparedStatement pstmt = cn.prepareStatement(query);
+            pstmt.setInt(1, idBail);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()){
+                int solde_de_compte = rs.getInt("solde_de_compte");
+                int id_bien_louable = rs.getInt("id_bien_louable");
+                Double loyer = rs.getDouble("loyer");
+                Double charges = rs.getDouble("charges");
+                Double depot_garantie = rs.getDouble("depot_garantie");
+                java.sql.Date date_debut = rs.getDate("date_debut");
+                Date date_fin = rs.getDate("date_fin");
+                bail = new Bail((solde_de_compte==1),new LogementDAO().read(id_bien_louable).getNumero_fiscal(),loyer,charges,depot_garantie,date_debut,date_fin);
+            }
+            pstmt.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
+        return bail;
+    }
+
+    @Override
+    public Bail getBailFromBienEtDate(BienLouable bien, Date date_debut_bail) {
+        Bail bail = null;
+        try {
+            Connection cn = ConnectionDB.getInstance();
+            String query = "SELECT * FROM bail WHERE id_bien_louable = ? AND date_debut = ?";
+            PreparedStatement pstmt = cn.prepareStatement(query);
+            pstmt.setInt(1,new BienLouableDAO().getId(bien.getNumero_fiscal()));
+            pstmt.setDate(2,date_debut_bail);
+            ResultSet rs = pstmt.executeQuery();
+
+            if(rs.next()){
+                Integer solde_de_compte = rs.getInt("solde_de_compte");
+                Double loyer = rs.getDouble("loyer");
+                Double charges = rs.getDouble("charges");
+                Double depot_garantie = rs.getDouble("depot_garantie");
+                Date date_debut = rs.getDate("date_debut");
+                Date date_fin = rs.getDate("date_fin");
+                bail = new Bail((solde_de_compte==1),bien.getNumero_fiscal(),loyer,charges,depot_garantie,date_debut,date_fin);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
+        return bail;
+    }
+
+    @Override
+    public void updateLoyer(int idBail, double loyer) {
+        try {
+            Connection cn = ConnectionDB.getInstance();
+            String query = "UPDATE bail SET loyer = ? WHERE id = ?";
+            PreparedStatement pstmt = cn.prepareStatement(query);
+            pstmt.setDouble(1, loyer);
+            pstmt.setInt(2, idBail);
+            pstmt.executeUpdate();
+            pstmt.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
 

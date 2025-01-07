@@ -4,6 +4,7 @@ import DAO.jdbc.BailDAO;
 import DAO.jdbc.BatimentDAO;
 import DAO.jdbc.BienLouableDAO;
 import classes.Batiment;
+import com.toedter.calendar.JDateChooser;
 import ihm.Charte;
 import ihm.Menu;
 import ihm.ModelePageNouveauBail;
@@ -35,8 +36,8 @@ public class PageNouveauBail {
     private JTextField choix_loyer;
     private JTextField choix_prevision;
     private JTextField choix_depot_garantie;
-    private JFormattedTextField choix_date_debut;
-    private JFormattedTextField choix_date_fin;
+    private JDateChooser choix_date_debut;
+    private JDateChooser choix_date_fin;
     private JComboBox choix_complement;
     private JComboBox choix_adresse;
     private JComboBox choix_ville;
@@ -390,15 +391,15 @@ public class PageNouveauBail {
         JLabel date_debut = new JLabel("Date début");
         panel_date.add(date_debut);
 
-        this.choix_date_debut = new JFormattedTextField();
-        choix_date_debut.setColumns(10);
+        this.choix_date_debut = new JDateChooser();
+        choix_date_debut.setPreferredSize(new Dimension(100, 22));
         panel_date.add(choix_date_debut);
 
         JLabel date_fin = new JLabel("Date fin");
         panel_date.add(date_fin);
 
-        this.choix_date_fin = new JFormattedTextField();
-        choix_date_fin.setColumns(10);
+        this.choix_date_fin = new JDateChooser();
+        choix_date_fin.setPreferredSize(new Dimension(100, 22));
         panel_date.add(choix_date_fin);
 
         JPanel bas_de_page = new JPanel();
@@ -437,8 +438,8 @@ public class PageNouveauBail {
             }
         });
         this.choix_complement.addActionListener(modele.getSurfaceEtPiece());
-        this.choix_date_fin.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
-        this.choix_date_debut.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
+        this.choix_date_fin.getDateEditor().addPropertyChangeListener("date", evt -> modele.getTextFieldDocumentListener().insertUpdate(null));
+        this.choix_date_debut.getDateEditor().addPropertyChangeListener("date", evt -> modele.getTextFieldDocumentListener().insertUpdate(null));
         this.choix_loyer.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
         this.choix_loyer.addFocusListener(modele.getFocus());
         this.choix_prevision.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
@@ -467,11 +468,11 @@ public class PageNouveauBail {
         return choix_adresse;
     }
 
-    public JFormattedTextField getChoix_date_fin() {
+    public JDateChooser getChoix_date_fin() {
         return choix_date_fin;
     }
 
-    public JFormattedTextField getChoix_date_debut() {
+    public JDateChooser getChoix_date_debut() {
         return choix_date_debut;
     }
 

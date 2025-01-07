@@ -1,14 +1,6 @@
 package modele;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
@@ -27,9 +19,13 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.PlainDocument;
 
 import DAO.jdbc.LocataireDAO;
 import classes.Locataire;
+import com.toedter.calendar.JDateChooser;
 import ihm.Charte;
 import ihm.Menu;
 import ihm.ModelePageNouveauLocataire;
@@ -43,7 +39,7 @@ public class PageNouveauLocataire {
     private JTextField prenomValeur;
     private JTextField telephoneValeur;
     private JTextField mailValeur;
-    private JTextField dateValeur;
+    private JDateChooser dateChooser;
     private JComboBox villeValeur;
     private JComboBox genreValeur;
     private JComboBox adresseValeur;
@@ -209,6 +205,14 @@ public class PageNouveauLocataire {
         gbc_telephoneValeur.gridy = 1;
         donnees_loca.add(telephoneValeur, gbc_telephoneValeur);
         telephoneValeur.setColumns(10);
+        this.telephoneValeur.setDocument(new PlainDocument() {
+            @Override
+            public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
+                if (str == null || getLength() + str.length() <= 10) {
+                    super.insertString(offs, str, a);
+                }
+            }
+        });
 
         JLabel labelMail = new JLabel("Mail");
         GridBagConstraints gbc_labelMail = new GridBagConstraints();
@@ -235,14 +239,15 @@ public class PageNouveauLocataire {
         gbc_labelDate.gridy = 2;
         donnees_loca.add(labelDate, gbc_labelDate);
 
-        dateValeur = new JTextField();
-        GridBagConstraints gbc_dateValeur = new GridBagConstraints();
-        gbc_dateValeur.fill = GridBagConstraints.HORIZONTAL;
-        gbc_dateValeur.insets = new Insets(0, 0, 5, 5);
-        gbc_dateValeur.gridx = 4;
-        gbc_dateValeur.gridy = 2;
-        donnees_loca.add(dateValeur, gbc_dateValeur);
-        dateValeur.setColumns(10);
+        dateChooser = new JDateChooser();
+        dateChooser.setPreferredSize(new Dimension(100, 22));
+        GridBagConstraints gbc_dateChooserDebut = new GridBagConstraints();
+        gbc_dateChooserDebut.anchor = GridBagConstraints.WEST;
+        gbc_dateChooserDebut.insets = new Insets(0, 0, 5, 0);
+        gbc_dateChooserDebut.gridx = 4;
+        gbc_dateChooserDebut.gridy = 2;
+        donnees_loca.add(dateChooser, gbc_dateChooserDebut);
+
 
         JLabel labelGenre = new JLabel("Genre");
         GridBagConstraints gbc_labelGenre = new GridBagConstraints();
@@ -253,7 +258,7 @@ public class PageNouveauLocataire {
         donnees_loca.add(labelGenre, gbc_labelGenre);
 
         this.genreValeur = new JComboBox();
-        this.genreValeur.setModel(new DefaultComboBoxModel(new String[] { "H", "F", "O" }));
+        this.genreValeur.setModel(new DefaultComboBoxModel(new String[] { "H", "F" }));
         GridBagConstraints gbc_genreValeur = new GridBagConstraints();
         gbc_genreValeur.fill = GridBagConstraints.HORIZONTAL;
         gbc_genreValeur.insets = new Insets(0, 0, 5, 5);
@@ -278,7 +283,7 @@ public class PageNouveauLocataire {
         enregistrerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                java.sql.Date sqlDate = java.sql.Date.valueOf(dateValeur.getText());
+                java.sql.Date sqlDate = new java.sql.Date(getDateChooser().getDate().getTime());
                 daoLoc = new LocataireDAO();
                 Locataire l = new Locataire(nomValeur.getText(), prenomValeur.getText(), telephoneValeur.getText(),
                         mailValeur.getText(), sqlDate, (String) genreValeur.getSelectedItem());
@@ -309,12 +314,8 @@ public class PageNouveauLocataire {
         nomValeur.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
         prenomValeur.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
         telephoneValeur.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
-        dateValeur.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
+        dateChooser.getDateEditor().addPropertyChangeListener("date", evt -> modele.getTextFieldDocumentListener().insertUpdate(null));
         quitter.addActionListener(modele.quitterBouton());
-    }
-
-    public JTextField getDateValeur() {
-        return dateValeur;
     }
 
     public JTextField getNomValeur() {
@@ -345,10 +346,12 @@ public class PageNouveauLocataire {
         return villeValeur;
     }
 
+    public JDateChooser getDateChooser() {return dateChooser;}
+
     public void checkFields() {
         // Vérification si tous les champs sont remplis
         boolean isFilled = !nomValeur.getText().trim().isEmpty() && !prenomValeur.getText().trim().isEmpty()
-                && !telephoneValeur.getText().trim().isEmpty() && !dateValeur.getText().trim().isEmpty();
+                && !telephoneValeur.getText().trim().isEmpty() && dateChooser.getDate() != null;
 
         // Active ou désactive le bouton "Valider"
         enregistrerButton.setEnabled(isFilled);

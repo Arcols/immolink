@@ -1,7 +1,6 @@
 package DAO.jdbc;
 
 import DAO.DAOException;
-import DAO.TrauxAssocieDAO;
 import DAO.db.ConnectionDB;
 import classes.Devis;
 import enumeration.TypeLogement;
@@ -29,7 +28,8 @@ public class DevisDAO implements DAO.DevisDAO {
             pstmt.setString(9, devis.getNomEntreprise());
             pstmt.executeUpdate();
             pstmt.close();
-            TravauxAssocieDAO travauxAssocieDAO = new TravauxAssocieDAO();
+            TravauxAssocieDAO travauxAssocieDAO;
+            travauxAssocieDAO = new TravauxAssocieDAO();
             travauxAssocieDAO.create(num_fiscal,devis,typeLogement);
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -70,6 +70,20 @@ public class DevisDAO implements DAO.DevisDAO {
             throw new RuntimeException(e);
         }
         return devis;
+    }
+
+    @Override
+    public void delete(Integer id) {
+        try{
+            Connection cn = ConnectionDB.getInstance();
+            String requete = "DELETE FROM Devis WHERE id = ?";
+            PreparedStatement pstmt = cn.prepareStatement(requete);
+            pstmt.setInt(1,id);
+            pstmt.executeUpdate();
+            pstmt.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

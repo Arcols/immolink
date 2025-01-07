@@ -1,6 +1,8 @@
 package classes;
 
 import static org.junit.Assert.*;
+
+import enumeration.TypeLogement;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,15 +30,13 @@ public class BienLouableTest {
         tempFile2 = File.createTempFile("testFile2", ".pdf");
         Files.write(tempFile2.toPath(), "New PDF Data".getBytes());
 
-        // Initialize diagnostics
         diagnostic1 = new Diagnostic("RefDiag1", tempFile.getAbsolutePath());
         diagnostic2 = new Diagnostic("RefDiag2", tempFile2.getAbsolutePath());
 
         List<Diagnostic> diagnostics = new ArrayList<>();
         diagnostics.add(diagnostic1);
 
-        // Initialize BienLouable
-        bienLouable = new BienLouable("123456789101", "Paris", "123 Rue de la Paix", "Appartement 12B", diagnostics,null);
+        bienLouable = new BienLouable("123456789101", "Paris", "123 Rue de la Paix", "Appartement 12B", diagnostics, null,TypeLogement.MAISON);
     }
 
     @Test
@@ -48,6 +48,7 @@ public class BienLouableTest {
         assertEquals(1, bienLouable.getDiagnostic().size());
         assertEquals(diagnostic1, bienLouable.getDiagnostic().get(0));
         assertTrue(bienLouable.getTravaux().isEmpty());
+        assertNull(bienLouable.getIdgarage());
     }
 
     @Test
@@ -62,7 +63,7 @@ public class BienLouableTest {
         String adresse = "123 Rue de Paris";
         String nom_entreprise = "EntrepriseA";
 
-        Devis devis = new Devis(num_devis, montant, nature, montant_nondeductible, date_debut, date_fin, type,adresse,nom_entreprise);
+        Devis devis = new Devis(num_devis, montant, nature, montant_nondeductible, date_debut, date_fin, type, adresse, nom_entreprise);
 
         bienLouable.ajouterTravaux(devis);
         assertEquals(1, bienLouable.getTravaux().size());
@@ -74,7 +75,6 @@ public class BienLouableTest {
         Diagnostic updatedDiagnostic = new Diagnostic("RefDiag1", tempFile2.getAbsolutePath());
         bienLouable.modifierDiagnostic(updatedDiagnostic);
 
-        // Verify that the diagnostic has been updated with the new PDF data
         assertEquals(tempFile2.getAbsolutePath(), bienLouable.getDiagnostic().get(0).getPdfPath());
     }
 
@@ -83,7 +83,6 @@ public class BienLouableTest {
         Diagnostic newDiagnostic = new Diagnostic("RefDiag3", tempFile2.getAbsolutePath());
         bienLouable.modifierDiagnostic(newDiagnostic);
 
-        // Verify that the list of diagnostics remains unchanged
         assertEquals(1, bienLouable.getDiagnostic().size());
         assertEquals(diagnostic1, bienLouable.getDiagnostic().get(0));
         assertEquals(tempFile.getAbsolutePath(), bienLouable.getDiagnostic().get(0).getPdfPath());
@@ -108,11 +107,16 @@ public class BienLouableTest {
         String adresse = "123 Rue de Paris";
         String nom_entreprise = "EntrepriseA";
 
-        Devis devis = new Devis(num_devis, montant, nature, montant_nondeductible, date_debut, date_fin, type,adresse,nom_entreprise);
+        Devis devis = new Devis(num_devis, montant, nature, montant_nondeductible, date_debut, date_fin, type, adresse, nom_entreprise);
 
         bienLouable.ajouterTravaux(devis);
         assertEquals(1, bienLouable.getTravaux().size());
         assertEquals(devis, bienLouable.getTravaux().get(0));
+    }
+
+    @Test
+    public void testGetTypeLogement() {
+        assertEquals(TypeLogement.MAISON, bienLouable.getTypeLogement());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -120,6 +124,6 @@ public class BienLouableTest {
         List<Diagnostic> diagnostics = new ArrayList<>();
         diagnostics.add(diagnostic1);
 
-        new BienLouable("123456", "Paris", "123 Rue de la Paix", "Appartement 12B", diagnostics,null);
+        new BienLouable("123456", "Paris", "123 Rue de la Paix", "Appartement 12B", diagnostics, null,TypeLogement.MAISON);
     }
 }

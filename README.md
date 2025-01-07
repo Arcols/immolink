@@ -1,7 +1,7 @@
 # SAE-S3S4-2024-2025-IBLA-ACOL-CREV-ZREY
 
 ## Description du projet
-Ce projet vise à développer une application de gestion de biens immobiliers destinée aux propriétaires privés. L'application simplifie la gestion locative en centralisant des informations importantes (coordonnées des locataires, diagnostics, relevés de compteurs, etc.), en automatisant des processus clés (régularisation des charges, déclaration fiscale, augmentation des loyers), et en assurant la conformité légale via un espace sécurisé pour la gestion documentaire.
+Ce projet vise à développer une application de gestion de biens immobiliers destinée aux propriétaires privés. L'application simplifie la gestion locative en centralisant des informations importantes (coordonnées des locataires, diagnostics, relevés de compteurs, etc.), en automatisant des processus clés (régularisation des charges, déclaration fiscale).
 
 ### Objectifs :
 1. **Simplifier la gestion locative** : Centraliser les informations essentielles et automatiser les processus comme la déclaration fiscale et la régularisation des charges.
@@ -9,7 +9,7 @@ Ce projet vise à développer une application de gestion de biens immobiliers de
 3. **Gestion documentaire et conformité** : Fournir un espace sécurisé pour stocker et organiser les documents liés à la location, tels que les baux, diagnostics, et états des lieux.
 
 ## Membres du groupe
-1. **BLATEAU Indi**
+1. **BLATEAU Indi** 
     - Email : [indi.blateau@etu.iut-tlse3.fr](mailto:indi.blateau@etu.iut-tlse3.fr)
     - Identifiant : BLN5170A
 2. **COLSON Arthur**
@@ -50,4 +50,5 @@ Le diagramme UML de l'application se trouve dans les annexes du projet sur Teams
 ## Annexes
 - **GitLab** : [Accéder au dépôt GitLab](https://gitlab.info.iut-tlse3.fr/clr4965a/sae-s3s4-2024-2025-ibla-acol-crev-zrey)
 - **Moodle** : [Cours et ressources disponibles sur Moodle](https://moodle.iut-tlse3.fr/course/view.php?id=6446)
-- **Backlog produit** : Disponible sur GitLab.
+- **Backlog produit** : Disponible sur GitLab.()
+- **Documents relatifs au projet** : [Lien Teams](https://toulouse3-my.sharepoint.com/:f:/r/personal/arthur_colson_etu_iut-tlse3_fr/Documents/SAE-S3S4-2024-2025-IBLA-ACOL-CREV-ZREY?csf=1&web=1&e=42gzEL)

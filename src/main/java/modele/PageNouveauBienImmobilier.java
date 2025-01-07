@@ -11,6 +11,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.sql.SQLException;
@@ -24,12 +26,13 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
 import DAO.jdbc.BatimentDAO;
-import classes.Batiment;
 import classes.Diagnostic;
+import classes.Garage;
 import enumeration.NomsDiags;
+import enumeration.TypeLogement;
 import ihm.Charte;
 import ihm.Menu;
-import ihm.ModelePageBienImmobilier;
+import ihm.ModelePageNouveauBienImmobilier;
 import ihm.ResizedImage;
 
 public class PageNouveauBienImmobilier {
@@ -54,11 +57,12 @@ public class PageNouveauBienImmobilier {
 	private JFormattedTextField texte_code_postal;
 	private JSpinner choix_nb_piece;
 	private JSpinner choix_surface;
-	private JCheckBox check_garage;
+	private JButton addGarageButton = new JButton("Lier un garage");
 	private List<Diagnostic> liste_diagnostic;
 	private Map<String, Diagnostic> map_diagnostic;
 	private Set<String> setVilles;
 	private Map<String, List<String>> mapVillesAdresses;
+	private Garage garageLie = new Garage("            ", "", "", "", TypeLogement.NONE);
 
 	/**
 	 * Launch the application.
@@ -92,7 +96,7 @@ public class PageNouveauBienImmobilier {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		ModelePageBienImmobilier modele = new ModelePageBienImmobilier(this);
+		ModelePageNouveauBienImmobilier modele = new ModelePageNouveauBienImmobilier(this);
 		this.map_diagnostic = new HashMap<>();
 		initialiseMapDiagnostic();
 		this.liste_diagnostic = new ArrayList<>();
@@ -187,7 +191,7 @@ public class PageNouveauBienImmobilier {
 		this.panel_caracteristique.add(type_de_bien, gbc_type_de_bien);
 		this.choix_type_de_bien = new JComboBox();
 		this.choix_type_de_bien
-				.setModel(new DefaultComboBoxModel(new String[] { "Appartement", "Bâtiment", "Garage" }));
+				.setModel(new DefaultComboBoxModel(new String[] { "Appartement", "Bâtiment", "Garage","Maison" }));
 		GridBagConstraints gbc_choix_type_de_bien = new GridBagConstraints();
 		gbc_choix_type_de_bien.fill = GridBagConstraints.HORIZONTAL;
 		gbc_choix_type_de_bien.insets = new Insets(0, 0, 5, 0);
@@ -342,14 +346,23 @@ public class PageNouveauBienImmobilier {
 		this.choix_nb_piece
 				.setModel(new SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
 
-		this.check_garage = new JCheckBox("Ajouter un garage");
+
+
+		this.addGarageButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				showGaragePopup();
+			}
+		});
 		GridBagConstraints gbc_check_garage = new GridBagConstraints();
 		gbc_check_garage.fill = GridBagConstraints.HORIZONTAL;
-		gbc_check_garage.gridx = 1;
+		gbc_check_garage.gridwidth = 2;
+		gbc_check_garage.insets = new Insets(10, 0, 0, 0);
+		gbc_check_garage.gridx = 0;
 		gbc_check_garage.gridy = 7;
-		this.panel_caracteristique.add(this.check_garage, gbc_check_garage);
-		this.check_garage.setAlignmentY(Component.BOTTOM_ALIGNMENT);
-		this.check_garage.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		this.panel_caracteristique.add(this.addGarageButton, gbc_check_garage);
+		this.addGarageButton.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+		this.addGarageButton.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
 		JPanel panel_diagnostic = new JPanel();
 		contenu.add(panel_diagnostic);
@@ -482,8 +495,8 @@ public class PageNouveauBienImmobilier {
 		return this.valider;
 	}
 
-	public JCheckBox getCheck_garage() {
-		return this.check_garage;
+	public JButton getAddGarageButton() {
+		return this.addGarageButton;
 	}
 
 	public JSpinner getChoix_nb_piece() {
@@ -522,6 +535,8 @@ public class PageNouveauBienImmobilier {
 		return code_postal;
 	}
 
+	public Garage getGarageLie() {return this.garageLie;}
+
 	public void initialiseMapDiagnostic() {
 		for (NomsDiags diag : NomsDiags.values()) {
 			this.map_diagnostic.put(diag.name(), null);
@@ -549,7 +564,7 @@ public class PageNouveauBienImmobilier {
 			// remplis
 			isFilled = !this.getTexte_ville().getText().trim().isEmpty()
 					&& !this.getTexte_adresse().getText().trim().isEmpty();
-		} else if ("Appartement".equals(selectedType)) {
+		} else if ("Appartement".equals(selectedType) || "Maison".equals(selectedType)) {
 			// Critères pour les autres types de bien : vérifier choix_complement_adresse et
 			// choix_num_fiscal
 			isFilled = !this.getChoix_complement_adresse().getText().trim().isEmpty()
@@ -561,6 +576,15 @@ public class PageNouveauBienImmobilier {
 
 		// Active ou désactive le bouton "Valider"
 		this.getValider().setEnabled(isFilled);
+	}
+
+	public void addGarage(Garage garage) {
+		this.garageLie = garage;
+	}
+
+	private void showGaragePopup() {
+		PopUpCreationGarageLieBL popup = new PopUpCreationGarageLieBL(this);
+		popup.getFrame().setVisible(true);
 	}
 
 }

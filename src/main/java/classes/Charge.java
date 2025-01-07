@@ -8,6 +8,10 @@ public class Charge {
     private Date annee;
     private List<Facture> facture;
 
+    /**
+     * Constructeur de la classe Charge
+     * @param facture la liste des factures
+     */
     public Charge(List<Facture> facture) {
         this.facture = facture;
     }

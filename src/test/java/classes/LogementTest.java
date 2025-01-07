@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import enumeration.TypeLogement;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,7 +21,6 @@ public class LogementTest {
 
     @Before
     public void setUp() throws IOException {
-        // Create temporary files for diagnostics
         tempFile = File.createTempFile("testFile", ".pdf");
         Files.write(tempFile.toPath(), "Test PDF Data".getBytes());
 
@@ -36,9 +36,8 @@ public class LogementTest {
         List<Diagnostic> diagnostics = new ArrayList<>();
         diagnostics.add(diagnostic1);
 
-        Logement logement = new Logement(2, 25.0, "123456789101", "Paris", "123 Rue de la Paix", "Appartement 12B", diagnostics);
+        Logement logement = new Logement(2, 25.0, "123456789101", "Paris", "123 Rue de la Paix", "Appartement 12B", diagnostics, TypeLogement.MAISON);
 
-        // Vérification des attributs du constructeur
         assertEquals(2, logement.getNbPiece());
         assertEquals(25.0, logement.getSurface(), 0.01);
     }
@@ -48,9 +47,8 @@ public class LogementTest {
         List<Diagnostic> diagnostics = new ArrayList<>();
         diagnostics.add(diagnostic1);
 
-        Logement logement = new Logement(3, 45.0, "123456789101", "Paris", "123 Rue de la Paix", "Appartement 12B", diagnostics);
+        Logement logement = new Logement(3, 45.0, "123456789101", "Paris", "123 Rue de la Paix", "Appartement 12B", diagnostics,TypeLogement.MAISON);
 
-        // Vérification des attributs spécifiques
         assertEquals(3, logement.getNbPiece());
         assertEquals(45.0, logement.getSurface(), 0.01);
         }
@@ -60,6 +58,6 @@ public class LogementTest {
         List<Diagnostic> diagnostics = new ArrayList<>();
         diagnostics.add(diagnostic1);
 
-        new Logement(1, 8.5, "123456789101", "Paris", "123 Rue de la Paix", "Appartement 12B", diagnostics);
+        new Logement(1, 8.5, "123456789101", "Paris", "123 Rue de la Paix", "Appartement 12B", diagnostics,TypeLogement.MAISON);
     }
 }

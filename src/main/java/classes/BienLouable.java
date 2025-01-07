@@ -3,6 +3,7 @@ package classes;
 import DAO.db.ConnectionDB;
 import enumeration.TypeLogement;
 
+import java.lang.reflect.Type;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,9 +19,21 @@ public class BienLouable extends BienImmobilier {
 	private String adresse;
 	private String ville;
 	private Integer id_garage_asosscie;
+	private TypeLogement typeLogement;
 
+	/**
+	 * Constructeur de la classe BienLouable
+	 * @param numero_fiscal le numéro fiscal du bien
+	 * @param ville la ville du bien
+	 * @param adresse l'adresse du bien
+	 * @param complement_adresse le complément d'adresse du bien
+	 * @param diagnostic la liste des diagnostics du bien
+	 * @param id_garage_associe l'identifiant du garage associé
+	 * @param typeLogement le type de logement
+	 * @throws IllegalArgumentException si le numéro fiscal n'est pas valide
+	 */
 	public BienLouable(String numero_fiscal, String ville, String adresse, String complement_adresse,
-					   List<Diagnostic> diagnostic, Integer id_garage_associe) throws IllegalArgumentException {
+					   List<Diagnostic> diagnostic, Integer id_garage_associe,TypeLogement typeLogement) throws IllegalArgumentException {
 		if (numero_fiscal.length() != 12) {
 			throw new IllegalArgumentException("Numéro fiscal invalide");
 		}
@@ -31,6 +44,7 @@ public class BienLouable extends BienImmobilier {
 		this.ville = ville;
 		this.travaux = new ArrayList<Devis>();
 		this.id_garage_asosscie = (id_garage_associe != null) ? id_garage_associe : null;
+		this.typeLogement = typeLogement;
 	}
 
 	public String getNumero_fiscal() {
@@ -64,16 +78,18 @@ public class BienLouable extends BienImmobilier {
 	public Integer getIdgarage() {
 		return id_garage_asosscie;
 	}
-	
+
+	/**
+	 *  Retourne le type de logement d'un bien
+	 *  @return le type de logement
+	 */
 	public TypeLogement getTypeLogement(){
-		return TypeLogement.APPARTEMENT;
+		return typeLogement;
 	}
 
 	/**
-	 * In : Diagnostic Out : Void La fonction sert à mettre à jour un diagnostic si
-	 * jamais celui-ci va bientot expirer
-	 * 
-	 * @param diagnostic
+	 *  Modifie un diagnostic à la liste des diagnostics
+	 * @param diagnostic le diagnostic à modifier
 	 */
 	public void modifierDiagnostic(Diagnostic diagnostic) {
 		for (Diagnostic d : this.diagnostic) {

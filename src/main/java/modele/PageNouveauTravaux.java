@@ -1,15 +1,11 @@
 package modele;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.IOException;
 
+import javax.management.ValueExp;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -17,15 +13,13 @@ import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
 import DAO.DAOException;
+import com.toedter.calendar.JDateChooser;
 import ihm.*;
+import ihm.Menu;
 
 import javax.swing.SwingConstants;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
 import javax.swing.JTextField;
-import java.awt.Insets;
 import javax.swing.BoxLayout;
-import java.awt.FlowLayout;
 
 public class PageNouveauTravaux {
 
@@ -42,9 +36,10 @@ public class PageNouveauTravaux {
     private JTextField ValueAdresse;
     private JTextField valueNom;
     private JTextField valueType;
-    private JTextField valueDateDebut;
-    private JTextField valueDateFin;
+    private JButton btnValider;
 
+    private JDateChooser dateChooserDebut;
+    private JDateChooser dateChooserFin;
 
     /**
      * Create the application.
@@ -257,14 +252,14 @@ public class PageNouveauTravaux {
         gbc_labelDateDebut.gridy = 7;
         valeurs.add(labelDateDebut, gbc_labelDateDebut);
 
-        valueDateDebut = new JTextField();
-        GridBagConstraints gbc_valueDateDebut = new GridBagConstraints();
-        gbc_valueDateDebut.anchor = GridBagConstraints.WEST;
-        gbc_valueDateDebut.insets = new Insets(0, 0, 5, 0);
-        gbc_valueDateDebut.gridx = 1;
-        gbc_valueDateDebut.gridy = 7;
-        valeurs.add(valueDateDebut, gbc_valueDateDebut);
-        valueDateDebut.setColumns(10);
+        dateChooserDebut = new JDateChooser();
+        dateChooserDebut.setPreferredSize(new Dimension(115, 22));
+        GridBagConstraints gbc_dateChooserDebut = new GridBagConstraints();
+        gbc_dateChooserDebut.anchor = GridBagConstraints.WEST;
+        gbc_dateChooserDebut.insets = new Insets(0, 0, 5, 0);
+        gbc_dateChooserDebut.gridx = 1;
+        gbc_dateChooserDebut.gridy = 7;
+        valeurs.add(dateChooserDebut, gbc_dateChooserDebut);
 
         JLabel labelDateFin = new JLabel("Date de fin");
         GridBagConstraints gbc_labelDateFin = new GridBagConstraints();
@@ -274,24 +269,26 @@ public class PageNouveauTravaux {
         gbc_labelDateFin.gridy = 8;
         valeurs.add(labelDateFin, gbc_labelDateFin);
 
-        valueDateFin = new JTextField();
-        GridBagConstraints gbc_valueDateFin = new GridBagConstraints();
-        gbc_valueDateFin.insets = new Insets(0, 0, 5, 0);
-        gbc_valueDateFin.anchor = GridBagConstraints.WEST;
-        gbc_valueDateFin.gridx = 1;
-        gbc_valueDateFin.gridy = 8;
-        valeurs.add(valueDateFin, gbc_valueDateFin);
-        valueDateFin.setColumns(10);
+        dateChooserFin = new JDateChooser();
+        dateChooserFin.setPreferredSize(new Dimension(115, 22));
+        GridBagConstraints gbc_dateChooserFin = new GridBagConstraints();
+        gbc_dateChooserFin.anchor = GridBagConstraints.WEST;
+        gbc_dateChooserFin.insets = new Insets(0, 0, 5, 0);
+        gbc_dateChooserFin.gridx = 1;
+        gbc_dateChooserFin.gridy = 8;
+        valeurs.add(dateChooserFin, gbc_dateChooserFin);
 
         JPanel panelValider = new JPanel();
         Body.add(panelValider, BorderLayout.SOUTH);
         panelValider.setLayout(new BorderLayout(0, 0));
 
-//        JButton btnQuitter = new JButton("Quitter");
-//        panelValider.add(btnQuitter, BorderLayout.WEST);
+        JButton btnQuitter = new JButton("Quitter");
+        panelValider.add(btnQuitter, BorderLayout.WEST);
+        btnQuitter.addActionListener(modele.quitterPage(id));
 
-        JButton btnValider = new JButton("Valider");
-        panelValider.add(btnValider, BorderLayout.EAST);
+        this.btnValider = new JButton("Valider");
+        this.btnValider.setEnabled(false);
+        panelValider.add(this.btnValider, BorderLayout.EAST);
         b_biens.addActionListener(m);
 
         this.frame.addComponentListener(new ComponentAdapter() {
@@ -313,8 +310,18 @@ public class PageNouveauTravaux {
             }
         });
         frame.setVisible(true);
+        valueNumDevis.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
+        valueMontantDevis.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
+        valueMontantTravaux.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
+        valueNature.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
+        ValueAdresse.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
+        valueNom.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
+        valueType.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
+        dateChooserDebut.getDateEditor().addPropertyChangeListener("date", evt -> modele.getTextFieldDocumentListener().insertUpdate(null));
+        dateChooserFin.getDateEditor().addPropertyChangeListener("date", evt -> modele.getTextFieldDocumentListener().insertUpdate(null));
         btnValider.addActionListener(modele.getAjouterTravauxListener(id));
     }
+
     public JTextField getValueNumDevis() {
         return valueNumDevis;
     }
@@ -343,11 +350,24 @@ public class PageNouveauTravaux {
         return valueType;
     }
 
-    public JTextField getValueDateDebut() {
-        return valueDateDebut;
+    public JDateChooser getDateChooserDebut() {
+        return dateChooserDebut;
     }
 
-    public JTextField getValueDateFin() {
-        return valueDateFin;
+    public JDateChooser getDateChooserFin() {
+        return dateChooserFin;
+    }
+
+    public void checkFields() {
+        // Vérification si tous les champs sont remplis
+        boolean isFilled = !valueMontantDevis.getText().trim().isEmpty() && !valueMontantDevis.getText().trim().isEmpty()
+                && !valueMontantTravaux.getText().trim().isEmpty() && !valueNature.getText().trim().isEmpty()
+                && !ValueAdresse.getText().trim().isEmpty()
+                && !valueNom.getText().trim().isEmpty()
+                && getDateChooserDebut().getDate() != null
+                && getDateChooserFin().getDate() != null;
+
+        // Active ou désactive le bouton "Valider"
+        this.btnValider.setEnabled(isFilled);
     }
 }

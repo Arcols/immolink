@@ -3,6 +3,8 @@ package DAO.jdbc;
 import DAO.DAOException;
 import DAO.db.ConnectionDB;
 import classes.Batiment;
+import classes.BienLouable;
+import enumeration.TypeLogement;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,10 +14,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
 public class BatimentDAOTest {
+
     private BatimentDAO batimentDAO;
 
     @Before
@@ -70,15 +74,6 @@ public class BatimentDAOTest {
     }
 
     @Test
-    public void testDelete() throws SQLException, DAOException {
-        Batiment batiment = new Batiment("123456789101", "Paris", "123 Rue de la Paix","31000");
-        batimentDAO.create(batiment);
-
-        batimentDAO.delete("123456789101");
-        assertNull(batimentDAO.readFisc("123456789101"));
-    }
-
-    @Test
     public void testSearchAllBatiments() throws SQLException, DAOException {
         Batiment batiment1 = new Batiment("123456789101", "Paris", "123 Rue de la Paix","31000");
         Batiment batiment2 = new Batiment("123456789102", "Lyon", "456 Rue de Lyon","31000");
@@ -114,4 +109,42 @@ public class BatimentDAOTest {
         assertEquals("31000", batimentRecupere.getCodePostal());
 
     }
+
+    @Test
+    public void testDelete() throws SQLException, DAOException {
+        Batiment batiment = new Batiment("123456789101", "Paris", "123 Rue de la Paix", "31000");
+        batimentDAO.create(batiment);
+
+        BienLouable bienLouable1 = new BienLouable("123456789102", "Paris", "123 Rue de la Paix", "Appartement 1", new ArrayList<>(), null,TypeLogement.APPARTEMENT);
+        BienLouable bienLouable2 = new BienLouable("123456789103", "Paris", "123 Rue de la Paix", "Appartement 2", new ArrayList<>(), null,TypeLogement.APPARTEMENT);
+        new BienLouableDAO().create(bienLouable1, TypeLogement.APPARTEMENT, 3, 105.0);
+        new BienLouableDAO().create(bienLouable2, TypeLogement.APPARTEMENT, 3, 105.0);
+
+        batimentDAO.delete("123456789101");
+
+        assertNull(batimentDAO.readFisc("123456789101"));
+
+        assertNull(new BienLouableDAO().readFisc("123456789102"));
+        assertNull(new BienLouableDAO().readFisc("123456789103"));
+    }
+
+    @Test
+    public void testSearchAllBatimentsWithCompl() throws SQLException, DAOException {
+        Batiment batiment1 = new Batiment("123456789101", "Paris", "123 Rue de la Paix", "31000");
+        Batiment batiment2 = new Batiment("123456789102", "Lyon", "456 Rue de Lyon", "69000");
+        batimentDAO.create(batiment1);
+        batimentDAO.create(batiment2);
+
+        BienLouable bienLouable1 = new BienLouable("123456789103", "Paris", "123 Rue de la Paix", "Appartement 1", new ArrayList<>(), null,TypeLogement.APPARTEMENT);
+        BienLouable bienLouable2 = new BienLouable("123456789104", "Lyon", "456 Rue de Lyon", "Appartement 2", new ArrayList<>(), null,TypeLogement.APPARTEMENT);
+        new BienLouableDAO().create(bienLouable1, TypeLogement.APPARTEMENT, 3, 105.0);
+        new BienLouableDAO().create(bienLouable2, TypeLogement.APPARTEMENT, 3, 105.0);
+
+        Map<String, List<String>> batiments = batimentDAO.searchAllBatimentsWithCompl();
+
+        assertEquals(2, batiments.size());
+        assertTrue(batiments.get("Paris").contains("123 Rue de la Paix"));
+        assertTrue(batiments.get("Lyon").contains("456 Rue de Lyon"));
+    }
+
 }

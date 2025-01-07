@@ -18,13 +18,13 @@ public interface DevisDAO {
     void create(Devis devis, String num_fiscal, TypeLogement typeLogement) throws DAOException;
 
     /**
-     * Trouve un devis dans la base de données.
+     * Trouve un devis dans la base de données à l'aide de son num_devis.
      *
-     * @param reference La référence du devis à trouver
+     * @param num_devis Le numéro du devis à trouver
      * @return L'objet devis trouvé
      * @throws DAOException en cas d'erreur lors de la recherche du devis
      */
-    Devis read(String reference) throws DAOException;
+    Devis read(String num_devis) throws DAOException;
 
     /**
      * Récupère l'identifiant d'un devis dans la base de données.
@@ -57,7 +57,6 @@ public interface DevisDAO {
      */
     double getMontantTotalTravaux(String num_fiscal, TypeLogement typeLogement);
 
-
     /**
      * Récupère un devis à partir de son identifiant
      * @param id l'identifiant du devis
@@ -65,5 +64,9 @@ public interface DevisDAO {
      */
     Devis readId(Integer id);
 
-
-    }
+    /**
+     * Supprime un devis de la base de données en utilisant son identifiant.
+     * @param id L'identifiant unique du devis à supprimer
+     */
+    void delete(Integer id);
+}
