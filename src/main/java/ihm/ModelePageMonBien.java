@@ -44,7 +44,7 @@ public class ModelePageMonBien {
         DevisDAO devisDAO = new DevisDAO();
         List<Devis> devis = devisDAO.getAllDevisFromABien(bienLouable.getNumero_fiscal(),bienLouableDAO.getTypeFromId(id));
 
-        // Remplissage du modèle avec les données des locataires
+        // Remplissage du modèle avec les données des Travaux
         for (Devis devi : devis) {
             Object[] rowData = {
                     devi.getNumDevis(),

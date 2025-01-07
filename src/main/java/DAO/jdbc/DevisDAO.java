@@ -15,17 +15,18 @@ public class DevisDAO implements DAO.DevisDAO {
     public void create(Devis devis, String num_fiscal, TypeLogement typeLogement) throws DAOException {
         try{
             Connection cn = ConnectionDB.getInstance();
-            String requete = "INSERT INTO Devis (num_devis,date_debut,date_fin,montant_devis,montant_travaux,nature,type,adresse_entreprise,nom_entreprise) VALUES (?,?,?,?,?,?,?,?,?)";
+            String requete = "INSERT INTO Devis (num_devis,num_facture, date_debut,date_facture,montant_devis,montant_travaux,nature,type,adresse_entreprise,nom_entreprise) VALUES (?,?,?,?,?,?,?,?,?,?)";
             PreparedStatement pstmt = cn.prepareStatement(requete);
             pstmt.setString(1,devis.getNumDevis());
-            pstmt.setDate(2, devis.getDateDebut());
-            pstmt.setDate(3, devis.getDateFin());
-            pstmt.setFloat(4, devis.getMontantDevis());
-            pstmt.setFloat(5, devis.getMontantTravaux());
-            pstmt.setString(6, devis.getNature());
-            pstmt.setString(7, devis.getType());
-            pstmt.setString(8, devis.getAdresseEntreprise());
-            pstmt.setString(9, devis.getNomEntreprise());
+            pstmt.setString(2,devis.getNumFacture());
+            pstmt.setDate(3, devis.getDateDebut());
+            pstmt.setDate(4, devis.getDateFacture());
+            pstmt.setFloat(5, devis.getMontantDevis());
+            pstmt.setFloat(6, devis.getMontantTravaux());
+            pstmt.setString(7, devis.getNature());
+            pstmt.setString(8, devis.getType());
+            pstmt.setString(9, devis.getAdresseEntreprise());
+            pstmt.setString(10, devis.getNomEntreprise());
             pstmt.executeUpdate();
             pstmt.close();
             TravauxAssocieDAO travauxAssocieDAO;
@@ -46,7 +47,7 @@ public class DevisDAO implements DAO.DevisDAO {
             pstmt.setString(1,num_devis);
             ResultSet rs = pstmt.executeQuery();
             if(rs.next()){
-                devis = new Devis(rs.getString("num_devis"),rs.getFloat("montant_devis"),rs.getString("nature"),rs.getFloat("montant_travaux"),rs.getDate("date_debut"),rs.getDate("date_fin"),rs.getString("type"),rs.getString("adresse_entreprise"),rs.getString("nom_entreprise"));
+                devis = new Devis(rs.getString("num_devis"),rs.getString("num_facture"),rs.getFloat("montant_devis"),rs.getString("nature"),rs.getFloat("montant_travaux"),rs.getDate("date_debut"),rs.getDate("date_facture"),rs.getString("type"),rs.getString("adresse_entreprise"),rs.getString("nom_entreprise"));
             }
         }catch (SQLException e){
             throw new RuntimeException(e);
@@ -64,7 +65,7 @@ public class DevisDAO implements DAO.DevisDAO {
             pstmt.setInt(1,id);
             ResultSet rs = pstmt.executeQuery();
             if(rs.next()){
-                devis = new Devis(rs.getString("num_devis"),rs.getFloat("montant_devis"),rs.getString("nature"),rs.getFloat("montant_travaux"),rs.getDate("date_debut"),rs.getDate("date_fin"),rs.getString("type"),rs.getString("adresse_entreprise"),rs.getString("nom_entreprise"));
+                devis = new Devis(rs.getString("num_devis"),rs.getString("num_facture"),rs.getFloat("montant_devis"),rs.getString("nature"),rs.getFloat("montant_travaux"),rs.getDate("date_debut"),rs.getDate("date_facture"),rs.getString("type"),rs.getString("adresse_entreprise"),rs.getString("nom_entreprise"));
             }
         }catch (SQLException e){
             throw new RuntimeException(e);

@@ -14,6 +14,7 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 
 import DAO.DAOException;
+import enumeration.TypeLogement;
 import ihm.*;
 
 import java.awt.GridBagLayout;
@@ -30,6 +31,7 @@ public class PageUnTravail {
     private JFrame frame;
     private JLabel logo;
     private JLabel valueNumDevis;
+    private JLabel valueNumFacture;
     private JLabel valueMontantDevis;
     private JLabel valueMontantTravaux;
     private JLabel valueNature;
@@ -43,15 +45,16 @@ public class PageUnTravail {
     /**
      * Create the application.
      */
-    public PageUnTravail(Integer id, Integer idTravail) throws DAOException {
-        this.initialize(id, idTravail);
+    public PageUnTravail(Integer id, Integer idTravail, TypeLogement typeLogement) throws DAOException {
+        this.initialize(id, idTravail, typeLogement);
     }
 
     /**
      * Initialize the contents of the frame.
      */
-    private void initialize(Integer id, Integer idTravail) throws DAOException {
-        this.valueNumDevis = new JLabel();
+    private void initialize(Integer id, Integer idTravail, TypeLogement typeLogement) throws DAOException {
+        valueNumDevis = new JLabel();
+        valueNumFacture = new JLabel();
         valueMontantDevis = new JLabel();
         valueMontantTravaux = new JLabel();
         valueNature = new JLabel();
@@ -158,12 +161,28 @@ public class PageUnTravail {
         gbc_valueNumDevis.gridy = 0;
         valeurs.add(valueNumDevis, gbc_valueNumDevis);
 
+        JLabel labelNumFacture = new JLabel("Numero devis");
+        GridBagConstraints gbc_labelNumFacture = new GridBagConstraints();
+        gbc_labelNumFacture.insets = new Insets(0, 0, 5, 5);
+        gbc_labelNumFacture.anchor = GridBagConstraints.WEST;
+        gbc_labelNumFacture.gridx = 0;
+        gbc_labelNumFacture.gridy = 1;
+        valeurs.add(labelNumFacture, gbc_labelNumFacture);
+
+
+        GridBagConstraints gbc_valueNumFacture = new GridBagConstraints();
+        gbc_valueNumFacture.insets = new Insets(0, 0, 5, 0);
+        gbc_valueNumFacture.anchor = GridBagConstraints.WEST;
+        gbc_valueNumFacture.gridx = 1;
+        gbc_valueNumFacture.gridy = 1;
+        valeurs.add(valueNumFacture, gbc_valueNumFacture);
+
         JLabel labelMontantDevis = new JLabel("Montant du devis");
         GridBagConstraints gbc_labelMontantDevis = new GridBagConstraints();
         gbc_labelMontantDevis.anchor = GridBagConstraints.SOUTHWEST;
         gbc_labelMontantDevis.insets = new Insets(0, 0, 5, 5);
         gbc_labelMontantDevis.gridx = 0;
-        gbc_labelMontantDevis.gridy = 1;
+        gbc_labelMontantDevis.gridy = 2;
         valeurs.add(labelMontantDevis, gbc_labelMontantDevis);
 
 
@@ -171,7 +190,7 @@ public class PageUnTravail {
         gbc_valueMontantDevis.anchor = GridBagConstraints.WEST;
         gbc_valueMontantDevis.insets = new Insets(0, 0, 5, 0);
         gbc_valueMontantDevis.gridx = 1;
-        gbc_valueMontantDevis.gridy = 1;
+        gbc_valueMontantDevis.gridy = 2;
         valeurs.add(valueMontantDevis, gbc_valueMontantDevis);
 
         JLabel labelMontantTeavaux = new JLabel("Montant des travaux");
@@ -179,7 +198,7 @@ public class PageUnTravail {
         gbc_labelMontantTeavaux.anchor = GridBagConstraints.WEST;
         gbc_labelMontantTeavaux.insets = new Insets(0, 0, 5, 5);
         gbc_labelMontantTeavaux.gridx = 0;
-        gbc_labelMontantTeavaux.gridy = 2;
+        gbc_labelMontantTeavaux.gridy = 3;
         valeurs.add(labelMontantTeavaux, gbc_labelMontantTeavaux);
 
 
@@ -187,7 +206,7 @@ public class PageUnTravail {
         gbc_valueMontantTravaux.anchor = GridBagConstraints.WEST;
         gbc_valueMontantTravaux.insets = new Insets(0, 0, 5, 0);
         gbc_valueMontantTravaux.gridx = 1;
-        gbc_valueMontantTravaux.gridy = 2;
+        gbc_valueMontantTravaux.gridy = 3;
         valeurs.add(valueMontantTravaux, gbc_valueMontantTravaux);
 
         JLabel labelNature = new JLabel("Nature");
@@ -195,7 +214,7 @@ public class PageUnTravail {
         gbc_labelNature.anchor = GridBagConstraints.WEST;
         gbc_labelNature.insets = new Insets(0, 0, 5, 5);
         gbc_labelNature.gridx = 0;
-        gbc_labelNature.gridy = 3;
+        gbc_labelNature.gridy = 4;
         valeurs.add(labelNature, gbc_labelNature);
 
 
@@ -203,7 +222,7 @@ public class PageUnTravail {
         gbc_valueNature.anchor = GridBagConstraints.WEST;
         gbc_valueNature.insets = new Insets(0, 0, 5, 0);
         gbc_valueNature.gridx = 1;
-        gbc_valueNature.gridy = 3;
+        gbc_valueNature.gridy = 4;
         valeurs.add(valueNature, gbc_valueNature);
 
         JLabel labelAdresse = new JLabel("Adresse de l'entreprise");
@@ -211,7 +230,7 @@ public class PageUnTravail {
         gbc_labelAdresse.anchor = GridBagConstraints.WEST;
         gbc_labelAdresse.insets = new Insets(0, 0, 5, 5);
         gbc_labelAdresse.gridx = 0;
-        gbc_labelAdresse.gridy = 4;
+        gbc_labelAdresse.gridy = 5;
         valeurs.add(labelAdresse, gbc_labelAdresse);
 
 
@@ -219,7 +238,7 @@ public class PageUnTravail {
         gbc_valueAdresse.anchor = GridBagConstraints.WEST;
         gbc_valueAdresse.insets = new Insets(0, 0, 5, 0);
         gbc_valueAdresse.gridx = 1;
-        gbc_valueAdresse.gridy = 4;
+        gbc_valueAdresse.gridy = 5;
         valeurs.add(ValueAdresse, gbc_valueAdresse);
 
         JLabel LabelNom = new JLabel("Nom de l'entreprise");
@@ -227,7 +246,7 @@ public class PageUnTravail {
         gbc_LabelNom.anchor = GridBagConstraints.WEST;
         gbc_LabelNom.insets = new Insets(0, 0, 5, 5);
         gbc_LabelNom.gridx = 0;
-        gbc_LabelNom.gridy = 5;
+        gbc_LabelNom.gridy = 6;
         valeurs.add(LabelNom, gbc_LabelNom);
 
 
@@ -235,7 +254,7 @@ public class PageUnTravail {
         gbc_valueNom.anchor = GridBagConstraints.WEST;
         gbc_valueNom.insets = new Insets(0, 0, 5, 0);
         gbc_valueNom.gridx = 1;
-        gbc_valueNom.gridy = 5;
+        gbc_valueNom.gridy = 6;
         valeurs.add(valueNom, gbc_valueNom);
 
         JLabel labelType = new JLabel("Type");
@@ -243,7 +262,7 @@ public class PageUnTravail {
         gbc_labelType.anchor = GridBagConstraints.WEST;
         gbc_labelType.insets = new Insets(0, 0, 5, 5);
         gbc_labelType.gridx = 0;
-        gbc_labelType.gridy = 6;
+        gbc_labelType.gridy = 7;
         valeurs.add(labelType, gbc_labelType);
 
 
@@ -251,7 +270,7 @@ public class PageUnTravail {
         gbc_valueType.anchor = GridBagConstraints.WEST;
         gbc_valueType.insets = new Insets(0, 0, 5, 0);
         gbc_valueType.gridx = 1;
-        gbc_valueType.gridy = 6;
+        gbc_valueType.gridy = 7;
         valeurs.add(valueType, gbc_valueType);
 
         JLabel labelDateDebut = new JLabel("Date de début");
@@ -259,7 +278,7 @@ public class PageUnTravail {
         gbc_labelDateDebut.anchor = GridBagConstraints.WEST;
         gbc_labelDateDebut.insets = new Insets(0, 0, 5, 5);
         gbc_labelDateDebut.gridx = 0;
-        gbc_labelDateDebut.gridy = 7;
+        gbc_labelDateDebut.gridy = 8;
         valeurs.add(labelDateDebut, gbc_labelDateDebut);
 
 
@@ -267,7 +286,7 @@ public class PageUnTravail {
         gbc_valueDateDebut.anchor = GridBagConstraints.WEST;
         gbc_valueDateDebut.insets = new Insets(0, 0, 5, 0);
         gbc_valueDateDebut.gridx = 1;
-        gbc_valueDateDebut.gridy = 7;
+        gbc_valueDateDebut.gridy = 8;
         valeurs.add(valueDateDebut, gbc_valueDateDebut);
 
         JLabel labelDateFin = new JLabel("Date de fin");
@@ -275,7 +294,7 @@ public class PageUnTravail {
         gbc_labelDateFin.anchor = GridBagConstraints.WEST;
         gbc_labelDateFin.insets = new Insets(0, 0, 5, 5);
         gbc_labelDateFin.gridx = 0;
-        gbc_labelDateFin.gridy = 8;
+        gbc_labelDateFin.gridy = 9;
         valeurs.add(labelDateFin, gbc_labelDateFin);
 
         
@@ -283,7 +302,7 @@ public class PageUnTravail {
         gbc_valueDateFin.insets = new Insets(0, 0, 5, 0);
         gbc_valueDateFin.anchor = GridBagConstraints.WEST;
         gbc_valueDateFin.gridx = 1;
-        gbc_valueDateFin.gridy = 8;
+        gbc_valueDateFin.gridy = 9;
         valeurs.add(valueDateFin, gbc_valueDateFin);
 
         JPanel panelValider = new JPanel();
@@ -317,12 +336,16 @@ public class PageUnTravail {
             }
         });
         frame.setVisible(true);
-        btnSupprimer.addActionListener(modele.getSupprimerTravauxListener(idTravail,id));
+        btnSupprimer.addActionListener(modele.getSupprimerTravauxListener(idTravail,id, typeLogement));
 
 
     }
     public JLabel getValueNumDevis() {
         return valueNumDevis;
+    }
+
+    public JLabel getValueNumFacture() {
+        return valueNumFacture;
     }
 
     public JLabel getValueMontantDevis() {

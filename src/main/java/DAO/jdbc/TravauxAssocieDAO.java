@@ -36,10 +36,11 @@ public class TravauxAssocieDAO implements DAO.TravauxAssocieDAO {
         Integer idDevis = devisDAO.getId(devis);
         try{
             Connection cn = ConnectionDB.getInstance();
-            String requete = "INSERT INTO TravauxAssocie (id_devis,id_bien) VALUES (?,?)";
+            String requete = "INSERT INTO TravauxAssocie (id_devis,id_bien,type_bien) VALUES (?,?,?)";
             PreparedStatement pstmt = cn.prepareStatement(requete);
             pstmt.setInt(1,idDevis);
             pstmt.setInt(2,id);
+            pstmt.setInt(3,typeLogement.getValue());
             pstmt.executeUpdate();
             pstmt.close();
         } catch (SQLException e) {
@@ -72,9 +73,10 @@ public class TravauxAssocieDAO implements DAO.TravauxAssocieDAO {
         }
         try{
             Connection cn = ConnectionDB.getInstance();
-            String requete = "SELECT id_devis FROM TravauxAssocie WHERE id_bien = ?";
+            String requete = "SELECT id_devis FROM TravauxAssocie WHERE id_bien = ? AND type_bien = ?";
             PreparedStatement pstmt = cn.prepareStatement(requete);
             pstmt.setInt(1,id);
+            pstmt.setInt(2,typeLogement.getValue());
             ResultSet rs = pstmt.executeQuery();
             while(rs.next()){
                 idDevis.add(rs.getInt("id_devis"));
@@ -86,13 +88,14 @@ public class TravauxAssocieDAO implements DAO.TravauxAssocieDAO {
     }
 
     @Override
-    public void delete(Integer id_devis, Integer id_bien) throws DAOException {
+    public void delete(Integer id_devis, Integer id_bien, TypeLogement typeLogement) throws DAOException {
         try{
             Connection cn = ConnectionDB.getInstance();
-            String requete = "DELETE FROM TravauxAssocie WHERE id_devis = ? AND id_bien = ?";
+            String requete = "DELETE FROM TravauxAssocie WHERE id_devis = ? AND id_bien = ? AND type_bien = ?";
             PreparedStatement pstmt = cn.prepareStatement(requete);
             pstmt.setInt(1,id_devis);
             pstmt.setInt(2,id_bien);
+            pstmt.setInt(3,typeLogement.getValue());
             pstmt.executeUpdate();
             pstmt.close();
         } catch (SQLException e) {

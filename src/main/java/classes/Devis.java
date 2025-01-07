@@ -5,11 +5,12 @@ import java.sql.Date;
 public class Devis {
 
 	private String num_devis;
+	private String num_facture;
 	private float montant_devis;
 	private float montant_travaux;
 	private String nature;
 	private Date date_debut;
-	private Date date_fin;
+	private Date date_facture;
 	private String type;
 	private String adresse_entreprise;
 	private String nom_entreprise;
@@ -17,25 +18,27 @@ public class Devis {
 	/**
 	 * Constructeur de la classe Devis
 	 * @param num_devis
+	 * @param num_facture
 	 * @param montant_devis
 	 * @param nature
 	 * @param montant_travaux
 	 * @param date_debut
-	 * @param date_fin
+	 * @param date_facture
 	 * @param type
 	 * @param adresse_entreprise
 	 * @param nom_entreprise
 	 */
-	public Devis(String num_devis, float montant_devis, String nature, float montant_travaux, Date date_debut, Date date_fin, String type, String adresse_entreprise, String nom_entreprise) {
+	public Devis(String num_devis,String num_facture, float montant_devis, String nature, float montant_travaux, Date date_debut, Date date_facture, String type, String adresse_entreprise, String nom_entreprise) {
 		if (num_devis.length() != 12) {
 			throw new IllegalArgumentException("numéro de devis invalide (12 caractères svp)");
 		}
 		this.nature = nature;
 		this.num_devis = num_devis;
+		this.num_facture=num_facture;
 		this.montant_devis = montant_devis;
 		this.montant_travaux = montant_travaux;
 		this.date_debut = date_debut;
-		this.date_fin = date_fin;
+		this.date_facture = date_facture;
 		this.type = type;
 		this.adresse_entreprise = adresse_entreprise;
 		this.nom_entreprise = nom_entreprise;
@@ -43,6 +46,10 @@ public class Devis {
 
 	public String getNumDevis() {
 		return this.num_devis;
+	}
+
+	public String getNumFacture() {
+		return this.num_facture;
 	}
 
 	public String getNature() {
@@ -61,8 +68,8 @@ public class Devis {
 		return this.date_debut;
 	}
 
-	public Date getDateFin() {
-		return this.date_fin;
+	public Date getDateFacture() {
+		return this.date_facture;
 	}
 
 	public String getType() {

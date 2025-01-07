@@ -31,6 +31,6 @@ public interface TravauxAssocieDAO {
      * @param id_bien l'id du bien louable
      * @throws DAOException
      */
-    void delete (Integer id_devis, Integer id_bien) throws DAOException;
+    void delete (Integer id_devis, Integer id_bien, TypeLogement typeLogement) throws DAOException;
 
 }

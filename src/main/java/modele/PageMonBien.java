@@ -4,6 +4,7 @@ import DAO.DAOException;
 import DAO.jdbc.BienLouableDAO;
 import DAO.jdbc.DiagnosticDAO;
 import DAO.jdbc.GarageDAO;
+import classes.BienLouable;
 import classes.Diagnostic;
 import classes.Garage;
 import enumeration.TypeLogement;
@@ -486,7 +487,9 @@ public class PageMonBien {
                         try {
                             // Ouvrir la page correspondante
                             frame.dispose();
-                            new PageUnTravail(idBien, idTravail);
+                            DAO.BienLouableDAO bienLouableDAO = new DAO.jdbc.BienLouableDAO();
+                            BienLouable bienLouable = bienLouableDAO.readId(idBien);
+                            new PageUnTravail(idBien, idTravail, bienLouable.getTypeLogement());
                         } catch (DAOException e) {
                             JOptionPane.showMessageDialog(frame,
                                     "Erreur lors de l'ouverture de la page du travail : " + e.getMessage(),

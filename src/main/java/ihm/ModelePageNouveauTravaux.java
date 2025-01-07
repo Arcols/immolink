@@ -34,8 +34,8 @@ public class ModelePageNouveauTravaux {
         BienLouable bienLouable = bienLouableDAO.readId(id);
         return e -> {
             java.sql.Date sqlDateDebut = new java.sql.Date(pageNouveauTravaux.getDateChooserDebut().getDate().getTime());
-            java.sql.Date sqlDateFin = new java.sql.Date(pageNouveauTravaux.getDateChooserFin().getDate().getTime());
-            Devis d = new Devis(pageNouveauTravaux.getValueNumDevis().getText(), Float.valueOf(pageNouveauTravaux.getValueMontantDevis().getText()), pageNouveauTravaux.getValueNature().getText(), Float.valueOf(pageNouveauTravaux.getValueMontantTravaux().getText()), sqlDateDebut, sqlDateFin, pageNouveauTravaux.getValueType().getText(), pageNouveauTravaux.getValueAdresse().getText(), pageNouveauTravaux.getValueNom().getText());
+            java.sql.Date sqlDateFacture = new java.sql.Date(pageNouveauTravaux.getDateChooserFacture().getDate().getTime());
+            Devis d = new Devis(pageNouveauTravaux.getValueNumDevis().getText(),pageNouveauTravaux.getValueNumFacture().getText(), Float.valueOf(pageNouveauTravaux.getValueMontantDevis().getText()),pageNouveauTravaux.getValueNature().getText(), Float.valueOf(pageNouveauTravaux.getValueMontantTravaux().getText()), sqlDateDebut, sqlDateFacture, pageNouveauTravaux.getValueType().getText(), pageNouveauTravaux.getValueAdresse().getText(), pageNouveauTravaux.getValueNom().getText());
 
             DevisDAO devisDAO = new DevisDAO();
             try {

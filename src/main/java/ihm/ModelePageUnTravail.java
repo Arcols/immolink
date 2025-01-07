@@ -33,6 +33,7 @@ public class ModelePageUnTravail {
         if (devis != null) {
             // Mise à jour des labels avec les informations du bien
             page.getValueNumDevis().setText(valueOf(devis.getNumDevis()));
+            page.getValueNumFacture().setText(valueOf(devis.getNumFacture()));
             page.getValueMontantDevis().setText(valueOf(devis.getMontantDevis()));
             page.getValueMontantTravaux().setText(valueOf(devis.getMontantTravaux()));
             page.getValueNature().setText(devis.getNature());
@@ -40,11 +41,11 @@ public class ModelePageUnTravail {
             page.getValueNom().setText(devis.getNomEntreprise());
             page.getValueType().setText(devis.getType());
             page.getValueDateDebut().setText(valueOf(devis.getDateDebut()));
-            page.getValueDateFin().setText(valueOf(devis.getDateFin()));
+            page.getValueDateFin().setText(valueOf(devis.getDateFacture()));
         }
     }
 
-    public ActionListener getSupprimerTravauxListener(Integer idTravail, Integer idBien) throws DAOException {
+    public ActionListener getSupprimerTravauxListener(Integer idTravail, Integer idBien, TypeLogement typeLogement) throws DAOException {
 
         return e -> {
             DevisDAO devisDAO = new DevisDAO();
@@ -52,7 +53,7 @@ public class ModelePageUnTravail {
             try {
                 // Enregistrer le devis dans la base de données
                 devisDAO.delete(idTravail);
-                travauxAssocieDAO.delete(idTravail,idBien);
+                travauxAssocieDAO.delete(idTravail,idBien,typeLogement);
 
                 // Afficher une popup de confirmation
                 JOptionPane.showMessageDialog(null, "Le travail a été supprimé avec succès.", "Confirmation", JOptionPane.INFORMATION_MESSAGE);

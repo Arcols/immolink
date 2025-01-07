@@ -30,6 +30,7 @@ public class PageNouveauTravaux {
     private JFrame frame;
     private JLabel logo;
     private JTextField valueNumDevis;
+    private JTextField valueNumFacture;
     private JTextField valueMontantDevis;
     private JTextField valueMontantTravaux;
     private JTextField valueNature;
@@ -39,7 +40,7 @@ public class PageNouveauTravaux {
     private JButton btnValider;
 
     private JDateChooser dateChooserDebut;
-    private JDateChooser dateChooserFin;
+    private JDateChooser dateChooserFacture;
 
     /**
      * Create the application.
@@ -142,12 +143,29 @@ public class PageNouveauTravaux {
         valeurs.add(valueNumDevis, gbc_valueNumDevis);
         valueNumDevis.setColumns(10);
 
+        JLabel labelNumFacture = new JLabel("Numero facture");
+        GridBagConstraints gbc_labelNumFacture = new GridBagConstraints();
+        gbc_labelNumFacture.insets = new Insets(0, 0, 5, 5);
+        gbc_labelNumFacture.anchor = GridBagConstraints.WEST;
+        gbc_labelNumFacture.gridx = 0;
+        gbc_labelNumFacture.gridy = 1;
+        valeurs.add(labelNumFacture, gbc_labelNumFacture);
+
+        valueNumFacture = new JTextField();
+        GridBagConstraints gbc_valueNumFacture = new GridBagConstraints();
+        gbc_valueNumFacture.insets = new Insets(0, 0, 5, 0);
+        gbc_valueNumFacture.anchor = GridBagConstraints.WEST;
+        gbc_valueNumFacture.gridx = 1;
+        gbc_valueNumFacture.gridy = 1;
+        valeurs.add(valueNumFacture, gbc_valueNumFacture);
+        valueNumFacture.setColumns(10);
+
         JLabel labelMontantDevis = new JLabel("Montant du devis");
         GridBagConstraints gbc_labelMontantDevis = new GridBagConstraints();
-        gbc_labelMontantDevis.anchor = GridBagConstraints.SOUTHWEST;
+        gbc_labelMontantDevis.anchor = GridBagConstraints.WEST;
         gbc_labelMontantDevis.insets = new Insets(0, 0, 5, 5);
         gbc_labelMontantDevis.gridx = 0;
-        gbc_labelMontantDevis.gridy = 1;
+        gbc_labelMontantDevis.gridy = 2;
         valeurs.add(labelMontantDevis, gbc_labelMontantDevis);
 
         valueMontantDevis = new JTextField();
@@ -155,7 +173,7 @@ public class PageNouveauTravaux {
         gbc_valueMontantDevis.anchor = GridBagConstraints.WEST;
         gbc_valueMontantDevis.insets = new Insets(0, 0, 5, 0);
         gbc_valueMontantDevis.gridx = 1;
-        gbc_valueMontantDevis.gridy = 1;
+        gbc_valueMontantDevis.gridy = 2;
         valeurs.add(valueMontantDevis, gbc_valueMontantDevis);
         valueMontantDevis.setColumns(10);
 
@@ -164,7 +182,7 @@ public class PageNouveauTravaux {
         gbc_labelMontantTeavaux.anchor = GridBagConstraints.WEST;
         gbc_labelMontantTeavaux.insets = new Insets(0, 0, 5, 5);
         gbc_labelMontantTeavaux.gridx = 0;
-        gbc_labelMontantTeavaux.gridy = 2;
+        gbc_labelMontantTeavaux.gridy = 3;
         valeurs.add(labelMontantTeavaux, gbc_labelMontantTeavaux);
 
         valueMontantTravaux = new JTextField();
@@ -172,7 +190,7 @@ public class PageNouveauTravaux {
         gbc_valueMontantTravaux.anchor = GridBagConstraints.WEST;
         gbc_valueMontantTravaux.insets = new Insets(0, 0, 5, 0);
         gbc_valueMontantTravaux.gridx = 1;
-        gbc_valueMontantTravaux.gridy = 2;
+        gbc_valueMontantTravaux.gridy = 3;
         valeurs.add(valueMontantTravaux, gbc_valueMontantTravaux);
         valueMontantTravaux.setColumns(10);
 
@@ -181,7 +199,7 @@ public class PageNouveauTravaux {
         gbc_labelNature.anchor = GridBagConstraints.WEST;
         gbc_labelNature.insets = new Insets(0, 0, 5, 5);
         gbc_labelNature.gridx = 0;
-        gbc_labelNature.gridy = 3;
+        gbc_labelNature.gridy = 4;
         valeurs.add(labelNature, gbc_labelNature);
 
         valueNature = new JTextField();
@@ -189,7 +207,7 @@ public class PageNouveauTravaux {
         gbc_valueNature.anchor = GridBagConstraints.WEST;
         gbc_valueNature.insets = new Insets(0, 0, 5, 0);
         gbc_valueNature.gridx = 1;
-        gbc_valueNature.gridy = 3;
+        gbc_valueNature.gridy = 4;
         valeurs.add(valueNature, gbc_valueNature);
         valueNature.setColumns(10);
 
@@ -198,7 +216,7 @@ public class PageNouveauTravaux {
         gbc_labelAdresse.anchor = GridBagConstraints.WEST;
         gbc_labelAdresse.insets = new Insets(0, 0, 5, 5);
         gbc_labelAdresse.gridx = 0;
-        gbc_labelAdresse.gridy = 4;
+        gbc_labelAdresse.gridy = 5;
         valeurs.add(labelAdresse, gbc_labelAdresse);
 
         ValueAdresse = new JTextField();
@@ -206,7 +224,7 @@ public class PageNouveauTravaux {
         gbc_valueAdresse.anchor = GridBagConstraints.WEST;
         gbc_valueAdresse.insets = new Insets(0, 0, 5, 0);
         gbc_valueAdresse.gridx = 1;
-        gbc_valueAdresse.gridy = 4;
+        gbc_valueAdresse.gridy = 5;
         valeurs.add(ValueAdresse, gbc_valueAdresse);
         ValueAdresse.setColumns(10);
 
@@ -215,7 +233,7 @@ public class PageNouveauTravaux {
         gbc_LabelNom.anchor = GridBagConstraints.WEST;
         gbc_LabelNom.insets = new Insets(0, 0, 5, 5);
         gbc_LabelNom.gridx = 0;
-        gbc_LabelNom.gridy = 5;
+        gbc_LabelNom.gridy = 6;
         valeurs.add(LabelNom, gbc_LabelNom);
 
         valueNom = new JTextField();
@@ -223,7 +241,7 @@ public class PageNouveauTravaux {
         gbc_valueNom.anchor = GridBagConstraints.WEST;
         gbc_valueNom.insets = new Insets(0, 0, 5, 0);
         gbc_valueNom.gridx = 1;
-        gbc_valueNom.gridy = 5;
+        gbc_valueNom.gridy = 6;
         valeurs.add(valueNom, gbc_valueNom);
         valueNom.setColumns(10);
 
@@ -232,7 +250,7 @@ public class PageNouveauTravaux {
         gbc_labelType.anchor = GridBagConstraints.WEST;
         gbc_labelType.insets = new Insets(0, 0, 5, 5);
         gbc_labelType.gridx = 0;
-        gbc_labelType.gridy = 6;
+        gbc_labelType.gridy = 7;
         valeurs.add(labelType, gbc_labelType);
 
         valueType = new JTextField();
@@ -240,7 +258,7 @@ public class PageNouveauTravaux {
         gbc_valueType.anchor = GridBagConstraints.WEST;
         gbc_valueType.insets = new Insets(0, 0, 5, 0);
         gbc_valueType.gridx = 1;
-        gbc_valueType.gridy = 6;
+        gbc_valueType.gridy = 7;
         valeurs.add(valueType, gbc_valueType);
         valueType.setColumns(10);
 
@@ -249,7 +267,7 @@ public class PageNouveauTravaux {
         gbc_labelDateDebut.anchor = GridBagConstraints.WEST;
         gbc_labelDateDebut.insets = new Insets(0, 0, 5, 5);
         gbc_labelDateDebut.gridx = 0;
-        gbc_labelDateDebut.gridy = 7;
+        gbc_labelDateDebut.gridy = 8;
         valeurs.add(labelDateDebut, gbc_labelDateDebut);
 
         dateChooserDebut = new JDateChooser();
@@ -258,25 +276,25 @@ public class PageNouveauTravaux {
         gbc_dateChooserDebut.anchor = GridBagConstraints.WEST;
         gbc_dateChooserDebut.insets = new Insets(0, 0, 5, 0);
         gbc_dateChooserDebut.gridx = 1;
-        gbc_dateChooserDebut.gridy = 7;
+        gbc_dateChooserDebut.gridy = 8;
         valeurs.add(dateChooserDebut, gbc_dateChooserDebut);
 
-        JLabel labelDateFin = new JLabel("Date de fin");
-        GridBagConstraints gbc_labelDateFin = new GridBagConstraints();
-        gbc_labelDateFin.anchor = GridBagConstraints.WEST;
-        gbc_labelDateFin.insets = new Insets(0, 0, 5, 5);
-        gbc_labelDateFin.gridx = 0;
-        gbc_labelDateFin.gridy = 8;
-        valeurs.add(labelDateFin, gbc_labelDateFin);
+        JLabel labelDateFacture = new JLabel("Date de facture");
+        GridBagConstraints gbc_labelDateFacture = new GridBagConstraints();
+        gbc_labelDateFacture.anchor = GridBagConstraints.WEST;
+        gbc_labelDateFacture.insets = new Insets(0, 0, 5, 5);
+        gbc_labelDateFacture.gridx = 0;
+        gbc_labelDateFacture.gridy = 9;
+        valeurs.add(labelDateFacture, gbc_labelDateFacture);
 
-        dateChooserFin = new JDateChooser();
-        dateChooserFin.setPreferredSize(new Dimension(115, 22));
-        GridBagConstraints gbc_dateChooserFin = new GridBagConstraints();
-        gbc_dateChooserFin.anchor = GridBagConstraints.WEST;
-        gbc_dateChooserFin.insets = new Insets(0, 0, 5, 0);
-        gbc_dateChooserFin.gridx = 1;
-        gbc_dateChooserFin.gridy = 8;
-        valeurs.add(dateChooserFin, gbc_dateChooserFin);
+        dateChooserFacture = new JDateChooser();
+        dateChooserFacture.setPreferredSize(new Dimension(115, 22));
+        GridBagConstraints gbc_dateChooserFacture = new GridBagConstraints();
+        gbc_dateChooserFacture.anchor = GridBagConstraints.WEST;
+        gbc_dateChooserFacture.insets = new Insets(0, 0, 5, 0);
+        gbc_dateChooserFacture.gridx = 1;
+        gbc_dateChooserFacture.gridy = 9;
+        valeurs.add(dateChooserFacture, gbc_dateChooserFacture);
 
         JPanel panelValider = new JPanel();
         Body.add(panelValider, BorderLayout.SOUTH);
@@ -311,6 +329,7 @@ public class PageNouveauTravaux {
         });
         frame.setVisible(true);
         valueNumDevis.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
+        valueNumFacture.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
         valueMontantDevis.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
         valueMontantTravaux.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
         valueNature.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
@@ -318,12 +337,16 @@ public class PageNouveauTravaux {
         valueNom.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
         valueType.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
         dateChooserDebut.getDateEditor().addPropertyChangeListener("date", evt -> modele.getTextFieldDocumentListener().insertUpdate(null));
-        dateChooserFin.getDateEditor().addPropertyChangeListener("date", evt -> modele.getTextFieldDocumentListener().insertUpdate(null));
+        dateChooserFacture.getDateEditor().addPropertyChangeListener("date", evt -> modele.getTextFieldDocumentListener().insertUpdate(null));
         btnValider.addActionListener(modele.getAjouterTravauxListener(id));
     }
 
     public JTextField getValueNumDevis() {
         return valueNumDevis;
+    }
+
+    public JTextField getValueNumFacture() {
+        return valueNumFacture;
     }
 
     public JTextField getValueMontantDevis() {
@@ -354,8 +377,8 @@ public class PageNouveauTravaux {
         return dateChooserDebut;
     }
 
-    public JDateChooser getDateChooserFin() {
-        return dateChooserFin;
+    public JDateChooser getDateChooserFacture() {
+        return dateChooserFacture;
     }
 
     public void checkFields() {
@@ -365,7 +388,7 @@ public class PageNouveauTravaux {
                 && !ValueAdresse.getText().trim().isEmpty()
                 && !valueNom.getText().trim().isEmpty()
                 && getDateChooserDebut().getDate() != null
-                && getDateChooserFin().getDate() != null;
+                && getDateChooserFacture().getDate() != null;
 
         // Active ou désactive le bouton "Valider"
         this.btnValider.setEnabled(isFilled);
