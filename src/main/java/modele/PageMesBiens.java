@@ -199,6 +199,7 @@ public class PageMesBiens {
                                 frame.dispose();
                                 new PageMonBien(new BienLouableDAO().getId(bien.getNumero_fiscal()),type);
                             }else{
+                                frame.dispose();
                                 Integer IdBat = new BatimentDAO().getIdBat(ville,adresse);
                                 new PageMonBien(IdBat,type);
                             }
