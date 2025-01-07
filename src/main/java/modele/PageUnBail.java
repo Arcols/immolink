@@ -319,8 +319,6 @@ public class PageUnBail {
 
         JScrollPane scrollPane = new JScrollPane(this.tableau_locataire);
         panel_locataires.add(scrollPane, BorderLayout.CENTER);
-<<<<<<< Updated upstream
-=======
 
         JPanel basPage = new JPanel();
         body.add(basPage, BorderLayout.SOUTH);
@@ -382,7 +380,6 @@ public class PageUnBail {
             e.printStackTrace();
         }
 
->>>>>>> Stashed changes
         frame.setVisible(true);
         this.frame.addComponentListener(new ComponentAdapter() {
             @Override

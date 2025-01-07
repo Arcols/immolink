@@ -437,7 +437,10 @@ public class PageNouveauBail {
                 b_biens.setFont(resizedFont);
             }
         });
+        modele.getSurfaceEtPiece().actionPerformed(null);
         this.choix_complement.addActionListener(modele.getSurfaceEtPiece());
+        this.choix_ville.addActionListener(modele.getSurfaceEtPiece());
+        this.choix_adresse.addActionListener(modele.getSurfaceEtPiece());
         this.choix_date_fin.getDateEditor().addPropertyChangeListener("date", evt -> modele.getTextFieldDocumentListener().insertUpdate(null));
         this.choix_date_debut.getDateEditor().addPropertyChangeListener("date", evt -> modele.getTextFieldDocumentListener().insertUpdate(null));
         this.choix_loyer.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
