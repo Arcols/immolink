@@ -26,9 +26,13 @@ public class ModelePageNouveauLocataire {
         return e -> {
             try {
                 java.sql.Date sqlDate = new java.sql.Date(pageNouveauLocataire.getDateChooser().getDate().getTime());
+                java.sql.Date dateNaiss = new java.sql.Date(pageNouveauLocataire.getDateNaissanceChooser().getDate().getTime());
                 if(pageNouveauLocataire.getGenreValeur().getSelectedItem().equals("C")){
+                    java.sql.Date dateNaiss2 = new java.sql.Date(pageNouveauLocataire.getDateNaissanceChooser2().getDate().getTime());
                     Locataire l = new Locataire(pageNouveauLocataire.getNomValeur().getText()+", "+pageNouveauLocataire.getNomValeur2().getText(),
                             pageNouveauLocataire.getPrenomValeur().getText()+", "+pageNouveauLocataire.getPrenomValeur2().getText(),
+                            pageNouveauLocataire.getLieuNaissanceValeur().getText()+", "+pageNouveauLocataire.getLieuNaissanceValeur2().getText(),
+                            dateNaiss.toString()+", "+dateNaiss2.toString(),
                             pageNouveauLocataire.getTelephoneValeur().getText(),
                             pageNouveauLocataire.getMailValeur().getText(),
                             sqlDate, (String) pageNouveauLocataire.getGenreValeur().getSelectedItem());
@@ -39,6 +43,8 @@ public class ModelePageNouveauLocataire {
                 }else{
                     Locataire l = new Locataire(pageNouveauLocataire.getNomValeur().getText(),
                             pageNouveauLocataire.getPrenomValeur().getText(),
+                            pageNouveauLocataire.getLieuNaissanceValeur().getText(),
+                            dateNaiss.toString(),
                             pageNouveauLocataire.getTelephoneValeur().getText(),
                             pageNouveauLocataire.getMailValeur().getText(), sqlDate,
                             (String) pageNouveauLocataire.getGenreValeur().getSelectedItem());
@@ -127,6 +133,10 @@ public class ModelePageNouveauLocataire {
             this.pageNouveauLocataire.getLabelPrenom2().setVisible(isCouple);
             this.pageNouveauLocataire.getNomValeur2().setVisible(isCouple);
             this.pageNouveauLocataire.getPrenomValeur2().setVisible(isCouple);
+            this.pageNouveauLocataire.getLabelLieuNaissance2().setVisible(isCouple);
+            this.pageNouveauLocataire.getLieuNaissanceValeur2().setVisible(isCouple);
+            this.pageNouveauLocataire.getLabelDateNaissance2().setVisible(isCouple);
+            this.pageNouveauLocataire.getDateNaissanceChooser2().setVisible(isCouple);
 
         };
     }

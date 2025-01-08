@@ -8,6 +8,8 @@ public class Locataire {
 
     private String nom;
     private String prénom;
+    private String lieuNaissance;
+    private String dateNaissance;
     private String téléphone;
     private String genre;
     private String mail;
@@ -19,14 +21,18 @@ public class Locataire {
      * Constructeur de la classe Locataire
      * @param nom le nom
      * @param prénom le prénom
+     * @param lieuNaissance le lieu de naissance
+     * @param dateNaissance la date de naissance
      * @param téléphone le téléphone
      * @param mail le mail
      * @param date_arrive la date d'arrivée
      * @param genre le genre
      */
-    public Locataire(String nom, String prénom,String téléphone, String mail, Date date_arrive, String genre) {
+    public Locataire(String nom, String prénom, String lieuNaissance, String dateNaissance, String téléphone, String mail, Date date_arrive, String genre) {
         this.setNom(nom);
         this.setPrénom(prénom);
+        this.setLieuNaissance(lieuNaissance);
+        this.setDateNaissance(dateNaissance);
         this.setTéléphone(téléphone);
         this.setMail(mail);
         this.setDateArrive(date_arrive);
@@ -39,13 +45,17 @@ public class Locataire {
      * Constructeur de la classe Locataire
      * @param nom le nom
      * @param prénom le prénom
+     * @param lieuNaissance le lieu de naissance
+     * @param dateNaissance la date de naissance
      * @param téléphone le téléphone
      * @param date_arrive la date d'arrivée
      * @param genre le genre
      */
-    public Locataire(String nom, String prénom, String téléphone, Date date_arrive, String genre) {
+    public Locataire(String nom, String prénom, String lieuNaissance, String dateNaissance, String téléphone, Date date_arrive, String genre) {
         this.setNom(nom);
         this.setPrénom(prénom);
+        this.setLieuNaissance(lieuNaissance);
+        this.setDateNaissance(dateNaissance);
         this.setTéléphone(téléphone);
         this.setDateArrive(date_arrive);
         this.setGenre(genre);
@@ -68,6 +78,22 @@ public class Locataire {
 
     public void setPrénom(String prénom) {
         this.prénom = prénom;
+    }
+
+    public String getLieuNaissance() {
+        return this.lieuNaissance;
+    }
+
+    public void setLieuNaissance(String lieuNaissance) {
+        this.lieuNaissance = lieuNaissance;
+    }
+
+    public String getDateNaissance() {
+        return this.dateNaissance;
+    }
+
+    public void setDateNaissance(String dateNaissance) {
+        this.dateNaissance = dateNaissance;
     }
 
     public String getTéléphone() {

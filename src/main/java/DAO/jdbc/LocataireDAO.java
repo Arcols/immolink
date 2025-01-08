@@ -13,15 +13,17 @@ public class LocataireDAO implements DAO.LocataireDAO {
         try {
             Connection cn = ConnectionDB.getInstance();
             Statement st = cn.createStatement();
-            String query = "INSERT INTO locataire (nom, prenom, téléphone, date_arrive,mail,loc_actuel,genre) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO locataire (nom, prenom, lieu_naissance, date_naissance, téléphone, date_arrive,mail,loc_actuel,genre) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement pstmt = cn.prepareStatement(query);
             pstmt.setString(1, locataire.getNom());
             pstmt.setString(2, locataire.getPrénom());
-            pstmt.setString(3, locataire.getTéléphone());
-            pstmt.setDate(4, locataire.getDateArrive());
-            pstmt.setString(5, locataire.getMail());
-            pstmt.setInt(6, 1); // requette pour la loc actuelle ?
-            pstmt.setString(7, locataire.getGenre());
+            pstmt.setString(3,locataire.getLieuNaissance());
+            pstmt.setString(4,locataire.getDateNaissance());
+            pstmt.setString(5, locataire.getTéléphone());
+            pstmt.setDate(6, locataire.getDateArrive());
+            pstmt.setString(7, locataire.getMail());
+            pstmt.setInt(8, 1); // requette pour la loc actuelle ?
+            pstmt.setString(9, locataire.getGenre());
             pstmt.executeUpdate();
             pstmt.close();
             st.close();
@@ -103,10 +105,12 @@ public class LocataireDAO implements DAO.LocataireDAO {
             pstmt.setString(3, téléphone);
             rs = pstmt.executeQuery();
             if (rs.next()) {
+                String lieuNaissance = rs.getString("lieu_naissance");
+                String dateNaissance = rs.getString("date_naissance");
                 String genre = rs.getString("genre");
                 String mail = rs.getString("mail");
                 Date date_arrive = rs.getDate("date_arrive");
-                locataire = new Locataire(nom, prénom, téléphone, mail, date_arrive, genre);
+                locataire = new Locataire(nom, prénom, lieuNaissance, dateNaissance, téléphone, mail, date_arrive, genre);
             }
             rs.close();
             pstmt.close();
@@ -127,12 +131,14 @@ public class LocataireDAO implements DAO.LocataireDAO {
             while (rs.next()) {
                 String nom = rs.getString("nom");
                 String prénom = rs.getString("prenom");
+                String lieu_naissance = rs.getString("lieu_naissance");
+                String date_naissance = rs.getString("date_naissance");
                 String téléphone = rs.getString("téléphone");
                 String genre = rs.getString("genre");
                 String mail = rs.getString("mail");
                 Date date_arrive = rs.getDate("date_arrive");
 
-                Locataire locataire = new Locataire(nom, prénom, téléphone, mail, date_arrive, genre);
+                Locataire locataire = new Locataire(nom, prénom,lieu_naissance,date_naissance, téléphone, mail, date_arrive, genre);
                 locataires.add(locataire);
             }
             rs.close();
@@ -200,11 +206,13 @@ public class LocataireDAO implements DAO.LocataireDAO {
             if (rs.next()) {
                 String nom = rs.getString("nom");
                 String prénom = rs.getString("prenom");
+                String lieu_naissance = rs.getString("lieu_naissance");
+                String date_naissance = rs.getString("date_naissance");
                 String téléphone = rs.getString("téléphone");
                 String genre = rs.getString("genre");
                 String mail = rs.getString("mail");
                 Date date_arrive = rs.getDate("date_arrive");
-                locataire = new Locataire(nom, prénom, téléphone, mail, date_arrive, genre);
+                locataire = new Locataire(nom, prénom, lieu_naissance, date_naissance, téléphone, mail, date_arrive, genre);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

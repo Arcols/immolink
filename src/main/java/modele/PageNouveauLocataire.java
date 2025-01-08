@@ -36,6 +36,8 @@ public class PageNouveauLocataire {
     private JLabel logo;
     private JTextField nomValeur;
     private JTextField prenomValeur;
+    private JTextField lieuNaissanceValeur;
+    private JDateChooser dateNaissanceChooser;
     private JTextField telephoneValeur;
     private JTextField mailValeur;
     private JDateChooser dateChooser;
@@ -52,6 +54,10 @@ public class PageNouveauLocataire {
     private JTextField nomValeur2;
     private JLabel labelPrenom2;
     private JTextField prenomValeur2;
+    private JLabel labelLieuNaissance2;
+    private JTextField lieuNaissanceValeur2;
+    private JLabel labelDateNaissance2;
+    private JDateChooser dateNaissanceChooser2;
     private JLabel label_coloc2;
     private  JLabel label_coloc1;
     private JButton enregistrerButtonColloc;
@@ -205,12 +211,46 @@ public class PageNouveauLocataire {
         donnees_loca.add(prenomValeur, gbc_prenomValeur);
         prenomValeur.setColumns(10);
 
+        JLabel labelLieuNaissance = new JLabel("Lieu naissance");
+        GridBagConstraints gbc_labelLieuNaissance = new GridBagConstraints();
+        gbc_labelLieuNaissance.anchor = GridBagConstraints.WEST;
+        gbc_labelLieuNaissance.insets = new Insets(0, 0, 5, 5);
+        gbc_labelLieuNaissance.gridx = 1;
+        gbc_labelLieuNaissance.gridy = 2;
+        donnees_loca.add(labelLieuNaissance, gbc_labelLieuNaissance);
+
+        lieuNaissanceValeur = new JTextField();
+        GridBagConstraints gbc_lieuNaissanceValeur = new GridBagConstraints();
+        gbc_lieuNaissanceValeur.anchor = GridBagConstraints.WEST;
+        gbc_lieuNaissanceValeur.insets = new Insets(0, 0, 5, 5);
+        gbc_lieuNaissanceValeur.gridx = 2;
+        gbc_lieuNaissanceValeur.gridy = 2;
+        donnees_loca.add(lieuNaissanceValeur, gbc_lieuNaissanceValeur);
+        lieuNaissanceValeur.setColumns(10);
+
+        JLabel labelDateNaissance = new JLabel("Date naissance");
+        GridBagConstraints gbc_labelDateNaissance = new GridBagConstraints();
+        gbc_labelDateNaissance.anchor = GridBagConstraints.WEST;
+        gbc_labelDateNaissance.insets = new Insets(0, 0, 5, 5);
+        gbc_labelDateNaissance.gridx = 3;
+        gbc_labelDateNaissance.gridy = 2;
+        donnees_loca.add(labelDateNaissance, gbc_labelDateNaissance);
+
+        dateNaissanceChooser = new JDateChooser();
+        dateNaissanceChooser.setPreferredSize(new Dimension(100, 22));
+        GridBagConstraints gbc_dateNaissanceChooser = new GridBagConstraints();
+        gbc_dateNaissanceChooser.anchor = GridBagConstraints.WEST;
+        gbc_dateNaissanceChooser.insets = new Insets(0, 0, 5, 0);
+        gbc_dateNaissanceChooser.gridx = 4;
+        gbc_dateNaissanceChooser.gridy = 2;
+        donnees_loca.add(dateNaissanceChooser, gbc_dateNaissanceChooser);
+
         JLabel labelTelephone = new JLabel("Téléphone");
         GridBagConstraints gbc_labelTelephone = new GridBagConstraints();
         gbc_labelTelephone.anchor = GridBagConstraints.WEST;
         gbc_labelTelephone.insets = new Insets(0, 0, 5, 5);
         gbc_labelTelephone.gridx = 1;
-        gbc_labelTelephone.gridy = 2;
+        gbc_labelTelephone.gridy = 3;
         donnees_loca.add(labelTelephone, gbc_labelTelephone);
 
         telephoneValeur = new JTextField();
@@ -218,7 +258,7 @@ public class PageNouveauLocataire {
         gbc_telephoneValeur.anchor = GridBagConstraints.WEST;
         gbc_telephoneValeur.insets = new Insets(0, 0, 5, 5);
         gbc_telephoneValeur.gridx = 2;
-        gbc_telephoneValeur.gridy = 2;
+        gbc_telephoneValeur.gridy = 3;
         donnees_loca.add(telephoneValeur, gbc_telephoneValeur);
         telephoneValeur.setColumns(10);
         this.telephoneValeur.setDocument(new PlainDocument() {
@@ -235,7 +275,7 @@ public class PageNouveauLocataire {
         gbc_labelMail.anchor = GridBagConstraints.WEST;
         gbc_labelMail.insets = new Insets(0, 0, 5, 5);
         gbc_labelMail.gridx = 3;
-        gbc_labelMail.gridy = 2;
+        gbc_labelMail.gridy = 3;
         donnees_loca.add(labelMail, gbc_labelMail);
 
         mailValeur = new JTextField();
@@ -243,7 +283,7 @@ public class PageNouveauLocataire {
         gbc_mailValeur.anchor = GridBagConstraints.WEST;
         gbc_mailValeur.insets = new Insets(0, 0, 5, 5);
         gbc_mailValeur.gridx = 4;
-        gbc_mailValeur.gridy = 2;
+        gbc_mailValeur.gridy = 3;
         donnees_loca.add(mailValeur, gbc_mailValeur);
         mailValeur.setColumns(10);
 
@@ -252,7 +292,7 @@ public class PageNouveauLocataire {
         gbc_labelDate.anchor = GridBagConstraints.WEST;
         gbc_labelDate.insets = new Insets(0, 0, 5, 5);
         gbc_labelDate.gridx = 3;
-        gbc_labelDate.gridy = 3;
+        gbc_labelDate.gridy = 4;
         donnees_loca.add(labelDate, gbc_labelDate);
 
         dateChooser = new JDateChooser();
@@ -261,7 +301,7 @@ public class PageNouveauLocataire {
         gbc_dateChooserDebut.anchor = GridBagConstraints.WEST;
         gbc_dateChooserDebut.insets = new Insets(0, 0, 5, 0);
         gbc_dateChooserDebut.gridx = 4;
-        gbc_dateChooserDebut.gridy = 3;
+        gbc_dateChooserDebut.gridy = 4;
         donnees_loca.add(dateChooser, gbc_dateChooserDebut);
 
 
@@ -270,7 +310,7 @@ public class PageNouveauLocataire {
         gbc_labelGenre.anchor = GridBagConstraints.WEST;
         gbc_labelGenre.insets = new Insets(0, 0, 5, 5);
         gbc_labelGenre.gridx = 1;
-        gbc_labelGenre.gridy = 3;
+        gbc_labelGenre.gridy = 4;
         donnees_loca.add(labelGenre, gbc_labelGenre);
 
         this.genreValeur = new JComboBox();
@@ -279,7 +319,7 @@ public class PageNouveauLocataire {
         gbc_genreValeur.fill = GridBagConstraints.HORIZONTAL;
         gbc_genreValeur.insets = new Insets(0, 0, 5, 5);
         gbc_genreValeur.gridx = 2;
-        gbc_genreValeur.gridy = 3;
+        gbc_genreValeur.gridy = 4;
         donnees_loca.add(this.genreValeur, gbc_genreValeur);
 
 
@@ -340,18 +380,52 @@ public class PageNouveauLocataire {
         donnees_loca.add(prenomValeur2, gbc_prenomValeur2);
         prenomValeur2.setColumns(10);
 
+        labelLieuNaissance2 = new JLabel("Lieu naissance");
+        GridBagConstraints gbc_labelLieuNaissance2 = new GridBagConstraints();
+        gbc_labelLieuNaissance2.anchor = GridBagConstraints.WEST;
+        gbc_labelLieuNaissance2.insets = new Insets(0, 0, 5, 5);
+        gbc_labelLieuNaissance2.gridx = 1;
+        gbc_labelLieuNaissance2.gridy = 7;
+        donnees_loca.add(labelLieuNaissance2, gbc_labelLieuNaissance2);
+
+        lieuNaissanceValeur2 = new JTextField();
+        GridBagConstraints gbc_lieuNaissanceValeur2 = new GridBagConstraints();
+        gbc_lieuNaissanceValeur2.anchor = GridBagConstraints.WEST;
+        gbc_lieuNaissanceValeur2.insets = new Insets(0, 0, 5, 5);
+        gbc_lieuNaissanceValeur2.gridx = 2;
+        gbc_lieuNaissanceValeur2.gridy = 7;
+        donnees_loca.add(lieuNaissanceValeur2, gbc_lieuNaissanceValeur2);
+        lieuNaissanceValeur2.setColumns(10);
+
+        labelDateNaissance2 = new JLabel("Date naissance");
+        GridBagConstraints gbc_labelDateNaissance2 = new GridBagConstraints();
+        gbc_labelDateNaissance2.anchor = GridBagConstraints.WEST;
+        gbc_labelDateNaissance2.insets = new Insets(0, 0, 5, 5);
+        gbc_labelDateNaissance2.gridx = 3;
+        gbc_labelDateNaissance2.gridy = 7;
+        donnees_loca.add(labelDateNaissance2, gbc_labelDateNaissance2);
+
+        dateNaissanceChooser2 = new JDateChooser();
+        dateNaissanceChooser2.setPreferredSize(new Dimension(100, 22));
+        GridBagConstraints gbc_dateNaissanceChooser2 = new GridBagConstraints();
+        gbc_dateNaissanceChooser2.anchor = GridBagConstraints.WEST;
+        gbc_dateNaissanceChooser2.insets = new Insets(0, 0, 5, 0);
+        gbc_dateNaissanceChooser2.gridx = 4;
+        gbc_dateNaissanceChooser2.gridy = 7;
+        donnees_loca.add(dateNaissanceChooser2, gbc_dateNaissanceChooser2);
+
         this.enregistrerButtonColloc = new JButton("Enregistrer");
         this.enregistrerButtonColloc.setEnabled(false);
         GridBagConstraints gbc_enregistrerButtonColloc = new GridBagConstraints();
         gbc_enregistrerButtonColloc.gridx = 6;
-        gbc_enregistrerButtonColloc.gridy = 8;
+        gbc_enregistrerButtonColloc.gridy = 9;
         gbc_enregistrerButtonColloc.insets = new Insets(0, 0, 5, 5);
         donnees_loca.add(enregistrerButtonColloc, gbc_enregistrerButtonColloc);
 
         quitterColloc = new JButton("Quitter");
         GridBagConstraints gbc_quitterColloc = new GridBagConstraints();
         gbc_quitterColloc.gridx = 1;
-        gbc_quitterColloc.gridy = 8;
+        gbc_quitterColloc.gridy = 9;
         gbc_quitterColloc.insets = new Insets(0, 0, 5, 5);
         donnees_loca.add(quitterColloc, gbc_quitterColloc);
 
@@ -359,9 +433,10 @@ public class PageNouveauLocataire {
             @Override
             public void actionPerformed(ActionEvent e) {
                 java.sql.Date sqlDate = new java.sql.Date(getDateChooser().getDate().getTime());
+                java.sql.Date dateNaissance = new java.sql.Date(getDateNaissanceChooser().getDate().getTime());
                 daoLoc = new LocataireDAO();
-                Locataire l = new Locataire(nomValeur.getText(), prenomValeur.getText(), telephoneValeur.getText(),
-                        mailValeur.getText(), sqlDate, (String) genreValeur.getSelectedItem());
+                Locataire l = new Locataire(nomValeur.getText(), prenomValeur.getText(), lieuNaissanceValeur.getText(), dateNaissance.toString(),
+                        telephoneValeur.getText(),mailValeur.getText(), sqlDate, (String) genreValeur.getSelectedItem());
 
             }
         });
@@ -390,9 +465,13 @@ public class PageNouveauLocataire {
         enregistrerButtonColloc.addActionListener(modele.getAjouterLocataireListener());
         nomValeur.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
         prenomValeur.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
+        lieuNaissanceValeur.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
+        dateNaissanceChooser.getDateEditor().addPropertyChangeListener("date", evt -> modele.getTextFieldDocumentListener().insertUpdate(null));
         telephoneValeur.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
         nomValeur2.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
         prenomValeur2.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
+        lieuNaissanceValeur2.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
+        dateNaissanceChooser2.getDateEditor().addPropertyChangeListener("date", evt -> modele.getTextFieldDocumentListener().insertUpdate(null));
         dateChooser.getDateEditor().addPropertyChangeListener("date", evt -> modele.getTextFieldDocumentListener().insertUpdate(null));
         quitterPasColloc.addActionListener(modele.quitterBouton());
         quitterColloc.addActionListener(modele.quitterBouton());
@@ -419,6 +498,10 @@ public class PageNouveauLocataire {
     public JTextField getPrenomValeur() {
         return prenomValeur;
     }
+
+    public JTextField getLieuNaissanceValeur(){ return lieuNaissanceValeur;}
+
+    public JDateChooser getDateNaissanceChooser(){ return dateNaissanceChooser;}
 
     public JTextField getTelephoneValeur() {
         return telephoneValeur;
@@ -461,6 +544,14 @@ public class PageNouveauLocataire {
     public JTextField getPrenomValeur2() {
         return prenomValeur2;
     }
+
+    public JLabel getLabelLieuNaissance2(){ return labelLieuNaissance2;}
+
+    public JTextField getLieuNaissanceValeur2(){ return lieuNaissanceValeur2;}
+
+    public JLabel getLabelDateNaissance2(){ return labelDateNaissance2;}
+
+    public JDateChooser getDateNaissanceChooser2(){ return dateNaissanceChooser2;}
 
     public JLabel getLabelColoc2() {
         return label_coloc2;
