@@ -59,4 +59,10 @@ public interface DiagnosticDAO {
      */
     public List<Diagnostic> readAllDiag(int id) throws DAOException;
 
+    /**
+     * Renvoie la liste des diagnostics périmés
+     * @return List of Diagnostic objects
+     * @throws DAOException
+     */
+    public List<String> readDiagPerimes() throws DAOException;
 }

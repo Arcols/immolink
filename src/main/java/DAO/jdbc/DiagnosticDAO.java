@@ -143,4 +143,34 @@ public class DiagnosticDAO implements DAO.DiagnosticDAO{
         }
         return lDiags;
     }
+
+    @Override
+    public List<String> readDiagPerimes() throws DAOException {
+        List<String> lNotifs = new ArrayList<>();
+        try {
+            Connection cn = ConnectionDB.getInstance();
+            String query = "SELECT di.type, di.date_expiration, ba.adresse ,bl.complement_adresse, ba.ville  " +
+                    "FROM diagnostiques di, bienlouable bl, batiment ba  " +
+                    "WHERE di.id = bl.id AND bl.idBat = ba.id " +
+                    "AND di.date_expiration < CURRENT_DATE";
+            PreparedStatement pstmt = cn.prepareStatement(query);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()){
+                String type = rs.getString("type");
+                Date expi = rs.getDate("date_expiration");
+                String adresse = rs.getString("adresse");
+                String complement = rs.getString("complement_adresse");
+                String ville = rs.getString("ville");
+                lNotifs.add("<html>Le <b>"+type+"</b> du logement situé au <b>"+adresse+" "+complement+" "+ville+"</b> a expiré depuis le <b>"+ expi.toString()+"</b></html>");
+            }
+            rs.close();
+            pstmt.close();
+
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            throw new RuntimeException(e);
+        }
+        return lNotifs;
+    }
 }
