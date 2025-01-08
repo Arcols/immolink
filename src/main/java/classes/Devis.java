@@ -29,9 +29,6 @@ public class Devis {
 	 * @param nom_entreprise
 	 */
 	public Devis(String num_devis,String num_facture, float montant_devis, String nature, float montant_travaux, Date date_debut, Date date_facture, String type, String adresse_entreprise, String nom_entreprise) {
-		if (num_devis.length() != 12) {
-			throw new IllegalArgumentException("numéro de devis invalide (12 caractères svp)");
-		}
 		this.nature = nature;
 		this.num_devis = num_devis;
 		this.num_facture=num_facture;

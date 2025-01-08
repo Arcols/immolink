@@ -131,15 +131,6 @@ public class PageNouveauTravaux {
         valeurs.add(labelNumDevis, gbc_labelNumDevis);
 
         valueNumDevis = new JFormattedTextField();
-        valueNumDevis.setColumns(12);
-        valueNumDevis.setDocument(new PlainDocument() {
-            @Override
-            public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
-                if (str == null || getLength() + str.length() <= 12) {
-                    super.insertString(offs, str, a);
-                }
-            }
-        });
         GridBagConstraints gbc_valueNumDevis = new GridBagConstraints();
         gbc_valueNumDevis.insets = new Insets(0, 0, 5, 0);
         gbc_valueNumDevis.anchor = GridBagConstraints.WEST;

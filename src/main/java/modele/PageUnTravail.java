@@ -162,7 +162,7 @@ public class PageUnTravail {
         gbc_valueNumDevis.gridy = 0;
         valeurs.add(valueNumDevis, gbc_valueNumDevis);
 
-        JLabel labelNumFacture = new JLabel("Numero devis");
+        JLabel labelNumFacture = new JLabel("Numero facture");
         GridBagConstraints gbc_labelNumFacture = new GridBagConstraints();
         gbc_labelNumFacture.insets = new Insets(0, 0, 5, 5);
         gbc_labelNumFacture.anchor = GridBagConstraints.WEST;
