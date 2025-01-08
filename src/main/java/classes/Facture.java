@@ -1,20 +1,33 @@
 package classes;
 
-public class Facture {
+import java.sql.Date;
 
-    public Facture(String numero, String date, float montant, Devis devis) {
+public class Facture {
+    private String numero;
+    private String type;
+    private Date date;
+    private double montant;
+
+    public Facture(String numero,String type, Date date, double montant) {
         this.numero = numero;
+        this.type = type;
         this.date = date;
         this.montant = montant;
-        this.devis = devis;
     }
 
-    private String numero;
+    public String getNumero() {
+        return numero;
+    }
 
-    private String date;
+    public String getType() {
+        return type;
+    }
 
-    private float montant;
+    public double getMontant() {
+        return montant;
+    }
 
-    public Devis devis;
-
+    public Date getDate() {
+        return date;
+    }
 }

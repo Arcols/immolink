@@ -54,6 +54,7 @@ public class PageNouveauTravaux {
         this.frame = new JFrame();
         this.frame.setBounds(100, 100, 750, 400);
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         JPanel entete = new JPanel();
         this.frame.getContentPane().add(entete, BorderLayout.NORTH);
         entete.setLayout(new BorderLayout(0, 0));

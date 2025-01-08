@@ -67,20 +67,6 @@ public class ModelePageNouveauLocataire {
         };
     }
 
-    public ActionListener getVilleActionListener(Map<String, List<String>> mapVillesAdresses) {
-        return e -> {
-            String selectedVille = (String) this.pageNouveauLocataire.getVilleValeur().getSelectedItem();
-            if (!mapVillesAdresses.containsKey(selectedVille)) {
-                this.pageNouveauLocataire.getAdresseValeur().setModel(new DefaultComboBoxModel());
-            } else {
-                this.pageNouveauLocataire.getAdresseValeur().setModel(
-                        new DefaultComboBoxModel(mapVillesAdresses.get(selectedVille).toArray(new String[0])));
-                this.pageNouveauLocataire.getAdresseValeur().setModel(
-                        new DefaultComboBoxModel(mapVillesAdresses.get(selectedVille).toArray(new String[0])));
-            }
-        };
-    }
-
     public ActionListener quitterBouton(){
         return e -> {
             pageNouveauLocataire.getFrame().dispose();
