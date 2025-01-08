@@ -12,16 +12,16 @@ import java.util.List;
 public class FactureDAO implements DAO.FactureDAO{
 
     @Override
-    public void create(Facture facture, int id_charge) throws DAOException {
+    public void create(Facture facture) throws DAOException {
         try {
             Connection cn = ConnectionDB.getInstance();
             String query = "INSERT INTO facture (numero,type,date,montant,id_charges) VALUES (?,?,?,?,?)";
             PreparedStatement pstmt = cn.prepareStatement(query);
-            pstmt.setInt(1, facture.getNumero());
+            pstmt.setString(1, facture.getNumero());
             pstmt.setString(2, facture.getType());
             pstmt.setDate(3, facture.getDate());
             pstmt.setDouble(4,facture.getMontant());
-            pstmt.setInt(5,id_charge);
+            pstmt.setInt(5,(Integer) null);
             pstmt.executeUpdate();
             pstmt.close();
         } catch (SQLException e) {
@@ -31,15 +31,17 @@ public class FactureDAO implements DAO.FactureDAO{
     }
 
     @Override
-    public List<Facture> getAllAnnee(Date annee) throws DAOException {
+    public List<Facture> getAllByAnnee(Date annee, int id_charge) throws DAOException {
         List<Facture> factures = new LinkedList<>();
         try {
             Connection cn = ConnectionDB.getInstance();
-            String query = "SELECT numero, type, date, montant FROM facture";
+            String query = "SELECT numero, type, date, montant FROM facture WHERE annee = ? AND id_charge = ?";
             PreparedStatement pstmt = cn.prepareStatement(query);
+            pstmt.setDate(1, annee);
+            pstmt.setInt(1, id_charge);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                int numero = rs.getInt("numero");
+                String numero = rs.getString("numero");
                 String type = rs.getString("type");
                 Date date = rs.getDate("date");
                 Double montant = rs.getDouble("montant");

@@ -3,19 +3,19 @@ package classes;
 import java.sql.Date;
 
 public class Facture {
-    private int numero;
+    private String numero;
     private String type;
     private Date date;
     private double montant;
 
-    public Facture(int numero,String type, Date date, double montant) {
+    public Facture(String numero,String type, Date date, double montant) {
         this.numero = numero;
         this.type = type;
         this.date = date;
         this.montant = montant;
     }
 
-    public int getNumero() {
+    public String getNumero() {
         return numero;
     }
 

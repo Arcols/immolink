@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Charge {
     private String type;
-    private Date annee;
+
     private List<Facture> facture;
 
     /**
@@ -18,10 +18,6 @@ public class Charge {
 
     public String getType() {
         return type;
-    }
-
-    public Date getAnnee() {
-        return annee;
     }
 
     public List<Facture> getFacture() {
