@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface FactureDAO {
 
-    void create(Facture facture) throws DAOException;
+    void create(Facture facture,int id_charge) throws DAOException;
 
     List<Facture> getAllByAnnee(Date annee, int id_charge) throws  DAOException;
 

@@ -309,9 +309,9 @@ public class ModelePageNouveauBail {
                         int id_bail = new BailDAO().getId(bail);
                         ChargeDAO chargesBail = new ChargeDAO();
                         chargesBail.create("Eau",id_bail);
-                        chargesBail.create("Electricite",id_bail);
-                        chargesBail.create("Entretient",id_bail);
-                        chargesBail.create("Ordure",id_bail);
+                        chargesBail.create("Electricité",id_bail);
+                        chargesBail.create("Entretien",id_bail);
+                        chargesBail.create("Ordures",id_bail);
                         for (int i = 0; i < Locataireselected.size(); i++) {
                             new LouerDAO().create(Locataireselected.get(i), bail, ListQuotite.get(i));
                         }

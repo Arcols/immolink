@@ -5,10 +5,12 @@ import DAO.jdbc.BatimentDAO;
 import DAO.jdbc.ChargeDAO;
 import classes.Diagnostic;
 import classes.Garage;
+import com.toedter.calendar.JDateChooser;
 import enumeration.NomsDiags;
 import enumeration.TypeLogement;
 import ihm.Charte;
 import ihm.Menu;
+import ihm.ModelePageFacture;
 import ihm.ResizedImage;
 
 import javax.swing.*;
@@ -33,12 +35,18 @@ public class PageFacture {
 
     private JFrame frame;
     private JLabel logo;
-
-    public PageFacture(Integer idCharge) {
-        this.initialize(idCharge);
+    private JComboBox choix_type;
+    private JTextField choix_num_facture;
+    private  JTextField choix_montant;
+    private  JDateChooser dateChooser;
+    private int id_bail;
+    public PageFacture(int id_bail) {
+        this.initialize();
+        this.id_bail = id_bail;
     }
 
-    private void initialize(Integer idCharge) {
+    private void initialize() {
+        ModelePageFacture modele = new ModelePageFacture(this);
         this.frame = new JFrame();
         this.frame.setBounds(100, 100, 750, 400);
         this.frame.getContentPane().setBackground(Charte.FOND.getCouleur());
@@ -116,7 +124,11 @@ public class PageFacture {
         gbc_type.gridy = 0;
         contenu.add(type, gbc_type);
 
-        JComboBox choix_type = new JComboBox();
+        choix_type = new JComboBox();
+        choix_type.addItem((Object) "Entretien");
+        choix_type.addItem((Object) "Electricité");
+        choix_type.addItem((Object) "Ordure");
+        choix_type.addItem((Object) "Eau");
         GridBagConstraints gbc_choix_type = new GridBagConstraints();
         gbc_choix_type.insets = new Insets(0, 0, 5, 5);
         gbc_choix_type.fill = GridBagConstraints.HORIZONTAL;
@@ -132,7 +144,7 @@ public class PageFacture {
         gbc_numero.gridy = 1;
         contenu.add(numero, gbc_numero);
 
-        JTextField choix_num_facture = new JTextField();
+        choix_num_facture = new JTextField();
         GridBagConstraints gbc_choix_num_facture = new GridBagConstraints();
         gbc_choix_num_facture.insets = new Insets(0, 0, 5, 5);
         gbc_choix_num_facture.fill = GridBagConstraints.HORIZONTAL;
@@ -149,7 +161,7 @@ public class PageFacture {
         gbc_montant.gridy = 2;
         contenu.add(montant, gbc_montant);
 
-        JTextField choix_montant = new JTextField();
+        choix_montant = new JTextField();
         GridBagConstraints gbc_choix_montant = new GridBagConstraints();
         gbc_choix_montant.insets = new Insets(0, 0, 5, 5);
         gbc_choix_montant.fill = GridBagConstraints.HORIZONTAL;
@@ -165,14 +177,15 @@ public class PageFacture {
         gbc_date.gridy = 3;
         contenu.add(date, gbc_date);
 
-        JTextField A_REMPLACER_POUR_DATE = new JTextField();
+        dateChooser = new JDateChooser();
+        dateChooser.setPreferredSize(new Dimension(100, 22));
         GridBagConstraints gbc_a_REMPLACER_POUR_DATE = new GridBagConstraints();
         gbc_a_REMPLACER_POUR_DATE.insets = new Insets(0, 0, 5, 5);
         gbc_a_REMPLACER_POUR_DATE.fill = GridBagConstraints.HORIZONTAL;
         gbc_a_REMPLACER_POUR_DATE.gridx = 2;
         gbc_a_REMPLACER_POUR_DATE.gridy = 3;
-        contenu.add(A_REMPLACER_POUR_DATE, gbc_a_REMPLACER_POUR_DATE);
-        A_REMPLACER_POUR_DATE.setColumns(10);
+        contenu.add(dateChooser, gbc_a_REMPLACER_POUR_DATE);
+
 
         JPanel bas_de_page = new JPanel();
         this.frame.getContentPane().add(bas_de_page, BorderLayout.SOUTH);
@@ -183,9 +196,11 @@ public class PageFacture {
         quitter.setVerticalTextPosition(SwingConstants.TOP);
         quitter.setVerticalAlignment(SwingConstants.BOTTOM);
         bas_de_page.add(quitter, BorderLayout.WEST);
+        quitter.addActionListener(modele.quitterPage());
 
         JButton valider = new JButton("Ajouter");
         bas_de_page.add(valider, BorderLayout.EAST);
+        valider.addActionListener(modele.ajouterFacture());
         frame.setVisible(true);
 
         this.frame.addComponentListener(new ComponentAdapter() {
@@ -206,5 +221,29 @@ public class PageFacture {
                 b_biens.setFont(resizedFont);
             }
         });
+    }
+
+    public Frame getFrame() {
+        return this.frame;
+    }
+
+    public JComboBox getChoix_type() {
+        return choix_type;
+    }
+
+    public JTextField getChoix_num_facture() {
+        return choix_num_facture;
+    }
+
+    public JTextField getChoix_montant() {
+        return choix_montant;
+    }
+
+    public JDateChooser getDateChooser() {
+        return dateChooser;
+    }
+
+    public int getId_bail() {
+        return id_bail;
     }
 }

@@ -7,9 +7,8 @@ import classes.Diagnostic;
 import classes.Garage;
 import enumeration.NomsDiags;
 import enumeration.TypeLogement;
-import ihm.Charte;
+import ihm.*;
 import ihm.Menu;
-import ihm.ResizedImage;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -32,13 +31,16 @@ public class PageCharge {
 
     private JFrame frame;
     private JLabel logo;
+    private int id_bail;
 
     public PageCharge(Integer idBail) {
         this.initialize(idBail);
+        this.id_bail = idBail;
     }
 
     private void initialize(Integer idBail) {
         this.frame = new JFrame();
+        ModelePageCharge modele = new ModelePageCharge(this);
         this.frame.setBounds(100, 100, 750, 400);
         this.frame.getContentPane().setBackground(Charte.FOND.getCouleur());
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -131,7 +133,7 @@ public class PageCharge {
         contenu.add(prixEau, gbc_prixEau);
 
         try {
-            prix=charge.getMontant(date_actuelle,charge.getId("Electricite",idBail));
+            prix=charge.getMontant(date_actuelle,charge.getId("Electricité",idBail));
         } catch (DAOException e) {
             throw new RuntimeException(e);
         }
@@ -151,7 +153,7 @@ public class PageCharge {
         contenu.add(prixElectricite, gbc_prixElectricite);
 
         try {
-            prix=charge.getMontant(date_actuelle,charge.getId("Ordure",idBail));
+            prix=charge.getMontant(date_actuelle,charge.getId("Ordures",idBail));
         } catch (DAOException e) {
             throw new RuntimeException(e);
         }
@@ -170,7 +172,7 @@ public class PageCharge {
         contenu.add(prixOrdures, gbc_prixOrdures);
 
         try {
-            prix=charge.getMontant(date_actuelle,charge.getId("Entretient",idBail));
+            prix=charge.getMontant(date_actuelle,charge.getId("Entretien",idBail));
         } catch (DAOException e) {
             throw new RuntimeException(e);
         }
@@ -196,6 +198,7 @@ public class PageCharge {
 
         JButton facture = new JButton("Ajouter une facture");
         panelbouton.add(facture);
+        facture.addActionListener(modele.ouvrirPageFacture());
 
         JPanel bas_de_page = new JPanel();
         this.frame.getContentPane().add(bas_de_page, BorderLayout.SOUTH);
@@ -213,7 +216,7 @@ public class PageCharge {
         quitter.setVerticalTextPosition(SwingConstants.TOP);
         quitter.setVerticalAlignment(SwingConstants.BOTTOM);
         bas_de_page.add(quitter, BorderLayout.WEST);
-
+        quitter.addActionListener(modele.quitterPage());
         this.frame.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
@@ -233,5 +236,13 @@ public class PageCharge {
             }
         });
         this.frame.setVisible(true);
+    }
+
+    public Frame getFrame() {
+        return this.frame;
+    }
+
+    public int getId_bail() {
+        return id_bail;
     }
 }

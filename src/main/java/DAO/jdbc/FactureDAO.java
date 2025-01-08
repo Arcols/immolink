@@ -12,16 +12,16 @@ import java.util.List;
 public class FactureDAO implements DAO.FactureDAO{
 
     @Override
-    public void create(Facture facture) throws DAOException {
+    public void create(Facture facture, int id_charge) throws DAOException {
         try {
             Connection cn = ConnectionDB.getInstance();
-            String query = "INSERT INTO facture (numero,type,date,montant,id_charges) VALUES (?,?,?,?,?)";
+            String query = "INSERT INTO facture (numero,type,date,montant,id_charge) VALUES (?,?,?,?,?)";
             PreparedStatement pstmt = cn.prepareStatement(query);
             pstmt.setString(1, facture.getNumero());
             pstmt.setString(2, facture.getType());
             pstmt.setDate(3, facture.getDate());
             pstmt.setDouble(4,facture.getMontant());
-            pstmt.setInt(5,(Integer) null);
+            pstmt.setInt(5, id_charge);
             pstmt.executeUpdate();
             pstmt.close();
         } catch (SQLException e) {
