@@ -317,7 +317,9 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
                 Double depot_garantie = rs.getDouble("depot_garantie");
                 Date date_debut = rs.getDate("date_debut");
                 Date date_fin = rs.getDate("date_fin");
-                bail = new Bail((solde_de_compte==1),bien.getNumero_fiscal(),loyer,charges,depot_garantie,date_debut,date_fin);
+                Double icc = rs.getDouble("icc");
+                Integer index_eau = rs.getInt("index_eau");
+                bail = new Bail((solde_de_compte==1),bien.getNumero_fiscal(),loyer,charges,depot_garantie,date_debut,date_fin,icc,index_eau);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

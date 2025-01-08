@@ -36,6 +36,8 @@ public class PageNouveauBail {
     private JTextField choix_loyer;
     private JTextField choix_prevision;
     private JTextField choix_depot_garantie;
+    private JTextField choixIcc;
+    private JTextField choixIndexEau;
     private JDateChooser choix_date_debut;
     private JDateChooser choix_date_fin;
     private JComboBox choix_complement;
@@ -49,7 +51,6 @@ public class PageNouveauBail {
     private Map<String, List<String>> mapAdressesComplement;
     private Set<String> setVilles;
     private Set<String> setAdresse;
-
 
     /**
      * Launch the application.
@@ -94,7 +95,7 @@ public class PageNouveauBail {
         ModelePageNouveauBail modele = new ModelePageNouveauBail(this);
 
         this.frame = new JFrame();
-        this.frame.setBounds(100, 100, 750, 400);
+        this.frame.setBounds(100, 100, 750, 500);
         this.frame.getContentPane().setBackground(Charte.FOND.getCouleur());
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -158,9 +159,9 @@ public class PageNouveauBail {
         body.add(panel_bien, BorderLayout.WEST);
         GridBagLayout gbl_panel_bien = new GridBagLayout();
         gbl_panel_bien.columnWidths = new int[] {0, 0, 30};
-        gbl_panel_bien.rowHeights = new int[] {30, 0, 0, 0, 0, 0, 0, 0, 0, 0,60};
+        gbl_panel_bien.rowHeights = new int[] {30, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 60};
         gbl_panel_bien.columnWeights = new double[]{0.0, 0.0};
-        gbl_panel_bien.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0};
+        gbl_panel_bien.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
         panel_bien.setLayout(gbl_panel_bien);
 
 
@@ -300,7 +301,7 @@ public class PageNouveauBail {
         JLabel depot_garantie = new JLabel("Dépôt de garantie");
         GridBagConstraints gbc_depot_garantie = new GridBagConstraints();
         gbc_depot_garantie.fill = GridBagConstraints.BOTH;
-        gbc_depot_garantie.insets = new Insets(0, 0, 0, 5);
+        gbc_depot_garantie.insets = new Insets(0, 0, 5, 5);
         gbc_depot_garantie.gridx = 0;
         gbc_depot_garantie.gridy = 8;
         panel_bien.add(depot_garantie, gbc_depot_garantie);
@@ -314,12 +315,49 @@ public class PageNouveauBail {
         panel_bien.add(choix_depot_garantie, gbc_choix_depot_garantie);
         choix_depot_garantie.setColumns(7);
 
+        // ICC
+        JLabel labelIcc = new JLabel("ICC");
+        GridBagConstraints gbc_labelIcc = new GridBagConstraints();
+        gbc_labelIcc.fill = GridBagConstraints.HORIZONTAL;
+        gbc_labelIcc.insets = new Insets(10, 0, 5, 5);
+        gbc_labelIcc.gridx = 0;
+        gbc_labelIcc.gridy = 9;
+        panel_bien.add(labelIcc, gbc_labelIcc);
+
+        choixIcc = new JTextField();
+        GridBagConstraints gbc_choixIcc = new GridBagConstraints();
+        gbc_choixIcc.fill = GridBagConstraints.HORIZONTAL;
+        gbc_choixIcc.anchor = GridBagConstraints.WEST;
+        gbc_choixIcc.gridx = 1;
+        gbc_choixIcc.gridy = 9;
+        panel_bien.add(choixIcc, gbc_choixIcc);
+        choixIcc.setColumns(7);
+
+        // INDEX EAU
+        JLabel labelIndexEau = new JLabel("Index Eau");
+        GridBagConstraints gbc_labelIndexEau = new GridBagConstraints();
+        gbc_labelIndexEau.fill = GridBagConstraints.HORIZONTAL;
+        gbc_labelIndexEau.insets = new Insets(0, 0, 5, 5);
+        gbc_labelIndexEau.gridx = 0;
+        gbc_labelIndexEau.gridy = 10;
+        panel_bien.add(labelIndexEau, gbc_labelIndexEau);
+
+        choixIndexEau = new JTextField();
+        GridBagConstraints gbc_choixIndexEau = new GridBagConstraints();
+        gbc_choixIndexEau.fill = GridBagConstraints.HORIZONTAL;
+        gbc_choixIndexEau.anchor = GridBagConstraints.WEST;
+        gbc_choixIndexEau.gridx = 1;
+        gbc_choixIndexEau.gridy = 10;
+        panel_bien.add(choixIndexEau, gbc_choixIndexEau);
+
+
         this.solde_tout_compte = new JCheckBox("Solde de tout compte");
         GridBagConstraints gbc_solde_tout_compte = new GridBagConstraints();
-        gbc_solde_tout_compte.fill = GridBagConstraints.HORIZONTAL;
+        gbc_solde_tout_compte.fill = GridBagConstraints.BOTH;
+        gbc_solde_tout_compte.insets = new Insets(0, 0, 5, 5);
         gbc_solde_tout_compte.anchor = GridBagConstraints.WEST;
         gbc_solde_tout_compte.gridx = 1;
-        gbc_solde_tout_compte.gridy = 9;
+        gbc_solde_tout_compte.gridy = 11;
         panel_bien.add(solde_tout_compte, gbc_solde_tout_compte);
 
         JPanel panel_east = new JPanel();
@@ -347,7 +385,7 @@ public class PageNouveauBail {
         panel_east.add(panel_locataire, gbc_panel_locataire);
         GridBagLayout gbl_panel_locataire = new GridBagLayout();
         gbl_panel_locataire.columnWidths = new int[]{551, 0};
-        gbl_panel_locataire.rowHeights = new int[] {150, 21, 10};
+        gbl_panel_locataire.rowHeights = new int[] {150, 21, 11};
         gbl_panel_locataire.columnWeights = new double[]{0.0, Double.MIN_VALUE};
         gbl_panel_locataire.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
         panel_locataire.setLayout(gbl_panel_locataire);
@@ -449,6 +487,10 @@ public class PageNouveauBail {
         this.choix_prevision.addFocusListener(modele.getFocus());
         this.choix_depot_garantie.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
         this.choix_depot_garantie.addFocusListener(modele.getFocus());
+        this.choixIcc.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
+        this.choixIcc.addFocusListener(modele.getFocus());
+        this.choixIndexEau.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
+        this.choixIndexEau.addFocusListener(modele.getFocus());
         this.valider.addActionListener(modele.CreationBail());
         this.choix_ville.addActionListener(modele.getVilleActionListener(mapVillesAdresses));
         this.choix_adresse.addActionListener(modele.getAdresseActionListener(mapAdressesComplement));
@@ -506,9 +548,17 @@ public class PageNouveauBail {
     }
 
     public JTable getTable(){return this.table;}
+
     public JCheckBox getSolde_tout_compte() {
         return solde_tout_compte;
     }
 
+    public JTextField getChoixIcc() {
+        return choixIcc;
+    }
+
+    public JTextField getChoixIndexEau() {
+        return choixIndexEau;
+    }
 
 }
