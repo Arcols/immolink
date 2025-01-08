@@ -128,7 +128,7 @@ public class PageFacture {
         choix_type = new JComboBox();
         choix_type.addItem((Object) "Entretien");
         choix_type.addItem((Object) "Electricité");
-        choix_type.addItem((Object) "Ordure");
+        choix_type.addItem((Object) "Ordures");
         choix_type.addItem((Object) "Eau");
         GridBagConstraints gbc_choix_type = new GridBagConstraints();
         gbc_choix_type.insets = new Insets(0, 0, 5, 5);

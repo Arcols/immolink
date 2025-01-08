@@ -205,11 +205,11 @@ public class PageCharge {
         bas_de_page.setLayout(new BorderLayout(0, 0));
 
         JButton regularisation = new JButton("Régularisation des charges");
-        regularisation.setEnabled(false);
         regularisation.setHorizontalTextPosition(SwingConstants.LEFT);
         regularisation.setVerticalTextPosition(SwingConstants.TOP);
         regularisation.setVerticalAlignment(SwingConstants.BOTTOM);
         bas_de_page.add(regularisation, BorderLayout.EAST);
+        regularisation.addActionListener(modele.Regularisation());
 
         JButton quitter = new JButton("Quitter");
         quitter.setHorizontalTextPosition(SwingConstants.LEFT);

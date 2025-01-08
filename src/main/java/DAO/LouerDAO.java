@@ -18,6 +18,8 @@ public interface LouerDAO {
      */
     void create(Locataire locataire, Bail bail, int quotite) throws DAOException;
 
+    boolean locInBail(int idloc, int idBail);
+
     /**
      * Récupère la liste des id d'un locataire d'un bail dans la base de données.
      * @param idBail l'id du bail
