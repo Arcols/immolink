@@ -5,10 +5,7 @@ import DAO.db.ConnectionDB;
 import classes.Charge;
 import classes.Facture;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 
 public class ChargeDAO implements DAO.ChargeDAO{
@@ -37,4 +34,22 @@ public class ChargeDAO implements DAO.ChargeDAO{
         }
         return  montant;
     }
+
+    @Override
+    public int getId(String type, int id_bail) throws DAOException {
+        int id;
+        try {
+            Connection cn = ConnectionDB.getInstance();
+            String query = "SELECT id FROM charges WHERE type = ? AND id_bail = ?";
+            PreparedStatement pstmt = cn.prepareStatement(query);
+            pstmt.setString(1,type);
+            pstmt.setInt(2,id_bail);
+            ResultSet rs = pstmt.executeQuery();
+            id = rs.getInt("id");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return id;
+    }
+
 }
