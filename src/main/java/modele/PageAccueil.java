@@ -8,6 +8,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 
 import javax.swing.JButton;
@@ -21,6 +23,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
+import DAO.db.ConnectionDB;
 import DAO.jdbc.LocataireDAO;
 import ihm.Charte;
 import ihm.Menu;
@@ -203,6 +206,18 @@ public class PageAccueil {
 		JButton ajouter = new JButton("Ajouter un locataire");
 		bas_de_page.add(ajouter, BorderLayout.EAST);
 		ajouter.addActionListener(modele.ouvrirNouveauLocataire());
+		frame.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				// Action to perform on application close
+				performCloseAction();
+			}
+		});
+	}
+
+	private void performCloseAction() {
+		ConnectionDB.destroy(); // fermeture de la connection
+		frame.dispose();
 	}
 
 	public JFrame getFrame() {

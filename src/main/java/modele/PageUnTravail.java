@@ -8,12 +8,15 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
 import DAO.DAOException;
+import DAO.db.ConnectionDB;
 import enumeration.TypeLogement;
 import enumeration.TypeLogement;
 import ihm.*;
@@ -338,7 +341,18 @@ public class PageUnTravail {
         });
         frame.setVisible(true);
         btnSupprimer.addActionListener(modele.getSupprimerTravauxListener(idTravail,id,typelogement));
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                // Action to perform on application close
+                performCloseAction();
+            }
+        });
+    }
 
+    private void performCloseAction() {
+        ConnectionDB.destroy(); // fermeture de la connection
+        frame.dispose();
     }
     public JLabel getValueNumDevis() {
         return valueNumDevis;

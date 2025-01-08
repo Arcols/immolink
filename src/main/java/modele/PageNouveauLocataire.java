@@ -1,10 +1,7 @@
 package modele;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
+import java.awt.event.*;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +21,7 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
+import DAO.db.ConnectionDB;
 import DAO.jdbc.LocataireDAO;
 import classes.Locataire;
 import com.toedter.calendar.JDateChooser;
@@ -400,6 +398,18 @@ public class PageNouveauLocataire {
         quitterColloc.addActionListener(modele.quitterBouton());
         this.genreValeur.addActionListener(modele.getChoixGenreValeurListener());
 
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                // Action to perform on application close
+                performCloseAction();
+            }
+        });
+    }
+
+    private void performCloseAction() {
+        ConnectionDB.destroy(); // fermeture de la connection
+        frame.dispose();
     }
 
     public JTextField getNomValeur() {

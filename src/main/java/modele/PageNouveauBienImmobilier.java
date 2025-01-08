@@ -11,10 +11,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
+import java.awt.event.*;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -25,6 +22,7 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
+import DAO.db.ConnectionDB;
 import DAO.jdbc.BatimentDAO;
 import classes.Diagnostic;
 import classes.Garage;
@@ -447,6 +445,18 @@ public class PageNouveauBienImmobilier {
 		this.texte_ville.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
 		this.texte_adresse.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
 		quitter.addActionListener(modele.quitterPage());
+		frame.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				// Action to perform on application close
+				performCloseAction();
+			}
+		});
+	}
+
+	private void performCloseAction() {
+		ConnectionDB.destroy(); // fermeture de la connection
+		frame.dispose();
 	}
 
 	public JComboBox getChoix_adresse() {

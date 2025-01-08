@@ -3,6 +3,8 @@ package modele;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 
 import javax.swing.*;
@@ -10,6 +12,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 import DAO.DAOException;
+import DAO.db.ConnectionDB;
 import DAO.jdbc.BatimentDAO;
 import DAO.jdbc.BienLouableDAO;
 import classes.Bail;
@@ -213,6 +216,18 @@ public class PageMesBiens {
             }
         });
 
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                // Action to perform on application close
+                performCloseAction();
+            }
+        });
+    }
+
+    private void performCloseAction() {
+        ConnectionDB.destroy(); // fermeture de la connection
+        frame.dispose();
     }
 
 

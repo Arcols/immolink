@@ -14,6 +14,8 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -26,6 +28,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
 import DAO.DAOException;
+import DAO.db.ConnectionDB;
 import DAO.jdbc.BailDAO;
 import DAO.jdbc.LocataireDAO;
 import DAO.jdbc.LouerDAO;
@@ -392,6 +395,18 @@ public class PageUnBail {
                 b_biens.setFont(resizedFont);
             }
         });
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                // Action to perform on application close
+                performCloseAction();
+            }
+        });
+    }
+
+    private void performCloseAction() {
+        ConnectionDB.destroy(); // fermeture de la connection
+        frame.dispose();
     }
     public JLabel getAffichageVille() {
         return affichageVille;

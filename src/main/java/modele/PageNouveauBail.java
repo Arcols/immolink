@@ -1,5 +1,6 @@
 package modele;
 
+import DAO.db.ConnectionDB;
 import DAO.jdbc.BailDAO;
 import DAO.jdbc.BatimentDAO;
 import DAO.jdbc.BienLouableDAO;
@@ -13,6 +14,8 @@ import ihm.ResizedImage;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -450,6 +453,18 @@ public class PageNouveauBail {
         this.choix_ville.addActionListener(modele.getVilleActionListener(mapVillesAdresses));
         this.choix_adresse.addActionListener(modele.getAdresseActionListener(mapAdressesComplement));
         quitter.addActionListener(modele.quitterPage());
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                // Action to perform on application close
+                performCloseAction();
+            }
+        });
+    }
+
+    private void performCloseAction() {
+        ConnectionDB.destroy(); // fermeture de la connection
+        frame.dispose();
     }
 
     public JFrame getFrame() {

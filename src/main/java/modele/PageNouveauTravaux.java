@@ -3,6 +3,8 @@ package modele;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 
 import javax.management.ValueExp;
@@ -13,6 +15,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
 import DAO.DAOException;
+import DAO.db.ConnectionDB;
 import com.toedter.calendar.JDateChooser;
 import enumeration.TypeLogement;
 import ihm.*;
@@ -335,6 +338,18 @@ public class PageNouveauTravaux {
         dateChooserDebut.getDateEditor().addPropertyChangeListener("date", evt -> modele.getTextFieldDocumentListener().insertUpdate(null));
         dateChooserFacture.getDateEditor().addPropertyChangeListener("date", evt -> modele.getTextFieldDocumentListener().insertUpdate(null));
         btnValider.addActionListener(modele.getAjouterTravauxListener(id,typeLogement));
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                // Action to perform on application close
+                performCloseAction();
+            }
+        });
+    }
+
+    private void performCloseAction() {
+        ConnectionDB.destroy(); // fermeture de la connection
+        frame.dispose();
     }
 
     public JTextField getValueNumDevis() {
