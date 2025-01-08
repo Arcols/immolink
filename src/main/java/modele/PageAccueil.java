@@ -31,6 +31,8 @@ import ihm.ModelePageAccueil;
 import ihm.ResizedImage;
 
 import javax.swing.*; // Composants Swing classiques
+import javax.swing.table.TableColumnModel;
+
 import com.formdev.flatlaf.FlatLightLaf;
 
 
@@ -174,6 +176,15 @@ public class PageAccueil {
 		try {
 			DefaultTableModel model = ModelePageAccueil.loadDataLocataireToTable();
 			table.setModel(model);
+			TableColumnModel columnModel = table.getColumnModel();
+			columnModel.getColumn(0).setPreferredWidth(100); // Nom
+			columnModel.getColumn(1).setPreferredWidth(100); // Prénom
+			columnModel.getColumn(2).setPreferredWidth(100); // Lieu Naissance
+			columnModel.getColumn(3).setPreferredWidth(160); // Date Naissance
+			columnModel.getColumn(4).setPreferredWidth(80); // Téléphone
+			columnModel.getColumn(5).setPreferredWidth(150); // Mail
+			columnModel.getColumn(6).setPreferredWidth(50);  // Genre
+			columnModel.getColumn(7).setPreferredWidth(80); // Date d'arrivée
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(frame, "Erreur lors du chargement des données : " + e.getMessage(),
 					"Erreur", JOptionPane.ERROR_MESSAGE);
