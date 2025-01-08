@@ -1,6 +1,8 @@
 package modele;
 
+import DAO.DAOException;
 import DAO.jdbc.BatimentDAO;
+import DAO.jdbc.ChargeDAO;
 import classes.Diagnostic;
 import classes.Garage;
 import enumeration.NomsDiags;
@@ -19,7 +21,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,24 +32,11 @@ public class PageCharge {
 
     private JFrame frame;
     private JLabel logo;
-    /**
-     * Launch the application.
-     */
 
-    public JFrame getFrame() {
-        return this.frame;
-    }
-
-    /**
-     * Create the application.
-     */
     public PageCharge(Integer idBail) {
         this.initialize(idBail);
     }
 
-    /**
-     * Initialize the contents of the frame.
-     */
     private void initialize(Integer idBail) {
         this.frame = new JFrame();
         this.frame.setBounds(100, 100, 750, 400);
@@ -117,6 +108,14 @@ public class PageCharge {
         gbl_contenu.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
         contenu.setLayout(gbl_contenu);
 
+        ChargeDAO charge = new DAO.jdbc.ChargeDAO();
+        Date date_actuelle = Date.valueOf(LocalDate.now().getYear() + "-01-01");
+        double prix;
+        try {
+            prix=charge.getMontant(date_actuelle,charge.getId("Eau",idBail));
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
         JLabel Eau = new JLabel("Eau : ");
         GridBagConstraints gbc_Eau = new GridBagConstraints();
         gbc_Eau.insets = new Insets(0, 0, 5, 5);
@@ -124,13 +123,18 @@ public class PageCharge {
         gbc_Eau.gridy = 1;
         contenu.add(Eau, gbc_Eau);
 
-        JLabel prixEau = new JLabel("O");
+        JLabel prixEau = new JLabel(prix + " €");
         GridBagConstraints gbc_prixEau = new GridBagConstraints();
         gbc_prixEau.insets = new Insets(0, 0, 5, 5);
         gbc_prixEau.gridx = 1;
         gbc_prixEau.gridy = 1;
         contenu.add(prixEau, gbc_prixEau);
 
+        try {
+            prix=charge.getMontant(date_actuelle,charge.getId("Electricite",idBail));
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
         JLabel Electricite = new JLabel("Electricité : ");
         GridBagConstraints gbc_Electricite = new GridBagConstraints();
         gbc_Electricite.insets = new Insets(0, 0, 5, 5);
@@ -138,13 +142,19 @@ public class PageCharge {
         gbc_Electricite.gridy = 1;
         contenu.add(Electricite, gbc_Electricite);
 
-        JLabel prixElectricite = new JLabel("O");
+
+        JLabel prixElectricite = new JLabel(prix + " €");
         GridBagConstraints gbc_prixElectricite = new GridBagConstraints();
         gbc_prixElectricite.insets = new Insets(0, 0, 5, 5);
         gbc_prixElectricite.gridx = 3;
         gbc_prixElectricite.gridy = 1;
         contenu.add(prixElectricite, gbc_prixElectricite);
 
+        try {
+            prix=charge.getMontant(date_actuelle,charge.getId("Ordure",idBail));
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
         JLabel Ordure = new JLabel("Ordures : ");
         GridBagConstraints gbc_Ordure = new GridBagConstraints();
         gbc_Ordure.insets = new Insets(0, 0, 5, 5);
@@ -152,13 +162,18 @@ public class PageCharge {
         gbc_Ordure.gridy = 3;
         contenu.add(Ordure, gbc_Ordure);
 
-        JLabel prixOrdures = new JLabel("O");
+        JLabel prixOrdures = new JLabel(prix + " €");
         GridBagConstraints gbc_prixOrdures = new GridBagConstraints();
         gbc_prixOrdures.insets = new Insets(0, 0, 5, 5);
         gbc_prixOrdures.gridx = 1;
         gbc_prixOrdures.gridy = 3;
         contenu.add(prixOrdures, gbc_prixOrdures);
 
+        try {
+            prix=charge.getMontant(date_actuelle,charge.getId("Entretient",idBail));
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
         JLabel Entretien = new JLabel("Entretien : ");
         GridBagConstraints gbc_Entretien = new GridBagConstraints();
         gbc_Entretien.insets = new Insets(0, 0, 5, 5);
@@ -166,7 +181,7 @@ public class PageCharge {
         gbc_Entretien.gridy = 3;
         contenu.add(Entretien, gbc_Entretien);
 
-        JLabel prixEntretien = new JLabel("O");
+        JLabel prixEntretien = new JLabel(prix + " €");
         GridBagConstraints gbc_prixEntretien = new GridBagConstraints();
         gbc_prixEntretien.insets = new Insets(0, 0, 5, 5);
         gbc_prixEntretien.gridx = 3;
@@ -217,5 +232,6 @@ public class PageCharge {
                 b_biens.setFont(resizedFont);
             }
         });
+        this.frame.setVisible(true);
     }
 }

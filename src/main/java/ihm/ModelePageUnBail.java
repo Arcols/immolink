@@ -455,6 +455,14 @@ public class ModelePageUnBail {
         nouvellePage.getFrame().setVisible(true);  // Affiche la nouvelle page
     }
 
+    public ActionListener BtnPageCharge(){
+        return e-> {
+            int id_bail = new DAO.jdbc.BailDAO().getId(pageUnBail.getBail());
+            pageUnBail.getFrame().dispose();
+            PageCharge pagecharge = new PageCharge(id_bail);
+        };
+    }
+
     public ActionListener quitterPage(){
         return e -> {
             pageUnBail.getFrame().dispose();

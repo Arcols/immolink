@@ -355,7 +355,7 @@ public class PageUnBail {
         gbc_btnAjoutCharges.gridx = 1;
         gbc_btnAjoutCharges.gridy = 0;
         panelModifs.add(btnAjoutCharges,gbc_btnAjoutCharges);
-
+        btnAjoutCharges.addActionListener(modele.BtnPageCharge());
 
         JPanel panelQuitter = new JPanel();
         basPage.add(panelQuitter);

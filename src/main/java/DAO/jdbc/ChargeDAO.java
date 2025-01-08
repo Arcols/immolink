@@ -29,15 +29,17 @@ public class ChargeDAO implements DAO.ChargeDAO{
     public double getMontant(Date annee, int id) throws DAOException {
         List<Facture> factureList = new FactureDAO().getAllByAnnee(annee, id);
         double montant = 0.0;
-        for (Facture f : factureList){
-            montant += f.getMontant();
+        if (!factureList.isEmpty()) {
+            for (Facture f : factureList) {
+                montant += f.getMontant();
+            }
         }
         return  montant;
     }
 
     @Override
     public int getId(String type, int id_bail) throws DAOException {
-        int id;
+        int id = -1;
         try {
             Connection cn = ConnectionDB.getInstance();
             String query = "SELECT id FROM charges WHERE type = ? AND id_bail = ?";
@@ -45,7 +47,9 @@ public class ChargeDAO implements DAO.ChargeDAO{
             pstmt.setString(1,type);
             pstmt.setInt(2,id_bail);
             ResultSet rs = pstmt.executeQuery();
-            id = rs.getInt("id");
+            if (rs.next()) {
+                id = rs.getInt("id");
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

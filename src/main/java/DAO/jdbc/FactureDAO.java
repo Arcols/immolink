@@ -35,10 +35,10 @@ public class FactureDAO implements DAO.FactureDAO{
         List<Facture> factures = new LinkedList<>();
         try {
             Connection cn = ConnectionDB.getInstance();
-            String query = "SELECT numero, type, date, montant FROM facture WHERE annee = ? AND id_charge = ?";
+            String query = "SELECT numero, type, date, montant FROM facture WHERE YEAR(date) = YEAR(?) AND id_charge = ?";
             PreparedStatement pstmt = cn.prepareStatement(query);
             pstmt.setDate(1, annee);
-            pstmt.setInt(1, id_charge);
+            pstmt.setInt(2, id_charge);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 String numero = rs.getString("numero");

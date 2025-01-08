@@ -237,7 +237,7 @@ public class PageBaux {
                             BienLouable bien = new BienLouableDAO().readFisc(new BienLouableDAO().getFiscFromCompl(ville,adresse,complement));
 							Bail bail =  new BailDAO().getBailFromBienEtDate(bien,date);
 							frame.dispose();
-							PageUnBail PageUnBail = new PageUnBail(bail);
+							new PageUnBail(bail);
 
                         } catch (DAOException e) {
                             throw new RuntimeException(e);
