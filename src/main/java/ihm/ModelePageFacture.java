@@ -7,7 +7,13 @@ import classes.Facture;
 import modele.PageBaux;
 import modele.PageCharge;
 import modele.PageFacture;
+import modele.PageNouveauBienImmobilier;
 
+import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ModelePageFacture {
@@ -28,7 +34,6 @@ public class ModelePageFacture {
     public ActionListener ajouterFacture(){
         return e ->
             {
-
                 FactureDAO daofacture = new FactureDAO();
                 java.sql.Date date = new java.sql.Date(this.pageFacture.getDateChooser().getDate().getTime());
                 Facture factureACreer = new Facture(this.pageFacture.getChoix_num_facture().getText(),
@@ -41,6 +46,34 @@ public class ModelePageFacture {
                 } catch (DAOException ex) {
                     throw new RuntimeException(ex);
                 }
+                refreshPage(e);
             };
     }
+
+    private void refreshPage(ActionEvent e) {
+        JFrame ancienneFenetre = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
+        ancienneFenetre.dispose();
+        PageFacture nouvellePage = new PageFacture(pageFacture.getId_bail());
+        nouvellePage.getFrame().setVisible(true);
+    }
+
+    public DocumentListener getTextFieldDocumentListener() {
+        return new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                pageFacture.checkFields();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                pageFacture.checkFields();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                pageFacture.checkFields();
+            }
+        };
+    }
+
 }

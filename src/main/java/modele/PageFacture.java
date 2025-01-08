@@ -40,6 +40,7 @@ public class PageFacture {
     private  JTextField choix_montant;
     private  JDateChooser dateChooser;
     private int id_bail;
+    private JButton valider;
     public PageFacture(int id_bail) {
         this.initialize();
         this.id_bail = id_bail;
@@ -198,7 +199,8 @@ public class PageFacture {
         bas_de_page.add(quitter, BorderLayout.WEST);
         quitter.addActionListener(modele.quitterPage());
 
-        JButton valider = new JButton("Ajouter");
+        valider = new JButton("Ajouter");
+        valider.setEnabled(false);
         bas_de_page.add(valider, BorderLayout.EAST);
         valider.addActionListener(modele.ajouterFacture());
         frame.setVisible(true);
@@ -221,6 +223,10 @@ public class PageFacture {
                 b_biens.setFont(resizedFont);
             }
         });
+
+        choix_num_facture.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
+        choix_montant.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
+        dateChooser.getDateEditor().addPropertyChangeListener("date", evt -> modele.getTextFieldDocumentListener().insertUpdate(null));
     }
 
     public Frame getFrame() {
@@ -245,5 +251,14 @@ public class PageFacture {
 
     public int getId_bail() {
         return id_bail;
+    }
+
+    public void checkFields() {
+        // Vérification si tous les champs sont remplis
+        boolean isFilled = !choix_num_facture.getText().trim().isEmpty() && !choix_montant.getText().trim().isEmpty()
+                && dateChooser.getDate() != null;
+
+        // Active ou désactive le bouton "Valider"
+        valider.setEnabled(isFilled);
     }
 }
