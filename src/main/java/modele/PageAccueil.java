@@ -8,6 +8,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 
 import javax.swing.JButton;
@@ -21,6 +23,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
+import DAO.db.ConnectionDB;
 import DAO.jdbc.LocataireDAO;
 import ihm.Charte;
 import ihm.Menu;
@@ -28,6 +31,8 @@ import ihm.ModelePageAccueil;
 import ihm.ResizedImage;
 
 import javax.swing.*; // Composants Swing classiques
+import javax.swing.table.TableColumnModel;
+
 import com.formdev.flatlaf.FlatLightLaf;
 
 
@@ -171,6 +176,15 @@ public class PageAccueil {
 		try {
 			DefaultTableModel model = ModelePageAccueil.loadDataLocataireToTable();
 			table.setModel(model);
+			TableColumnModel columnModel = table.getColumnModel();
+			columnModel.getColumn(0).setPreferredWidth(100); // Nom
+			columnModel.getColumn(1).setPreferredWidth(100); // Prénom
+			columnModel.getColumn(2).setPreferredWidth(100); // Lieu Naissance
+			columnModel.getColumn(3).setPreferredWidth(160); // Date Naissance
+			columnModel.getColumn(4).setPreferredWidth(80); // Téléphone
+			columnModel.getColumn(5).setPreferredWidth(150); // Mail
+			columnModel.getColumn(6).setPreferredWidth(50);  // Genre
+			columnModel.getColumn(7).setPreferredWidth(80); // Date d'arrivée
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(frame, "Erreur lors du chargement des données : " + e.getMessage(),
 					"Erreur", JOptionPane.ERROR_MESSAGE);
@@ -203,6 +217,18 @@ public class PageAccueil {
 		JButton ajouter = new JButton("Ajouter un locataire");
 		bas_de_page.add(ajouter, BorderLayout.EAST);
 		ajouter.addActionListener(modele.ouvrirNouveauLocataire());
+		frame.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				// Action to perform on application close
+				performCloseAction();
+			}
+		});
+	}
+
+	private void performCloseAction() {
+		ConnectionDB.destroy(); // fermeture de la connection
+		frame.dispose();
 	}
 
 	public JFrame getFrame() {

@@ -1,6 +1,7 @@
 package modele;
 
 import DAO.DAOException;
+import DAO.db.ConnectionDB;
 import DAO.jdbc.BailDAO;
 import DAO.jdbc.BatimentDAO;
 import DAO.jdbc.BienLouableDAO;
@@ -16,6 +17,8 @@ import ihm.ResizedImage;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.Date;
 import java.util.List;
 
@@ -282,6 +285,18 @@ public class PageBaux {
 
 		// Rendre la nouvelle fenêtre visible
 		newFrame.setVisible(true);
+		frame.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				// Action to perform on application close
+				performCloseAction();
+			}
+		});
+	}
+
+	private void performCloseAction() {
+		ConnectionDB.destroy(); // fermeture de la connection
+		frame.dispose();
 	}
 
 	public JFrame getFrame() {

@@ -34,7 +34,7 @@ public class ModelePageAccueil {
      */
     public static DefaultTableModel loadDataLocataireToTable() throws SQLException {
         // Liste des colonnes
-        String[] columnNames = {"Nom", "Prénom", "Téléphone", "Mail", "Genre", "Date d'arrivée"};
+        String[] columnNames = {"Nom", "Prénom", "Lieu Naissance", "Date Naissance", "Téléphone", "Mail", "Genre", "Date arrivée"};
 
         // Création du modèle de table
         DefaultTableModel model = new DefaultTableModel(columnNames, 0){
@@ -43,6 +43,7 @@ public class ModelePageAccueil {
                 return false; // Toutes les cellules sont non éditables
             }
         };
+
 
         // Récupération des locataires
         LocataireDAO locataireDAO = new LocataireDAO();
@@ -53,6 +54,8 @@ public class ModelePageAccueil {
             Object[] rowData = {
                     locataire.getNom(),
                     locataire.getPrénom(),
+                    locataire.getLieuNaissance(),
+                    locataire.getDateNaissance(),
                     locataire.getTéléphone(),
                     locataire.getMail(),
                     locataire.getGenre(),

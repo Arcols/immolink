@@ -1,6 +1,7 @@
 package modele;
 
 import DAO.DAOException;
+import DAO.db.ConnectionDB;
 import DAO.jdbc.BienLouableDAO;
 import DAO.jdbc.DiagnosticDAO;
 import DAO.jdbc.GarageDAO;
@@ -12,10 +13,7 @@ import ihm.*;
 import ihm.Menu;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
+import java.awt.event.*;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -503,6 +501,18 @@ public class PageMonBien {
                 }
             }
         });
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                // Action to perform on application close
+                performCloseAction();
+            }
+        });
+    }
+
+    private void performCloseAction() {
+        ConnectionDB.destroy(); // fermeture de la connection
+        frame.dispose();
     }
 
     public JFrame getFrame() {
