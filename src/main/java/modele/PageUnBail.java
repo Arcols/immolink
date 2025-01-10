@@ -16,6 +16,8 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.Date;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -51,6 +53,8 @@ public class PageUnBail {
     private JLabel affichageProvision;
     private JLabel affichageNbPieces;
     private JLabel affichageGarantie;
+    private JLabel affichageIcc;
+    private JLabel affichageIndexEau;
     private Bail bail;
 
     /**
@@ -140,7 +144,7 @@ public class PageUnBail {
         gbl_panel_Infos.columnWidths = new int[] {0, 0};
         gbl_panel_Infos.rowHeights = new int[] {0};
         gbl_panel_Infos.columnWeights = new double[]{0.0, 0.0, 0.0};
-        gbl_panel_Infos.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+        gbl_panel_Infos.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
         panel_Infos.setLayout(gbl_panel_Infos);
 
         JLabel labelVille = new JLabel("Ville");
@@ -270,6 +274,38 @@ public class PageUnBail {
         gbc_affichageGarantie.gridy = 7;
         panel_Infos.add(affichageGarantie, gbc_affichageGarantie);
 
+        // ICC
+        JLabel labelIcc = new JLabel("ICC");
+        GridBagConstraints gbc_labelIcc = new GridBagConstraints();
+        gbc_labelIcc.anchor = GridBagConstraints.WEST;
+        gbc_labelIcc.insets = new Insets(0, 0, 0, 5);
+        gbc_labelIcc.gridx = 0;
+        gbc_labelIcc.gridy = 8;
+        panel_Infos.add(labelIcc, gbc_labelIcc);
+
+        this.affichageIcc = new JLabel(String.valueOf(bail.getIcc()));
+        GridBagConstraints gbc_affichageIcc = new GridBagConstraints();
+        gbc_affichageIcc.anchor = GridBagConstraints.WEST;
+        gbc_affichageIcc.gridx = 2;
+        gbc_affichageIcc.gridy = 8;
+        panel_Infos.add(affichageIcc, gbc_affichageIcc);
+
+        // Index Eau
+        JLabel labelIndexEau = new JLabel("Index Eau");
+        GridBagConstraints gbc_labelIndexEau = new GridBagConstraints();
+        gbc_labelIndexEau.anchor = GridBagConstraints.WEST;
+        gbc_labelIndexEau.insets = new Insets(0, 0, 0, 5);
+        gbc_labelIndexEau.gridx = 0;
+        gbc_labelIndexEau.gridy = 9;
+        panel_Infos.add(labelIndexEau, gbc_labelIndexEau);
+
+        this.affichageIndexEau = new JLabel(String.valueOf(bail.getIndex_eau()));
+        GridBagConstraints gbc_affichageIndexEau = new GridBagConstraints();
+        gbc_affichageIndexEau.anchor = GridBagConstraints.WEST;
+        gbc_affichageIndexEau.gridx = 2;
+        gbc_affichageIndexEau.gridy = 9;
+        panel_Infos.add(affichageIndexEau, gbc_affichageIndexEau);
+
         JPanel panel_locataires = new JPanel();
         panel.add(panel_locataires);
         panel_locataires.setLayout(new BorderLayout(0, 0));
@@ -336,22 +372,6 @@ public class PageUnBail {
         gbl_panelModifs.rowWeights = new double[]{0.0};
         panelModifs.setLayout(gbl_panelModifs);
 
-        JButton btnModifierLoyer = new JButton("Modifier le loyer");
-        GridBagConstraints gbc_btnModifierLoyer = new GridBagConstraints();
-        gbc_btnModifierLoyer.insets = new Insets(0, 0, 5, 5);
-        gbc_btnModifierLoyer.gridx = 0;
-        gbc_btnModifierLoyer.gridy = 0;
-        panelModifs.add(btnModifierLoyer, gbc_btnModifierLoyer);
-        btnModifierLoyer.addActionListener(modele.getActionListenerForModifierLoyer(frame,new BailDAO().getId(bail)));
-
-        JButton btnAjoutLocataire = new JButton("Ajouter un locataire");
-        GridBagConstraints gbc_btnAjoutLocataire = new GridBagConstraints();
-        gbc_btnAjoutLocataire.insets = new Insets(0, 0, 5, 0);
-        gbc_btnAjoutLocataire.gridx = 2;
-        gbc_btnAjoutLocataire.gridy = 0;
-        panelModifs.add(btnAjoutLocataire, gbc_btnAjoutLocataire);
-        btnAjoutLocataire.addActionListener(modele.getAjouterLocataire(new BailDAO().getId(bail)));
-
         JButton btnAjoutCharges = new JButton("Ajouter des charges");
         GridBagConstraints gbc_btnAjoutCharges = new GridBagConstraints();
         gbc_btnAjoutCharges.insets = new Insets(0,0,5,5);
@@ -359,6 +379,24 @@ public class PageUnBail {
         gbc_btnAjoutCharges.gridy = 0;
         panelModifs.add(btnAjoutCharges,gbc_btnAjoutCharges);
         btnAjoutCharges.addActionListener(modele.BtnPageCharge());
+
+        JButton btnAjoutLocataire = new JButton("Ajouter un locataire");
+        GridBagConstraints gbc_btnAjoutLocataire = new GridBagConstraints();
+        gbc_btnAjoutLocataire.insets = new Insets(0, 0, 5, 5);
+        gbc_btnAjoutLocataire.gridx = 2;
+        gbc_btnAjoutLocataire.gridy = 0;
+        panelModifs.add(btnAjoutLocataire, gbc_btnAjoutLocataire);
+        btnAjoutLocataire.addActionListener(modele.getAjouterLocataire(new BailDAO().getId(bail)));
+
+        if(bail.getDernier_anniversaire().before(eneleveUneAnnéeADate(new Date(System.currentTimeMillis())))){
+            JButton btnModifierICC = new JButton("Modifier l'ICC (Anniversaie de votre bail)");
+            GridBagConstraints gbc_btnModifierICC = new GridBagConstraints();
+            gbc_btnModifierICC.insets = new Insets(0, 0, 5, 0);
+            gbc_btnModifierICC.gridx = 3;
+            gbc_btnModifierICC.gridy = 0;
+            panelModifs.add(btnModifierICC, gbc_btnModifierICC);
+            btnModifierICC.addActionListener(modele.getModifierICC(frame,new BailDAO().getId(bail)));
+        }
 
         JPanel panelQuitter = new JPanel();
         basPage.add(panelQuitter);
@@ -454,5 +492,12 @@ public class PageUnBail {
 
     public JPanel getTableau_locataire() {
         return tableau_locataire;
+    }
+
+    public java.sql.Date eneleveUneAnnéeADate(java.sql.Date date){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.YEAR,-1);
+        return new java.sql.Date(calendar.getTimeInMillis());
     }
 }

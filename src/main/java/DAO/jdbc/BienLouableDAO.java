@@ -317,7 +317,10 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
                 Double depot_garantie = rs.getDouble("depot_garantie");
                 Date date_debut = rs.getDate("date_debut");
                 Date date_fin = rs.getDate("date_fin");
-                bail = new Bail((solde_de_compte==1),bien.getNumero_fiscal(),loyer,charges,depot_garantie,date_debut,date_fin);
+                Double icc = rs.getDouble("icc");
+                Integer index_eau = rs.getInt("index_eau");
+                Date dernier_anniversaire = rs.getDate("dernier_anniversaire");
+                bail = new Bail((solde_de_compte==1),bien.getNumero_fiscal(),loyer,charges,depot_garantie,date_debut,date_fin,icc,index_eau,dernier_anniversaire);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -359,9 +362,9 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
     }
 
     @Override
-    public Map<String, List<String>> getAllComplNoBail() {
+    public Map<String, List<String>> getAllComplBail() {
         Map<String, List<String>> complements = new HashMap<>();
-        String query = "SELECT b.adresse, bl.complement_adresse FROM batiment b, bienlouable bl WHERE b.id IN (SELECT idBat FROM bienlouable) AND b.id = bl.idBat AND bl.id NOT IN (SELECT id_bien_louable FROM bail);";
+        String query = "SELECT b.adresse, bl.complement_adresse FROM batiment b, bienlouable bl WHERE b.id IN (SELECT idBat FROM bienlouable) AND b.id = bl.idBat;";
         try {
             Connection cn = ConnectionDB.getInstance();
             PreparedStatement pstmt = cn.prepareStatement(query);

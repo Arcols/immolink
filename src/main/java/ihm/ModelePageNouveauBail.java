@@ -280,7 +280,9 @@ public class ModelePageNouveauBail {
                 && !pageNouveauBail.getChoix_depot_garantie().getText().trim().isEmpty()
                 && pageNouveauBail.getChoix_date_debut().getDate()!=null
                 && pageNouveauBail.getChoix_date_fin().getDate()!=null
-                &&!(pageNouveauBail.getTable().getRowCount()==0);
+                &&!(pageNouveauBail.getTable().getRowCount()==0)
+                &&pageNouveauBail.getChoixIcc().getText().trim().length()!=0
+                &&pageNouveauBail.getChoixIndexEau().getText().trim().length()!=0;
 
         // Active ou désactive le bouton "Valider"
         pageNouveauBail.getValider().setEnabled(isFilled);
@@ -303,7 +305,10 @@ public class ModelePageNouveauBail {
                             Double.parseDouble(this.pageNouveauBail.getChoix_prevision().getText()),
                             Double.parseDouble(this.pageNouveauBail.getChoix_depot_garantie().getText()),
                             sqlDateDebut,
-                            sqlDateFin);
+                            sqlDateFin,
+                            Double.parseDouble(this.pageNouveauBail.getChoixIcc().getText()),
+                            Integer.parseInt(this.pageNouveauBail.getChoixIndexEau().getText()),
+                            sqlDateDebut);
                     try {
                         new BailDAO().create(bail);
                         int id_bail = new BailDAO().getId(bail);
@@ -318,8 +323,12 @@ public class ModelePageNouveauBail {
                         JOptionPane.showMessageDialog(null, "Le Bail a été ajouté et lié à vos locataires !", "Succès",
                                 JOptionPane.INFORMATION_MESSAGE);
                         refreshPage(e);
-                    } catch (DAOException | SQLException ex) {
-                        JOptionPane.showMessageDialog(null, "Une erreur est survenue lors de la création du bail.", "Erreur", JOptionPane.ERROR_MESSAGE);
+                    } catch (DAOException | SQLException | RuntimeException ex) {
+                        if(ex.getMessage().contains("chevauchement de dates pour ce bien louable")){
+                            JOptionPane.showMessageDialog(null, "Il y a un chevauchement de dates entre les différents bien de ce bien louable.", "Erreur", JOptionPane.ERROR_MESSAGE);
+                        }else{
+                            JOptionPane.showMessageDialog(null, "Une erreur est survenue lors de la création du bail.", "Erreur", JOptionPane.ERROR_MESSAGE);
+                        }
                     }
                 }
             } else {
@@ -345,7 +354,7 @@ public class ModelePageNouveauBail {
                         new DefaultComboBoxModel(mapVillesAdresses.get(selectedVille).toArray(new String[0])));
             }
 
-            Map<String, List<String>> mapAdresseCompl = new BienLouableDAO().getAllComplNoBail();
+            Map<String, List<String>> mapAdresseCompl = new BienLouableDAO().getAllComplBail();
             String selectedAdresse = (String) this.pageNouveauBail.getChoix_adresse().getItemAt(0);
             if(!mapAdresseCompl.containsKey(selectedAdresse)){
                 this.pageNouveauBail.getChoix_complement().setModel(new DefaultComboBoxModel());

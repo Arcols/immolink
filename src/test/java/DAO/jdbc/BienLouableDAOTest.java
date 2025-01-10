@@ -263,7 +263,7 @@ public class BienLouableDAOTest {
         BienLouable bienLouableNoBail = new BienLouable("123456789102", "Paris", "123 Rue de la Paix", "Apt 2", new ArrayList<>(), null,TypeLogement.APPARTEMENT);
         bienLouableDAO.create(bienLouableNoBail, TypeLogement.APPARTEMENT, 3, 80.0);
 
-        Map<String, List<String>> complementsNoBail = bienLouableDAO.getAllComplNoBail();
+        Map<String, List<String>> complementsNoBail = bienLouableDAO.getAllComplBail();
 
         assertNotNull(complementsNoBail);
         assertTrue(complementsNoBail.containsKey("123 Rue de la Paix"));
