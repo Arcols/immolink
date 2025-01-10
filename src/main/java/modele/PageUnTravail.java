@@ -107,7 +107,7 @@ public class PageUnTravail {
 
 
         entete.add(menu_bouttons, BorderLayout.CENTER);
-        menu_bouttons.setLayout(new GridLayout(0, 3, 0, 0));
+        menu_bouttons.setLayout(new GridLayout(0, 4, 0, 0));
         menu_bouttons.setBackground(Charte.ENTETE.getCouleur());
 
         JButton b_accueil = new JButton("Accueil");
@@ -131,6 +131,19 @@ public class PageUnTravail {
         b_biens.setCursor(new Cursor(Cursor.HAND_CURSOR));
         menu_bouttons.add(b_biens);
         menu_bouttons.add(b_biens);
+
+        JButton b_notifs = null;
+        try {
+            b_notifs = new JButton("Notifications ("+m.getNbNotifs()+")");
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
+        b_notifs.setBorderPainted(false);
+        b_notifs.setBackground(Charte.ENTETE.getCouleur());
+        b_notifs.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        menu_bouttons.add(b_notifs);
+        menu_bouttons.add(b_notifs);
+        b_notifs.addActionListener(m);
 
         JPanel Body = new JPanel();
         frame.getContentPane().add(Body, BorderLayout.CENTER);

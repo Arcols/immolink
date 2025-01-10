@@ -12,6 +12,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
 import DAO.DAOException;
+import DAO.jdbc.DiagnosticDAO;
 import com.formdev.flatlaf.FlatLightLaf;
 import ihm.*;
 import ihm.Menu;
@@ -47,14 +48,14 @@ public class PageNotifications {
     /**
      * Create the application.
      */
-    public PageNotifications() throws DAOException {
+    public PageNotifications() {
         this.initialize();
     }
 
     /**
      * Initialize the contents of the frame.
      */
-    private void initialize() throws DAOException {
+    private void initialize(){
         this.frame = new JFrame();
         this.frame.setBounds(100, 100, 910, 400);
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -85,7 +86,7 @@ public class PageNotifications {
 
 
         entete.add(menu_bouttons, BorderLayout.CENTER);
-        menu_bouttons.setLayout(new GridLayout(0, 3, 0, 0));
+        menu_bouttons.setLayout(new GridLayout(0, 4, 0, 0));
         menu_bouttons.setBackground(Charte.ENTETE.getCouleur());
 
         JButton b_accueil = new JButton("Accueil");
@@ -110,6 +111,19 @@ public class PageNotifications {
         menu_bouttons.add(b_biens);
         menu_bouttons.add(b_biens);
 
+
+        JButton b_notifs = null;
+        try {
+            b_notifs = new JButton("Notifications ("+m.getNbNotifs()+")");
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
+        b_notifs.setBorderPainted(false);
+        b_notifs.setBackground(Charte.ENTETE.getCouleur());
+        b_notifs.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        menu_bouttons.add(b_notifs);
+        menu_bouttons.add(b_notifs);
+
         JPanel Body = new JPanel();
         frame.getContentPane().add(Body, BorderLayout.CENTER);
         Body.setLayout(new BorderLayout(0, 0));
@@ -125,7 +139,12 @@ public class PageNotifications {
 
         table = new JTable();
         scrollPane.setViewportView(table);
-        DefaultTableModel model = ModelePageNotifications.getNotifications();
+        DefaultTableModel model = null;
+        try {
+            model = ModelePageNotifications.getNotifications();
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
         table.setModel(model);
         TableColumnModel columnModel = table.getColumnModel();
         columnModel.getColumn(0).setMaxWidth(120);

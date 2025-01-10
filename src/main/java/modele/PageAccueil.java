@@ -23,6 +23,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
+import DAO.DAOException;
 import DAO.db.ConnectionDB;
 import DAO.jdbc.LocataireDAO;
 import ihm.Charte;
@@ -123,11 +124,17 @@ public class PageAccueil {
 		headerPanel.add(logo, BorderLayout.WEST);
 
 		// Menu de boutons
-		JPanel menuPanel = new JPanel(new GridLayout(1, 5, 10, 0));
+		JPanel menuPanel = new JPanel(new GridLayout(1, 6, 10, 0));
 		menuPanel.setBackground(Charte.ENTETE.getCouleur());
 
-		String[] menuItems = { "Accueil", "Mes baux", "Mes Biens" };
 		Menu menuListener = new Menu(frame);
+        String notifs = null;
+        try {
+            notifs = "Notifications ("+menuListener.getNbNotifs()+")";
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
+        String[] menuItems = { "Accueil", "Mes baux", "Mes Biens", notifs };
 
 		for (String item : menuItems) {
 			JButton button = createMenuButton(item, menuListener);

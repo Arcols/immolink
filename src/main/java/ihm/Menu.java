@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
+import DAO.DAOException;
+import DAO.jdbc.DiagnosticDAO;
 import modele.*;
 
 public class Menu implements ActionListener {
@@ -18,25 +20,29 @@ public class Menu implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		JButton b = (JButton) e.getSource();
-		switch (b.getText()) {
-			case "Accueil":
-				this.frame.dispose();
-				PageAccueil pageAccueil = new PageAccueil();
-				pageAccueil.main(null);
-				break;
-			case "Mes baux":
-				this.frame.dispose();
-				PageBaux pageBaux = new PageBaux();
-				pageBaux.main(null);
-				break;
-			case "Mes Biens":
-				this.frame.dispose();
-				PageMesBiens pageMesBiens = new PageMesBiens();
-				PageMesBiens.main(null);
-				break;
-			default:
-				break;
+        String textButton = b.getText();
+        if (textButton=="Accueil") {
+			this.frame.dispose();
+			PageAccueil pageAccueil = new PageAccueil();
+			pageAccueil.main(null);
+		} else if (textButton=="Mes baux") {
+			this.frame.dispose();
+			PageBaux pageBaux = new PageBaux();
+			pageBaux.main(null);
+		} else if (textButton=="Mes Biens") {
+			this.frame.dispose();
+			PageMesBiens pageMesBiens = new PageMesBiens();
+			PageMesBiens.main(null);
+		} else if (textButton.contains("Notifications")) {
+			this.frame.dispose();
+			PageNotifications pageNotifications = new PageNotifications();
+			PageNotifications.main(null);
 		}
+	}
+
+	public Integer getNbNotifs() throws DAOException {
+		DiagnosticDAO diagnosticDAO= new DiagnosticDAO();
+		return diagnosticDAO.readDiagPerimes().size();
 	}
 
 }
