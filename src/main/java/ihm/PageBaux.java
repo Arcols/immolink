@@ -30,6 +30,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import static modele.Charte.*;
@@ -152,9 +153,10 @@ public class PageBaux {
 				Locataire loc = new DAO.jdbc.LocataireDAO().getLocFromId(id);
 				noms+=loc.getNom()+" ";
 			}
-			ligne = new String[]{logement.getAdresse(),
-					logement.getComplement_adresse(),
+			ligne = new String[]{
 					logement.getVille(),
+					logement.getAdresse(),
+					logement.getComplement_adresse(),
 					noms,
 					String.valueOf(b.getLoyer()),
 					b.getDate_debut().toString()
@@ -162,7 +164,7 @@ public class PageBaux {
 			data[i] = ligne;
 			i++;
 		}
-		String[] columns = { "Adresse", "Complément", "Ville", "Locataire(s)", "Loyer","Date début", "Statut" };
+		String[] columns = { "Ville", "Adresse", "Complément", "Locataire(s)", "Loyer","Date début", "Statut" };
 		// Créer le modèle de table avec les données
 		DefaultTableModel tableModel = new DefaultTableModel(data, columns) {
 			@Override
@@ -173,6 +175,8 @@ public class PageBaux {
 
 		// Créer la table avec ce modèle
 		JTable table = new JTable(tableModel);
+
+		table.setDefaultRenderer(Object.class, new ModelePageBaux.CustomRowRenderer());
 
 		// Ajouter la table dans un JScrollPane pour permettre le défilement
 		JScrollPane scrollPane = new JScrollPane(table);
@@ -228,11 +232,10 @@ public class PageBaux {
 
 					// Récupérer les données de la ligne sélectionnée
 					if (row != -1) {
-						String adresse = (String) tableModel.getValueAt(row, 0);
-						String complement = (String) tableModel.getValueAt(row, 1);
-						String ville = (String) tableModel.getValueAt(row, 2);
+						String ville = (String) tableModel.getValueAt(row, 0);
+						String adresse = (String) tableModel.getValueAt(row, 1);
+						String complement = (String) tableModel.getValueAt(row, 2);
 						String date_str = (String) tableModel.getValueAt(row, 5);
-
 						Date date = java.sql.Date.valueOf(date_str);
 
                         try {
