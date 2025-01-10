@@ -22,6 +22,8 @@ public class Bail {
 
     private Integer index_eau;
 
+    private Date dernier_anniversaire;
+
     /**
      * Constructeur de la classe Bail
      * @param solde_de_compte le solde de compte
@@ -33,8 +35,9 @@ public class Bail {
      * @param date_fin la date de fin
      * @param icc l'indice de coût de la construction
      * @param index_eau l'index de l'eau
+     * @param dernier_anniversaire la date du dernier anniversaire
      */
-    public Bail(boolean solde_de_compte, String fisc_bien, double loyer, double charge, double depot_garantie, Date date_debut, Date date_fin, double icc, Integer index_eau) {
+    public Bail(boolean solde_de_compte, String fisc_bien, double loyer, double charge, double depot_garantie, Date date_debut, Date date_fin, double icc, Integer index_eau, Date dernier_anniversaire) {
         this.solde_de_compte = solde_de_compte;
         this.fisc_bien = fisc_bien;
         this.loyer = loyer;
@@ -44,6 +47,7 @@ public class Bail {
         this.date_fin = date_fin;
         this.icc = icc;
         this.index_eau = index_eau;
+        this.dernier_anniversaire = dernier_anniversaire;
     }
 
     public boolean isSolde_de_compte() {
@@ -108,6 +112,10 @@ public class Bail {
 
     public Integer getIndex_eau() {
         return index_eau;
+    }
+
+    public Date getDernier_anniversaire() {
+        return dernier_anniversaire;
     }
 
     /**

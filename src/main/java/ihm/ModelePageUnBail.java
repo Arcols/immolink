@@ -6,19 +6,16 @@ import classes.Bail;
 import classes.BienLouable;
 import classes.Locataire;
 import classes.Logement;
-import enumeration.TypeLogement;
 import modele.*;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.text.html.StyleSheet;
 import java.awt.*;
 import java.awt.event.*;
-import java.sql.SQLException;
+import java.sql.Date;
 import java.util.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ModelePageUnBail {
     private PageUnBail pageUnBail;
@@ -56,7 +53,11 @@ public class ModelePageUnBail {
                 page.getAffichageVille().setText(bienLouable.getVille());
                 page.getAffichageAdresse().setText(bienLouable.getAdresse());
                 page.getAffichageComplement().setText(bienLouable.getComplement_adresse());
-                page.getAffichageSurface().setText(String.valueOf(logement.getSurface()));
+                if(logement.getSurface()==0.0){
+                    page.getAffichageSurface().setText("0.0");
+                } else {
+                    page.getAffichageSurface().setText(String.valueOf(logement.getSurface()));
+                }
                 page.getAffichageNbPieces().setText(String.valueOf(logement.getNbPiece()));
                 page.getAffichageLoyer().setText(String.valueOf(bail.getLoyer()));
                 page.getAffichageProvision().setText(String.valueOf(bail.getCharge()));
@@ -67,19 +68,35 @@ public class ModelePageUnBail {
         }
     }
 
-    public ActionListener getActionListenerForModifierLoyer(JFrame parentFrame, int idBail) {
-        return e -> {
+    public void modifierLoyer(JFrame parentFrame,int idBail){
+        BailDAO bailDAO = new DAO.jdbc.BailDAO();
+        Bail bail = bailDAO.getBailFromId(idBail);
 
-            BailDAO bailDAO = new DAO.jdbc.BailDAO();
-            Bail bail = bailDAO.getBailFromId(idBail);
+        JDialog dialog = new JDialog(parentFrame, "Modifier le loyer", true);
+        dialog.setSize(400, 200);
+        dialog.setLayout(null);
 
-            JDialog dialog = new JDialog(parentFrame, "Modifier le loyer", true);
-            dialog.setSize(400, 200);
-            dialog.setLayout(null);
+        JLabel label = new JLabel("Voulez-vous modifier le loyer du bail ? \n"+
+                "Attention, cette action ne peut-être éffectuée qu'une fois par année");
+        label.setBounds(20, 30, 200, 25);
+        dialog.add(label);
 
-            JLabel label = new JLabel("Entrez le nouveau loyer :");
-            label.setBounds(20, 30, 200, 25);
-            dialog.add(label);
+        JButton validerButton = new JButton("Valider");
+        validerButton.setBounds(80, 100, 100, 30);
+        dialog.add(validerButton);
+
+        JButton quitterButton = new JButton("Quitter");
+        quitterButton.setBounds(220, 100, 100, 30);
+        dialog.add(quitterButton);
+
+        validerButton.addActionListener(event -> {
+            JDialog dialog2 = new JDialog(dialog, "Modifier le loyer", true);
+            dialog2.setSize(400, 200);
+            dialog2.setLayout(null);
+
+            JLabel label2 = new JLabel("Entrez le nouveau loyer :");
+            label2.setBounds(20, 30, 200, 25);
+            dialog2.add(label2);
 
             JTextField loyerField = new JTextField();
             loyerField.setBounds(220, 30, 100, 25);
@@ -90,19 +107,19 @@ public class ModelePageUnBail {
                 loyerField.setText(String.valueOf(valeurActuelle));
             }
 
-            dialog.add(loyerField);
+            dialog2.add(loyerField);
 
-            JButton validerButton = new JButton("Valider");
-            validerButton.setBounds(150, 100, 100, 30);
-            dialog.add(validerButton);
+            JButton validerButton2 = new JButton("Valider");
+            validerButton2.setBounds(150, 100, 100, 30);
+            dialog2.add(validerButton2);
 
-            validerButton.addActionListener(event -> {
+            validerButton2.addActionListener(event2 -> {
                 try {
                     double loyer = Double.parseDouble(loyerField.getText());
 
                     // Vérification : le loyer ne peut pas être négatif
                     if (loyer < 0) {
-                        JOptionPane.showMessageDialog(dialog,
+                        JOptionPane.showMessageDialog(dialog2,
                                 "Le loyer ne peut pas être une valeur négative.",
                                 "Erreur",
                                 JOptionPane.ERROR_MESSAGE);
@@ -110,13 +127,82 @@ public class ModelePageUnBail {
                     }
 
                     bailDAO.updateLoyer(idBail, loyer);  // Met à jour le loyer dans la base
-                    JOptionPane.showMessageDialog(dialog,
+                    JOptionPane.showMessageDialog(dialog2,
                             "Le loyer a été mis à jour à " + loyer + " €.",
                             "Confirmation",
                             JOptionPane.INFORMATION_MESSAGE);
+                    dialog2.dispose();
                     dialog.dispose();
-                    refreshPage(e, idBail);
 
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(dialog2,
+                            "Veuillez entrer un nombre valide.",
+                            "Erreur",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            });
+
+            dialog2.setLocationRelativeTo(parentFrame);
+            dialog2.setVisible(true);
+        });
+
+        quitterButton.addActionListener(event -> {
+            dialog.dispose();
+        } );
+
+        dialog.setLocationRelativeTo(parentFrame);
+        dialog.setVisible(true);
+    }
+
+    public ActionListener getModifierICC(JFrame parentFrame, int idBail) {
+        return e -> {
+            BailDAO bailDAO = new DAO.jdbc.BailDAO();
+            Bail bail = bailDAO.getBailFromId(idBail);
+
+            JDialog dialog = new JDialog(parentFrame, "Modifier l'ICC", true);
+            dialog.setSize(400, 200);
+            dialog.setLayout(null);
+
+            JLabel label = new JLabel("Entrez le nouvel ICC :");
+            label.setBounds(20, 30, 200, 25);
+            dialog.add(label);
+
+            JTextField iccField = new JTextField();
+            iccField.setBounds(220, 30, 100, 25);
+
+            // Charger la valeur actuelle du loyer
+            Double valeurActuelle = bail.getIcc();
+            if (valeurActuelle != null) {
+                iccField.setText(String.valueOf(valeurActuelle));
+            }
+
+            dialog.add(iccField);
+
+            JButton validerButton = new JButton("Valider");
+            validerButton.setBounds(150, 100, 100, 30);
+            dialog.add(validerButton);
+            validerButton.addActionListener(event -> {
+                try {
+                    double icc = Double.parseDouble(iccField.getText());
+
+                    // Vérification : le loyer ne peut pas être négatif
+                    if (icc < 0) {
+                        JOptionPane.showMessageDialog(dialog,
+                                "L'ICC ne peut pas être une valeur négative.",
+                                "Erreur",
+                                JOptionPane.ERROR_MESSAGE);
+                        return; // Arrête l'exécution si la valeur est négative
+                    }
+
+                    bailDAO.updateICC(idBail, icc);  // Met à jour l'ICC dans la base
+                    bailDAO.updateDateDernierAnniversaire(idBail,nouvelleDateAnniversaire(bail.getDernier_anniversaire()));
+                    JOptionPane.showMessageDialog(dialog,
+                            "L'ICC a été mis à jour à " + icc + " €.",
+                            "Confirmation",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    dialog.dispose();
+                    modifierLoyer(parentFrame,idBail);
+                    refreshPage(e, idBail);
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(dialog,
                             "Veuillez entrer un nombre valide.",
@@ -127,6 +213,7 @@ public class ModelePageUnBail {
 
             dialog.setLocationRelativeTo(parentFrame);
             dialog.setVisible(true);
+
         };
     }
 
@@ -336,8 +423,6 @@ public class ModelePageUnBail {
         }
     }
 
-
-
     private void locatairesDuBail(int idBail){
         this.Locataireselected.clear();
         List<Integer> idLocs =new LouerDAO().getIdLoc(idBail);
@@ -438,6 +523,7 @@ public class ModelePageUnBail {
         };
 
     }
+
     private void refreshPage(ActionEvent e, int idBail) {
         BailDAO bailDAO = new DAO.jdbc.BailDAO();
         Bail bail = bailDAO.getBailFromId(idBail);
@@ -480,4 +566,14 @@ public class ModelePageUnBail {
                 }
             });
         }
+
+    public java.sql.Date nouvelleDateAnniversaire(java.sql.Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        int yearsToAdd = currentYear - calendar.get(Calendar.YEAR);
+        calendar.add(Calendar.YEAR, yearsToAdd);
+        return new Date(calendar.getTimeInMillis());
+    }
+
 }

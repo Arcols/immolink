@@ -120,7 +120,7 @@ public interface BienLouableDAO {
 	 * Récupère le type de logement associé à un bien louable
 	 * @return le type de logement
 	 */
-	Map<String, List<String>> getAllComplNoBail();
+	Map<String, List<String>> getAllComplBail();
 
 	/**
 	 * Boolean si le bien louable a un garage associé

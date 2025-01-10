@@ -62,10 +62,20 @@ public interface BailDAO {
         Bail getBailFromId(int idBail);
 
         Bail getBailFromBienEtDate(BienLouable bien, Date date_debut);
+
         /**
          * Met à jour le loyer d'un bail dans la base de données.
          * @param idBail L'identifiant du bail à mettre à jour
          * @param loyer  Le nouveau loyer
          */
         void updateLoyer(int idBail, double loyer);
+
+        /**
+         * Met à jour l'icc d'un bail dans la base de données.
+         * @param idBail
+         * @param icc
+         */
+        void updateICC(int idBail,double icc);
+
+        void updateDateDernierAnniversaire(int idBail,Date dateDernierAnniv);
 }
