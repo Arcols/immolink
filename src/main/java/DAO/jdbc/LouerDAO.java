@@ -33,6 +33,24 @@ public class LouerDAO implements DAO.LouerDAO{
         }
 
         @Override
+        public boolean locInBail(int idloc, int idBail){
+                int nb = 0;
+            try {
+                Connection cn = ConnectionDB.getInstance();
+                String query = "SELECT count(*) FROM louer WHERE id_bail = ? and id_locataire = ?";
+                PreparedStatement pstmt = cn.prepareStatement(query);
+                pstmt.setInt(1,idBail);
+                pstmt.setInt(2,idloc);
+                ResultSet rs = pstmt.executeQuery();
+                while (rs.next()){
+                    nb = rs.getInt("count(*)");
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            return  nb > 0;
+        }
+        @Override
         public List<Integer> getIdLoc(int idBail){
             List<Integer> idLocataires = new ArrayList<>() ;
             try {

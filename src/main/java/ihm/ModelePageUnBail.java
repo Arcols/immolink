@@ -292,13 +292,6 @@ public class ModelePageUnBail {
                             String telephone = model.getValueAt(selectedRow, 2).toString();
                             Locataireselected.add(new DAO.jdbc.LocataireDAO().getLocataireByNomPrénomTel(nom, prenom, telephone));
                             setQuotite(idBail);
-                            if (validation_quotités){
-                                try {
-                                    new LouerDAO().create(new LocataireDAO().getLocataireByNomPrénomTel(nom, prenom, telephone), bail, 0);
-                                } catch (DAOException ex) {
-                                    throw new RuntimeException(ex);
-                                }
-                            }
                             popupFrame.dispose();
                         }
                     }
@@ -373,8 +366,17 @@ public class ModelePageUnBail {
                     int quotite = (Integer) quotiteMap.get(locataire).getValue();  // Récupérer la quotité pour ce locataire
 
                     // Mettre à jour la quotité dans la base de données
-                    louerDAO.updateQuotite(idBail, new LocataireDAO().getId(locataire), quotite);
-                    validation_quotités = true;
+                    if (louerDAO.locInBail(locataireDAO.getId(locataire), idBail)){
+                        louerDAO.updateQuotite(idBail, new LocataireDAO().getId(locataire), quotite);
+                        validation_quotités = true;
+                    } else {
+                        try {
+                            louerDAO.create(locataire,new BailDAO().getBailFromId(idBail),quotite);
+                            validation_quotités = true;
+                        } catch (DAOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
                 }
 
                 dialog.dispose();
