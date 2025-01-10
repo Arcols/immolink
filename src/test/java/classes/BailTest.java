@@ -12,7 +12,7 @@ public class BailTest {
     public void testBailConstructorAndGetters() {
         Date dateDebut = Date.valueOf("2024-01-01");
         Date dateFin = Date.valueOf("2024-12-31");
-        Bail bail = new Bail(true, "BL3456789101", 1000.0, 200.0, 500.0, dateDebut, dateFin);
+        Bail bail = new Bail(true, "BL3456789101", 1000.0, 200.0, 500.0, dateDebut, dateFin,100.0,100,dateDebut);
 
         assertTrue(bail.isSolde_de_compte());
         assertEquals("BL3456789101", bail.getFisc_bien());
@@ -27,7 +27,7 @@ public class BailTest {
     public void testBailSetters() {
         Date dateDebut = Date.valueOf("2024-01-01");
         Date dateFin = Date.valueOf("2024-12-31");
-        Bail bail = new Bail(true, "BL3456789101", 1000.0, 200.0, 500.0, dateDebut, dateFin);
+        Bail bail = new Bail(true, "BL3456789101", 1000.0, 200.0, 500.0, dateDebut, dateFin,100.0,100,dateDebut);
 
         bail.setSolde_de_compte(false);
         bail.setFisc_bien("BL9876543210");
@@ -50,9 +50,9 @@ public class BailTest {
     public void testBailEqualsAndHashCode() {
         Date dateDebut = Date.valueOf("2024-01-01");
         Date dateFin = Date.valueOf("2024-12-31");
-        Bail bail1 = new Bail(true, "BL3456789101", 1000.0, 200.0, 500.0, dateDebut, dateFin);
-        Bail bail2 = new Bail(true, "BL3456789101", 1000.0, 200.0, 500.0, dateDebut, dateFin);
-        Bail bail3 = new Bail(false, "BL9876543210", 1500.0, 300.0, 600.0, Date.valueOf("2024-02-01"), Date.valueOf("2024-11-30"));
+        Bail bail1 = new Bail(true, "BL3456789101", 1000.0, 200.0, 500.0, dateDebut, dateFin,100.0,100,dateDebut);
+        Bail bail2 = new Bail(true, "BL3456789101", 1000.0, 200.0, 500.0, dateDebut, dateFin,100.0,100,dateDebut);
+        Bail bail3 = new Bail(false, "BL9876543210", 1500.0, 300.0, 600.0, Date.valueOf("2024-02-01"), Date.valueOf("2024-11-30"),100.0,100,Date.valueOf("2024-02-01"));
 
         assertEquals(bail1, bail2);
         assertNotEquals(bail1, bail3);
@@ -64,9 +64,9 @@ public class BailTest {
     public void testBailEquals() {
         Date dateDebut = Date.valueOf("2024-01-01");
         Date dateFin = Date.valueOf("2024-12-31");
-        Bail bail1 = new Bail(true, "BL3456789101", 1000.0, 200.0, 500.0, dateDebut, dateFin);
-        Bail bail2 = new Bail(true, "BL3456789101", 1000.0, 200.0, 500.0, dateDebut, dateFin);
-        Bail bail3 = new Bail(false, "BL9876543210", 1500.0, 300.0, 600.0, Date.valueOf("2024-02-01"), Date.valueOf("2024-11-30"));
+        Bail bail1 = new Bail(true, "BL3456789101", 1000.0, 200.0, 500.0, dateDebut, dateFin,100.0,100,dateDebut);
+        Bail bail2 = new Bail(true, "BL3456789101", 1000.0, 200.0, 500.0, dateDebut, dateFin,100.0,100,dateDebut);
+        Bail bail3 = new Bail(false, "BL9876543210", 1500.0, 300.0, 600.0, Date.valueOf("2024-02-01"), Date.valueOf("2024-11-30"),100.0,100,Date.valueOf("2024-02-01"));
 
         assertTrue(bail1.equals(bail1));
 
@@ -74,25 +74,25 @@ public class BailTest {
 
         assertFalse(bail1.equals("Some String"));
 
-        Bail bailDifferentSolde = new Bail(false, "BL3456789101", 1000.0, 200.0, 500.0, dateDebut, dateFin);
+        Bail bailDifferentSolde = new Bail(false, "BL3456789101", 1000.0, 200.0, 500.0, dateDebut, dateFin,100.0,100,dateDebut);
         assertFalse(bail1.equals(bailDifferentSolde));
 
-        Bail bailDifferentFisc = new Bail(true, "BL9876543210", 1000.0, 200.0, 500.0, dateDebut, dateFin);
+        Bail bailDifferentFisc = new Bail(true, "BL9876543210", 1000.0, 200.0, 500.0, dateDebut, dateFin,100.0,100,dateDebut);
         assertFalse(bail1.equals(bailDifferentFisc));
 
-        Bail bailDifferentLoyer = new Bail(true, "BL3456789101", 1500.0, 200.0, 500.0, dateDebut, dateFin);
+        Bail bailDifferentLoyer = new Bail(true, "BL3456789101", 1500.0, 200.0, 500.0, dateDebut, dateFin,100.0,100,dateDebut);
         assertFalse(bail1.equals(bailDifferentLoyer));
 
-        Bail bailDifferentCharge = new Bail(true, "BL3456789101", 1000.0, 300.0, 500.0, dateDebut, dateFin);
+        Bail bailDifferentCharge = new Bail(true, "BL3456789101", 1000.0, 300.0, 500.0, dateDebut, dateFin,100.0,100,dateDebut);
         assertFalse(bail1.equals(bailDifferentCharge));
 
-        Bail bailDifferentDepot = new Bail(true, "BL3456789101", 1000.0, 200.0, 600.0, dateDebut, dateFin);
+        Bail bailDifferentDepot = new Bail(true, "BL3456789101", 1000.0, 200.0, 600.0, dateDebut, dateFin,100.0,100,dateDebut);
         assertFalse(bail1.equals(bailDifferentDepot));
 
-        Bail bailDifferentDateDebut = new Bail(true, "BL3456789101", 1000.0, 200.0, 500.0, Date.valueOf("2024-02-01"), dateFin);
+        Bail bailDifferentDateDebut = new Bail(true, "BL3456789101", 1000.0, 200.0, 500.0, Date.valueOf("2024-02-01"), dateFin,100.0,100,Date.valueOf("2024-02-01"));
         assertFalse(bail1.equals(bailDifferentDateDebut));
 
-        Bail bailDifferentDateFin = new Bail(true, "BL3456789101", 1000.0, 200.0, 500.0, dateDebut, Date.valueOf("2024-11-30"));
+        Bail bailDifferentDateFin = new Bail(true, "BL3456789101", 1000.0, 200.0, 500.0, dateDebut, Date.valueOf("2024-11-30"),100.0,100,dateDebut);
         assertFalse(bail1.equals(bailDifferentDateFin));
 
         assertTrue(bail1.equals(bail2));

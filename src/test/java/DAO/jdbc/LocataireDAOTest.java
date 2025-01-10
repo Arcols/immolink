@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Date;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -22,7 +23,7 @@ public class LocataireDAOTest {
         Connection cn = ConnectionDB.getInstance();
         cn.setAutoCommit(false);
         locataireDAO = new LocataireDAO();
-        locataire = new Locataire("Doe", "John", "0606060606", "ee.ee@ee.ee", java.sql.Date.valueOf("2020-01-01"), "M");
+        locataire = new Locataire("Doe", "John", "Paris", "1990-01-01", "0606060606", "ee.ee@ee.ee", Date.valueOf("2020-01-01"), "M");
         locataireDAO.addLocataire(locataire);
     }
 
@@ -31,7 +32,6 @@ public class LocataireDAOTest {
         ConnectionDB.rollback();
         ConnectionDB.setAutoCommit(true);
         ConnectionDB.destroy();
-
     }
 
     @Test
@@ -41,7 +41,7 @@ public class LocataireDAOTest {
         assertEquals("John", locataireRecupere.getPrénom());
         assertEquals("0606060606", locataireRecupere.getTéléphone());
         assertEquals("ee.ee@ee.ee", locataireRecupere.getMail());
-        assertEquals(java.sql.Date.valueOf("2020-01-01"), locataireRecupere.getDateArrive());
+        assertEquals(Date.valueOf("2020-01-01"), locataireRecupere.getDateArrive());
         assertEquals("M", locataireRecupere.getGenre());
     }
 
@@ -75,7 +75,7 @@ public class LocataireDAOTest {
 
     @Test
     public void testGetAllLocataires() throws SQLException {
-        Locataire locataire2 = new Locataire("Smith", "Jane", "0707070707", "jj.jj@jj.jj", java.sql.Date.valueOf("2021-01-01"), "F");
+        Locataire locataire2 = new Locataire("Smith", "Jane", "Lyon", "1992-02-02", "0707070707", "jj.jj@jj.jj", Date.valueOf("2021-01-01"), "F");
         locataireDAO.addLocataire(locataire2);
 
         List<Locataire> locataires = locataireDAO.getAllLocataire();
@@ -91,7 +91,7 @@ public class LocataireDAOTest {
         assertEquals("John", locataireRecupere.getPrénom());
         assertEquals("0606060606", locataireRecupere.getTéléphone());
         assertEquals("ee.ee@ee.ee", locataireRecupere.getMail());
-        assertEquals(java.sql.Date.valueOf("2020-01-01"), locataireRecupere.getDateArrive());
+        assertEquals(Date.valueOf("2020-01-01"), locataireRecupere.getDateArrive());
         assertEquals("M", locataireRecupere.getGenre());
     }
 
@@ -103,7 +103,7 @@ public class LocataireDAOTest {
         assertEquals("John", locataireRecupere.getPrénom());
         assertEquals("0606060606", locataireRecupere.getTéléphone());
         assertEquals("ee.ee@ee.ee", locataireRecupere.getMail());
-        assertEquals(java.sql.Date.valueOf("2020-01-01"), locataireRecupere.getDateArrive());
+        assertEquals(Date.valueOf("2020-01-01"), locataireRecupere.getDateArrive());
         assertEquals("M", locataireRecupere.getGenre());
 
         Locataire locataireInexistant = locataireDAO.getLocFromId(-1);

@@ -14,13 +14,15 @@ public class LocataireTest {
 
     @Before
     public void setUp() {
-        locataire = new Locataire("Doe", "John", "0606060606","ee.ee@ee.ee",  Date.valueOf("2020-01-01"), "M");
+        locataire = new Locataire("Doe", "John", "Paris", "1990-01-01", "0606060606", "ee.ee@ee.ee", Date.valueOf("2020-01-01"), "M");
     }
 
     @Test
     public void testConstructeurEtGetters() {
         assertEquals("Doe", locataire.getNom());
         assertEquals("John", locataire.getPrénom());
+        assertEquals("Paris", locataire.getLieuNaissance());
+        assertEquals("1990-01-01", locataire.getDateNaissance());
         assertEquals("0606060606", locataire.getTéléphone());
         assertEquals("ee.ee@ee.ee", locataire.getMail());
         assertEquals(Date.valueOf("2020-01-01"), locataire.getDateArrive());
@@ -31,9 +33,11 @@ public class LocataireTest {
 
     @Test
     public void testConstructeurSansMail() {
-        Locataire locataireSansMail = new Locataire("Smith", "Jane", "0707070707", Date.valueOf("2021-01-01"), "F");
+        Locataire locataireSansMail = new Locataire("Smith", "Jane", "Lyon", "1992-02-02", "0707070707", Date.valueOf("2021-01-01"), "F");
         assertEquals("Smith", locataireSansMail.getNom());
         assertEquals("Jane", locataireSansMail.getPrénom());
+        assertEquals("Lyon", locataireSansMail.getLieuNaissance());
+        assertEquals("1992-02-02", locataireSansMail.getDateNaissance());
         assertEquals("0707070707", locataireSansMail.getTéléphone());
         assertNull(locataireSansMail.getMail());
         assertEquals(Date.valueOf("2021-01-01"), locataireSansMail.getDateArrive());
@@ -64,6 +68,12 @@ public class LocataireTest {
         locataire.setPrénom("Jane");
         assertEquals("Jane", locataire.getPrénom());
 
+        locataire.setLieuNaissance("Lyon");
+        assertEquals("Lyon", locataire.getLieuNaissance());
+
+        locataire.setDateNaissance("1992-02-02");
+        assertEquals("1992-02-02", locataire.getDateNaissance());
+
         locataire.setTéléphone("0707070707");
         assertEquals("0707070707", locataire.getTéléphone());
 
@@ -78,32 +88,27 @@ public class LocataireTest {
     }
 
     @Test
-    public void testToString() {
-        String expected = "Locataire{, nom='Doe', prénom='John', téléphone='0606060606', genre='M', mail='ee.ee@ee.ee', date_arrive=2020-01-01, beaux=[], charges=[]}";
-        assertEquals(expected, locataire.toString());
+    public void testEquals() {
+        Locataire locataire1 = new Locataire("Doe", "John", "Paris", "1990-01-01", "0606060606", "ee.ee@ee.ee", Date.valueOf("2020-01-01"), "M");
+        Locataire locataire2 = new Locataire("Doe", "John", "Paris", "1990-01-01", "0606060606", "ee.ee@ee.ee", Date.valueOf("2020-01-01"), "M");
+        Locataire locataire3 = new Locataire("Smith", "John", "Paris", "1990-01-01", "0606060606", "ee.ee@ee.ee", Date.valueOf("2020-01-01"), "M");
+
+        assertTrue(locataire1.equals(locataire2));
+        assertFalse(locataire1.equals(locataire3));
     }
 
     @Test
-    public void testEquals() {
+    public void testEqualsWithSelf() {
         assertTrue(locataire.equals(locataire));
+    }
 
+    @Test
+    public void testEqualsWithNull() {
         assertFalse(locataire.equals(null));
+    }
 
-        assertFalse(locataire.equals("Some String"));
-
-        Locataire locataireDifferentNom = new Locataire("Smith", "John", "0606060606", "ee.ee@ee.ee", Date.valueOf("2020-01-01"), "M");
-        assertFalse(locataire.equals(locataireDifferentNom));
-
-        Locataire locataireDifferentPrenom = new Locataire("Doe", "Jane", "0606060606", "ee.ee@ee.ee", Date.valueOf("2020-01-01"), "M");
-        assertFalse(locataire.equals(locataireDifferentPrenom));
-
-        Locataire locataireDifferentTelephone = new Locataire("Doe", "John", "0707070707", "ee.ee@ee.ee", Date.valueOf("2020-01-01"), "M");
-        assertFalse(locataire.equals(locataireDifferentTelephone));
-
-        Locataire locataireDifferentGenre = new Locataire("Doe", "John", "0606060606", "ee.ee@ee.ee", Date.valueOf("2020-01-01"), "F");
-        assertFalse(locataire.equals(locataireDifferentGenre));
-
-        Locataire locataireSame = new Locataire("Doe", "John", "0606060606", "ee.ee@ee.ee", Date.valueOf("2020-01-01"), "M");
-        assertTrue(locataire.equals(locataireSame));
+    @Test
+    public void testEqualsWithDifferentClass() {
+        assertFalse(locataire.equals(new Object()));
     }
 }

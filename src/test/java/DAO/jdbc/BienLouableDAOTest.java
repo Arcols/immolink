@@ -6,7 +6,6 @@ import classes.*;
 import enumeration.TypeLogement;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -30,6 +29,7 @@ public class BienLouableDAOTest {
     private BienLouable bienLouable;
     private Bail bail;
     private Connection cn;
+
     @Before
     public void setUp() throws SQLException, DAOException {
         cn = ConnectionDB.getInstance();
@@ -41,9 +41,9 @@ public class BienLouableDAOTest {
 
         Batiment batiment = new Batiment("123456789101", "Paris", "123 Rue de la Paix", "31000");
         batimentDAO.create(batiment);
-        bienLouable = new BienLouable("101010101010", "Paris", "123 Rue de la Paix", "Apt 1", new ArrayList<>(),null,TypeLogement.APPARTEMENT);
+        bienLouable = new BienLouable("101010101010", "Paris", "123 Rue de la Paix", "Apt 1", new ArrayList<>(), null, TypeLogement.APPARTEMENT);
         bienLouableDAO.create(bienLouable, TypeLogement.APPARTEMENT, 3, 75.0);
-        bail = new Bail(true, "101010101010", 1000.0, 200.0, 500.0, Date.valueOf("2024-01-01"), Date.valueOf("2024-12-31"));
+        bail = new Bail(true, "101010101010", 1000.0, 200.0, 500.0, Date.valueOf("2024-01-01"), Date.valueOf("2024-12-31"), 150.0, 10, Date.valueOf("2023-01-01"));
 
         bailDAO.create(bail);
     }
@@ -71,7 +71,7 @@ public class BienLouableDAOTest {
 
     @Test
     public void testUpdate() throws SQLException, DAOException {
-        Garage garage = new Garage("010101010101", "Paris ", "123 Rue de la Paix","garage 1",TypeLogement.GARAGE_PAS_ASSOCIE);
+        Garage garage = new Garage("010101010101", "Paris", "123 Rue de la Paix", "garage 1", TypeLogement.GARAGE_PAS_ASSOCIE);
         GarageDAO garageDAO = new GarageDAO();
         garageDAO.create(garage);
         bienLouableDAO.lierUnGarageAuBienLouable(bienLouable, garage);
@@ -85,14 +85,14 @@ public class BienLouableDAOTest {
         Batiment batiment = new Batiment("123456789101", "Paris", "125 Rue de la Paix", "31000");
         batimentDAO.create(batiment);
 
-        BienLouable bienLouableWithDevis = new BienLouable("123456789104", "Paris", "125 Rue de la Paix", "Apt 4", new ArrayList<>(), null,TypeLogement.APPARTEMENT);
+        BienLouable bienLouableWithDevis = new BienLouable("123456789104", "Paris", "125 Rue de la Paix", "Apt 4", new ArrayList<>(), null, TypeLogement.APPARTEMENT);
         bienLouableDAO.create(bienLouableWithDevis, TypeLogement.APPARTEMENT, 3, 90.0);
 
-        Devis devis = new Devis("123456789013", 1500.0f, "Renovation", 300.0f, Date.valueOf("2024-03-01"), Date.valueOf("2024-09-01"), "TypeB", "125 Rue de Paris", "EntrepriseB");
+        Devis devis = new Devis("123456789013","12345",1500.0f, "Renovation", 300.0f, Date.valueOf("2024-03-01"), Date.valueOf("2024-09-01"), "TypeB", "125 Rue de Paris", "EntrepriseB");
         new DevisDAO().create(devis, "123456789104", TypeLogement.APPARTEMENT);
         bienLouableWithDevis.ajouterTravaux(devis);
 
-        Bail bailWithDevis = new Bail(true, "123456789104", 1400.0, 350.0, 750.0, Date.valueOf("2024-03-01"), Date.valueOf("2024-12-31"));
+        Bail bailWithDevis = new Bail(true, "123456789104", 1400.0, 350.0, 750.0, Date.valueOf("2024-03-01"), Date.valueOf("2024-12-31"), 150.0, 10, Date.valueOf("2023-01-01"));
         bailDAO.create(bailWithDevis);
 
         Integer idWithDevis = bienLouableDAO.getId("123456789104");
@@ -108,10 +108,10 @@ public class BienLouableDAOTest {
         // créer un BienLouable sans devis
         Batiment batiment2 = new Batiment("123456789101", "Paris", "126 Rue de la Paix", "31000");
         batimentDAO.create(batiment2);
-        BienLouable bienLouableNoDevis = new BienLouable("123456789105", "Paris", "126 Rue de la Paix", "Apt 5", new ArrayList<>(), null,TypeLogement.APPARTEMENT);
+        BienLouable bienLouableNoDevis = new BienLouable("123456789105", "Paris", "126 Rue de la Paix", "Apt 5", new ArrayList<>(), null, TypeLogement.APPARTEMENT);
         bienLouableDAO.create(bienLouableNoDevis, TypeLogement.APPARTEMENT, 3, 95.0);
 
-        Bail bailNoDevis = new Bail(true, "123456789105", 1500.0, 400.0, 800.0, Date.valueOf("2024-04-01"), Date.valueOf("2024-12-31"));
+        Bail bailNoDevis = new Bail(true, "123456789105", 1500.0, 400.0, 800.0, Date.valueOf("2024-04-01"), Date.valueOf("2024-12-31"), 150.0, 10, Date.valueOf("2023-01-01"));
         bailDAO.create(bailNoDevis);
 
         Integer idNoDevis = bienLouableDAO.getId("123456789105");
@@ -126,14 +126,14 @@ public class BienLouableDAOTest {
         // créer un BienLouable avec un Garage
         Batiment batiment3 = new Batiment("123456789101", "Paris", "127 Rue de la Paix", "31000");
         batimentDAO.create(batiment3);
-        BienLouable bienLouableWithGarage = new BienLouable("123456789106", "Paris", "127 Rue de la Paix", "Apt 6", new ArrayList<>(), null,TypeLogement.APPARTEMENT);
+        BienLouable bienLouableWithGarage = new BienLouable("123456789106", "Paris", "127 Rue de la Paix", "Apt 6", new ArrayList<>(), null, TypeLogement.APPARTEMENT);
         bienLouableDAO.create(bienLouableWithGarage, TypeLogement.APPARTEMENT, 3, 100.0);
 
-        Garage garage = new Garage("G12345678910", "Paris", "127 Rue de la Paix", "Garage 1",TypeLogement.GARAGE_PAS_ASSOCIE);
+        Garage garage = new Garage("G12345678910", "Paris", "127 Rue de la Paix", "Garage 1", TypeLogement.GARAGE_PAS_ASSOCIE);
         garageDAO.create(garage);
         bienLouableDAO.lierUnGarageAuBienLouable(bienLouableWithGarage, garage);
 
-        Bail bailWithGarage = new Bail(true, "123456789106", 1600.0, 450.0, 850.0, Date.valueOf("2024-05-01"), Date.valueOf("2024-12-31"));
+        Bail bailWithGarage = new Bail(true, "123456789106", 1600.0, 450.0, 850.0, Date.valueOf("2024-05-01"), Date.valueOf("2024-12-31"), 150.0, 10, Date.valueOf("2023-01-01"));
         bailDAO.create(bailWithGarage);
 
         Integer idWithGarage = bienLouableDAO.getId("123456789106");
@@ -141,16 +141,16 @@ public class BienLouableDAOTest {
 
         assertNull(bienLouableDAO.readFisc("123456789106"));
         assertNull(bailDAO.getBailFromId(bailDAO.getId(bailWithGarage)));
-        assertNull(garageDAO.read(garageDAO.getIdGarage("G12345678910",TypeLogement.GARAGE_ASSOCIE)));
+        assertNull(garageDAO.read(garageDAO.getIdGarage("G12345678910", TypeLogement.GARAGE_ASSOCIE)));
     }
 
     @Test
     public void testDeleteWithDiagnostic() throws DAOException, SQLException, IOException {
         DiagnosticDAO diagnosticDAO = new DiagnosticDAO();
         batimentDAO = new BatimentDAO();
-        Batiment batiment4 = new Batiment("123456789108", "Paris", "130 Rue de la Paix","31000");
+        Batiment batiment4 = new Batiment("123456789108", "Paris", "130 Rue de la Paix", "31000");
         batimentDAO.create(batiment4);
-        BienLouable bienLouableWithDiagnostic = new BienLouable("123456789111", "Paris", "130 Rue de la Paix", "Apt 1", new ArrayList<>(),null,TypeLogement.APPARTEMENT);
+        BienLouable bienLouableWithDiagnostic = new BienLouable("123456789111", "Paris", "130 Rue de la Paix", "Apt 1", new ArrayList<>(), null, TypeLogement.APPARTEMENT);
         bienLouableDAO = new BienLouableDAO();
         bienLouableDAO.create(bienLouableWithDiagnostic, TypeLogement.APPARTEMENT, 3, 100.0);
 
@@ -158,17 +158,15 @@ public class BienLouableDAOTest {
         Diagnostic diagnostic = new Diagnostic("D123", tempFilePath.toString(), Date.valueOf("2025-01-01"));
         diagnosticDAO.create(diagnostic, "123456789111");
 
-        Bail bailWithDiag = new Bail(true, "123456789111", 1500.0, 400.0, 800.0, Date.valueOf("2024-04-01"), Date.valueOf("2024-12-31"));
+        Bail bailWithDiag = new Bail(true, "123456789111", 1500.0, 400.0, 800.0, Date.valueOf("2024-04-01"), Date.valueOf("2024-12-31"), 150.0, 10, Date.valueOf("2023-01-01"));
         bailDAO.create(bailWithDiag);
-
 
         Integer idWithDiag = bienLouableDAO.getId("123456789111");
         bienLouableDAO.delete(idWithDiag);
 
-        assertNull(bienLouableDAO.readFisc("123456789106"));
+        assertNull(bienLouableDAO.readFisc("123456789111"));
         assertNull(bailDAO.getBailFromId(bailDAO.getId(bailWithDiag)));
-        assertNull(garageDAO.read(garageDAO.getIdGarage("G12345678910",TypeLogement.GARAGE_ASSOCIE)));
-
+        assertNull(diagnosticDAO.read(bienLouable.getNumero_fiscal(), diagnostic.getReference()));
     }
 
     @Test
@@ -182,7 +180,7 @@ public class BienLouableDAOTest {
 
     @Test
     public void testFindAll() throws SQLException, DAOException {
-        BienLouable bienLouable2 = new BienLouable("123456789102", "Paris", "123 Rue de la Paix", "Apt 2", new ArrayList<>(),null,TypeLogement.APPARTEMENT);
+        BienLouable bienLouable2 = new BienLouable("123456789102", "Paris", "123 Rue de la Paix", "Apt 2", new ArrayList<>(), null, TypeLogement.APPARTEMENT);
         bienLouableDAO.create(bienLouable2, TypeLogement.APPARTEMENT, 3, 80.0);
 
         List<BienLouable> bienLouables = bienLouableDAO.findAll();
@@ -191,12 +189,12 @@ public class BienLouableDAOTest {
 
     @Test
     public void testLierUnGarageAuBienLouable() throws SQLException, DAOException {
-        Garage garage = new Garage("G12345678910", "Paris", "123 Rue de la Paix", "Garage 1",TypeLogement.GARAGE_PAS_ASSOCIE);
+        Garage garage = new Garage("G12345678910", "Paris", "123 Rue de la Paix", "Garage 1", TypeLogement.GARAGE_PAS_ASSOCIE);
         garageDAO.create(garage);
         bienLouableDAO.lierUnGarageAuBienLouable(bienLouable, garage);
         BienLouable bienLouableRecupere = bienLouableDAO.readFisc("101010101010");
         assertNotNull(bienLouableRecupere.getIdgarage());
-        assertEquals(garageDAO.getIdGarage("G12345678910",TypeLogement.GARAGE_ASSOCIE), bienLouableRecupere.getIdgarage());
+        assertEquals(garageDAO.getIdGarage("G12345678910", TypeLogement.GARAGE_ASSOCIE), bienLouableRecupere.getIdgarage());
     }
 
     @Test
@@ -205,7 +203,7 @@ public class BienLouableDAOTest {
         assertNotNull(bailRécupéré);
         assertEquals(bail.getFisc_bien(), bailRécupéré.getFisc_bien());
 
-        BienLouable bienLouableInexistant = new BienLouable("999999999999", "Paris", "123 Rue de la Paix", "Apt 1", new ArrayList<>(), null,TypeLogement.APPARTEMENT);
+        BienLouable bienLouableInexistant = new BienLouable("999999999999", "Paris", "123 Rue de la Paix", "Apt 1", new ArrayList<>(), null, TypeLogement.APPARTEMENT);
         Bail bailInexistant = bienLouableDAO.getBailFromBien(bienLouableInexistant);
         assertNull(bailInexistant);
     }
@@ -260,7 +258,7 @@ public class BienLouableDAOTest {
 
     @Test
     public void testGetAllComplNoBail() throws SQLException, DAOException {
-        BienLouable bienLouableNoBail = new BienLouable("123456789102", "Paris", "123 Rue de la Paix", "Apt 2", new ArrayList<>(), null,TypeLogement.APPARTEMENT);
+        BienLouable bienLouableNoBail = new BienLouable("123456789102", "Paris", "123 Rue de la Paix", "Apt 2", new ArrayList<>(), null, TypeLogement.APPARTEMENT);
         bienLouableDAO.create(bienLouableNoBail, TypeLogement.APPARTEMENT, 3, 80.0);
 
         Map<String, List<String>> complementsNoBail = bienLouableDAO.getAllComplBail();
@@ -273,8 +271,8 @@ public class BienLouableDAOTest {
     @Test
     public void testGetListeBeauxFromBien() throws DAOException {
 
-        Bail bail1 = new Bail(true, "101010101010", 1200.0, 250.0, 600.0, Date.valueOf("2028-02-01"), Date.valueOf("2029-12-31"));
-        Bail bail2 = new Bail(true, "101010101010", 1300.0, 300.0, 700.0, Date.valueOf("2025-01-01"), Date.valueOf("2025-12-31"));
+        Bail bail1 = new Bail(true, "101010101010", 1200.0, 250.0, 600.0, Date.valueOf("2028-02-01"), Date.valueOf("2029-12-31"), 150.0, 10, Date.valueOf("2023-01-01"));
+        Bail bail2 = new Bail(true, "101010101010", 1300.0, 300.0, 700.0, Date.valueOf("2025-01-01"), Date.valueOf("2025-12-31"), 150.0, 10, Date.valueOf("2023-01-01"));
         bailDAO.create(bail1);
         bailDAO.create(bail2);
 
@@ -305,12 +303,13 @@ public class BienLouableDAOTest {
         bienLouableRecupere = bienLouableDAO.readFisc("101010101010");
         assertEquals(Optional.ofNullable(0), Optional.ofNullable(bienLouableRecupere.getIdgarage()));
     }
+
     @Test
     public void testGetAllBienLouableNoGarageLink() throws DAOException, SQLException {
-        
+
         batimentDAO = new BatimentDAO();
-        Batiment batiment5 = new Batiment("123456789108", "Paris", "129 Rue de la Paix","31000");
-        Batiment batiment6 = new Batiment("123456789108", "Paris", "130 Rue de la Paix","31000");
+        Batiment batiment5 = new Batiment("123456789108", "Paris", "129 Rue de la Paix", "31000");
+        Batiment batiment6 = new Batiment("123456789108", "Paris", "130 Rue de la Paix", "31000");
         batimentDAO.create(batiment5);
         batimentDAO.create(batiment6);
 
@@ -333,4 +332,14 @@ public class BienLouableDAOTest {
         assertFalse(bienLouablesNoGarage.stream().anyMatch(b -> b.getNumero_fiscal().equals("987654321103")));
     }
 
+    @Test
+    public void testGetAllBienLouableNoGarageLinkWithHouse() throws DAOException {
+        BienLouable house = new BienLouable("H12345678910", "Paris", "123 Rue de la Paix", "House 1", new ArrayList<>(), null, TypeLogement.MAISON);
+        bienLouableDAO.create(house, TypeLogement.MAISON, 5, 120.0);
+
+        List<BienLouable> bienLouablesNoGarage = bienLouableDAO.getAllBienLouableNoGarageLink();
+
+        assertNotNull(bienLouablesNoGarage);
+        assertTrue(bienLouablesNoGarage.stream().anyMatch(b -> b.getNumero_fiscal().equals("H12345678910")));
+    }
 }
