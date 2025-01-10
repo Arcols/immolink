@@ -1,24 +1,43 @@
 package ihm;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.Menu;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.sql.SQLException;
+import java.util.List;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.tools.Diagnostic;
+
 import DAO.DAOException;
 import DAO.db.ConnectionDB;
 import DAO.jdbc.BienLouableDAO;
 import DAO.jdbc.DiagnosticDAO;
 import DAO.jdbc.GarageDAO;
-import classes.Diagnostic;
 import classes.Garage;
 import enumeration.TypeLogement;
 import modele.*;
-import modele.Menu;
-
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.SQLException;
-import java.util.List;
-
-import javax.swing.*;
-import javax.swing.border.LineBorder;
-import javax.swing.table.DefaultTableModel;
 
 public class PageMonBien {
 
@@ -564,3 +583,4 @@ public class PageMonBien {
         popup.getFrame().setVisible(true);
     }
 }
+

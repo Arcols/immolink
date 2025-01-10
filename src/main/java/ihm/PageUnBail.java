@@ -1,3 +1,4 @@
+
 package ihm;
 
 import static modele.Charte.ENTETE;
@@ -36,7 +37,6 @@ import DAO.jdbc.LocataireDAO;
 import DAO.jdbc.LouerDAO;
 import classes.Bail;
 import classes.Locataire;
-
 import ihm.Charte;
 import ihm.Menu;
 import ihm.ModelePageUnBail;

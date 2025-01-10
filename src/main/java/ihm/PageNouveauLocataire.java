@@ -1,7 +1,22 @@
 package ihm;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.Menu;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -20,13 +35,13 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
+import com.toedter.calendar.JDateChooser;
+
 import DAO.DAOException;
 import DAO.db.ConnectionDB;
 import DAO.jdbc.LocataireDAO;
 import classes.Locataire;
-import com.toedter.calendar.JDateChooser;
 import modele.Charte;
-import modele.Menu;
 import modele.ModelePageNouveauLocataire;
 import modele.ResizedImage;
 

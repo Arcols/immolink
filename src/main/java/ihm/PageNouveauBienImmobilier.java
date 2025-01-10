@@ -176,10 +176,9 @@ public class PageNouveauBienImmobilier {
 		FlowLayout fl_titre = (FlowLayout) titre.getLayout();
 		body.add(titre, BorderLayout.NORTH);
 
-		JLabel titrePage = new JLabel("Nouveau bien immobilier");
-		titrePage.setAlignmentY(0.0f);
-		titrePage.setAlignmentX(0.5f);
-		titre.add(titrePage);
+		JLabel titleLabel = new JLabel("Nouveau bien immobilier", SwingConstants.CENTER);
+		titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
+		body.add(titleLabel, BorderLayout.NORTH);
 
 		JPanel contenu = new JPanel();
 		body.add(contenu, BorderLayout.CENTER);

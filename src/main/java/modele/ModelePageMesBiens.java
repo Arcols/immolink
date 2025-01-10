@@ -1,4 +1,11 @@
+
 package modele;
+
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.List;
+
+import javax.swing.table.DefaultTableModel;
 
 import DAO.DAOException;
 import DAO.jdbc.BatimentDAO;
@@ -8,11 +15,6 @@ import classes.BienLouable;
 import enumeration.TypeLogement;
 import ihm.PageMesBiens;
 import ihm.PageNouveauBienImmobilier;
-
-import javax.swing.table.DefaultTableModel;
-import java.awt.event.ActionListener;
-import java.sql.SQLException;
-import java.util.List;
 
 public class ModelePageMesBiens {
 

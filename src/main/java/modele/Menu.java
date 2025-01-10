@@ -6,12 +6,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
-
-import ihm.*;
-
 import DAO.DAOException;
 import DAO.jdbc.DiagnosticDAO;
-import modele.*;
+import ihm.PageMesBiens;
 
 
 public class Menu implements ActionListener {

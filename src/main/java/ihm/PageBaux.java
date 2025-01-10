@@ -142,10 +142,9 @@ public class PageBaux {
 		FlowLayout fl_titre = (FlowLayout) titre.getLayout();
 		body.add(titre, BorderLayout.NORTH);
 
-		JLabel titrePage = new JLabel("Mes baux");
-		titrePage.setAlignmentY(0.0f);
-		titrePage.setAlignmentX(0.5f);
-		titre.add(titrePage);
+		JLabel titleLabel = new JLabel("Mes baux", SwingConstants.CENTER);
+		titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
+		body.add(titleLabel, BorderLayout.NORTH);
 
 		// Créer les données fictives pour le tableau
 		List<Bail> listBail = new DAO.jdbc.BailDAO().getAllBaux();

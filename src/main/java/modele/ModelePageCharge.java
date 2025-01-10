@@ -7,6 +7,7 @@ import classes.BienLouable;
 import classes.Locataire;
 import ihm.*;
 
+import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.sql.Date;
@@ -39,7 +40,12 @@ public class ModelePageCharge {
             new PageUnBail(bail);
         };
     }
-
+    public ActionListener Archivage(int id_charge){
+        return e->{
+            pageCharge.getFrame().dispose();
+            new PageArchivesFactures(id_charge);
+        };
+    }
     public ActionListener Regularisation(){
         return e -> {
             Map<Integer, List<Integer>> mapallbaux = new DAO.jdbc.LouerDAO().getAllLocatairesDesBeaux();

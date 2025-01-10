@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import javax.swing.table.DefaultTableModel;
+import javax.tools.Diagnostic;
 
 import DAO.DAOException;
 import DAO.jdbc.BatimentDAO;

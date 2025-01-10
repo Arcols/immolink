@@ -1,19 +1,23 @@
 package modele;
 
+import static java.lang.String.*;
+
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+
 import DAO.DAOException;
 import DAO.jdbc.DevisDAO;
 import DAO.jdbc.TravauxAssocieDAO;
 import classes.Devis;
 import enumeration.TypeLogement;
-import ihm.*;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.SQLException;
-
-import static java.lang.String.valueOf;
+import ihm.PageMonBien;
+import ihm.PageUnTravail;
 
 public class ModelePageUnTravail {
     private PageUnTravail pageUnTravail;
