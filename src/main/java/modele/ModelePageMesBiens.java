@@ -2,7 +2,6 @@ package modele;
 
 import DAO.DAOException;
 import DAO.jdbc.BienLouableDAO;
-import DAO.jdbc.ChargeDAO;
 import classes.BienLouable;
 import enumeration.TypeLogement;
 import ihm.PageMesBiens;
@@ -50,6 +49,7 @@ public class ModelePageMesBiens {
         // Récupération des biens louables
         BienLouableDAO bienLouableDAO = new BienLouableDAO();
         List<BienLouable> biensLouables = bienLouableDAO.findAll();
+
         // Remplissage du modèle avec les données des biens louables
         for (BienLouable bien : biensLouables) {
             Object[] rowData= {
