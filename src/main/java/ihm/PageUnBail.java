@@ -37,10 +37,10 @@ import DAO.jdbc.LocataireDAO;
 import DAO.jdbc.LouerDAO;
 import classes.Bail;
 import classes.Locataire;
-import ihm.Charte;
-import ihm.Menu;
-import ihm.ModelePageUnBail;
-import ihm.ResizedImage;
+import modele.Charte;
+import modele.Menu;
+import modele.ModelePageUnBail;
+import modele.ResizedImage;
 
 
 public class PageUnBail {

@@ -8,8 +8,7 @@ import javax.swing.JFrame;
 
 import DAO.DAOException;
 import DAO.jdbc.DiagnosticDAO;
-import ihm.PageMesBiens;
-
+import ihm.*;
 
 public class Menu implements ActionListener {
 	private JFrame frame;

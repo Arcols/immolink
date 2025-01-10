@@ -42,6 +42,8 @@ import classes.Bail;
 import classes.BienLouable;
 import classes.Locataire;
 import classes.Logement;
+import ihm.PageBaux;
+import ihm.PageCharge;
 import ihm.PageUnBail;
 
 public class ModelePageUnBail {

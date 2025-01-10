@@ -1,5 +1,6 @@
 package ihm;
 
+import DAO.DAOException;
 import com.toedter.calendar.JDateChooser;
 import modele.Charte;
 import modele.Menu;

@@ -1,26 +1,12 @@
-package ihm;
+package modele;
 
-import java.awt.event.ActionListener;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import DAO.DAOException;
 import DAO.jdbc.DiagnosticDAO;
-import DAO.jdbc.LocataireDAO;
-import DAO.jdbc.RegimeDAO;
-import classes.Locataire;
-import modele.PageAccueil;
-import modele.PageNotifications;
-import modele.PageNouveauLocataire;
+import ihm.PageNotifications;
 
 public class ModelePageNotifications {
 

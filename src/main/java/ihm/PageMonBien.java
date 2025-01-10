@@ -8,7 +8,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.Menu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
@@ -28,13 +27,13 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.tools.Diagnostic;
 
 import DAO.DAOException;
 import DAO.db.ConnectionDB;
 import DAO.jdbc.BienLouableDAO;
 import DAO.jdbc.DiagnosticDAO;
 import DAO.jdbc.GarageDAO;
+import classes.Diagnostic;
 import classes.Garage;
 import enumeration.TypeLogement;
 import modele.*;
@@ -103,7 +102,7 @@ public class PageMonBien {
         this.logo = new JLabel("");
         entete.add(this.logo, BorderLayout.WEST);
 
-        Menu m = new Menu(this.frame);
+        modele.Menu m = new Menu(this.frame);
 
         JPanel menu_bouttons = new JPanel();
 
@@ -403,7 +402,7 @@ public class PageMonBien {
         int row = 0;
 
         String[] nomdiagnostic = new String[diagnosticList.size()];
-        for (Diagnostic diagnostic : diagnosticList) {
+        for (classes.Diagnostic diagnostic : diagnosticList) {
             String diagnosticName = diagnostic.getReference();
             if (diagnostic.getDateInvalidite() != null) {
                 diagnosticName += " - Périme en " + diagnostic.getDateInvalidite().toString();
