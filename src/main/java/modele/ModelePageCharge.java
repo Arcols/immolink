@@ -8,6 +8,7 @@ import classes.Locataire;
 import ihm.*;
 
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import static classes.PdfGenerator.generateChargesPdf;
+import static classes.PdfGenerator.ouvrirPdf;
 
 public class ModelePageCharge {
 
@@ -100,10 +102,15 @@ public class ModelePageCharge {
                             prixElectricite * quotite,
                             provisiontotal,
                             l.getGenre());
+                    try {
+                        ouvrirPdf("pdfgeneres/Régularisation des charges " + l.getNom() + " " + l.getPrénom()
+                                +" "+(currentDate.getYear()+1900-1)+".pdf");
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 } catch (DAOException ex) {
                     throw new RuntimeException(ex);
                 }
-
             }
         };
     }

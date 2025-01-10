@@ -1,9 +1,13 @@
 package classes;
 
 import com.itextpdf.text.*;
+import com.itextpdf.text.Font;
 import com.itextpdf.text.pdf.*;
 
+import java.awt.*;
+import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class PdfGenerator {
     public static void generateChargesPdf(String filePath,
@@ -97,9 +101,17 @@ public class PdfGenerator {
 
             document.close();
             System.out.println("PDF généré avec succès : " + filePath);
-
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void ouvrirPdf(String pdfPath) throws IOException {
+        File pdfFile = new File(pdfPath);
+        if (Desktop.isDesktopSupported()) {
+            Desktop.getDesktop().open(pdfFile);
+        } else {
+            throw new IOException("Desktop is not supported");
         }
     }
 }
