@@ -282,5 +282,33 @@ public class BailDAO implements DAO.BailDAO {
         }
     }
 
+    public List<String> getBauxNouvelICC() {
+        List<String> lNotifs = new LinkedList<>();
+        try {
+            Connection cn = ConnectionDB.getInstance();
+            String query = "SELECT bat.adresse, bat.ville ,bl.complement_adresse, bail.loyer, bail.ICC, bail.date_dernier_anniversaire " +
+                    "FROM bail , bienlouable bl, batiment bat " +
+                    "WHERE bail.id_bien_louable = bl.id " +
+                    "AND bl.idBat = bat.id " +
+                    "AND bail.date_dernier_anniversaire < CURDATE() - INTERVAL 1 YEAR";
+            PreparedStatement pstmt = cn.prepareStatement(query);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Double loyer = rs.getDouble("loyer");
+                String adresse= rs.getString("adresse");
+                String ville= rs.getString("ville");
+                String complement= rs.getString("complement_adresse");
+                Date date_dernier_anniversaire = rs.getDate("date_dernier_anniversaire");
+                lNotifs.add("<html>Le loyer du logement <b>"+adresse+ " "+ville+" " +complement + "</b> peut etre modifié, il est actuellement à "+ loyer+ "son anniversaire était le <b>"+date_dernier_anniversaire+"</b></html>");
+            }
+            rs.close();
+            pstmt.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return lNotifs;
+    }
+
+
 }
 

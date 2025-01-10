@@ -1,17 +1,26 @@
 package ihm;
 
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.io.IOException;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
 import DAO.DAOException;
+import DAO.jdbc.DiagnosticDAO;
 import com.formdev.flatlaf.FlatLightLaf;
-import modele.Charte;
+import ihm.*;
 import modele.Menu;
+import modele.Charte;
 import modele.ModelePageNotifications;
+
+import java.sql.SQLException;
+import java.util.List;
 
 public class PageNotifications {
 
@@ -75,7 +84,7 @@ public class PageNotifications {
         this.logo = new JLabel("");
         entete.add(this.logo, BorderLayout.WEST);
 
-        modele.Menu m = new Menu(this.frame);
+        Menu m = new Menu(this.frame);
 
 
         entete.add(menu_bouttons, BorderLayout.CENTER);
@@ -103,7 +112,7 @@ public class PageNotifications {
         b_biens.setCursor(new Cursor(Cursor.HAND_CURSOR));
         menu_bouttons.add(b_biens);
         menu_bouttons.add(b_biens);
-
+        b_biens.addActionListener(m);
 
         JButton b_notifs = null;
         try {

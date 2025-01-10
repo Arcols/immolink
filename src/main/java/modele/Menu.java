@@ -6,9 +6,15 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
+
+import DAO.jdbc.BailDAO;
+import classes.Bail;
+import ihm.*;
+
 import DAO.DAOException;
 import DAO.jdbc.DiagnosticDAO;
-import ihm.*;
+import modele.*;
+
 
 public class Menu implements ActionListener {
 	private JFrame frame;
@@ -42,7 +48,8 @@ public class Menu implements ActionListener {
 
 	public Integer getNbNotifs() throws DAOException {
 		DiagnosticDAO diagnosticDAO= new DiagnosticDAO();
-		return diagnosticDAO.readDiagPerimes().size();
+		BailDAO bailDAO =new BailDAO();
+		return diagnosticDAO.readDiagPerimes().size()+bailDAO.getBauxNouvelICC().size();
 	}
 
 }
