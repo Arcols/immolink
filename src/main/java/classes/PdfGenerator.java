@@ -100,7 +100,6 @@ public class PdfGenerator {
             document.add(Chunk.NEWLINE);
 
             document.close();
-            System.out.println("PDF généré avec succès : " + filePath);
         } catch (Exception e) {
             e.printStackTrace();
         }

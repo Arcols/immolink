@@ -189,7 +189,6 @@ public class ModelePageNouveauBail {
 
         dialog.add(quotiteSpinner);
 
-
         JButton validerButton = new JButton("Valider");
         validerButton.setBounds(150, 100, 100, 30);
         dialog.add(validerButton);
