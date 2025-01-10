@@ -7,10 +7,13 @@ import modele.Menu;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 public class PageArchivesFactures {
 
@@ -97,6 +100,12 @@ public class PageArchivesFactures {
         try {
             tableModel = modele.loadDataBienImmoToTable();
             table = new JTable(tableModel);
+            TableRowSorter<TableModel> sorter = new TableRowSorter<>(table.getModel());
+            table.setRowSorter(sorter);
+
+            sorter.setSortKeys(
+                    Arrays.asList(new RowSorter.SortKey(2, SortOrder.DESCENDING))
+            );
         } catch (SQLException | DAOException e) {
             JOptionPane.showMessageDialog(frame, "Erreur lors du chargement des données : " + e.getMessage(),
                     "Erreur", JOptionPane.ERROR_MESSAGE);
