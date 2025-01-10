@@ -9,9 +9,7 @@ import classes.Locataire;
 import enumeration.TypeLogement;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -38,17 +36,17 @@ public class LouerDAOTest {
         bailDAO = new BailDAO();
         bienLouableDAO = new BienLouableDAO();
         BatimentDAO batimentDAO = new BatimentDAO();
-        Batiment batiment = new Batiment("123456789101", "Paris", "123 Rue de la Paix","31000");
+        Batiment batiment = new Batiment("123456789101", "Paris", "123 Rue de la Paix", "31000");
         batimentDAO.create(batiment);
 
-        BienLouable bienLouable = new BienLouable("BL3456789101", "Paris", "123 Rue de la Paix", "31000", new ArrayList<>(), null,TypeLogement.APPARTEMENT);
+        BienLouable bienLouable = new BienLouable("BL3456789101", "Paris", "123 Rue de la Paix", "31000", new ArrayList<>(), null, TypeLogement.APPARTEMENT);
         bienLouableDAO.create(bienLouable, TypeLogement.APPARTEMENT, 3, 75.0);
 
-        bail = new Bail(true, "BL3456789101", 1000.0, 200.0, 500.0, Date.valueOf("2024-01-01"), Date.valueOf("2024-12-31"));
+        bail = new Bail(true, "BL3456789101", 1000.0, 200.0, 500.0, Date.valueOf("2024-01-01"), Date.valueOf("2024-12-31"), 1.5, 100, Date.valueOf("2024-01-01"));
         bailDAO.create(bail);
 
         locataireDAO = new LocataireDAO();
-        locataire = new Locataire("Doe", "John", "0606060606", "ee.ee@ee.ee", java.sql.Date.valueOf("2020-01-01"), "M");
+        locataire = new Locataire("Doe", "John", "Paris", "1990-01-01", "0606060606", "ee.ee@ee.ee", Date.valueOf("2020-01-01"), "M");
         locataireDAO.addLocataire(locataire);
 
         louerDAO = new LouerDAO();
@@ -85,14 +83,13 @@ public class LouerDAOTest {
             louerDAO.create(locataire, bail, 100);
             fail("Aucune exception levée, mais une exception était attendue.");
         } catch (RuntimeException e) {
-            // Si RuntimeException est levée, le test passe
             assertTrue(e instanceof RuntimeException);
         }
     }
 
     @Test
     public void testGetAllLocatairesDesBeaux() throws DAOException {
-        Locataire locataire2 = new Locataire("Smith", "Jane", "0707070707", "jj.jj@jj.jj", java.sql.Date.valueOf("2021-01-01"), "F");
+        Locataire locataire2 = new Locataire("Smith", "Jane", "Lyon", "1992-02-02", "0707070707", "jj.jj@jj.jj", Date.valueOf("2021-01-01"), "F");
         locataireDAO.addLocataire(locataire2);
         louerDAO.create(locataire2, bail, 50);
         louerDAO.create(locataire, bail, 50);
@@ -125,13 +122,13 @@ public class LouerDAOTest {
 
     @Test
     public void testUpdateQuotite() throws SQLException, DAOException {
-        BienLouable bienLouable = new BienLouable("BL3456789102", "Paris", "123 Rue de la Paix", "31000", new ArrayList<>(), null,TypeLogement.APPARTEMENT);
+        BienLouable bienLouable = new BienLouable("BL3456789102", "Paris", "123 Rue de la Paix", "31000", new ArrayList<>(), null, TypeLogement.APPARTEMENT);
         bienLouableDAO.create(bienLouable, TypeLogement.APPARTEMENT, 3, 75.0);
-        Bail bail = new Bail(true, "BL3456789102", 1000.0, 200.0, 500.0, Date.valueOf("2024-01-01"), Date.valueOf("2024-12-31"));
+        Bail bail = new Bail(true, "BL3456789102", 1000.0, 200.0, 500.0, Date.valueOf("2024-01-01"), Date.valueOf("2024-12-31"), 1.5, 100, Date.valueOf("2024-01-01"));
         bailDAO.create(bail);
         int idBail = bailDAO.getId(bail);
 
-        Locataire locataire = new Locataire("Doe", "John", "0606060606", "john.doe@example.com", Date.valueOf("2021-01-01"), "M");
+        Locataire locataire = new Locataire("Doe", "John", "Paris", "1990-01-01", "0606060606", "john.doe@example.com", Date.valueOf("2021-01-01"), "M");
         locataireDAO.addLocataire(locataire);
         int idLocataire = locataireDAO.getId(locataire);
 
@@ -147,20 +144,19 @@ public class LouerDAOTest {
 
     @Test
     public void testGetQuotite() throws SQLException, DAOException {
-        BienLouable bienLouable = new BienLouable("BL3456789102", "Paris", "123 Rue de la Paix", "31000", new ArrayList<>(), null,TypeLogement.APPARTEMENT);
+        BienLouable bienLouable = new BienLouable("BL3456789102", "Paris", "123 Rue de la Paix", "31000", new ArrayList<>(), null, TypeLogement.APPARTEMENT);
         bienLouableDAO.create(bienLouable, TypeLogement.APPARTEMENT, 3, 75.0);
-        Bail bail = new Bail(true, "BL3456789102", 1000.0, 200.0, 500.0, Date.valueOf("2024-01-01"), Date.valueOf("2024-12-31"));
+        Bail bail = new Bail(true, "BL3456789102", 1000.0, 200.0, 500.0, Date.valueOf("2024-01-01"), Date.valueOf("2024-12-31"), 1.5, 100, Date.valueOf("2024-01-01"));
         bailDAO.create(bail);
         int idBail = bailDAO.getId(bail);
 
-        Locataire locataire = new Locataire("Doe", "John", "0606060606", "john.doe@example.com", Date.valueOf("2021-01-01"), "M");
+        Locataire locataire = new Locataire("Doe", "John", "Paris", "1990-01-01", "0606060606", "john.doe@example.com", Date.valueOf("2021-01-01"), "M");
         locataireDAO.addLocataire(locataire);
         int idLocataire = locataireDAO.getId(locataire);
 
         louerDAO.create(locataire, bail, 50);
 
         int quotite = louerDAO.getQuotité(idBail, idLocataire);
-
 
         assertEquals(50, quotite);
     }

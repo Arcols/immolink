@@ -54,6 +54,7 @@ public class BienLouableTest {
     @Test
     public void testAjouterTravaux() {
         String num_devis = "123456789012";
+        String num_facture = "987654321098";
         float montant = 1000.0f;
         String nature = "Renovation";
         float montant_nondeductible = 200.0f;
@@ -63,7 +64,7 @@ public class BienLouableTest {
         String adresse = "123 Rue de Paris";
         String nom_entreprise = "EntrepriseA";
 
-        Devis devis = new Devis(num_devis, montant, nature, montant_nondeductible, date_debut, date_fin, type, adresse, nom_entreprise);
+        Devis devis = new Devis(num_devis, num_facture, montant, nature, montant_nondeductible, date_debut, date_fin, type, adresse, nom_entreprise);
 
         bienLouable.ajouterTravaux(devis);
         assertEquals(1, bienLouable.getTravaux().size());
@@ -98,6 +99,7 @@ public class BienLouableTest {
     public void testGetTravaux() {
         assertTrue(bienLouable.getTravaux().isEmpty());
         String num_devis = "123456789012";
+        String num_facture = "987654321098";
         float montant = 1000.0f;
         String nature = "Renovation";
         float montant_nondeductible = 200.0f;
@@ -107,7 +109,7 @@ public class BienLouableTest {
         String adresse = "123 Rue de Paris";
         String nom_entreprise = "EntrepriseA";
 
-        Devis devis = new Devis(num_devis, montant, nature, montant_nondeductible, date_debut, date_fin, type, adresse, nom_entreprise);
+        Devis devis = new Devis(num_devis, num_facture, montant, nature, montant_nondeductible, date_debut, date_fin, type, adresse, nom_entreprise);
 
         bienLouable.ajouterTravaux(devis);
         assertEquals(1, bienLouable.getTravaux().size());

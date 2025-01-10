@@ -18,6 +18,24 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
+import DAO.DAOException;
+import DAO.db.ConnectionDB;
+import classes.Batiment;
+import classes.BienLouable;
+import classes.Devis;
+import enumeration.TypeLogement;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.*;
+
 public class DevisDAOTest {
     private DevisDAO devisDAO;
     private BienLouableDAO bienLouableDAO;
@@ -32,7 +50,7 @@ public class DevisDAOTest {
         Batiment batiment = new Batiment("123456789101", "Paris", "123 Rue de la Paix", "31000");
         batimentDAO.create(batiment);
 
-        BienLouable bienLouable = new BienLouable("123456789101", "Paris", "123 Rue de la Paix", "31000", new ArrayList<>(), null,TypeLogement.APPARTEMENT);
+        BienLouable bienLouable = new BienLouable("123456789101", "Paris", "123 Rue de la Paix", "31000", new ArrayList<>(), null, TypeLogement.APPARTEMENT);
         bienLouableDAO.create(bienLouable, TypeLogement.APPARTEMENT, 3, 75.0);
     }
 
@@ -45,7 +63,7 @@ public class DevisDAOTest {
 
     @Test
     public void testCreate() throws SQLException, DAOException {
-        Devis devis = new Devis("123456789012", 1000.0f, "Renovation", 200.0f, Date.valueOf("2024-01-01"), Date.valueOf("2024-06-01"), "TypeA", "123 Rue de la Paix", "Entreprise A");
+        Devis devis = new Devis("123456789012", "F123456789012", 1000.0f, "Renovation", 200.0f, Date.valueOf("2024-01-01"), Date.valueOf("2024-06-01"), "TypeA", "123 Rue de la Paix", "Entreprise A");
         devisDAO.create(devis, "123456789101", TypeLogement.APPARTEMENT);
 
         Devis devisRecupere = devisDAO.read("123456789012");
@@ -56,7 +74,7 @@ public class DevisDAOTest {
 
     @Test
     public void testRead() throws SQLException, DAOException {
-        Devis devis = new Devis("123456789012", 1000.0f, "Renovation", 200.0f, Date.valueOf("2024-01-01"), Date.valueOf("2024-06-01"), "TypeA", "123 Rue de la Paix", "Entreprise A");
+        Devis devis = new Devis("123456789012", "F123456789012", 1000.0f, "Renovation", 200.0f, Date.valueOf("2024-01-01"), Date.valueOf("2024-06-01"), "TypeA", "123 Rue de la Paix", "Entreprise A");
         devisDAO.create(devis, "123456789101", TypeLogement.APPARTEMENT);
 
         Devis devisRecupere = devisDAO.read("123456789012");
@@ -67,7 +85,7 @@ public class DevisDAOTest {
 
     @Test
     public void testGetId() throws SQLException, DAOException {
-        Devis devis = new Devis("123456789012", 1000.0f, "Renovation", 200.0f, Date.valueOf("2024-01-01"), Date.valueOf("2024-06-01"), "TypeA", "123 Rue de la Paix", "Entreprise A");
+        Devis devis = new Devis("123456789012", "F123456789012", 1000.0f, "Renovation", 200.0f, Date.valueOf("2024-01-01"), Date.valueOf("2024-06-01"), "TypeA", "123 Rue de la Paix", "Entreprise A");
         devisDAO.create(devis, "123456789101", TypeLogement.APPARTEMENT);
 
         Integer id = devisDAO.getId(devis);
@@ -76,8 +94,8 @@ public class DevisDAOTest {
 
     @Test
     public void testGetAllDevisFromABien() throws SQLException, DAOException {
-        Devis devis1 = new Devis("123456789012", 1000.0f, "Renovation", 200.0f, Date.valueOf("2024-01-01"), Date.valueOf("2024-06-01"), "TypeA", "123 Rue de la Paix", "Entreprise A");
-        Devis devis2 = new Devis("123456789013", 1500.0f, "Construction", 300.0f, Date.valueOf("2024-02-01"), Date.valueOf("2024-07-01"), "TypeB", "456 Rue de la Paix", "Entreprise B");
+        Devis devis1 = new Devis("123456789012", "F123456789012", 1000.0f, "Renovation", 200.0f, Date.valueOf("2024-01-01"), Date.valueOf("2024-06-01"), "TypeA", "123 Rue de la Paix", "Entreprise A");
+        Devis devis2 = new Devis("123456789013", "F123456789013", 1500.0f, "Construction", 300.0f, Date.valueOf("2024-02-01"), Date.valueOf("2024-07-01"), "TypeB", "456 Rue de la Paix", "Entreprise B");
         devisDAO.create(devis1, "123456789101", TypeLogement.APPARTEMENT);
         devisDAO.create(devis2, "123456789101", TypeLogement.APPARTEMENT);
 
@@ -87,8 +105,8 @@ public class DevisDAOTest {
 
     @Test
     public void testGetMontantTotalDevis() throws SQLException, DAOException {
-        Devis devis1 = new Devis("123456789012", 1000.0f, "Renovation", 200.0f, Date.valueOf("2024-01-01"), Date.valueOf("2024-06-01"), "TypeA", "123 Rue de la Paix", "Entreprise A");
-        Devis devis2 = new Devis("123456789013", 1500.0f, "Construction", 300.0f, Date.valueOf("2024-02-01"), Date.valueOf("2024-07-01"), "TypeB", "456 Rue de la Paix", "Entreprise B");
+        Devis devis1 = new Devis("123456789012", "F123456789012", 1000.0f, "Renovation", 200.0f, Date.valueOf("2024-01-01"), Date.valueOf("2024-06-01"), "TypeA", "123 Rue de la Paix", "Entreprise A");
+        Devis devis2 = new Devis("123456789013", "F123456789013", 1500.0f, "Construction", 300.0f, Date.valueOf("2024-02-01"), Date.valueOf("2024-07-01"), "TypeB", "456 Rue de la Paix", "Entreprise B");
         devisDAO.create(devis1, "123456789101", TypeLogement.APPARTEMENT);
         devisDAO.create(devis2, "123456789101", TypeLogement.APPARTEMENT);
 
@@ -98,8 +116,8 @@ public class DevisDAOTest {
 
     @Test
     public void testGetMontantTotalTravaux() throws SQLException, DAOException {
-        Devis devis1 = new Devis("123456789012", 1000.0f, "Renovation", 200.0f, Date.valueOf("2024-01-01"), Date.valueOf("2024-06-01"), "TypeA", "123 Rue de la Paix", "Entreprise A");
-        Devis devis2 = new Devis("123456789013", 1500.0f, "Construction", 300.0f, Date.valueOf("2024-02-01"), Date.valueOf("2024-07-01"), "TypeB", "456 Rue de la Paix", "Entreprise B");
+        Devis devis1 = new Devis("123456789012", "F123456789012", 1000.0f, "Renovation", 200.0f, Date.valueOf("2024-01-01"), Date.valueOf("2024-06-01"), "TypeA", "123 Rue de la Paix", "Entreprise A");
+        Devis devis2 = new Devis("123456789013", "F123456789013", 1500.0f, "Construction", 300.0f, Date.valueOf("2024-02-01"), Date.valueOf("2024-07-01"), "TypeB", "456 Rue de la Paix", "Entreprise B");
         devisDAO.create(devis1, "123456789101", TypeLogement.APPARTEMENT);
         devisDAO.create(devis2, "123456789101", TypeLogement.APPARTEMENT);
 

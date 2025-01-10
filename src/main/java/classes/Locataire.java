@@ -153,39 +153,17 @@ public class Locataire {
     }
 
     @Override
-    public String toString() {
-        return "Locataire{" +
-                ", nom='" + nom + '\'' +
-                ", prénom='" + prénom + '\'' +
-                ", téléphone='" + téléphone + '\'' +
-                ", genre='" + genre + '\'' +
-                ", mail='" + mail + '\'' +
-                ", date_arrive=" + date_arrive +
-                ", beaux=" + beaux +
-                ", charges=" + charges +
-                '}';
-    }
-
-    /**
-     * Compare deux locataires
-     * @param obj le locataire à comparer
-     * @return true si les locataires sont égaux, false sinon
-     */
-    @Override
     public boolean equals(Object obj) {
-        // Vérifie si les références sont identiques
         if (this == obj) return true;
-
-        // Vérifie si l'objet est null ou de type différent
         if (obj == null || getClass() != obj.getClass()) return false;
-
-        // Cast l'objet en Locataire
         Locataire locataire = (Locataire) obj;
-
-        // Compare les champs significatifs
         return nom.equals(locataire.nom) &&
                 prénom.equals(locataire.prénom) &&
+                lieuNaissance.equals(locataire.lieuNaissance) &&
+                dateNaissance.equals(locataire.dateNaissance) &&
                 téléphone.equals(locataire.téléphone) &&
-                genre.equals(locataire.genre);
+                genre.equals(locataire.genre) &&
+                (mail != null ? mail.equals(locataire.mail) : locataire.mail == null) &&
+                date_arrive.equals(locataire.date_arrive);
     }
 }
