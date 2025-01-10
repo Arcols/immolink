@@ -20,6 +20,7 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
+import DAO.DAOException;
 import DAO.db.ConnectionDB;
 import DAO.jdbc.LocataireDAO;
 import classes.Locataire;
@@ -122,7 +123,7 @@ public class PageNouveauLocataire {
         JPanel menu_bouttons = new JPanel();
 
         entete.add(menu_bouttons, BorderLayout.CENTER);
-        menu_bouttons.setLayout(new GridLayout(0, 3, 0, 0));
+        menu_bouttons.setLayout(new GridLayout(0, 4, 0, 0));
         menu_bouttons.setBackground(Charte.ENTETE.getCouleur());
 
         JButton b_accueil = new JButton("Accueil");
@@ -147,6 +148,19 @@ public class PageNouveauLocataire {
         menu_bouttons.add(b_biens);
         menu_bouttons.add(b_biens);
         b_biens.addActionListener(m);
+
+        JButton b_notifs = null;
+        try {
+            b_notifs = new JButton("Notifications ("+m.getNbNotifs()+")");
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
+        b_notifs.setBorderPainted(false);
+        b_notifs.setBackground(Charte.ENTETE.getCouleur());
+        b_notifs.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        menu_bouttons.add(b_notifs);
+        menu_bouttons.add(b_notifs);
+        b_notifs.addActionListener(m);
 
         JPanel body = new JPanel();
         frame.getContentPane().add(body, BorderLayout.CENTER);
