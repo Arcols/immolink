@@ -2,8 +2,12 @@ package DAO.jdbc;
 
 import DAO.DAOException;
 import DAO.db.ConnectionDB;
+import classes.Bail;
+import classes.Batiment;
+import classes.BienLouable;
 import classes.Charge;
 import classes.Facture;
+import enumeration.TypeLogement;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +24,11 @@ public class ChargeDAOTest {
 
     private ChargeDAO chargeDAO;
     private FactureDAO factureDAO;
+    private BailDAO bailDAO;
+    private BienLouableDAO bienLouableDAO;
+    private BatimentDAO batimentDAO;
     private Connection cn;
+    private int idBail;
 
     @Before
     public void setUp() throws SQLException, DAOException {
@@ -28,14 +36,37 @@ public class ChargeDAOTest {
         cn.setAutoCommit(false);
         chargeDAO = new ChargeDAO();
         factureDAO = new FactureDAO();
+        bailDAO = new BailDAO();
+        bienLouableDAO = new BienLouableDAO();
+        batimentDAO = new BatimentDAO();
 
-        // Create initial data
+        // Create a Batiment
+        Batiment batiment = new Batiment("123456789101", "Paris", "123 Rue de la Paix", "31000");
+        batimentDAO.create(batiment);
+
+        // Create a BienLouable
+        BienLouable bienLouable = new BienLouable("BL3456789101", "Paris", "123 Rue de la Paix", "31000", new ArrayList<>(), null, TypeLogement.APPARTEMENT);
+        bienLouableDAO.create(bienLouable, bienLouable.getTypeLogement(), 3, 75.0);
+
+        // Create a Bail
+        Bail bail = new Bail(true, "BL3456789101", 1000.0, 200.0, 500.0, Date.valueOf("2024-01-01"), Date.valueOf("2024-12-31"), 150.0, 10, Date.valueOf("2023-01-01"));
+        bailDAO.create(bail);
+        idBail = bailDAO.getId(bail);
+
+        // Create Charges linked to the Bail
+        chargeDAO.create("Electricity", idBail);
+        chargeDAO.create("Water", idBail);
+
+        // Get Charge IDs
+        int idChargeElectricity = chargeDAO.getId("Electricity", idBail);
+        int idChargeWater = chargeDAO.getId("Water", idBail);
+
+        // Create Factures linked to the Charges
         Facture facture1 = new Facture("F123456", "Electricity", Date.valueOf("2023-10-01"), 150.0);
         Facture facture2 = new Facture("F654321", "Water", Date.valueOf("2023-11-01"), 75.0);
-        factureDAO.create(facture1, 1);
-        factureDAO.create(facture2, 1);
-        chargeDAO.create("Electricity", 1);
-        chargeDAO.create("Water", 1);
+        factureDAO.create(facture1, idChargeElectricity);
+        factureDAO.create(facture2, idChargeWater);
+
     }
 
     @After
@@ -47,19 +78,19 @@ public class ChargeDAOTest {
 
     @Test
     public void testCreate() throws DAOException {
-        int idCharge = chargeDAO.getId("Electricity", 1);
+        int idCharge = chargeDAO.getId("Electricity", idBail);
         assertTrue(idCharge > 0);
     }
 
     @Test
     public void testGetMontant() throws DAOException {
-        double montant = chargeDAO.getMontant(Date.valueOf("2023-01-01"), 1);
-        assertEquals(225.0, montant, 0.0);
+        double montant = chargeDAO.getMontant(Date.valueOf("2023-01-01"),chargeDAO.getId("Water", idBail));
+        assertEquals(75.0, montant, 0.0);
     }
 
     @Test
     public void testGetId() throws DAOException {
-        int idCharge = chargeDAO.getId("Water", 1);
+        int idCharge = chargeDAO.getId("Water", idBail);
         assertTrue(idCharge > 0);
     }
 }

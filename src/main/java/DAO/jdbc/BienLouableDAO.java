@@ -162,8 +162,8 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
             }
             for (Devis d : lDevis) {
                 Integer id_devis = new DevisDAO().getId(d);
-                new DevisDAO().delete(id_devis);
                 new TravauxAssocieDAO().delete(id_devis, id, getTypeFromId(id));
+                new DevisDAO().delete(id_devis);
             }
             for (Integer id_beau : idBeaux) {
                 new BailDAO().delete(id_beau);
