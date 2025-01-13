@@ -8,7 +8,11 @@ import classes.Locataire;
 import ihm.*;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -50,10 +54,11 @@ public class ModelePageCharge {
         return e -> {
             Map<Integer, List<Integer>> mapallbaux = new DAO.jdbc.LouerDAO().getAllLocatairesDesBeaux();
             List<Integer> listidloc = mapallbaux.get(pageCharge.getId_bail());
+            String currentYear = choix_annee();
+
             for (int id : listidloc) {
                 Locataire l = new DAO.jdbc.LocataireDAO().getLocFromId(id);
                 Bail bail = new DAO.jdbc.BailDAO().getBailFromId(pageCharge.getId_bail());
-                Date currentDate = Date.valueOf(LocalDate.now());
 
                 String genre = "";
                 switch (l.getGenre()) {
@@ -67,9 +72,10 @@ public class ModelePageCharge {
                         genre = "Mme, M ";
                         break;
                 }
+
                 try {
                     BienLouable bien = new DAO.jdbc.BienLouableDAO().readFisc(bail.getFisc_bien());
-                    Date datedebutperiode = Date.valueOf(currentDate.getYear() +1900-1 + "-01-01");
+                    Date datedebutperiode = Date.valueOf(currentYear + "-01-01");
                     int qt = new DAO.jdbc.LouerDAO().getQuotité(pageCharge.getId_bail(), id);
                     double quotite=qt/100.0;
                     int idcharge = new DAO.jdbc.ChargeDAO().getId("Eau", pageCharge.getId_bail());
@@ -84,19 +90,19 @@ public class ModelePageCharge {
 
                     SimpleDateFormat fullFormatter = new SimpleDateFormat("dd MMMM yyyy", new java.util.Locale("fr", "FR"));
 
-                    if (bail.getDate_debut().getYear() - 1 == currentDate.getYear() - 2) {
+                    if (bail.getDate_debut().getYear() - 1 == Integer.valueOf(currentYear)-1) {
                         datedebutperiode = bail.getDate_debut();
                     }
                     generateChargesPdf("pdfgeneres/Régularisation des charges " + l.getNom() + " " + l.getPrénom()
-                                    +" "+(currentDate.getYear()+1900-1)+".pdf",
+                                    +" "+(currentYear)+".pdf",
                             "M Thierry MILLAN",
                             "18, rue des Lilas\n31000 TOULOUSE",
                             "05 xx xx xx xx",
                             genre + l.getNom() + " " + l.getPrénom(),
                             bien.getAdresse(),
-                            fullFormatter.format(currentDate),
+                            fullFormatter.format(Date.valueOf(LocalDate.now())),
                             fullFormatter.format(datedebutperiode),
-                            fullFormatter.format(Date.valueOf(currentDate.getYear()+1900 - 1 + "-12-31")),
+                            fullFormatter.format(Date.valueOf(currentYear+ "-12-31")),
                             prixEau * quotite,
                             prixOrdures * quotite,
                             prixEntretien * quotite,
@@ -105,7 +111,7 @@ public class ModelePageCharge {
                             l.getGenre());
                     try {
                         ouvrirPdf("pdfgeneres/Régularisation des charges " + l.getNom() + " " + l.getPrénom()
-                                +" "+(currentDate.getYear()+1900-1)+".pdf");
+                                +" "+currentYear+".pdf");
                     } catch (IOException ex) {
                         throw new RuntimeException(ex);
                     }
@@ -114,5 +120,31 @@ public class ModelePageCharge {
                 }
             }
         };
+    }
+
+    public String choix_annee() {
+        JDialog dialog = new JDialog((Frame) null, "Saisir année de la régularisation des charges ", true);
+        dialog.setSize(400, 200);
+        dialog.setLayout(null);
+
+        JLabel label = new JLabel("Année de la régularisation :");
+        label.setBounds(20, 30, 200, 25);
+        dialog.add(label);
+
+        JTextField choix_annee = new JTextField();
+        choix_annee.setBounds(220, 30, 100, 25);
+        dialog.add(choix_annee);
+
+        JButton validerButton = new JButton("Valider");
+        validerButton.setBounds(150, 100, 100, 30);
+        dialog.add(validerButton);
+
+        validerButton.addActionListener(event -> {
+            dialog.dispose();
+        });
+
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
+        return choix_annee.getText();
     }
 }
