@@ -28,6 +28,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 
 import DAO.DAOException;
@@ -138,8 +140,9 @@ public class PageUnLocataire {
         panel.setLayout(gbl_panel);
 
         try {
-            tableModel = ModelePageUnLocataire.loadDataBienImmoToTable(locataire);
+            tableModel = ModelePageUnLocataire.loadDataBauxToTable(locataire);
             table = new JTable(tableModel);
+            table.removeColumn(table.getColumnModel().getColumn(4));
         } catch (SQLException | DAOException e) {
             JOptionPane.showMessageDialog(frame, "Erreur lors du chargement des données : " + e.getMessage(),
                     "Erreur", JOptionPane.ERROR_MESSAGE);
@@ -171,12 +174,15 @@ public class PageUnLocataire {
         this.frame.getContentPane().add(bas_de_page, BorderLayout.SOUTH);
         bas_de_page.setLayout(new BorderLayout(0, 0));
 
-        JButton ajouter = new JButton("Valider");
-        ajouter.setEnabled(true); // Le bouton est maintenant activé
-        ajouter.setHorizontalTextPosition(SwingConstants.LEFT);
-        ajouter.setVerticalTextPosition(SwingConstants.TOP);
-        ajouter.setVerticalAlignment(SwingConstants.BOTTOM);
-        bas_de_page.add(ajouter, BorderLayout.EAST);
+        JButton quitter = new JButton("Quitter");
+        quitter.setHorizontalTextPosition(SwingConstants.LEFT);
+        quitter.setVerticalTextPosition(SwingConstants.TOP);
+        quitter.setVerticalAlignment(SwingConstants.BOTTOM);
+        bas_de_page.add(quitter, BorderLayout.WEST);
+
+        quitter.addActionListener(modele.quitterPage());
+
+        tableModel.addTableModelListener(modele.modifPaiement(tableModel,locataire));
 
         this.frame.addComponentListener(new ComponentAdapter() {
             @Override

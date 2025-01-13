@@ -1,11 +1,6 @@
 package ihm;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
@@ -22,6 +17,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import DAO.DAOException;
@@ -198,6 +194,9 @@ public class PageAccueil {
 			columnModel.getColumn(5).setPreferredWidth(150); // Mail
 			columnModel.getColumn(6).setPreferredWidth(50);  // Genre
 			columnModel.getColumn(7).setPreferredWidth(80); // Date d'arrivée
+
+			// Ajouter un renderer pour colorer les lignes en fonction de la dernière colonne
+			table.setDefaultRenderer(Object.class, modele.couleurLigne());
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(frame, "Erreur lors du chargement des données : " + e.getMessage(),
 					"Erreur", JOptionPane.ERROR_MESSAGE);

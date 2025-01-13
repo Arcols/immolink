@@ -1,15 +1,12 @@
 package modele;
 
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
+import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import DAO.jdbc.LocataireDAO;
@@ -131,6 +128,40 @@ public class ModelePageAccueil {
 
             dialog.setLocationRelativeTo(parentFrame);
             dialog.setVisible(true);
+        };
+    }
+
+
+    public DefaultTableCellRenderer couleurLigne() {
+        return new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value,
+                                                           boolean isSelected, boolean hasFocus,
+                                                           int row, int column) {
+                // Appeler la méthode parente pour obtenir le composant par défaut
+                Component component = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+                // Vérifier si la dernière colonne contient "Retard"
+                int lastColumnIndex = table.getColumnCount() - 1;
+                String status = table.getValueAt(row, lastColumnIndex).toString();
+
+                // Appliquer une couleur de fond si "Retard"
+                if ("Retard".equals(status)) {
+                    component.setBackground(Color.decode("#ff5454"));
+                    component.setForeground(Color.BLACK); // Contraste pour le texte
+                } else {
+                    component.setBackground(Color.decode("#7fe075")); // Couleur de fond par défaut
+                    component.setForeground(Color.BLACK); // Texte noir par défaut
+                }
+
+                // Prioriser la couleur de sélection si la ligne est sélectionnée
+                if (isSelected) {
+                    component.setBackground(table.getSelectionBackground());
+                    component.setForeground(table.getSelectionForeground());
+                }
+
+                return component;
+            }
         };
     }
 

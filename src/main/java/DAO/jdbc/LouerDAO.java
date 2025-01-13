@@ -1,9 +1,7 @@
 package DAO.jdbc;
 
 import java.sql.*;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -142,6 +140,7 @@ public class LouerDAO implements DAO.LouerDAO{
         return locataires;
     }
 
+    @Override
     public Boolean getStatut(int idLocataire) {
         Boolean statut = null;
 
@@ -160,6 +159,7 @@ public class LouerDAO implements DAO.LouerDAO{
         return statut;
     }
 
+    @Override
     public Boolean getStatutBail(int idBail) {
         Boolean statut = null;
 
@@ -178,6 +178,7 @@ public class LouerDAO implements DAO.LouerDAO{
         return statut;
     }
 
+    @Override
     public Boolean getLoyerPaye(int idLocataire, int idBail) {
         Date date = null;
         try {
@@ -208,6 +209,20 @@ public class LouerDAO implements DAO.LouerDAO{
         return paymentDate.isAfter(firstDayOfCurrentMonth.minusDays(1));  // Si paiement est après ou le premier jour du mois
     }
 
+    @Override
+    public void updatePaiement(int idBail, int idLocataire, Date date) {
+        try {
+            Connection cn = ConnectionDB.getInstance();
+            String query = "UPDATE louer SET dernier_paiement = ? WHERE id_bail = ? AND id_locataire = ?";
+            PreparedStatement pstmt = cn.prepareStatement(query);
+            pstmt.setDate(1,date);
+            pstmt.setInt(2,idBail);
+            pstmt.setInt(3,idLocataire);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
 
