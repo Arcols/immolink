@@ -118,4 +118,23 @@ public class DiagnosticDAOTest {
         assertTrue(diagnostics.stream().anyMatch(d -> d.getReference().equals("D123")));
         assertTrue(diagnostics.stream().anyMatch(d -> d.getReference().equals("D124")));
     }
+
+    @Test
+    public void testReadDiagPerimes() throws SQLException, DAOException, IOException {
+        // Create a diagnostic that is expired
+        Diagnostic expiredDiagnostic = new Diagnostic("D123", tempFilePath.toString(), Date.valueOf("2022-01-01"));
+        diagnosticDAO.create(expiredDiagnostic, "123456789101");
+
+        // Create a diagnostic that is not expired
+        Diagnostic validDiagnostic = new Diagnostic("D124", tempFilePath.toString(), Date.valueOf("2030-01-01"));
+        diagnosticDAO.create(validDiagnostic, "123456789101");
+
+        // Retrieve expired diagnostics
+        List<String> expiredDiagnostics = diagnosticDAO.readDiagPerimes();
+
+        // Verify the expired diagnostic is in the list
+        assertNotNull(expiredDiagnostics);
+        assertTrue(expiredDiagnostics.stream().anyMatch(d -> d.contains("D123")));
+        assertFalse(expiredDiagnostics.stream().anyMatch(d -> d.contains("D124")));
+    }
 }

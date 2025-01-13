@@ -94,4 +94,24 @@ public class FactureDAOTest {
         assertEquals(1, factures.size());
         assertTrue(factures.stream().anyMatch(f -> f.getNumero().equals("F123456")));
     }
+
+    @Test
+    public void testGetAll() throws DAOException {
+        // Create a new charge and associated factures
+        chargeDAO.create("Internet", idBail);
+        int idChargeInternet = chargeDAO.getId("Internet", idBail);
+        Facture facture1 = new Facture("F111111", "Internet", Date.valueOf("2023-09-01"), 50.0);
+        Facture facture2 = new Facture("F222222", "Internet", Date.valueOf("2023-10-01"), 60.0);
+        factureDAO.create(facture1, idChargeInternet);
+        factureDAO.create(facture2, idChargeInternet);
+
+        // Retrieve all factures for the charge
+        List<Facture> factures = factureDAO.getAll(idChargeInternet);
+
+        // Verify the factures are correctly retrieved
+        assertNotNull(factures);
+        assertEquals(2, factures.size());
+        assertTrue(factures.stream().anyMatch(f -> f.getNumero().equals("F111111")));
+        assertTrue(factures.stream().anyMatch(f -> f.getNumero().equals("F222222")));
+    }
 }
