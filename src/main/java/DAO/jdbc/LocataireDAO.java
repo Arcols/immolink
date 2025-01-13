@@ -219,4 +219,6 @@ public class LocataireDAO implements DAO.LocataireDAO {
         }
         return locataire;
     }
+
+
 }

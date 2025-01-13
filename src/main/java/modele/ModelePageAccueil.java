@@ -13,6 +13,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import DAO.jdbc.LocataireDAO;
+import DAO.jdbc.LouerDAO;
 import DAO.jdbc.RegimeDAO;
 import classes.Locataire;
 import ihm.PageAccueil;
@@ -34,7 +35,7 @@ public class ModelePageAccueil {
      */
     public static DefaultTableModel loadDataLocataireToTable() throws SQLException {
         // Liste des colonnes
-        String[] columnNames = {"Nom", "Prénom", "Lieu Naissance", "Date Naissance", "Téléphone", "Mail", "Genre", "Date arrivée"};
+        String[] columnNames = {"Nom", "Prénom", "Lieu Naissance", "Date Naissance", "Téléphone", "Mail", "Genre", "Date arrivée","Statut"};
 
         // Création du modèle de table
         DefaultTableModel model = new DefaultTableModel(columnNames, 0){
@@ -49,6 +50,7 @@ public class ModelePageAccueil {
         LocataireDAO locataireDAO = new LocataireDAO();
         List<Locataire> locataires = locataireDAO.getAllLocataire();
 
+
         // Remplissage du modèle avec les données des locataires
         for (Locataire locataire : locataires) {
             Object[] rowData = {
@@ -59,12 +61,22 @@ public class ModelePageAccueil {
                     locataire.getTéléphone(),
                     locataire.getMail(),
                     locataire.getGenre(),
-                    locataire.getDateArrive()
+                    locataire.getDateArrive(),
+                    statut(locataire)
             };
             model.addRow(rowData); // Ajout de la ligne dans le modèle
         }
 
         return model; // Retourne le modèle rempli
+    }
+
+    public static String statut(Locataire locataire){
+        LouerDAO louerDAO = new LouerDAO();
+        LocataireDAO locataireDAO = new LocataireDAO();
+        if (louerDAO.getStatut(locataireDAO.getId(locataire))){
+            return "Payé";
+        }
+        return "Retard";
     }
 
     /**

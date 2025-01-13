@@ -1,9 +1,6 @@
 package DAO.jdbc;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -140,6 +137,42 @@ public class LouerDAO implements DAO.LouerDAO{
                 throw new RuntimeException(e);
             }
         return locataires;
+    }
+
+    public Boolean getStatut(int idLocataire) {
+        Boolean statut = null;
+
+        try {
+            Connection cn = ConnectionDB.getInstance();
+            String query = "{ ? = call check_statut(?) }";
+            CallableStatement cstmt = cn.prepareCall(query);
+            cstmt.registerOutParameter(1, Types.BOOLEAN);
+            cstmt.setInt(2, idLocataire);
+            cstmt.execute();
+            statut = cstmt.getBoolean(1);
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur lors de l'exécution de la requête", e);
+        }
+        return statut;
+    }
+
+    public Boolean getStatutBail(int idBail) {
+        Boolean statut = null;
+
+        try {
+            Connection cn = ConnectionDB.getInstance();
+            String query = "{ ? = call check_statut_bail(?) }";
+            CallableStatement cstmt = cn.prepareCall(query);
+            cstmt.registerOutParameter(1, Types.BOOLEAN);
+            cstmt.setInt(2, idBail);
+            cstmt.execute();
+            statut = cstmt.getBoolean(1);
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur lors de l'exécution de la requête", e);
+        }
+        return statut;
     }
 
 }
