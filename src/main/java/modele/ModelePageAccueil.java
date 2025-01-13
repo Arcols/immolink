@@ -1,5 +1,6 @@
 package modele;
 
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.List;
@@ -16,6 +17,7 @@ import DAO.jdbc.LocataireDAO;
 import DAO.jdbc.RegimeDAO;
 import classes.Locataire;
 import ihm.PageAccueil;
+import ihm.PageDeclarationFiscale;
 import ihm.PageNouveauLocataire;
 
 public class ModelePageAccueil {
@@ -155,7 +157,6 @@ public class ModelePageAccueil {
         }
     }
 
-
     public ActionListener ouvrirNouveauLocataire(){
         return e->{
             pageAccueil.getFrame().dispose();
@@ -164,4 +165,32 @@ public class ModelePageAccueil {
         };
     }
 
+    public ActionListener choix_annee() {
+        return e -> {
+            JDialog dialog = new JDialog((Frame) null, "Saisir année de la déclaration fiscale ", true);
+            dialog.setSize(400, 200);
+            dialog.setLayout(null);
+
+            JLabel label = new JLabel("Année de la déclaration fiscale :");
+            label.setBounds(20, 30, 200, 25);
+            dialog.add(label);
+
+            JTextField choix_annee = new JTextField();
+            choix_annee.setBounds(220, 30, 100, 25);
+            dialog.add(choix_annee);
+
+            JButton validerButton = new JButton("Valider");
+            validerButton.setBounds(150, 100, 100, 30);
+            dialog.add(validerButton);
+
+            validerButton.addActionListener(event -> {
+                dialog.dispose();
+                this.pageAccueil.getFrame().dispose();
+                PageDeclarationFiscale pagedecla = new PageDeclarationFiscale(choix_annee.getText());
+            });
+
+            dialog.setLocationRelativeTo(null);
+            dialog.setVisible(true);
+        };
+    }
 }

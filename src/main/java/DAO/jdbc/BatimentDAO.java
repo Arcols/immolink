@@ -3,15 +3,15 @@ package DAO.jdbc;
 import DAO.DAOException;
 import DAO.db.ConnectionDB;
 import classes.Batiment;
+import classes.Devis;
+import enumeration.TypeLogement;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class BatimentDAO implements DAO.BatimentDAO {
 
@@ -225,6 +225,28 @@ public class BatimentDAO implements DAO.BatimentDAO {
 			throw new RuntimeException(e);
 		}
 		return batiments;
+	}
+
+	@Override
+	public List<Integer> getBienTypeBat(Integer idBat, TypeLogement type) throws DAOException {
+		List<Integer> idBienLouables = new LinkedList<>();
+		try {
+			Connection cn = ConnectionDB.getInstance();
+			String query = "SELECT id FROM bienlouable WHERE idBat = ? AND type_logement = ? ";
+			PreparedStatement pstmt = cn.prepareStatement(query);
+			pstmt.setInt(1, idBat);
+			pstmt.setInt(2,type.getValue());
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				idBienLouables.add(rs.getInt("id"));
+			}
+			rs.close();
+			pstmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			throw new RuntimeException(e);
+		}
+		return idBienLouables;
 	}
 
 }

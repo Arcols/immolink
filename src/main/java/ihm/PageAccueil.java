@@ -220,6 +220,7 @@ public class PageAccueil {
 
 		JButton declaFiscaleButton = new JButton("Générer");
 		declaFidscalePanel.add(declaFiscaleButton);
+		declaFiscaleButton.addActionListener(modele.choix_annee());
 
 		JButton ajouter = new JButton("Ajouter un locataire");
 		bas_de_page.add(ajouter, BorderLayout.EAST);
