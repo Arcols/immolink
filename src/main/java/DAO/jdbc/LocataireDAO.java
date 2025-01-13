@@ -1,10 +1,14 @@
 package DAO.jdbc;
 
+import DAO.DAOException;
 import DAO.db.ConnectionDB;
+import classes.Bail;
+import classes.BienLouable;
 import classes.Locataire;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class LocataireDAO implements DAO.LocataireDAO {
@@ -218,6 +222,26 @@ public class LocataireDAO implements DAO.LocataireDAO {
             throw new RuntimeException(e);
         }
         return locataire;
+    }
+
+    public List<Integer> getBauxLocataire(Integer idLocataire) {
+        List<Integer> idBaux = new LinkedList<>();
+        try {
+            Connection cn = ConnectionDB.getInstance();
+            String query = "SELECT id_bail FROM louer WHERE louer.id_locataire = ?";
+            PreparedStatement pstmt = cn.prepareStatement(query);
+            pstmt.setInt(1, idLocataire);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                Integer idBail = rs.getInt("id_bail");
+                idBaux.add(idBail);
+            }
+            rs.close();
+            pstmt.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return idBaux;
     }
 
 

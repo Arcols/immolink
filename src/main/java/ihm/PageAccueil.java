@@ -10,6 +10,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.Date;
 import java.sql.SQLException;
 
 import javax.swing.JButton;
@@ -25,7 +26,12 @@ import javax.swing.table.DefaultTableModel;
 
 import DAO.DAOException;
 import DAO.db.ConnectionDB;
+import DAO.jdbc.BailDAO;
+import DAO.jdbc.BienLouableDAO;
 import DAO.jdbc.LocataireDAO;
+import classes.Bail;
+import classes.BienLouable;
+import classes.Locataire;
 import modele.Charte;
 import modele.Menu;
 import modele.ModelePageAccueil;
@@ -178,10 +184,10 @@ public class PageAccueil {
 		table = new JTable();
 		JScrollPane scrollPane = new JScrollPane(table);
 		bodyPanel.add(scrollPane, BorderLayout.CENTER);
-
+		DefaultTableModel model = null;
 		// Chargement des données dans le tableau
 		try {
-			DefaultTableModel model = ModelePageAccueil.loadDataLocataireToTable();
+			model = ModelePageAccueil.loadDataLocataireToTable();
 			table.setModel(model);
 			TableColumnModel columnModel = table.getColumnModel();
 			columnModel.getColumn(0).setPreferredWidth(100); // Nom
@@ -229,6 +235,32 @@ public class PageAccueil {
 			public void windowClosing(WindowEvent e) {
 				// Action to perform on application close
 				performCloseAction();
+			}
+		});
+
+		DefaultTableModel finalModel = model;
+		table.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+			public void mouseClicked(java.awt.event.MouseEvent evt) {
+				// Vérifier s'il s'agit d'un double-clic
+				if (evt.getClickCount() == 2) {
+					// Obtenir l'index de la ligne cliquée
+					int row = table.getSelectedRow();
+
+					// Récupérer les données de la ligne sélectionnée
+					if (row != -1) {
+						String nom = (String) finalModel.getValueAt(row, 0);
+						String prenom = (String) finalModel.getValueAt(row, 1);
+						String telephone = (String) finalModel.getValueAt(row, 4);
+
+                        LocataireDAO locataireDAO = new LocataireDAO();
+                        Locataire locataire = locataireDAO.getLocataireByNomPrénomTel(nom,prenom,telephone);
+                        frame.dispose();
+                        new PageUnLocataire(locataire);
+
+                        // Ouvrir une nouvelle fenêtre avec ces données
+					}
+				}
 			}
 		});
 	}

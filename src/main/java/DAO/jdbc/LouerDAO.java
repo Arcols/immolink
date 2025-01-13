@@ -1,6 +1,9 @@
 package DAO.jdbc;
 
 import java.sql.*;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -174,5 +177,38 @@ public class LouerDAO implements DAO.LouerDAO{
         }
         return statut;
     }
+
+    public Boolean getLoyerPaye(int idLocataire, int idBail) {
+        Date date = null;
+        try {
+            Connection cn = ConnectionDB.getInstance();
+            String query = "SELECT dernier_paiement FROM louer WHERE id_bail = ? and id_locataire = ?";
+            PreparedStatement pstmt = cn.prepareStatement(query);
+            pstmt.setInt(1, idBail);
+            pstmt.setInt(2, idLocataire);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                date = rs.getDate("dernier_paiement");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Vérification si la date est null
+        if (date == null) {
+            return false; // Si pas de date de paiement, on retourne false (aucun paiement effectué)
+        }
+
+        // Convertir la java.sql.Date en java.time.LocalDate pour éviter UnsupportedOperationException
+        LocalDate paymentDate = date.toLocalDate();
+
+        // Comparer avec le premier jour du mois courant
+        LocalDate firstDayOfCurrentMonth = LocalDate.now().withDayOfMonth(1);
+
+        return paymentDate.isAfter(firstDayOfCurrentMonth.minusDays(1));  // Si paiement est après ou le premier jour du mois
+    }
+
+
+
 
 }
