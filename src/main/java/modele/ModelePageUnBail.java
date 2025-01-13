@@ -42,8 +42,10 @@ import classes.Bail;
 import classes.BienLouable;
 import classes.Locataire;
 import classes.Logement;
+import enumeration.TypeLogement;
 import ihm.PageBaux;
 import ihm.PageCharge;
+import ihm.PageMesBiens;
 import ihm.PageUnBail;
 
 public class ModelePageUnBail {
@@ -242,7 +244,6 @@ public class ModelePageUnBail {
 
             dialog.setLocationRelativeTo(parentFrame);
             dialog.setVisible(true);
-
         };
     }
 
@@ -605,6 +606,43 @@ public class ModelePageUnBail {
         int yearsToAdd = currentYear - calendar.get(Calendar.YEAR);
         calendar.add(Calendar.YEAR, yearsToAdd);
         return new Date(calendar.getTimeInMillis());
+    }
+
+
+    public ActionListener deleteBail(Integer idBail) {
+        return new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JDialog dialog = new JDialog(pageUnBail.getFrame(), "Suppression du bail", true);
+                dialog.setSize(400, 200);
+                dialog.setLayout(null);
+
+                JLabel label = new JLabel("Etes-vous sur de vouloir supprimer votre bail ?");
+                label.setBounds(20, 30, 400, 25);
+                dialog.add(label);
+
+                JButton validerButton = new JButton("Valider");
+                validerButton.setBounds(90, 100, 100, 30);
+                dialog.add(validerButton);
+                JButton annulerButton = new JButton("Annuler");
+                annulerButton.setBounds(210, 100, 100, 30);
+                dialog.add(annulerButton);
+                annulerButton.addActionListener(event -> dialog.dispose());
+                validerButton.addActionListener(event -> {
+                    new BailDAO().delete(idBail);
+                    JOptionPane.showMessageDialog(dialog,
+                            "Votre bien a été supprimé",
+                            "Confirmation",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    dialog.dispose();
+                    pageUnBail.getFrame().dispose();
+                    PageBaux pageMesBaux = new PageBaux();
+                    pageMesBaux.main(null);
+                });
+                dialog.setLocationRelativeTo(pageUnBail.getFrame());
+                dialog.setVisible(true);
+            }
+        };
     }
 
 }

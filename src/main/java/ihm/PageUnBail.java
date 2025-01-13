@@ -414,6 +414,16 @@ public class PageUnBail {
             btnModifierICC.addActionListener(modele.getModifierICC(frame,new BailDAO().getId(bail)));
         }
 
+        if(bail.getDate_fin().before(new Date(System.currentTimeMillis()))){
+            JButton btnDeleteBail = new JButton("Supprimer le bail");
+            GridBagConstraints gbc_btnDeleteBail = new GridBagConstraints();
+            gbc_btnDeleteBail.insets = new Insets(0, 5, 5, 0);
+            gbc_btnDeleteBail.gridx = 4;
+            gbc_btnDeleteBail.gridy = 0;
+            panelModifs.add(btnDeleteBail, gbc_btnDeleteBail);
+            btnDeleteBail.addActionListener(modele.deleteBail(new BailDAO().getId(bail)));
+        }
+
         JPanel panelQuitter = new JPanel();
         basPage.add(panelQuitter);
         FlowLayout fl_panelQuitter = new FlowLayout(FlowLayout.LEFT, 5, 5);

@@ -171,8 +171,8 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
             if (haveGarage(id)) {
                 GarageDAO garageDAO = new GarageDAO();
                 Integer idGarage = garageDAO.readIdGarageFromBien(id);
+                garageDAO.updateTypeGarage(idGarage,TypeLogement.GARAGE_ASSOCIE,TypeLogement.GARAGE_PAS_ASSOCIE);
                 supprimerBL.run();
-                garageDAO.delete(idGarage);
             }else{
                 supprimerBL.run();
             }

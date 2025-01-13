@@ -18,6 +18,12 @@ public interface LouerDAO {
      */
     void create(Locataire locataire, Bail bail, int quotite) throws DAOException;
 
+    /**
+     * Vrai si le locataire est déjà dans le bail.
+     * @param idloc
+     * @param idBail
+     * @return Boolean
+     */
     boolean locInBail(int idloc, int idBail);
 
     /**

@@ -57,6 +57,7 @@ public class PageMonBien {
     private JPanel tableau_diagnostic;
     private JLabel diagnostics;
     private JButton garageButton;
+    private JButton deleteButton = new JButton();
 
     /**
      * Create the application.
@@ -76,7 +77,7 @@ public class PageMonBien {
         this.affichageCoutTravaux = new JLabel("New label");
         this.tableDiagnostics= new JTable();
         this.frame = new JFrame();
-        this.frame.setBounds(100, 100, 1000, 600);
+        this.frame.setBounds(0, 0, 1300, 750);
         this.frame.getContentPane().setBackground(Charte.FOND.getCouleur());
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         ModelePageMonBien modele = new  ModelePageMonBien(this);
@@ -384,6 +385,18 @@ public class PageMonBien {
             }
         }
 
+        GridBagConstraints gbc_buttonDelete = new GridBagConstraints();
+        gbc_buttonDelete.anchor = GridBagConstraints.WEST;
+        gbc_buttonDelete.insets = new Insets(0, 0, 5, 5);
+        gbc_buttonDelete.gridwidth = 2;
+        gbc_buttonDelete.gridx = 0;
+        gbc_buttonDelete.gridy = 12;
+
+        panel.add(deleteButton, gbc_buttonDelete);
+
+        deleteButton.setText("Supprimer mon bien");
+        deleteButton.addActionListener(modele.deleteBienLouable(frame,idBien,typeLogement));
+
         JPanel panel_diagnostic = new JPanel();
         GridBagConstraints gbc_diagnostic = new GridBagConstraints();
         gbc_diagnostic.fill = GridBagConstraints.BOTH;
@@ -434,6 +447,13 @@ public class PageMonBien {
             gbc_diag.gridx = 1; // Deuxième colonne pour le bouton
             this.tableau_diagnostic.add(bouton, gbc_diag);
 
+            // Créer le bouton "Modifier" pour les diagnostiques périmables
+            if(diagnosticList.get(rowTab).getDateInvalidite() != null){
+                JButton boutonModif = new JButton("Modifier");
+                boutonModif.addActionListener(modele.getTelechargerPDFButton(frame,diagnostic,idBien,typeLogement));
+                gbc_diag.gridx = 2;
+                this.tableau_diagnostic.add(boutonModif, gbc_diag);
+            }
             rowTab++; // Incrémenter la ligne pour le prochain diagnostic
         }
 
@@ -470,6 +490,8 @@ public class PageMonBien {
         quitter.setVerticalAlignment(SwingConstants.BOTTOM);
         bas_de_page.add(quitter, BorderLayout.WEST);
         quitter.addActionListener(modele.quitterPage());
+
+
 
         JButton ajouter = new JButton("Nouveau travaux");
         ajouter.setEnabled(true); // Le bouton est maintenant activé

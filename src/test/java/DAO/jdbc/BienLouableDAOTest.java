@@ -142,6 +142,7 @@ public class BienLouableDAOTest {
         assertNull(bienLouableDAO.readFisc("123456789106"));
         assertNull(bailDAO.getBailFromId(bailDAO.getId(bailWithGarage)));
         assertNull(garageDAO.read(garageDAO.getIdGarage("G12345678910", TypeLogement.GARAGE_ASSOCIE)));
+        assertNotNull(garageDAO.read(garageDAO.getIdGarage("G12345678910", TypeLogement.GARAGE_PAS_ASSOCIE)));
     }
 
     @Test
