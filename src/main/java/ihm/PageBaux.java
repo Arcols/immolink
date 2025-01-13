@@ -3,6 +3,7 @@ package ihm;
 import DAO.DAOException;
 import DAO.db.ConnectionDB;
 import DAO.jdbc.BailDAO;
+import DAO.jdbc.BatimentDAO;
 import DAO.jdbc.BienLouableDAO;
 import DAO.jdbc.LouerDAO;
 import classes.Bail;
@@ -19,7 +20,10 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -44,6 +48,9 @@ public class PageBaux {
 	private JTextField choix_depot_garantie;
 	private JTable table;
 	private DefaultTableModel tableModel;
+
+	private Map<String, List<String>> mapVillesAdresses;
+	private Set<String> setVilles;
 
 	/**
 	 * Launch the application.
@@ -73,6 +80,15 @@ public class PageBaux {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+
+		try {
+			this.mapVillesAdresses = new BatimentDAO().searchAllBatimentsWithCompl();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		this.setVilles = this.mapVillesAdresses.keySet();
+
 		ModelePageBaux modele=new ModelePageBaux(this);
 		this.frame = new JFrame("Page mes baux");
 		this.frame.setBounds(100, 100, 750, 400);
@@ -207,7 +223,7 @@ public class PageBaux {
 		bas_de_page.add(revenu_immobilier, BorderLayout.WEST);
 
 		JButton ajouter = new JButton("Nouveau bail");
-		ajouter.setEnabled(true); // Le bouton est maintenant activé
+		ajouter.setEnabled(!this.setVilles.isEmpty());
 		ajouter.setHorizontalTextPosition(SwingConstants.LEFT);
 		ajouter.setVerticalTextPosition(SwingConstants.TOP);
 		ajouter.setVerticalAlignment(SwingConstants.BOTTOM);
