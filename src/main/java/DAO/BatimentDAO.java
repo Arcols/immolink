@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import classes.Batiment;
+import classes.BienLouable;
+import enumeration.TypeLogement;
 
 public interface BatimentDAO {
 
@@ -85,4 +87,14 @@ public interface BatimentDAO {
 	 * @return la liste des batiments
 	 */
     List<Batiment> findAll();
+
+	/**Récupère tous les ids des biens d'un batiment en fonction de leur type
+			* @param idBat l'id du batiment
+	 		* @param type le type de bien rechercher
+			* @return la liste des ids des garages
+	 * @throws DAOException
+	*/
+	List<Integer> getBienTypeBat(Integer idBat, TypeLogement type) throws DAOException;
+
+
 }
