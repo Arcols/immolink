@@ -3,9 +3,11 @@ package DAO.jdbc;
 import DAO.DAOException;
 import DAO.db.ConnectionDB;
 import classes.Batiment;
+import classes.Devis;
 import enumeration.TypeLogement;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

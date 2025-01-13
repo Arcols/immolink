@@ -123,6 +123,23 @@ public class DevisDAO implements DAO.DevisDAO {
     }
 
     @Override
+    public List<Devis> getAllDevisFromABienAndDate(String num_fiscal, TypeLogement typeLogement, Date annee) {
+        TravauxAssocieDAO travauxAssocieDAO = new TravauxAssocieDAO();
+        List<Devis> liste_devis = new ArrayList<>();
+        List<Integer> liste_id_devis;
+        try {
+            liste_id_devis = travauxAssocieDAO.findAll(num_fiscal,typeLogement);
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
+        for (Integer id : liste_id_devis){
+            Devis devis = readId(id);
+            liste_devis.add(devis);
+        }
+        return liste_devis;
+    }
+
+    @Override
     public double getMontantTotalDevis(String num_fiscal, TypeLogement typeLogement) {
         double resultat=0.0;
         List<Devis> liste_devis = getAllDevisFromABien(num_fiscal,typeLogement);

@@ -1,11 +1,13 @@
 package DAO;
 
 import java.sql.SQLException;
+import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
 import classes.Batiment;
 import classes.BienLouable;
+import classes.Devis;
 import enumeration.TypeLogement;
 
 public interface BatimentDAO {
@@ -72,6 +74,11 @@ public interface BatimentDAO {
 	 */
 	Map<String, List<String>> searchAllBatiments() throws SQLException;
 
+	/**
+	 * Cherche tous les batiments qui ont des biens louables
+	 * @return une Map des villes avec toutes les adresses pour cette ville
+	 * @throws SQLException
+	 */
 	Map<String, List<String>> searchAllBatimentsWithCompl() throws SQLException;
 
 	/**
@@ -91,10 +98,8 @@ public interface BatimentDAO {
 	/**Récupère tous les ids des biens d'un batiment en fonction de leur type
 			* @param idBat l'id du batiment
 	 		* @param type le type de bien rechercher
-			* @return la liste des ids des garages
+			* @return la liste des ids des biens
 	 * @throws DAOException
 	*/
 	List<Integer> getBienTypeBat(Integer idBat, TypeLogement type) throws DAOException;
-
-
 }
