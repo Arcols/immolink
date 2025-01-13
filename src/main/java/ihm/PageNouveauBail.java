@@ -312,7 +312,7 @@ public class PageNouveauBail {
         panel_bien.add(choix_loyer, gbc_choix_loyer);
         choix_loyer.setColumns(7);
 
-        JLabel prevision = new JLabel("Prévision pour charge");
+        JLabel prevision = new JLabel("Provision pour charge");
         GridBagConstraints gbc_prevision = new GridBagConstraints();
         gbc_prevision.fill = GridBagConstraints.BOTH;
         gbc_prevision.insets = new Insets(0, 0, 5, 5);

@@ -282,6 +282,21 @@ public class BailDAO implements DAO.BailDAO {
         }
     }
 
+    @Override
+    public void updateProvisionPourCharge(int idBail, double previsionPourCharge) {
+        try {
+            Connection cn = ConnectionDB.getInstance();
+            String query = "UPDATE bail SET charges = ? WHERE id = ?";
+            PreparedStatement pstmt = cn.prepareStatement(query);
+            pstmt.setDouble(1, previsionPourCharge);
+            pstmt.setInt(2, idBail);
+            pstmt.executeUpdate();
+            pstmt.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public List<String> getBauxNouvelICC() {
         List<String> lNotifs = new LinkedList<>();
         try {
