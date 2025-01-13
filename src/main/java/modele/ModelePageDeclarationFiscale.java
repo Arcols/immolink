@@ -2,17 +2,20 @@ package modele;
 
 import DAO.DAOException;
 import DAO.jdbc.*;
-import classes.Bail;
-import classes.Batiment;
-import classes.BienLouable;
-import classes.Devis;
+import classes.*;
 import enumeration.TypeLogement;
+import ihm.PageAccueil;
+import ihm.PageBaux;
 import ihm.PageDeclarationFiscale;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -111,32 +114,66 @@ public class ModelePageDeclarationFiscale {
         return lignedevis;
     }
 
-    public ActionListener OuvrirDetailTravaux(List<Devis> listdevis) {
-        return e -> {
-            JDialog dialog = new JDialog((Frame) null, "Détails travaux ", true);
-            dialog.setSize(400, 200);
-            dialog.setLayout(null);
+    public void OuvrirDetailTravaux(List<Devis> listdevis) {
 
-            for(Devis d : listdevis) {
-                JLabel label = new JLabel(d.getNature()+" "+
-                        d.getNomEntreprise()+" "+
-                        d.getAdresseEntreprise()+" "+
-                        String.valueOf(d.getDateFacture())+" "+
-                        d.getMontantTravaux()+"\n");
-                label.setBounds(20, 30, 200, 25);
-                dialog.add(label);
+        String[][] data = new String[listdevis.size()][];
+        String[] ligne;
+        int i = 0;
+        for(Devis d : listdevis) {
+            ligne= new String[]{
+                    d.getNature(),
+                    d.getNomEntreprise()+", "+d.getAdresseEntreprise(),
+                    String.valueOf(d.getDateFacture()),
+                    String.valueOf(d.getMontantTravaux())
+            };
+            data[i] = ligne;
+            i++;
+        }
+        String[] columns = { "Nature des travaux","Nom et adresse entreprise", "Date de la facture", "Montant"};
+        // Créer le modèle de table avec les données
+        DefaultTableModel tableModel = new DefaultTableModel(data, columns) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Toutes les cellules sont non éditables
             }
+        };
+        JTable tab = new JTable(tableModel);
+        TableColumnModel columnModel = tab.getColumnModel();
+        columnModel.getColumn(0).setPreferredWidth(125); // Nature
+        columnModel.getColumn(1).setPreferredWidth(250); // Nom et adresse
+        columnModel.getColumn(2).setPreferredWidth(125); // Date facture
+        columnModel.getColumn(3).setPreferredWidth(100); // Montant
+        tab.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-            JButton validerButton = new JButton("Quitter");
-            validerButton.setBounds(150, 100, 100, 30);
-            dialog.add(validerButton);
+        // ScrollPane pour la table
+        JScrollPane scrollPanePopUp = new JScrollPane(tab);
 
-            validerButton.addActionListener(event -> {
-                dialog.dispose();
-            });
+        // Création d'une fenêtre popup
+        JFrame popupFrame = new JFrame("Sélectionner un locataire");
+        popupFrame.setSize(600, 400);
+        popupFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        popupFrame.setLayout(new BorderLayout());
+        popupFrame.add(scrollPanePopUp, BorderLayout.CENTER);
+        popupFrame.setLocationRelativeTo(this.pageDeclarationFiscale.getFrame());
 
-            dialog.setLocationRelativeTo(null);
-            dialog.setVisible(true);
+        JButton validerButton = new JButton("Quitter");
+        validerButton.setBounds(150, 100, 100, 30);
+        popupFrame.add(validerButton,BorderLayout.SOUTH);
+
+        validerButton.addActionListener(event -> {
+            popupFrame.dispose();
+        });
+
+
+        // Afficher la fenêtre popup
+        popupFrame.setVisible(true);
+    }
+
+    public ActionListener quitterPage(){
+        return e -> {
+            pageDeclarationFiscale.getFrame().dispose();
+            PageAccueil PageAccueil = new PageAccueil();
+            PageAccueil.main(null);
         };
     }
 }

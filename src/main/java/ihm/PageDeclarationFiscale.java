@@ -112,6 +112,13 @@ public class PageDeclarationFiscale {
 
         // Créer la table avec ce modèle
         table = new JTable(modele.LoadToDataPageDeclarationFiscaleToTable());
+        TableColumnModel columnModel = table.getColumnModel();
+        columnModel.getColumn(0).setPreferredWidth(200); // Adresse
+        columnModel.getColumn(1).setPreferredWidth(150); // Nb local
+        columnModel.getColumn(2).setPreferredWidth(50); // frais gestion
+        columnModel.getColumn(3).setPreferredWidth(75); // total travaux
+        columnModel.getColumn(4).setPreferredWidth(75); // taxes foncière
+        columnModel.getColumn(5).setPreferredWidth(200); // détails travaux
         // Ajouter la table dans un JScrollPane pour permettre le défilement
         JScrollPane scrollPane = new JScrollPane(table);
         body.add(scrollPane, BorderLayout.CENTER);
@@ -156,7 +163,7 @@ public class PageDeclarationFiscale {
                 }
             }
         });
-
+        quitter.addActionListener(modele.quitterPage());
         this.frame.setVisible(true);
     }
 
