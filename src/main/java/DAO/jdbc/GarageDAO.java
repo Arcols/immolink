@@ -86,12 +86,13 @@ public class GarageDAO implements DAO.GarageDAO {
 	}
 
 	@Override
-	public void delete(int id) throws DAOException {
+	public void delete(int id,TypeLogement typeLogement) throws DAOException {
 		try {
 			Connection cn = ConnectionDB.getInstance();
-			String query = "DELETE FROM bienlouable WHERE id = ?";
+			String query = "DELETE FROM bienlouable WHERE id = ? AND type_logement = ?";
 			PreparedStatement pstmt = cn.prepareStatement(query);
 			pstmt.setInt(1, id);
+			pstmt.setInt(2, typeLogement.getValue());
 			pstmt.executeUpdate();
 			pstmt.close();
 		}catch (SQLException e) {

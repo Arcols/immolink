@@ -142,6 +142,7 @@ public class BienLouableDAOTest {
         assertNull(bienLouableDAO.readFisc("123456789106"));
         assertNull(bailDAO.getBailFromId(bailDAO.getId(bailWithGarage)));
         assertNull(garageDAO.read(garageDAO.getIdGarage("G12345678910", TypeLogement.GARAGE_ASSOCIE)));
+        assertNotNull(garageDAO.read(garageDAO.getIdGarage("G12345678910", TypeLogement.GARAGE_PAS_ASSOCIE)));
     }
 
     @Test
@@ -342,4 +343,17 @@ public class BienLouableDAOTest {
         assertNotNull(bienLouablesNoGarage);
         assertTrue(bienLouablesNoGarage.stream().anyMatch(b -> b.getNumero_fiscal().equals("H12345678910")));
     }
+
+    @Test
+    public void testGetAllBienLouableNoGarageLinkWithAppartment() throws DAOException {
+        BienLouable house = new BienLouable("H12345678910", "Paris", "123 Rue de la Paix", "House 1", new ArrayList<>(), null, TypeLogement.MAISON);
+        bienLouableDAO.create(house, TypeLogement.APPARTEMENT, 5, 120.0);
+
+        List<BienLouable> bienLouablesNoGarage = bienLouableDAO.getAllBienLouableNoGarageLink();
+
+        assertNotNull(bienLouablesNoGarage);
+        assertTrue(bienLouablesNoGarage.stream().anyMatch(b -> b.getNumero_fiscal().equals("H12345678910")));
+    }
+
+
 }

@@ -39,10 +39,11 @@ public interface GarageDAO {
 	 * Supprime un Garage de la base de données en utilisant son identifiant.
 	 *
 	 * @param id L'identifiant unique du bien immobilier à supprimer
+	 * @param typeLogement le type de logement du garage
 	 * @throws DAOException en cas d'erreur lors de la suppression du bien
 	 *                      immobilier
 	 */
-	void delete(int id) throws DAOException;
+	void delete(int id,TypeLogement typeLogement) throws DAOException;
 
 	/**
 	 *

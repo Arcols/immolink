@@ -92,9 +92,24 @@ public class LocataireTest {
         Locataire locataire1 = new Locataire("Doe", "John", "Paris", "1990-01-01", "0606060606", "ee.ee@ee.ee", Date.valueOf("2020-01-01"), "M");
         Locataire locataire2 = new Locataire("Doe", "John", "Paris", "1990-01-01", "0606060606", "ee.ee@ee.ee", Date.valueOf("2020-01-01"), "M");
         Locataire locataire3 = new Locataire("Smith", "John", "Paris", "1990-01-01", "0606060606", "ee.ee@ee.ee", Date.valueOf("2020-01-01"), "M");
+        Locataire locataire4 = new Locataire("Doe", "John", "Paris", "1990-01-01", "0606060606", null, Date.valueOf("2020-01-01"), "M");
+        Locataire locataire5 = new Locataire("Doe", "John", "Paris", "1990-01-01", "0606060606", "different@mail.com", Date.valueOf("2020-01-01"), "M");
 
+        // Test equality with identical locataires
         assertTrue(locataire1.equals(locataire2));
+
+        // Test inequality with different locataires
         assertFalse(locataire1.equals(locataire3));
+
+        // Test inequality with locataire having null mail
+        assertFalse(locataire1.equals(locataire4));
+
+        // Test equality with locataire having null mail
+        Locataire locataire6 = new Locataire("Doe", "John", "Paris", "1990-01-01", "0606060606", null, Date.valueOf("2020-01-01"), "M");
+        assertTrue(locataire4.equals(locataire6));
+
+        // Test inequality with different mail
+        assertFalse(locataire1.equals(locataire5));
     }
 
     @Test
@@ -111,4 +126,5 @@ public class LocataireTest {
     public void testEqualsWithDifferentClass() {
         assertFalse(locataire.equals(new Object()));
     }
+
 }

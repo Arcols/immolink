@@ -77,5 +77,17 @@ public interface BailDAO {
          */
         void updateICC(int idBail,double icc);
 
+        /**
+         * Met à jour la date de début d'un bail dans la base de données.
+         * @param idBail L'identifiant du bail à mettre à jour
+         * @param dateDernierAnniv
+         */
         void updateDateDernierAnniversaire(int idBail,Date dateDernierAnniv);
+
+        /**
+         * Met à jour la date de début d'un bail dans la base de données.
+         * @param idBail L'identifiant du bail à mettre à jour
+         * @param previsionPourCharge La nouvelle provision pour charge
+         */
+        void updateProvisionPourCharge(int idBail, double previsionPourCharge);
 }

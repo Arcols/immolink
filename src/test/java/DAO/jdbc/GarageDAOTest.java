@@ -54,7 +54,7 @@ public class GarageDAOTest {
     @Test
     public void testDelete() throws SQLException, DAOException {
         Integer id = garageDAO.getIdGarage("G12345678999",TypeLogement.GARAGE_PAS_ASSOCIE);
-        garageDAO.delete(id);
+        garageDAO.delete(id,TypeLogement.GARAGE_PAS_ASSOCIE);
         assertNull(garageDAO.read(id));
     }
 

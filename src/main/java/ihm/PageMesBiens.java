@@ -1,14 +1,7 @@
 package ihm;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
+import java.awt.*;
+
 import modele.Menu;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -132,10 +125,12 @@ public class PageMesBiens {
         body.setLayout(new BorderLayout(0, 0));
 
         JPanel titre = new JPanel();
+        FlowLayout fl_titre = (FlowLayout) titre.getLayout();
         body.add(titre, BorderLayout.NORTH);
 
-        JLabel labelMesBiens = new JLabel("Mes biens");
-        titre.add(labelMesBiens);
+        JLabel titleLabel = new JLabel("Mes biens", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        body.add(titleLabel, BorderLayout.NORTH);
 
         JPanel panel = new JPanel();
         body.add(panel, BorderLayout.CENTER);

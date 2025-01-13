@@ -42,8 +42,10 @@ import classes.Bail;
 import classes.BienLouable;
 import classes.Locataire;
 import classes.Logement;
+import enumeration.TypeLogement;
 import ihm.PageBaux;
 import ihm.PageCharge;
+import ihm.PageMesBiens;
 import ihm.PageUnBail;
 
 public class ModelePageUnBail {
@@ -239,11 +241,53 @@ public class ModelePageUnBail {
                             JOptionPane.ERROR_MESSAGE);
                 }
             });
-
             dialog.setLocationRelativeTo(parentFrame);
             dialog.setVisible(true);
-
         };
+    }
+
+    public ActionListener getUpdateProvisionPourCharge(int idBail){
+        return e -> {
+            JDialog dialog = new JDialog(pageUnBail.getFrame(), "Modifier provision pour charger", true);
+            dialog.setSize(400, 200);
+            dialog.setLayout(null);
+
+            JLabel label = new JLabel("Entrez la nouvelle provision \n pour charges :");
+            label.setBounds(20, 30, 250, 25);
+            dialog.add(label);
+
+            JTextField PPCField = new JTextField();
+            PPCField.setBounds(260, 30, 100, 25);
+
+            // Charger la valeur actuelle du loyer
+            Double valeurActuelle = Double.parseDouble(pageUnBail.getAffichageProvision().getText());
+            if (valeurActuelle != null) {
+                PPCField.setText(String.valueOf(valeurActuelle));
+            }
+
+            dialog.add(PPCField);
+
+            JButton validerButton = new JButton("Valider");
+            validerButton.setBounds(210, 100, 100, 30);
+            dialog.add(validerButton);
+            validerButton.addActionListener(event -> {
+                new BailDAO().updateProvisionPourCharge(idBail, Double.parseDouble(PPCField.getText()));
+                JOptionPane.showMessageDialog(dialog,
+                        "Votre provision pour charge a bien été supprimée",
+                        "Confirmation",
+                        JOptionPane.INFORMATION_MESSAGE);
+                dialog.dispose();
+                pageUnBail.getFrame().dispose();
+                PageUnBail pageUnBail = new PageUnBail(new BailDAO().getBailFromId(idBail));
+            });
+            JButton annulerButton = new JButton("Annuler");
+            annulerButton.setBounds(90, 100, 100, 30);
+            dialog.add(annulerButton);
+            annulerButton.addActionListener(event -> dialog.dispose());
+            dialog.setLocationRelativeTo(pageUnBail.getFrame());
+            dialog.setVisible(true);
+        };
+
     }
 
     public ActionListener getAjouterLocataire(int idBail) {
@@ -605,6 +649,43 @@ public class ModelePageUnBail {
         int yearsToAdd = currentYear - calendar.get(Calendar.YEAR);
         calendar.add(Calendar.YEAR, yearsToAdd);
         return new Date(calendar.getTimeInMillis());
+    }
+
+
+    public ActionListener deleteBail(Integer idBail) {
+        return new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JDialog dialog = new JDialog(pageUnBail.getFrame(), "Suppression du bail", true);
+                dialog.setSize(400, 200);
+                dialog.setLayout(null);
+
+                JLabel label = new JLabel("Etes-vous sur de vouloir supprimer votre bail ?");
+                label.setBounds(20, 30, 400, 25);
+                dialog.add(label);
+
+                JButton validerButton = new JButton("Valider");
+                validerButton.setBounds(210, 100, 100, 30);
+                dialog.add(validerButton);
+                JButton annulerButton = new JButton("Annuler");
+                annulerButton.setBounds(90, 100, 100, 30);
+                dialog.add(annulerButton);
+                annulerButton.addActionListener(event -> dialog.dispose());
+                validerButton.addActionListener(event -> {
+                    new BailDAO().delete(idBail);
+                    JOptionPane.showMessageDialog(dialog,
+                            "Votre bien a été supprimé",
+                            "Confirmation",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    dialog.dispose();
+                    pageUnBail.getFrame().dispose();
+                    PageBaux pageMesBaux = new PageBaux();
+                    pageMesBaux.main(null);
+                });
+                dialog.setLocationRelativeTo(pageUnBail.getFrame());
+                dialog.setVisible(true);
+            }
+        };
     }
 
 }

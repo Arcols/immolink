@@ -77,7 +77,7 @@ public class PageUnBail {
      */
     private void initialize(Bail bail) {
         this.frame = new JFrame();
-        this.frame.setBounds(100, 100, 750, 400);
+        this.frame.setBounds(100, 100, 950, 500);
         this.frame.getContentPane().setBackground(FOND.getCouleur());
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         ModelePageUnBail modele = new  ModelePageUnBail(this);
@@ -404,14 +404,32 @@ public class PageUnBail {
         panelModifs.add(btnAjoutLocataire, gbc_btnAjoutLocataire);
         btnAjoutLocataire.addActionListener(modele.getAjouterLocataire(new BailDAO().getId(bail)));
 
+        JButton btnUpdateProvision = new JButton("Modifier Provision Pour Charges");
+        GridBagConstraints gbc_btnUpdateProvision = new GridBagConstraints();
+        gbc_btnUpdateProvision.insets = new Insets(0, 0, 5, 5);
+        gbc_btnUpdateProvision.gridx = 3;
+        gbc_btnUpdateProvision.gridy = 0;
+        panelModifs.add(btnUpdateProvision, gbc_btnUpdateProvision);
+        btnUpdateProvision.addActionListener(modele.getUpdateProvisionPourCharge(new BailDAO().getId(bail)));
+
         if(bail.getDernier_anniversaire().before(eneleveUneAnnéeADate(new Date(System.currentTimeMillis())))){
             JButton btnModifierICC = new JButton("Modifier l'ICC (Anniversaie de votre bail)");
             GridBagConstraints gbc_btnModifierICC = new GridBagConstraints();
-            gbc_btnModifierICC.insets = new Insets(0, 0, 5, 0);
-            gbc_btnModifierICC.gridx = 3;
+            gbc_btnModifierICC.insets = new Insets(0, 0, 5, 5);
+            gbc_btnModifierICC.gridx = 4;
             gbc_btnModifierICC.gridy = 0;
             panelModifs.add(btnModifierICC, gbc_btnModifierICC);
             btnModifierICC.addActionListener(modele.getModifierICC(frame,new BailDAO().getId(bail)));
+        }
+
+        if(bail.getDate_fin().before(new Date(System.currentTimeMillis()))){
+            JButton btnDeleteBail = new JButton("Supprimer le bail");
+            GridBagConstraints gbc_btnDeleteBail = new GridBagConstraints();
+            gbc_btnDeleteBail.insets = new Insets(0, 0, 5, 0);
+            gbc_btnDeleteBail.gridx = 5;
+            gbc_btnDeleteBail.gridy = 0;
+            panelModifs.add(btnDeleteBail, gbc_btnDeleteBail);
+            btnDeleteBail.addActionListener(modele.deleteBail(new BailDAO().getId(bail)));
         }
 
         JPanel panelQuitter = new JPanel();

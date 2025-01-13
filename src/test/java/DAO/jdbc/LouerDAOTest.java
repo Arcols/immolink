@@ -161,4 +161,22 @@ public class LouerDAOTest {
         assertEquals(50, quotite);
     }
 
+    @Test
+    public void testLocInBail() throws DAOException {
+        louerDAO.create(locataire, bail, 100);
+        int idLocataire = locataireDAO.getId(locataire);
+        int idBail = bailDAO.getId(bail);
+
+        boolean isLocInBail = louerDAO.locInBail(idLocataire, idBail);
+        assertTrue(isLocInBail);
+
+        // Test with a locataire not in the bail
+        Locataire locataire2 = new Locataire("Smith", "Jane", "Lyon", "1992-02-02", "0707070707", "jj.jj@jj.jj", Date.valueOf("2021-01-01"), "F");
+        locataireDAO.addLocataire(locataire2);
+        int idLocataire2 = locataireDAO.getId(locataire2);
+
+        boolean isLocInBail2 = louerDAO.locInBail(idLocataire2, idBail);
+        assertFalse(isLocInBail2);
+    }
+
 }
