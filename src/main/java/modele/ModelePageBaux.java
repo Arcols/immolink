@@ -1,18 +1,20 @@
 package modele;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.event.ActionListener;
+import java.sql.Date;
+import java.sql.SQLException;
+
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
+
 import DAO.DAOException;
 import DAO.jdbc.BailDAO;
 import DAO.jdbc.BienLouableDAO;
 import classes.Bail;
 import ihm.PageBaux;
 import ihm.PageNouveauBail;
-
-import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
-import java.awt.*;
-import java.awt.event.ActionListener;
-import java.sql.Date;
-import java.sql.SQLException;
 
 public class ModelePageBaux {
 

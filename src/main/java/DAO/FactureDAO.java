@@ -11,4 +11,6 @@ public interface FactureDAO {
 
     List<Facture> getAllByAnnee(Date annee, int id_charge) throws  DAOException;
 
+    List<Facture> getAll(int id_charge) throws  DAOException;
+
 }

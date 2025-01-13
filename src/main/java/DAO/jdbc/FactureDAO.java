@@ -54,4 +54,28 @@ public class FactureDAO implements DAO.FactureDAO{
         }
         return factures;
     }
+
+    @Override
+    public List<Facture> getAll(int id_charge) throws DAOException {
+        List<Facture> listfactures = new LinkedList<>();
+        try {
+            Connection cn = ConnectionDB.getInstance();
+            String query = "SELECT numero, type, date, montant FROM facture WHERE id_charge = ? ORDER BY date DESC";
+            PreparedStatement pstmt = cn.prepareStatement(query);
+            pstmt.setInt(1, id_charge);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                String numero = rs.getString("numero");
+                String type = rs.getString("type");
+                Date date = rs.getDate("date");
+                Double montant = rs.getDouble("montant");
+                listfactures.add(new Facture(numero,type,date,montant));
+            }
+            rs.close();
+            pstmt.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return listfactures;
+        }
 }

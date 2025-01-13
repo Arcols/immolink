@@ -1,15 +1,18 @@
+
 package ihm;
 
-import DAO.db.ConnectionDB;
-import DAO.jdbc.BatimentDAO;
-import DAO.jdbc.BienLouableDAO;
-import com.toedter.calendar.JDateChooser;
-import modele.Charte;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
 import modele.Menu;
-import modele.ModelePageNouveauBail;
-import modele.ResizedImage;
-
-import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
@@ -19,9 +22,29 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.swing.*;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
+
+import com.toedter.calendar.JDateChooser;
+
+import DAO.DAOException;
+import DAO.db.ConnectionDB;
+import DAO.jdbc.BatimentDAO;
+import DAO.jdbc.BienLouableDAO;
+import modele.Charte;
+import modele.ModelePageNouveauBail;
+import modele.ResizedImage;
 
 public class PageNouveauBail {
 
@@ -112,7 +135,7 @@ public class PageNouveauBail {
         JPanel menu_bouttons = new JPanel();
 
         entete.add(menu_bouttons, BorderLayout.CENTER);
-        menu_bouttons.setLayout(new GridLayout(0, 3, 0, 0));
+        menu_bouttons.setLayout(new GridLayout(0, 4, 0, 0));
         menu_bouttons.setBackground(Charte.ENTETE.getCouleur());
 
         JButton b_accueil = new JButton("Accueil");
@@ -137,6 +160,19 @@ public class PageNouveauBail {
         menu_bouttons.add(b_biens);
         menu_bouttons.add(b_biens);
         b_biens.addActionListener(m);
+
+        JButton b_notifs = null;
+        try {
+            b_notifs = new JButton("Notifications ("+m.getNbNotifs()+")");
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
+        b_notifs.setBorderPainted(false);
+        b_notifs.setBackground(Charte.ENTETE.getCouleur());
+        b_notifs.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        menu_bouttons.add(b_notifs);
+        menu_bouttons.add(b_notifs);
+        b_notifs.addActionListener(m);
 
         JPanel body = new JPanel();
         frame.getContentPane().add(body, BorderLayout.CENTER);

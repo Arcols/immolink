@@ -12,7 +12,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.sql.SQLException;
 
-public class PopUpCreationGarageLieBL {
+public class    PopUpCreationGarageLieBL {
     private JFrame frame;
     private PageNouveauBienImmobilier mainPage;
     private DefaultTableModel tableModel;

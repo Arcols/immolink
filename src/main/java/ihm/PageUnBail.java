@@ -36,9 +36,12 @@ import DAO.jdbc.LocataireDAO;
 import DAO.jdbc.LouerDAO;
 import classes.Bail;
 import classes.Locataire;
+
+import modele.Charte;
 import modele.Menu;
 import modele.ModelePageUnBail;
 import modele.ResizedImage;
+
 
 public class PageUnBail {
 
@@ -95,7 +98,7 @@ public class PageUnBail {
         JPanel menu_bouttons = new JPanel();
 
         entete.add(menu_bouttons, BorderLayout.CENTER);
-        menu_bouttons.setLayout(new GridLayout(0, 3, 0, 0));
+        menu_bouttons.setLayout(new GridLayout(0, 4, 0, 0));
         menu_bouttons.setBackground(ENTETE.getCouleur());
 
         JButton b_accueil = new JButton("Accueil");
@@ -120,6 +123,19 @@ public class PageUnBail {
         menu_bouttons.add(b_biens);
         menu_bouttons.add(b_biens);
         b_biens.addActionListener(m);
+
+        JButton b_notifs = null;
+        try {
+            b_notifs = new JButton("Notifications ("+m.getNbNotifs()+")");
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
+        b_notifs.setBorderPainted(false);
+        b_notifs.setBackground(Charte.ENTETE.getCouleur());
+        b_notifs.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        menu_bouttons.add(b_notifs);
+        menu_bouttons.add(b_notifs);
+        b_notifs.addActionListener(m);
 
         JPanel body = new JPanel();
         frame.getContentPane().add(body, BorderLayout.CENTER);
@@ -422,6 +438,7 @@ public class PageUnBail {
         }
 
         frame.setVisible(true);
+        JButton finalB_notifs = b_notifs;
         this.frame.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {

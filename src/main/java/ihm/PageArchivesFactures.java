@@ -1,73 +1,36 @@
 package ihm;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
+import DAO.DAOException;
+import modele.*;
 import modele.Menu;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.sql.SQLException;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
+import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.sql.SQLException;
+import java.util.Arrays;
 
-import DAO.DAOException;
-import DAO.db.ConnectionDB;
-import DAO.jdbc.BatimentDAO;
-import DAO.jdbc.BienLouableDAO;
-import classes.BienLouable;
-import enumeration.TypeLogement;
-import modele.*;
-
-public class PageMesBiens {
+public class PageArchivesFactures {
 
     private JFrame frame;
     private JLabel logo;
-    private JTable table;
+    private int id_bail;
     private DefaultTableModel tableModel;
+    private JTable table;
 
-    /**
-     * Launch the application.
-     */
-    public static void main(String[] args) {
-        EventQueue.invokeLater(() -> {
-            try {
-                PageMesBiens window = new PageMesBiens();
-                window.frame.setVisible(true);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-    }
-    /**
-     * Create the application.
-     */
-    public PageMesBiens() {
-        initialize();
+    public PageArchivesFactures(Integer idBail) {
+        this.id_bail = idBail;
+        this.initialize(idBail);
     }
 
-    /**
-     * Initialize the contents of the frame.
-     */
-    private void initialize() {
+    private void initialize(Integer idBail) {
         // Initialisation du JFrame
-        ModelePageMesBiens modele = new ModelePageMesBiens(this);
+        ModelePageArchivesFactures modele = new ModelePageArchivesFactures(this);
         this.frame = new JFrame();
         this.frame.setBounds(100, 100, 750, 400);
         this.frame.getContentPane().setBackground(Charte.FOND.getCouleur());
@@ -84,7 +47,7 @@ public class PageMesBiens {
         this.logo = new JLabel("");
         entete.add(this.logo, BorderLayout.WEST);
 
-        Menu m = new Menu(this.frame);
+        modele.Menu m = new Menu(this.frame);
 
         JPanel menu_bouttons = new JPanel();
 
@@ -134,8 +97,9 @@ public class PageMesBiens {
         JPanel titre = new JPanel();
         body.add(titre, BorderLayout.NORTH);
 
-        JLabel labelMesBiens = new JLabel("Mes biens");
-        titre.add(labelMesBiens);
+        JLabel titleLabel = new JLabel("Liste des factures", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        body.add(titleLabel, BorderLayout.NORTH);
 
         JPanel panel = new JPanel();
         body.add(panel, BorderLayout.CENTER);
@@ -147,8 +111,14 @@ public class PageMesBiens {
         panel.setLayout(gbl_panel);
 
         try {
-            tableModel = ModelePageMesBiens.loadDataBienImmoToTable();
+            tableModel = modele.loadDataBienImmoToTable();
             table = new JTable(tableModel);
+            TableRowSorter<TableModel> sorter = new TableRowSorter<>(table.getModel());
+            table.setRowSorter(sorter);
+
+            sorter.setSortKeys(
+                    Arrays.asList(new RowSorter.SortKey(2, SortOrder.DESCENDING))
+            );
         } catch (SQLException | DAOException e) {
             JOptionPane.showMessageDialog(frame, "Erreur lors du chargement des données : " + e.getMessage(),
                     "Erreur", JOptionPane.ERROR_MESSAGE);
@@ -180,21 +150,21 @@ public class PageMesBiens {
         this.frame.getContentPane().add(bas_de_page, BorderLayout.SOUTH);
         bas_de_page.setLayout(new BorderLayout(0, 0));
 
-        JButton ajouter = new JButton("Nouveau bien");
-        ajouter.setEnabled(true); // Le bouton est maintenant activé
-        ajouter.setHorizontalTextPosition(SwingConstants.LEFT);
-        ajouter.setVerticalTextPosition(SwingConstants.TOP);
-        ajouter.setVerticalAlignment(SwingConstants.BOTTOM);
-        bas_de_page.add(ajouter, BorderLayout.EAST);
+        JButton quitter = new JButton("Quitter");
+        quitter.setHorizontalTextPosition(SwingConstants.LEFT);
+        quitter.setVerticalTextPosition(SwingConstants.TOP);
+        quitter.setVerticalAlignment(SwingConstants.BOTTOM);
+        bas_de_page.add(quitter, BorderLayout.WEST);
+        quitter.addActionListener(modele.quitterPage(id_bail));
 
         this.frame.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
                 ResizedImage res = new ResizedImage();
-                res.resizeImage("logo+nom.png", PageMesBiens.this.frame,
-                        PageMesBiens.this.logo, 3, 8);
-                int frameWidth = PageMesBiens.this.frame.getWidth();
-                int frameHeight = PageMesBiens.this.frame.getHeight();
+                res.resizeImage("logo+nom.png", PageArchivesFactures.this.frame,
+                        PageArchivesFactures.this.logo, 3, 8);
+                int frameWidth = PageArchivesFactures.this.frame.getWidth();
+                int frameHeight = PageArchivesFactures.this.frame.getHeight();
 
                 int newFontSize = Math.min(frameWidth, frameHeight) / 30;
 
@@ -206,60 +176,14 @@ public class PageMesBiens {
             }
         });
 
-        ajouter.addActionListener(modele.ouvrirNouveauBien());
-
-        table.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                // Vérifier s'il s'agit d'un double-clic
-                if (evt.getClickCount() == 2) {
-                    // Obtenir l'index de la ligne cliquée
-                    int row = table.getSelectedRow();
-
-                    // Récupérer les données de la ligne sélectionnée
-                    if (row != -1) {
-                        String adresse = (String) tableModel.getValueAt(row, 2);
-                        String complement = (String) tableModel.getValueAt(row, 3);
-                        String ville = (String) tableModel.getValueAt(row, 1);
-                        TypeLogement type = TypeLogement.fromString((String) tableModel.getValueAt(row, 0));
-                        try {
-                            if(type.estBienLouable()) {
-                                BienLouable bien = new BienLouableDAO().readFisc(new BienLouableDAO().getFiscFromCompl(ville, adresse, complement));
-                                frame.dispose();
-                                new PageMonBien(new BienLouableDAO().getId(bien.getNumero_fiscal()),type);
-                            }else{
-                                frame.dispose();
-                                Integer IdBat = new BatimentDAO().getIdBat(ville,adresse);
-                                new PageMonBien(IdBat,type);
-                            }
-                        } catch (DAOException e) {
-                            throw new RuntimeException(e);
-                        } catch (SQLException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                }
-            }
-        });
-
-        frame.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                // Action to perform on application close
-                performCloseAction();
-            }
-        });
+        this.frame.setVisible(true);
     }
 
-    private void performCloseAction() {
-        ConnectionDB.destroy(); // fermeture de la connection
-        frame.dispose();
+    public int getId_bail() {
+        return id_bail;
     }
-
-
 
     public JFrame getFrame() {
         return frame;
     }
-
 }

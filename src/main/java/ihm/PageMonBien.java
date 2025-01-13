@@ -1,5 +1,33 @@
 package ihm;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.sql.SQLException;
+import java.util.List;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableModel;
+
 import DAO.DAOException;
 import DAO.db.ConnectionDB;
 import DAO.jdbc.BienLouableDAO;
@@ -9,16 +37,6 @@ import classes.Diagnostic;
 import classes.Garage;
 import enumeration.TypeLogement;
 import modele.*;
-import modele.Menu;
-
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.SQLException;
-import java.util.List;
-
-import javax.swing.*;
-import javax.swing.border.LineBorder;
-import javax.swing.table.DefaultTableModel;
 
 public class PageMonBien {
 
@@ -84,12 +102,12 @@ public class PageMonBien {
         this.logo = new JLabel("");
         entete.add(this.logo, BorderLayout.WEST);
 
-        Menu m = new Menu(this.frame);
+        modele.Menu m = new Menu(this.frame);
 
         JPanel menu_bouttons = new JPanel();
 
         entete.add(menu_bouttons, BorderLayout.CENTER);
-        menu_bouttons.setLayout(new GridLayout(0, 3, 0, 0));
+        menu_bouttons.setLayout(new GridLayout(0, 4, 0, 0));
         menu_bouttons.setBackground(Charte.ENTETE.getCouleur());
 
         JButton b_accueil = new JButton("Accueil");
@@ -114,6 +132,19 @@ public class PageMonBien {
         menu_bouttons.add(b_biens);
         menu_bouttons.add(b_biens);
         b_biens.addActionListener(m);
+
+        JButton b_notifs = null;
+        try {
+            b_notifs = new JButton("Notifications ("+m.getNbNotifs()+")");
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
+        b_notifs.setBorderPainted(false);
+        b_notifs.setBackground(Charte.ENTETE.getCouleur());
+        b_notifs.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        menu_bouttons.add(b_notifs);
+        menu_bouttons.add(b_notifs);
+        b_notifs.addActionListener(m);
 
         JPanel body = new JPanel();
         frame.getContentPane().add(body, BorderLayout.CENTER);
@@ -371,7 +402,7 @@ public class PageMonBien {
         int row = 0;
 
         String[] nomdiagnostic = new String[diagnosticList.size()];
-        for (Diagnostic diagnostic : diagnosticList) {
+        for (classes.Diagnostic diagnostic : diagnosticList) {
             String diagnosticName = diagnostic.getReference();
             if (diagnostic.getDateInvalidite() != null) {
                 diagnosticName += " - Périme en " + diagnostic.getDateInvalidite().toString();
@@ -551,3 +582,4 @@ public class PageMonBien {
         popup.getFrame().setVisible(true);
     }
 }
+
