@@ -121,10 +121,10 @@ public class TravauxAssocieDAO implements DAO.TravauxAssocieDAO {
                 int id_devis_sans_date = rs.getInt("id_devis");
                 String requete2 = "SELECT id FROM devis WHERE id = ? AND YEAR(date_facture) = YEAR(?)";
                 PreparedStatement pstmt2 = cn.prepareStatement(requete2);
-                pstmt.setInt(1,id_devis_sans_date);
-                pstmt.setDate(2, annee);
+                pstmt2.setInt(1,id_devis_sans_date);
+                pstmt2.setDate(2, annee);
                 ResultSet rs2 = pstmt2.executeQuery();
-                if (rs2.next()){
+                while (rs2.next()){
                     idDevis.add(rs2.getInt("id"));
                 }
             }

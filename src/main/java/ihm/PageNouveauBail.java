@@ -182,10 +182,9 @@ public class PageNouveauBail {
         FlowLayout fl_titre = (FlowLayout) titre.getLayout();
         body.add(titre, BorderLayout.NORTH);
 
-        JLabel titrePage = new JLabel("Nouveau bail");
-        titrePage.setAlignmentY(0.0f);
-        titrePage.setAlignmentX(0.5f);
-        titre.add(titrePage);
+        JLabel titleLabel = new JLabel("Nouveau bail", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        body.add(titleLabel, BorderLayout.NORTH);
 
         JPanel panel_bien = new JPanel();
         body.add(panel_bien, BorderLayout.WEST);

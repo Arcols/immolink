@@ -319,7 +319,7 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
                 Date date_fin = rs.getDate("date_fin");
                 Double icc = rs.getDouble("icc");
                 Integer index_eau = rs.getInt("index_eau");
-                Date dernier_anniversaire = rs.getDate("dernier_anniversaire");
+                Date dernier_anniversaire = rs.getDate("date_dernier_anniversaire");
                 bail = new Bail((solde_de_compte==1),bien.getNumero_fiscal(),loyer,charges,depot_garantie,date_debut,date_fin,icc,index_eau,dernier_anniversaire);
             }
         } catch (SQLException e) {
@@ -350,7 +350,7 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
                 Date date_fin = rs.getDate("date_fin");
                 Double icc = rs.getDouble("icc");
                 Integer index_eau = rs.getInt("index_eau");
-                Date dernier_anniversaire = rs.getDate("dernier_anniversaire");
+                Date dernier_anniversaire = rs.getDate("date_dernier_anniversaire");
                 bail = new Bail((solde_de_compte==1),bien.getNumero_fiscal(),loyer,charges,depot_garantie,date_debut,date_fin,icc,index_eau,dernier_anniversaire);
             }
         } catch (SQLException e) {

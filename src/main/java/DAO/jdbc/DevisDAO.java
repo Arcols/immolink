@@ -128,7 +128,7 @@ public class DevisDAO implements DAO.DevisDAO {
         List<Devis> liste_devis = new ArrayList<>();
         List<Integer> liste_id_devis;
         try {
-            liste_id_devis = travauxAssocieDAO.findAll(num_fiscal,typeLogement);
+            liste_id_devis = travauxAssocieDAO.findAllWithDate(num_fiscal,typeLogement,annee);
         } catch (DAOException e) {
             throw new RuntimeException(e);
         }
