@@ -148,7 +148,7 @@ public class ModelePageAccueil {
 
                 // Appliquer une couleur de fond si "Retard"
                 if ("Retard".equals(status)) {
-                    component.setBackground(Color.decode("#ff5454"));
+                    component.setBackground(Color.decode("#f5b942"));
                     component.setForeground(Color.BLACK); // Contraste pour le texte
                 } else {
                     component.setBackground(Color.decode("#7fe075")); // Couleur de fond par défaut

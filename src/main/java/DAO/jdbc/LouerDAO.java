@@ -17,11 +17,12 @@ public class LouerDAO implements DAO.LouerDAO{
         public void create(Locataire locataire, Bail bail, int quotite) throws DAOException {
             try {
                 Connection cn = ConnectionDB.getInstance();
-                String query = "INSERT INTO louer (id_bail,id_locataire,quotite) VALUES (?,?,?)";
+                String query = "INSERT INTO louer (id_bail,id_locataire,quotite,dernier_paiement) VALUES (?,?,?,?)";
                 PreparedStatement pstmt = cn.prepareStatement(query);
                 pstmt.setInt(1,new BailDAO().getId(bail));
                 pstmt.setInt(2, new LocataireDAO().getId(locataire));
                 pstmt.setInt(3,quotite);
+                pstmt.setDate(4,bail.getDate_debut());
                 pstmt.executeUpdate();
                 pstmt.close();
             } catch (SQLException e) {
