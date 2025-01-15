@@ -78,4 +78,11 @@ public interface BailDAO {
         void updateICC(int idBail,double icc);
 
         void updateDateDernierAnniversaire(int idBail,Date dateDernierAnniv);
+
+        /**
+         * Met à jour l'icc d'un bail dans la base de données.
+         * @param idBail id du bail à modifier
+         * @param nouvelIndexe remplace l'indexe du bail
+         */
+        void updateIndexeEau(int idBail,int nouvelIndexe);
 }

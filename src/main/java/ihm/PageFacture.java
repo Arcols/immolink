@@ -21,8 +21,16 @@ public class PageFacture {
     private JTextField choix_num_facture;
     private  JTextField choix_montant;
     private  JDateChooser dateChooser;
+    private  JPanel contenu;
+    private  JLabel montant;
+    private JLabel date;
     private int id_bail;
+    private JLabel label_index=new JLabel("Index d'eau");
+    private JTextField choix_index=new JTextField();
+    private JLabel label_prix_conso=new JLabel("Prix m³ d'eau");
+    private JTextField choix_prix_conso=new JTextField();
     private JButton valider;
+    private GridBagConstraints gbc_montant;
     public PageFacture(int id_bail) {
         this.initialize();
         this.id_bail = id_bail;
@@ -104,7 +112,7 @@ public class PageFacture {
         titrePage.setAlignmentX(0.5f);
         titre.add(titrePage);
 
-        JPanel contenu = new JPanel();
+        contenu = new JPanel();
         body.add(contenu, BorderLayout.CENTER);
         GridBagLayout gbl_contenu = new GridBagLayout();
         gbl_contenu.rowHeights = new int[] {0, 0, 0, 0};
@@ -131,6 +139,7 @@ public class PageFacture {
         gbc_choix_type.gridx = 2;
         gbc_choix_type.gridy = 0;
         contenu.add(choix_type, gbc_choix_type);
+        choix_type.addActionListener(modele.eauSelected());
 
         JLabel numero = new JLabel("Numéro de facture");
         GridBagConstraints gbc_numero = new GridBagConstraints();
@@ -149,8 +158,8 @@ public class PageFacture {
         contenu.add(choix_num_facture, gbc_choix_num_facture);
         choix_num_facture.setColumns(10);
 
-        JLabel montant = new JLabel("Montant");
-        GridBagConstraints gbc_montant = new GridBagConstraints();
+        montant = new JLabel("Montant");
+        gbc_montant = new GridBagConstraints();
         gbc_montant.anchor = GridBagConstraints.EAST;
         gbc_montant.insets = new Insets(0, 0, 5, 5);
         gbc_montant.gridx = 1;
@@ -166,7 +175,7 @@ public class PageFacture {
         contenu.add(choix_montant, gbc_choix_montant);
         choix_montant.setColumns(10);
 
-        JLabel date = new JLabel("Date de la facture");
+        this.date = new JLabel("Date de la facture");
         GridBagConstraints gbc_date = new GridBagConstraints();
         gbc_date.insets = new Insets(0, 0, 5, 5);
         gbc_date.gridx = 1;
@@ -248,12 +257,45 @@ public class PageFacture {
         return id_bail;
     }
 
+    public JPanel getContenu() {
+        return contenu;
+    }
+
+    public JLabel getLabelMontant() {
+        return montant;
+    }
+
+    public GridBagConstraints getGbc_montant() {
+        return gbc_montant;
+    }
+
     public void checkFields() {
         // Vérification si tous les champs sont remplis
-        boolean isFilled = !choix_num_facture.getText().trim().isEmpty() && !choix_montant.getText().trim().isEmpty()
-                && dateChooser.getDate() != null;
+        boolean isFilled = (!choix_num_facture.getText().trim().isEmpty() && !choix_montant.getText().trim().isEmpty()
+                && dateChooser.getDate() != null) || (!choix_num_facture.getText().trim().isEmpty()  && dateChooser.getDate() != null
+                && !choix_index.getText().trim().isEmpty() && !choix_prix_conso.getText().trim().isEmpty());
 
         // Active ou désactive le bouton "Valider"
         valider.setEnabled(isFilled);
+    }
+
+    public JLabel getDate() {
+        return date;
+    }
+
+    public JLabel getLabel_prix_conso() {
+        return label_prix_conso;
+    }
+
+    public JTextField getChoix_index() {
+        return choix_index;
+    }
+
+    public JLabel getLabel_index() {
+        return label_index;
+    }
+
+    public JTextField getChoix_prix_conso() {
+        return choix_prix_conso;
     }
 }

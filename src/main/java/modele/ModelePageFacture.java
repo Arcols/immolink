@@ -1,8 +1,10 @@
 package modele;
 
 import DAO.DAOException;
+import DAO.jdbc.BailDAO;
 import DAO.jdbc.ChargeDAO;
 import DAO.jdbc.FactureDAO;
+import classes.Bail;
 import classes.Facture;
 import ihm.PageCharge;
 import ihm.PageFacture;
@@ -34,10 +36,23 @@ public class ModelePageFacture {
             {
                 FactureDAO daofacture = new FactureDAO();
                 java.sql.Date date = new java.sql.Date(this.pageFacture.getDateChooser().getDate().getTime());
-                Facture factureACreer = new Facture(this.pageFacture.getChoix_num_facture().getText(),
-                        this.pageFacture.getChoix_type().getSelectedItem().toString(),
-                        date,
-                        Double.valueOf(this.pageFacture.getChoix_montant().getText()));
+                Facture factureACreer = null;
+
+                if((String) pageFacture.getChoix_type().getSelectedItem() == "Eau"){
+                    BailDAO bailDAO = new BailDAO();
+                    Bail bail = bailDAO.getBailFromId(pageFacture.getId_bail());
+                    Double prix_facture = (Double.valueOf(pageFacture.getChoix_index().getText()) - bail.getIndex_eau()) * Double.valueOf(pageFacture.getChoix_prix_conso().getText());
+                    factureACreer = new Facture(this.pageFacture.getChoix_num_facture().getText(),
+                            this.pageFacture.getChoix_type().getSelectedItem().toString(),
+                            date,
+                            prix_facture);
+                    bailDAO.updateIndexeEau(pageFacture.getId_bail(), Integer.valueOf(pageFacture.getChoix_index().getText()));
+                } else {
+                    factureACreer = new Facture(this.pageFacture.getChoix_num_facture().getText(),
+                            this.pageFacture.getChoix_type().getSelectedItem().toString(),
+                            date,
+                            Double.valueOf(this.pageFacture.getChoix_montant().getText()));
+                }
                 try {
                     int id_charge = new ChargeDAO().getId(this.pageFacture.getChoix_type().getSelectedItem().toString(),this.pageFacture.getId_bail());
                     daofacture.create(factureACreer,id_charge);
@@ -74,4 +89,88 @@ public class ModelePageFacture {
         };
     }
 
+    public ActionListener eauSelected() {
+        return e -> {
+            String selectedItem = (String) pageFacture.getChoix_type().getSelectedItem();
+
+            boolean isEau = (selectedItem == "Eau");
+
+            this.pageFacture.getLabelMontant().setVisible(!isEau);
+            this.pageFacture.getChoix_montant().setVisible(!isEau);
+
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.fill = GridBagConstraints.HORIZONTAL;
+            gbc.insets = new Insets(0, 0, 5, 0);
+
+            if(isEau){
+                gbc.gridx = 1;
+                gbc.gridy = 2;
+                this.pageFacture.getContenu()
+                        .add(this.pageFacture.getLabel_index(), gbc);
+            } else{
+                this.pageFacture.getContenu()
+                        .remove(this.pageFacture.getLabel_index());
+            }
+            if(isEau){
+                gbc.gridx = 2;
+                gbc.gridy = 2;
+                this.pageFacture.getContenu()
+                        .add(this.pageFacture.getChoix_index(), gbc);
+            } else{
+                this.pageFacture.getContenu()
+                        .remove(this.pageFacture.getChoix_index());
+            }
+
+            if(isEau){
+                gbc.gridx = 1;
+                gbc.gridy = 3;
+                this.pageFacture.getContenu()
+                        .add(this.pageFacture.getLabel_prix_conso(), gbc);
+            } else{
+                this.pageFacture.getContenu()
+                        .remove(this.pageFacture.getLabel_prix_conso());
+            }
+            if(isEau){
+                gbc.gridx = 2;
+                gbc.gridy = 3;
+                this.pageFacture.getContenu()
+                        .add(this.pageFacture.getChoix_prix_conso(), gbc);
+            } else{
+                this.pageFacture.getContenu()
+                        .remove(this.pageFacture.getChoix_prix_conso());
+            }
+
+            if(isEau){
+                this.pageFacture.getContenu()
+                        .remove(this.pageFacture.getDate());
+                gbc.gridx = 1;
+                gbc.gridy = 4;
+                this.pageFacture.getContenu()
+                        .add(this.pageFacture.getDate(), gbc);
+            } else{
+                this.pageFacture.getContenu()
+                        .remove(this.pageFacture.getDate());
+                gbc.gridx = 1;
+                gbc.gridy = 3;
+                this.pageFacture.getContenu()
+                        .add(this.pageFacture.getDate(), gbc);
+            }
+
+            if(isEau){
+                this.pageFacture.getContenu()
+                        .remove(this.pageFacture.getDateChooser());
+                gbc.gridx = 2;
+                gbc.gridy = 4;
+                this.pageFacture.getContenu()
+                        .add(this.pageFacture.getDateChooser(), gbc);
+            } else{
+                this.pageFacture.getContenu()
+                        .remove(this.pageFacture.getDateChooser());
+                gbc.gridx = 2;
+                gbc.gridy = 3;
+                this.pageFacture.getContenu()
+                        .add(this.pageFacture.getDateChooser(), gbc);
+            }
+        };
+    }
 }
