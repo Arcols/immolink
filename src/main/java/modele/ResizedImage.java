@@ -14,8 +14,6 @@ public class ResizedImage {
 
 		if (width > 0 && height > 0) {
 
-
-
 			ImageIcon imic = new ImageIcon("src/resource/images/"+imagePath);
 
             Image im = imic.getImage();

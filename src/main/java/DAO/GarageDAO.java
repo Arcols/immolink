@@ -11,8 +11,7 @@ public interface GarageDAO {
 	/**
 	 * Crée un nouveau Garage non associé à un bien louable dans la base de données.
 	 * @param garage L'objet Garage à insérer
-	 * @throws DAOException             en cas d'erreur lors de la création du bien
-	 *                                  immobilier
+	 * @throws DAOException en cas d'erreur lors de la création du bien immobilier
 	 * @throws SQLException
 	 * @throws IllegalArgumentException
 	 */
@@ -46,10 +45,10 @@ public interface GarageDAO {
 	void delete(int id,TypeLogement typeLogement) throws DAOException;
 
 	/**
-	 *
-	 * @param id
-	 * @param typeActuel
-	 * @param typeApres
+	 * Met à jour les informations d'un Garage existant dans la base de données.
+	 * @param id L'identifiant unique du bien immobilier
+	 * @param typeActuel le type de logement actuel
+	 * @param typeApres le type de logement après la mise à jour
 	 * @throws DAOException
 	 */
 	void updateTypeGarage(int id,TypeLogement typeActuel,TypeLogement typeApres) throws DAOException;

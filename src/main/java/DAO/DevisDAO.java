@@ -10,7 +10,6 @@ public interface DevisDAO {
 
     /**
      * Crée un nouveau devis dans la base de données.
-     *
      * @param devis L'objet devis à insérer
      * @param num_fiscal Le numéro fiscal du bien associé au devis
      * @param typeLogement Le type de logement associé au devis
@@ -20,7 +19,6 @@ public interface DevisDAO {
 
     /**
      * Trouve un devis dans la base de données à l'aide de son num_devis.
-     *
      * @param num_devis Le numéro du devis à trouver
      * @return L'objet devis trouvé
      * @throws DAOException en cas d'erreur lors de la recherche du devis

@@ -7,14 +7,12 @@ import java.util.List;
 
 public interface DiagnosticDAO {
 
-
-
     /**
      * Créer un diagnostic dans la bdd
      * @param diagnostic , numero_fiscal du batiment associé
      * @throws DAOException
      */
-    public void create(Diagnostic diagnostic,String numero_fiscal) throws DAOException;
+    void create(Diagnostic diagnostic,String numero_fiscal) throws DAOException;
 
     /**
      * Trouver un diagnostic dans la bdd
@@ -23,7 +21,7 @@ public interface DiagnosticDAO {
      * @return Diagnostic object
      * @throws DAOException
      */
-    public Diagnostic read(String numero_fiscal,String reference) throws DAOException;
+    Diagnostic read(String numero_fiscal,String reference) throws DAOException;
 
     /**
      * Mettre à jour le path d'un diagnostic dans la bdd
@@ -32,7 +30,7 @@ public interface DiagnosticDAO {
      * @param path path du diagnostic
      * @throws DAOException
      */
-    public void updatePath(Diagnostic diagnostic,String numero_fiscal,String path) throws DAOException;
+    void updatePath(Diagnostic diagnostic,String numero_fiscal,String path) throws DAOException;
 
     /**
      * Mettre à jour la date d'expiration d'un diagnostic dans la bdd
@@ -41,7 +39,7 @@ public interface DiagnosticDAO {
      * @param date date d'expiration
      * @throws DAOException
      */
-    public void updateDate(Diagnostic diagnostic, String numero_fiscal, Date date) throws DAOException;
+    void updateDate(Diagnostic diagnostic, String numero_fiscal, Date date) throws DAOException;
 
     /**
      * Supprimer un diagnostic dans la bdd
@@ -49,7 +47,7 @@ public interface DiagnosticDAO {
      * @param reference du diagnostic
      * @throws DAOException
      */
-    public void delete(String numero_fiscal,String reference) throws DAOException;
+    void delete(String numero_fiscal,String reference) throws DAOException;
 
     /**
      * Trouver tous les diagnostics d'un bien louable dans la bdd
@@ -57,12 +55,12 @@ public interface DiagnosticDAO {
      * @return List of Diagnostic objects
      * @throws DAOException
      */
-    public List<Diagnostic> readAllDiag(int id) throws DAOException;
+    List<Diagnostic> readAllDiag(int id) throws DAOException;
 
     /**
      * Renvoie la liste des diagnostics périmés
      * @return List of Diagnostic objects
      * @throws DAOException
      */
-    public List<String> readDiagPerimes() throws DAOException;
+    List<String> readDiagPerimes() throws DAOException;
 }
