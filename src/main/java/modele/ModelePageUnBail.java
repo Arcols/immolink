@@ -42,10 +42,8 @@ import classes.Bail;
 import classes.BienLouable;
 import classes.Locataire;
 import classes.Logement;
-import enumeration.TypeLogement;
 import ihm.PageBaux;
 import ihm.PageCharge;
-import ihm.PageMesBiens;
 import ihm.PageUnBail;
 
 public class ModelePageUnBail {
@@ -83,7 +81,7 @@ public class ModelePageUnBail {
                 // Mise à jour des labels avec les informations du bien
                 page.getAffichageVille().setText(bienLouable.getVille());
                 page.getAffichageAdresse().setText(bienLouable.getAdresse());
-                page.getAffichageComplement().setText(bienLouable.getComplement_adresse());
+                page.getAffichageComplement().setText(bienLouable.getComplementAdresse());
                 if(logement.getSurface()==0.0){
                     page.getAffichageSurface().setText("0.0");
                 } else {

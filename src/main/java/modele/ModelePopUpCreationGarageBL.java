@@ -32,9 +32,9 @@ public class ModelePopUpCreationGarageBL {
         // Remplissage du modèle avec les données des locataires
         for (Garage garage : garages) {
             Object[] rowData= {
-                    garage.getNumero_fiscal(),
+                    garage.getNumeroFiscal(),
                     garage.getAdresse(),
-                    garage.getComplement_adresse(),
+                    garage.getComplementAdresse(),
                     garage.getVille()
             };
             model.addRow(rowData);

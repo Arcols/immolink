@@ -1,6 +1,5 @@
 package DAO.jdbc;
 
-import java.lang.reflect.Type;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,7 +10,6 @@ import java.util.List;
 import DAO.DAOException;
 import DAO.db.ConnectionDB;
 import classes.Batiment;
-import classes.BienLouable;
 import classes.Garage;
 import enumeration.TypeLogement;
 
@@ -23,8 +21,8 @@ public class GarageDAO implements DAO.GarageDAO {
 			Connection cn = ConnectionDB.getInstance();
 			String requete = "INSERT INTO bienlouable (numero_fiscal, complement_adresse, type_logement, Nombre_pieces, surface, idBat, garage_assoc) VALUES (?,?,?,?,?,?,?)";
 			PreparedStatement pstmt = cn.prepareStatement(requete);
-			pstmt.setString(1, garage.getNumero_fiscal());
-			pstmt.setString(2, garage.getComplement_adresse());
+			pstmt.setString(1, garage.getNumeroFiscal());
+			pstmt.setString(2, garage.getComplementAdresse());
 			pstmt.setInt(3, garage.getTypeLogement().getValue());
 			pstmt.setString(4, null);
 			pstmt.setString(5, null);
@@ -182,7 +180,7 @@ public class GarageDAO implements DAO.GarageDAO {
 			Connection cn = ConnectionDB.getInstance();
 			String query = "SELECT garage_assoc FROM bienlouable WHERE numero_fiscal = ?";
 			PreparedStatement pstmt = cn.prepareStatement(query);
-			pstmt.setString(1, new BienLouableDAO().readId(idBien).getNumero_fiscal());
+			pstmt.setString(1, new BienLouableDAO().readId(idBien).getNumeroFiscal());
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
 				idGarage = rs.getInt("garage_assoc");

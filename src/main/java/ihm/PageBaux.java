@@ -34,7 +34,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import static modele.Charte.*;
@@ -174,7 +173,7 @@ public class PageBaux {
 		for (Bail b : listBail) {
 			BienLouable logement = null;
 			try {
-				logement = new BienLouableDAO().readFisc(b.getFisc_bien());
+				logement = new BienLouableDAO().readFisc(b.getFiscBien());
 			} catch (DAOException e) {
 				throw new RuntimeException(e);
 			}
@@ -188,10 +187,10 @@ public class PageBaux {
 			ligne = new String[]{
 					logement.getVille(),
 					logement.getAdresse(),
-					logement.getComplement_adresse(),
+					logement.getComplementAdresse(),
 					noms,
 					String.valueOf(b.getLoyer()),
-					b.getDate_debut().toString(),
+					b.getDateDebut().toString(),
 					ModelePageBaux.statut(b)
 			};
 			data[i] = ligne;

@@ -13,11 +13,8 @@ import javax.swing.table.DefaultTableModel;
 
 import DAO.DAOException;
 import DAO.jdbc.*;
-import classes.Bail;
-import classes.Batiment;
 import classes.BienLouable;
 import classes.Locataire;
-import enumeration.TypeLogement;
 import ihm.*;
 
 
@@ -76,7 +73,7 @@ public class ModelePageUnLocataire {
             rowData = new Object[]{
                     bienLouable.getVille(),
                     bienLouable.getAdresse(),
-                    bienLouable.getComplement_adresse(),
+                    bienLouable.getComplementAdresse(),
                     new LouerDAO().getLoyerPaye(locataireDAO.getId(locataire),idBail),
                     idBail
             };

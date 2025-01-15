@@ -10,8 +10,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
 
 public class GarageTest {
 
@@ -29,8 +27,8 @@ public class GarageTest {
 
     @Test
     public void testConstructeurEtGetters() {
-        assertEquals("123456789101", garage.getNumero_fiscal());
-        assertEquals("Garage 1", garage.getComplement_adresse());
+        assertEquals("123456789101", garage.getNumeroFiscal());
+        assertEquals("Garage 1", garage.getComplementAdresse());
         assertEquals("123 Rue de la Paix", garage.getAdresse());
         assertEquals("Paris", garage.getVille());
         assertTrue(garage.getTravaux().isEmpty());

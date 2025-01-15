@@ -50,15 +50,15 @@ public class Bail {
         this.dernier_anniversaire = dernier_anniversaire;
     }
 
-    public boolean isSolde_de_compte() {
+    public boolean isSoldeDeCompte() {
         return solde_de_compte;
     }
 
-    public Date getDate_debut() {
+    public Date getDateDebut() {
         return date_debut;
     }
 
-    public Date getDate_fin() {
+    public Date getDateFin() {
         return date_fin;
     }
 
@@ -66,7 +66,7 @@ public class Bail {
         return charge;
     }
 
-    public double getDepot_garantie() {
+    public double getDepotGarantie() {
         return depot_garantie;
     }
 
@@ -74,7 +74,7 @@ public class Bail {
         return loyer;
     }
 
-    public String getFisc_bien() {
+    public String getFiscBien() {
         return fisc_bien;
     }
 
@@ -82,19 +82,19 @@ public class Bail {
         this.charge = charge;
     }
 
-    public void setDate_debut(Date date_debut) {
+    public void setDateDebut(Date date_debut) {
         this.date_debut = date_debut;
     }
 
-    public void setDate_fin(Date date_fin) {
+    public void setDateFin(Date date_fin) {
         this.date_fin = date_fin;
     }
 
-    public void setDepot_garantie(double depot_garantie) {
+    public void setDepotGarantie(double depot_garantie) {
         this.depot_garantie = depot_garantie;
     }
 
-    public void setFisc_bien(String fisc_bien) {
+    public void setFiscBien(String fisc_bien) {
         this.fisc_bien = fisc_bien;
     }
 
@@ -102,7 +102,7 @@ public class Bail {
         this.loyer = loyer;
     }
 
-    public void setSolde_de_compte(boolean solde_de_compte) {
+    public void setSoldeDeCompte(boolean solde_de_compte) {
         this.solde_de_compte = solde_de_compte;
     }
 
@@ -110,11 +110,11 @@ public class Bail {
         return icc;
     }
 
-    public Integer getIndex_eau() {
+    public Integer getIndexEau() {
         return index_eau;
     }
 
-    public Date getDernier_anniversaire() {
+    public Date getDernierAnniversaire() {
         return dernier_anniversaire;
     }
 

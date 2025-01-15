@@ -112,7 +112,7 @@ public class ModelePageNouveauBienImmobilier {
 				TypeLogement.APPARTEMENT);
 		LogementDAO logementDAO = new LogementDAO();
 		logementDAO.create(logement,TypeLogement.APPARTEMENT);
-		addDiagnostics(logement.getNumero_fiscal());
+		addDiagnostics(logement.getNumeroFiscal());
 		if (!(pageNouveauBienImmobilier.getGarageLie()).equals(new Garage("            ", "", "", "", TypeLogement.NONE))) {
 			logementDAO.lierUnGarageAuBienLouable(logement, pageNouveauBienImmobilier.getGarageLie(), TypeLogement.APPARTEMENT);
 			JOptionPane.showMessageDialog(null, "L'appartement ainsi que son garage ont été ajoutés !", "Succès",
@@ -139,7 +139,7 @@ public class ModelePageNouveauBienImmobilier {
 				TypeLogement.MAISON);
 		LogementDAO logementDAO = new LogementDAO();
 		logementDAO.create(logement,TypeLogement.MAISON);
-		addDiagnostics(logement.getNumero_fiscal());
+		addDiagnostics(logement.getNumeroFiscal());
 		if (!(pageNouveauBienImmobilier.getGarageLie()).equals(new Garage("            ", "", "", "", TypeLogement.NONE))) {
 			logementDAO.lierUnGarageAuBienLouable(logement, pageNouveauBienImmobilier.getGarageLie(), TypeLogement.MAISON);
 			JOptionPane.showMessageDialog(null, "La maison ainsi que son garage ont été ajoutés !", "Succès",
@@ -385,7 +385,7 @@ public class ModelePageNouveauBienImmobilier {
 	}
 
 	private boolean isGarageLinkedToSameFiscalNumber() {
-		if (pageNouveauBienImmobilier.getGarageLie().getNumero_fiscal().equals(pageNouveauBienImmobilier.getChoix_num_fiscal().getText())) {
+		if (pageNouveauBienImmobilier.getGarageLie().getNumeroFiscal().equals(pageNouveauBienImmobilier.getChoix_num_fiscal().getText())) {
 			JOptionPane.showMessageDialog(null, "Un garage ne peut pas être lié avec le même numéro fiscal qu'un bien louable", "Erreur",
 					JOptionPane.ERROR_MESSAGE);
 			return true;

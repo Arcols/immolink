@@ -47,8 +47,8 @@ public class GarageDAOTest {
     public void testRead() throws SQLException, DAOException {
         Integer id = garageDAO.getIdGarage("G12345678999",TypeLogement.GARAGE_PAS_ASSOCIE);
         Garage garageRecupere = garageDAO.read(id);
-        assertEquals("G12345678999", garageRecupere.getNumero_fiscal());
-        assertEquals("Garage 1", garageRecupere.getComplement_adresse());
+        assertEquals("G12345678999", garageRecupere.getNumeroFiscal());
+        assertEquals("Garage 1", garageRecupere.getComplementAdresse());
     }
 
     @Test

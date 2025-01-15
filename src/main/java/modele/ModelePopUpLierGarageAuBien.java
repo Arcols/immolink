@@ -32,9 +32,9 @@ public class ModelePopUpLierGarageAuBien {
         // Remplissage du modèle avec les données des locataires
         for (BienLouable bienLouable : bienLouables) {
             Object[] rowData= {
-                    bienLouable.getNumero_fiscal(),
+                    bienLouable.getNumeroFiscal(),
                     bienLouable.getAdresse(),
-                    bienLouable.getComplement_adresse(),
+                    bienLouable.getComplementAdresse(),
                     bienLouable.getVille()
             };
             model.addRow(rowData);

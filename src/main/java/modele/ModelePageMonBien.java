@@ -18,7 +18,6 @@ import DAO.jdbc.*;
 import classes.*;
 import com.toedter.calendar.JDateChooser;
 import enumeration.TypeLogement;
-import ihm.PageAccueil;
 import ihm.PageMesBiens;
 import ihm.PageMonBien;
 import ihm.PageNouveauTravaux;
@@ -48,7 +47,7 @@ public class ModelePageMonBien {
 
             // Récupération des Travaux
             DevisDAO devisDAO = new DevisDAO();
-            devis = devisDAO.getAllDevisFromABien(bienLouable.getNumero_fiscal(),bienLouableDAO.getTypeFromId(id));
+            devis = devisDAO.getAllDevisFromABien(bienLouable.getNumeroFiscal(),bienLouableDAO.getTypeFromId(id));
         }
         else{
             BatimentDAO batimentDAO = new DAO.jdbc.BatimentDAO();
@@ -92,12 +91,12 @@ public class ModelePageMonBien {
                 BienLouable bienLouable = bienLouableDAO.readId(idBien);
                 if (bienLouable != null) {
                     // Mise à jour des labels avec les informations du bien
-                    page.getAffichageNumeroFiscal(bienLouable.getNumero_fiscal());
+                    page.getAffichageNumeroFiscal(bienLouable.getNumeroFiscal());
                     page.getAffichageVille().setText(bienLouable.getVille());
                     page.getAffichageAdresse().setText(bienLouable.getAdresse());
-                    page.getAffichageComplement().setText(bienLouable.getComplement_adresse());
+                    page.getAffichageComplement().setText(bienLouable.getComplementAdresse());
                     DevisDAO devisDAO = new DevisDAO();
-                    page.getAffichageCoutTravaux().setText(String.valueOf(devisDAO.getMontantTotalTravaux(bienLouable.getNumero_fiscal(), typeLogement))+" €");
+                    page.getAffichageCoutTravaux().setText(String.valueOf(devisDAO.getMontantTotalTravaux(bienLouable.getNumeroFiscal(), typeLogement))+" €");
                 }
             }
         } catch (DAOException e) {
@@ -111,7 +110,7 @@ public class ModelePageMonBien {
             public void actionPerformed(ActionEvent e) {
                 try {
                     BienLouableDAO bienLouableDAO = new BienLouableDAO();
-                    String num_fisc = bienLouableDAO.readId(idBien).getNumero_fiscal();
+                    String num_fisc = bienLouableDAO.readId(idBien).getNumeroFiscal();
                     DiagnosticDAO diagnosticDAO = new DiagnosticDAO();
                     Diagnostic diag = diagnosticDAO.read(num_fisc,refDiagnosticSansDate(reference));
                     if (diag != null) {
@@ -208,7 +207,7 @@ public class ModelePageMonBien {
                 annulerButton.addActionListener(event -> dialog.dispose());
                 validerButton.addActionListener(event -> {
                     try {
-                        new DiagnosticDAO().updateDate(new Diagnostic(diagSansDate, selectedFile.getAbsolutePath(), finalDate),new BienLouableDAO().readId(idBien).getNumero_fiscal(), finalDate);
+                        new DiagnosticDAO().updateDate(new Diagnostic(diagSansDate, selectedFile.getAbsolutePath(), finalDate),new BienLouableDAO().readId(idBien).getNumeroFiscal(), finalDate);
                         JOptionPane.showMessageDialog(dialog,
                                 "La date de péremption du diagnostic a été mis à jour à " + finalDate + ".",
                                 "Confirmation",

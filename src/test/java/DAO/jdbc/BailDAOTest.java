@@ -56,7 +56,7 @@ public class BailDAOTest {
         assertNotEquals(0, id);
 
         Bail createdBail = bailDAO.getBailFromId(id);
-        assertTrue(createdBail.isSolde_de_compte());
+        assertTrue(createdBail.isSoldeDeCompte());
         assertEquals(1000.0, createdBail.getLoyer(), 0.0);
     }
 
@@ -69,7 +69,7 @@ public class BailDAOTest {
         assertNotEquals(0, id);
 
         Bail createdBail = bailDAO.getBailFromId(id);
-        assertFalse(createdBail.isSolde_de_compte());
+        assertFalse(createdBail.isSoldeDeCompte());
         assertEquals(1500.0, createdBail.getLoyer(), 0.0);
     }
 
@@ -126,7 +126,7 @@ public class BailDAOTest {
         int idBienLouable = bailDAO.getIdBienLouable(idBail);
 
         assertNotEquals(0, idBienLouable);
-        int idBienRead = bienLouableDAO.getId(bienLouable.getNumero_fiscal());
+        int idBienRead = bienLouableDAO.getId(bienLouable.getNumeroFiscal());
         assertEquals(idBienRead, idBienLouable);
     }
 

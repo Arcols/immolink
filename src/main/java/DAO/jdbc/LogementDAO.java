@@ -2,7 +2,6 @@ package DAO.jdbc;
 
 import DAO.DAOException;
 import DAO.db.ConnectionDB;
-import classes.Batiment;
 import classes.Diagnostic;
 import classes.Garage;
 import classes.Logement;
@@ -12,8 +11,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.lang.reflect.Array.setInt;
-
 public class LogementDAO implements DAO.LogementDAO {
 
 	public void create(Logement appart,TypeLogement typeLogement) throws DAOException {
@@ -21,8 +18,8 @@ public class LogementDAO implements DAO.LogementDAO {
 			Connection cn = ConnectionDB.getInstance();
 			String requete = "INSERT INTO bienlouable (numero_fiscal, complement_adresse, type_logement, Nombre_pieces, surface, garage_assoc,idBat) VALUES (?,?,?,?,?,?,?)";
 			PreparedStatement pstmt = cn.prepareStatement(requete);
-			pstmt.setString(1, appart.getNumero_fiscal());
-			pstmt.setString(2, appart.getComplement_adresse());
+			pstmt.setString(1, appart.getNumeroFiscal());
+			pstmt.setString(2, appart.getComplementAdresse());
 			pstmt.setInt(3, typeLogement.getValue());
 			pstmt.setInt(4, appart.getNbPiece());
 			pstmt.setDouble(5, appart.getSurface());
@@ -109,11 +106,11 @@ public class LogementDAO implements DAO.LogementDAO {
 		Integer idBat;
 		try{
 			Connection cn = ConnectionDB.getInstance();
-			idGarage = new GarageDAO().getIdGarage(garage.getNumero_fiscal(),TypeLogement.GARAGE_PAS_ASSOCIE);
+			idGarage = new GarageDAO().getIdGarage(garage.getNumeroFiscal(),TypeLogement.GARAGE_PAS_ASSOCIE);
 			String query = "UPDATE bienlouable SET garage_assoc = ? WHERE numero_fiscal = ? AND type_logement = ?";
 			PreparedStatement pstmt = cn.prepareStatement(query);
 			pstmt.setInt(1, idGarage);
-			pstmt.setString(2, logement.getNumero_fiscal());
+			pstmt.setString(2, logement.getNumeroFiscal());
 			pstmt.setInt(3, typeLogement.getValue());
 			pstmt.executeUpdate();
 			pstmt.close();
@@ -151,7 +148,7 @@ public class LogementDAO implements DAO.LogementDAO {
 			Connection cn = ConnectionDB.getInstance();
 			String query = "SELECT garage_assoc FROM bienlouable WHERE numero_fiscal = ? AND type_logement = ?";
 			PreparedStatement pstmt = cn.prepareStatement(query);
-			pstmt.setString(1, logement.getNumero_fiscal());
+			pstmt.setString(1, logement.getNumeroFiscal());
 			pstmt.setInt(2, typeLogement.getValue());
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()){

@@ -4,7 +4,6 @@ import enumeration.TypeLogement;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class Batiment extends BienImmobilier {
 	private String adresse;
@@ -46,7 +45,7 @@ public class Batiment extends BienImmobilier {
 		return this.numero_fiscal;
 	}
 
-	public List<BienLouable> getBien_louable() {
+	public List<BienLouable> getBienLouable() {
 		return this.bien_louable;
 	}
 
@@ -66,11 +65,11 @@ public class Batiment extends BienImmobilier {
 		this.adresse = adresse;
 	}
 
-	public void setNumero_fiscal(String numero_fiscal) {
+	public void setNumeroFiscal(String numero_fiscal) {
 		this.numero_fiscal = numero_fiscal;
 	}
 
-	public void setBien_louable(List<BienLouable> bien_louable) {
+	public void setBienLouable(List<BienLouable> bien_louable) {
 		this.bien_louable = bien_louable;
 	}
 

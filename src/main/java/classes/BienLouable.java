@@ -1,12 +1,7 @@
 package classes;
 
-import DAO.db.ConnectionDB;
 import enumeration.TypeLogement;
 
-import java.lang.reflect.Type;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,11 +42,11 @@ public class BienLouable extends BienImmobilier {
 		this.typeLogement = typeLogement;
 	}
 
-	public String getNumero_fiscal() {
+	public String getNumeroFiscal() {
 		return this.numero_fiscal;
 	}
 
-	public String getComplement_adresse() {
+	public String getComplementAdresse() {
 		return this.complement_adresse;
 	}
 

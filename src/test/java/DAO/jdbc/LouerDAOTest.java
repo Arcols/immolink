@@ -179,4 +179,40 @@ public class LouerDAOTest {
         assertFalse(isLocInBail2);
     }
 
+    @Test
+    public void testGetStatut() throws DAOException {
+        louerDAO.create(locataire, bail, 100);
+        boolean statut = louerDAO.getStatut(locataireDAO.getId(locataire));
+        assertNotNull(statut);
+        // Assuming the initial status is false
+        assertFalse(statut);
+    }
+
+    @Test
+    public void testGetStatutBail() throws DAOException {
+        louerDAO.create(locataire, bail, 100);
+        boolean statutBail = louerDAO.getStatutBail(bailDAO.getId(bail));
+        assertNotNull(statutBail);
+        // Assuming the initial status is false
+        assertFalse(statutBail);
+    }
+
+    @Test
+    public void testGetLoyerPaye() throws DAOException {
+        louerDAO.create(locataire, bail, 100);
+        Boolean loyerPaye = louerDAO.getLoyerPaye(locataireDAO.getId(locataire), bailDAO.getId(bail));
+        assertNotNull(loyerPaye);
+        // Assuming the initial status is false
+        assertFalse(loyerPaye);
+    }
+
+    @Test
+    public void testUpdatePaiement() throws DAOException {
+        louerDAO.create(locataire, bail, 100);
+        Date newDate = Date.valueOf(java.time.LocalDate.now());        louerDAO.updatePaiement(bailDAO.getId(bail), locataireDAO.getId(locataire), newDate);
+        Boolean loyerPaye = louerDAO.getLoyerPaye(locataireDAO.getId(locataire), bailDAO.getId(bail));
+        assertNotNull(loyerPaye);
+        // Assuming the status is true after updating the payment date
+        assertTrue(loyerPaye);
+    }
 }

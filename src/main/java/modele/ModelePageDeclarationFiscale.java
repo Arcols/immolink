@@ -5,17 +5,13 @@ import DAO.jdbc.*;
 import classes.*;
 import enumeration.TypeLogement;
 import ihm.PageAccueil;
-import ihm.PageBaux;
 import ihm.PageDeclarationFiscale;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -50,7 +46,7 @@ public class ModelePageDeclarationFiscale {
                 List<Devis> travauxbat= devDAO.getAllDevisFromABienAndDate(b.getNumeroFiscal(),TypeLogement.BATIMENT, Date.valueOf(this.pageDeclarationFiscale.getAnnee()+"-01-01"));
                 for(Integer idapt : allapt){
                     BienLouable apt = new BienLouableDAO().readId(idapt);
-                    List<Devis> travauxapt =  devDAO.getAllDevisFromABienAndDate(apt.getNumero_fiscal(),TypeLogement.APPARTEMENT,Date.valueOf(this.pageDeclarationFiscale.getAnnee()+"-01-01"));
+                    List<Devis> travauxapt =  devDAO.getAllDevisFromABienAndDate(apt.getNumeroFiscal(),TypeLogement.APPARTEMENT,Date.valueOf(this.pageDeclarationFiscale.getAnnee()+"-01-01"));
                     for(Devis d:travauxapt){
                         travauxbat.add(d);
                     }
@@ -66,7 +62,7 @@ public class ModelePageDeclarationFiscale {
                 }
                 for(Integer idgar : allgar){
                     BienLouable gar = new BienLouableDAO().readId(idgar);
-                    List<Devis> travauxgar =  devDAO.getAllDevisFromABienAndDate(gar.getNumero_fiscal(),TypeLogement.GARAGE_PAS_ASSOCIE,Date.valueOf(this.pageDeclarationFiscale.getAnnee()+"-01-01"));
+                    List<Devis> travauxgar =  devDAO.getAllDevisFromABienAndDate(gar.getNumeroFiscal(),TypeLogement.GARAGE_PAS_ASSOCIE,Date.valueOf(this.pageDeclarationFiscale.getAnnee()+"-01-01"));
                     for(Devis d:travauxgar){
                         travauxbat.add(d);
                     }

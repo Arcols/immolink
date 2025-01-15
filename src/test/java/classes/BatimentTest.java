@@ -60,12 +60,12 @@ public class BatimentTest {
         batiment.setAdresse("456 Rue de Lyon");
         assertEquals("456 Rue de Lyon", batiment.getAdresse());
 
-        batiment.setNumero_fiscal("987654321098");
+        batiment.setNumeroFiscal("987654321098");
         assertEquals("987654321098", batiment.getNumeroFiscal());
 
         List<BienLouable> bienLouables = new ArrayList<>();
         bienLouables.add(bienLouable);
-        batiment.setBien_louable(bienLouables);
+        batiment.setBienLouable(bienLouables);
         assertEquals(1, batiment.getBien_louable().size());
         assertEquals(bienLouable, batiment.getBien_louable().get(0));
     }

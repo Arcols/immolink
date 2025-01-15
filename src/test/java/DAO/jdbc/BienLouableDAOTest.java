@@ -58,15 +58,15 @@ public class BienLouableDAOTest {
     @Test
     public void testCreate() throws SQLException, DAOException {
         BienLouable bienLouableRecupere = bienLouableDAO.readFisc("101010101010");
-        assertEquals("101010101010", bienLouableRecupere.getNumero_fiscal());
-        assertEquals("Apt 1", bienLouableRecupere.getComplement_adresse());
+        assertEquals("101010101010", bienLouableRecupere.getNumeroFiscal());
+        assertEquals("Apt 1", bienLouableRecupere.getComplementAdresse());
     }
 
     @Test
     public void testReadFisc() throws SQLException, DAOException {
         BienLouable bienLouableRecupere = bienLouableDAO.readFisc("101010101010");
-        assertEquals("101010101010", bienLouableRecupere.getNumero_fiscal());
-        assertEquals("Apt 1", bienLouableRecupere.getComplement_adresse());
+        assertEquals("101010101010", bienLouableRecupere.getNumeroFiscal());
+        assertEquals("Apt 1", bienLouableRecupere.getComplementAdresse());
     }
 
     @Test
@@ -167,7 +167,7 @@ public class BienLouableDAOTest {
 
         assertNull(bienLouableDAO.readFisc("123456789111"));
         assertNull(bailDAO.getBailFromId(bailDAO.getId(bailWithDiag)));
-        assertNull(diagnosticDAO.read(bienLouable.getNumero_fiscal(), diagnostic.getReference()));
+        assertNull(diagnosticDAO.read(bienLouable.getNumeroFiscal(), diagnostic.getReference()));
     }
 
     @Test
@@ -175,8 +175,8 @@ public class BienLouableDAOTest {
         Integer id = bienLouableDAO.getId("101010101010");
         BienLouable bienLouableRecupere = bienLouableDAO.readId(id);
         assertNotNull(bienLouableRecupere);
-        assertEquals("101010101010", bienLouableRecupere.getNumero_fiscal());
-        assertEquals("Apt 1", bienLouableRecupere.getComplement_adresse());
+        assertEquals("101010101010", bienLouableRecupere.getNumeroFiscal());
+        assertEquals("Apt 1", bienLouableRecupere.getComplementAdresse());
     }
 
     @Test
@@ -202,7 +202,7 @@ public class BienLouableDAOTest {
     public void testGetBailFromBien() throws DAOException {
         Bail bailRécupéré = bienLouableDAO.getBailFromBien(bienLouable);
         assertNotNull(bailRécupéré);
-        assertEquals(bail.getFisc_bien(), bailRécupéré.getFisc_bien());
+        assertEquals(bail.getFiscBien(), bailRécupéré.getFiscBien());
 
         BienLouable bienLouableInexistant = new BienLouable("999999999999", "Paris", "123 Rue de la Paix", "Apt 1", new ArrayList<>(), null, TypeLogement.APPARTEMENT);
         Bail bailInexistant = bienLouableDAO.getBailFromBien(bienLouableInexistant);
@@ -328,9 +328,9 @@ public class BienLouableDAOTest {
 
         assertNotNull(bienLouablesNoGarage);
         assertEquals(2, bienLouablesNoGarage.size());
-        assertTrue(bienLouablesNoGarage.stream().anyMatch(b -> b.getNumero_fiscal().equals("101010101010")));
-        assertTrue(bienLouablesNoGarage.stream().anyMatch(b -> b.getNumero_fiscal().equals("987654321102")));
-        assertFalse(bienLouablesNoGarage.stream().anyMatch(b -> b.getNumero_fiscal().equals("987654321103")));
+        assertTrue(bienLouablesNoGarage.stream().anyMatch(b -> b.getNumeroFiscal().equals("101010101010")));
+        assertTrue(bienLouablesNoGarage.stream().anyMatch(b -> b.getNumeroFiscal().equals("987654321102")));
+        assertFalse(bienLouablesNoGarage.stream().anyMatch(b -> b.getNumeroFiscal().equals("987654321103")));
     }
 
     @Test
@@ -341,7 +341,7 @@ public class BienLouableDAOTest {
         List<BienLouable> bienLouablesNoGarage = bienLouableDAO.getAllBienLouableNoGarageLink();
 
         assertNotNull(bienLouablesNoGarage);
-        assertTrue(bienLouablesNoGarage.stream().anyMatch(b -> b.getNumero_fiscal().equals("H12345678910")));
+        assertTrue(bienLouablesNoGarage.stream().anyMatch(b -> b.getNumeroFiscal().equals("H12345678910")));
     }
 
     @Test
@@ -352,8 +352,26 @@ public class BienLouableDAOTest {
         List<BienLouable> bienLouablesNoGarage = bienLouableDAO.getAllBienLouableNoGarageLink();
 
         assertNotNull(bienLouablesNoGarage);
-        assertTrue(bienLouablesNoGarage.stream().anyMatch(b -> b.getNumero_fiscal().equals("H12345678910")));
+        assertTrue(bienLouablesNoGarage.stream().anyMatch(b -> b.getNumeroFiscal().equals("H12345678910")));
     }
 
+    @Test
+    public void testGetBailFromBienEtDate() throws DAOException {
+        // Create a new BienLouable instance
+        BienLouable bienLouable = new BienLouable("BL3456789101", "Paris", "123 Rue de la Paix", "31000", new ArrayList<>(), null, TypeLogement.APPARTEMENT);
+        bienLouableDAO.create(bienLouable, TypeLogement.APPARTEMENT, 3, 75.0);
+
+        // Create a new Bail instance
+        Date dateDebut = Date.valueOf("2024-01-01");
+        Bail bail = new Bail(true, "BL3456789101", 1000.0, 200.0, 500.0, dateDebut, Date.valueOf("2024-12-31"), 150.0, 10, Date.valueOf("2023-01-01"));
+        bailDAO.create(bail);
+
+        // Retrieve the Bail using the bien and date_debut
+        Bail retrievedBail = bailDAO.getBailFromBienEtDate(bienLouable, dateDebut);
+
+        // Assert the retrieved Bail is not null and matches the created Bail
+        assertNotNull(retrievedBail);
+        assertEquals(bail, retrievedBail);
+    }
 
 }

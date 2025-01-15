@@ -422,7 +422,7 @@ public class PageUnBail {
             btnModifierICC.addActionListener(modele.getModifierICC(frame,new BailDAO().getId(bail)));
         }
 
-        if(bail.getDate_fin().before(new Date(System.currentTimeMillis()))){
+        if(bail.getDateFin().before(new Date(System.currentTimeMillis()))){
             JButton btnDeleteBail = new JButton("Supprimer le bail");
             GridBagConstraints gbc_btnDeleteBail = new GridBagConstraints();
             gbc_btnDeleteBail.insets = new Insets(0, 0, 5, 0);

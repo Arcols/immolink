@@ -44,7 +44,7 @@ public class ModelePageNouveauTravaux {
                 }else{
                     BienLouableDAO bienLouableDAO = new DAO.jdbc.BienLouableDAO();
                     BienLouable bienLouable = bienLouableDAO.readId(id);
-                    devisDAO.create(d, bienLouable.getNumero_fiscal(), typeLogement);
+                    devisDAO.create(d, bienLouable.getNumeroFiscal(), typeLogement);
                 }
 
                 // Afficher une popup de confirmation

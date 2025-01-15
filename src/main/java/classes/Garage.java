@@ -1,9 +1,5 @@
 package classes;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
-import DAO.db.ConnectionDB;
 import enumeration.TypeLogement;
 
 public class Garage extends classes.BienLouable {
@@ -24,10 +20,10 @@ public class Garage extends classes.BienLouable {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		Garage garage = (Garage) o;
-		return this.getNumero_fiscal().equals(garage.getNumero_fiscal())
+		return this.getNumeroFiscal().equals(garage.getNumeroFiscal())
 				&& this.getVille().equals(garage.getVille())
 				&& this.getAdresse().equals(garage.getAdresse())
-				&& this.getComplement_adresse().equals(garage.getComplement_adresse())
+				&& this.getComplementAdresse().equals(garage.getComplementAdresse())
 				&& this.getTypeLogement().egal(garage.getTypeLogement()) ;
 	}
 }

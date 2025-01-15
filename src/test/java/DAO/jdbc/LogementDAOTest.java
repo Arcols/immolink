@@ -11,12 +11,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.Assert.*;
 
@@ -50,8 +47,8 @@ public class LogementDAOTest {
         logementDAO.create(logement,TypeLogement.APPARTEMENT);
         Integer id = logementDAO.getId("101010101010",TypeLogement.APPARTEMENT);
         Logement logementRecupere = logementDAO.read(id);
-        assertEquals("101010101010", logementRecupere.getNumero_fiscal());
-        assertEquals("Apt 1", logementRecupere.getComplement_adresse());
+        assertEquals("101010101010", logementRecupere.getNumeroFiscal());
+        assertEquals("Apt 1", logementRecupere.getComplementAdresse());
     }
 
     @Test
@@ -60,8 +57,8 @@ public class LogementDAOTest {
         logementDAO.create(logement,TypeLogement.APPARTEMENT);
 
         Logement logementRecupere = logementDAO.read(logementDAO.getId("101010101010",TypeLogement.APPARTEMENT));
-        assertEquals("101010101010", logementRecupere.getNumero_fiscal());
-        assertEquals("Apt 1", logementRecupere.getComplement_adresse());
+        assertEquals("101010101010", logementRecupere.getNumeroFiscal());
+        assertEquals("Apt 1", logementRecupere.getComplementAdresse());
     }
 
     @Test
@@ -95,10 +92,10 @@ public class LogementDAOTest {
         garageDAO.create(garage);
         logementDAO.lierUnGarageAuBienLouable(logement, garage,TypeLogement.APPARTEMENT);
 
-        Logement logementRecupere = logementDAO.read(logementDAO.getId(logement.getNumero_fiscal(),TypeLogement.APPARTEMENT));
+        Logement logementRecupere = logementDAO.read(logementDAO.getId(logement.getNumeroFiscal(),TypeLogement.APPARTEMENT));
         Integer idGarage = logementDAO.getGarageAssocie(logementRecupere,TypeLogement.APPARTEMENT);
         assertNotNull(logementRecupere);
-        assertEquals((Integer) garageDAO.getIdGarage(garage.getNumero_fiscal(),TypeLogement.GARAGE_ASSOCIE),idGarage);
+        assertEquals((Integer) garageDAO.getIdGarage(garage.getNumeroFiscal(),TypeLogement.GARAGE_ASSOCIE),idGarage);
     }
 
 }

@@ -299,7 +299,7 @@ public class PageMonBien {
                     gbc_labelNumeroFiscalGarage.gridy = 7;
                     panel.add(labelNumeroFiscalGarage, gbc_labelNumeroFiscalGarage);
 
-                    this.affichageNumeroFiscalGarage = new JLabel(garage.getNumero_fiscal());
+                    this.affichageNumeroFiscalGarage = new JLabel(garage.getNumeroFiscal());
                     GridBagConstraints gbcaffichageNumeroFiscalGarage = new GridBagConstraints();
                     gbcaffichageNumeroFiscalGarage.anchor = GridBagConstraints.WEST;
                     gbcaffichageNumeroFiscalGarage.insets = new Insets(0, 0, 5, 5);
@@ -347,7 +347,7 @@ public class PageMonBien {
                     gbc_labelComplémentGarage.gridy = 10;
                     panel.add(labelComplémentGarage, gbc_labelComplémentGarage);
 
-                    this.affichageComplementGarage = new JLabel(garage.getComplement_adresse());
+                    this.affichageComplementGarage = new JLabel(garage.getComplementAdresse());
                     GridBagConstraints gbcaffichageComplementGarage = new GridBagConstraints();
                     gbcaffichageComplementGarage.anchor = GridBagConstraints.WEST;
                     gbcaffichageComplementGarage.insets = new Insets(0, 0, 5, 5);

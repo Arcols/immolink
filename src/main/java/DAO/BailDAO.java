@@ -61,6 +61,12 @@ public interface BailDAO {
          */
         Bail getBailFromId(int idBail);
 
+        /**
+         * Récupère un bail de la base de données en utilisant son bien et sa date de début.
+         * @param bien L'objet bien à rechercher
+         * @param date_debut La date de début du bail à rechercher
+         * @return
+         */
         Bail getBailFromBienEtDate(BienLouable bien, Date date_debut);
 
         /**

@@ -59,7 +59,7 @@ public class ModelePageMesBiens {
                     TypeLogement.getString(bien.getTypeLogement()),
                     bien.getVille(),
                     bien.getAdresse(),
-                    bien.getComplement_adresse()
+                    bien.getComplementAdresse()
             };
             model.addRow(rowData);
         }

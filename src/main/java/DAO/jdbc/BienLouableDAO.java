@@ -23,8 +23,8 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
             Connection cn = ConnectionDB.getInstance();
             String query = "INSERT INTO bienlouable (numero_fiscal, complement_adresse, type_logement, Nombre_pieces, surface, idBat, garage_assoc) VALUES (?,?,?,?,?,?,?)";
             PreparedStatement pstmt = cn.prepareStatement(query);
-            pstmt.setString(1, bien.getNumero_fiscal());
-            pstmt.setString(2, bien.getComplement_adresse());
+            pstmt.setString(1, bien.getNumeroFiscal());
+            pstmt.setString(2, bien.getComplementAdresse());
             pstmt.setInt(3, type.getValue());
             pstmt.setInt(4, nb_piece);
             pstmt.setDouble(5, surface);
@@ -45,10 +45,10 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
             String query = "UPDATE bienlouable SET garage_assoc = ? WHERE numero_fiscal = ? AND type_logement = ?";
             PreparedStatement pstmt = cn.prepareStatement(query);
             GarageDAO garageDAO = new GarageDAO();
-            Integer idGarage = garageDAO.getIdGarage(garage.getNumero_fiscal(), TypeLogement.GARAGE_PAS_ASSOCIE);
+            Integer idGarage = garageDAO.getIdGarage(garage.getNumeroFiscal(), TypeLogement.GARAGE_PAS_ASSOCIE);
             pstmt.setInt(1, idGarage);
-            pstmt.setString(2, bien.getNumero_fiscal());
-            pstmt.setInt(3, getTypeFromId(getId(bien.getNumero_fiscal())).getValue());
+            pstmt.setString(2, bien.getNumeroFiscal());
+            pstmt.setInt(3, getTypeFromId(getId(bien.getNumeroFiscal())).getValue());
             pstmt.executeUpdate();
             pstmt.close();
             garageDAO.updateTypeGarage(idGarage, TypeLogement.GARAGE_PAS_ASSOCIE, TypeLogement.GARAGE_ASSOCIE);
@@ -139,7 +139,7 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
 
     @Override
     public void delete(int id) throws DAOException {
-        List<Devis> lDevis = new DevisDAO().getAllDevisFromABien(readId(id).getNumero_fiscal(), getTypeFromId(id));
+        List<Devis> lDevis = new DevisDAO().getAllDevisFromABien(readId(id).getNumeroFiscal(), getTypeFromId(id));
         List<Integer> idBeaux = getListeBeauxFromBien(readId(id));
         List<Diagnostic> lDiags = new DiagnosticDAO().readAllDiag(id);
 
@@ -160,7 +160,7 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
                 }
             };
             for (Diagnostic diag : lDiags) {
-                new DiagnosticDAO().delete(readId(id).getNumero_fiscal(), diag.getReference());
+                new DiagnosticDAO().delete(readId(id).getNumeroFiscal(), diag.getReference());
             }
             for (Devis d : lDevis) {
                 Integer id_devis = new DevisDAO().getId(d);
@@ -310,7 +310,7 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
             Connection cn = ConnectionDB.getInstance();
             String query = "SELECT * FROM bail WHERE id_bien_louable = ?";
             PreparedStatement pstmt = cn.prepareStatement(query);
-            pstmt.setInt(1, new BienLouableDAO().getId(bien.getNumero_fiscal()));
+            pstmt.setInt(1, new BienLouableDAO().getId(bien.getNumeroFiscal()));
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 Integer solde_de_compte = rs.getInt("solde_de_compte");
@@ -322,7 +322,7 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
                 Double icc = rs.getDouble("icc");
                 Integer index_eau = rs.getInt("index_eau");
                 Date dernier_anniversaire = rs.getDate("date_dernier_anniversaire");
-                bail = new Bail((solde_de_compte == 1), bien.getNumero_fiscal(), loyer, charges, depot_garantie,
+                bail = new Bail((solde_de_compte == 1), bien.getNumeroFiscal(), loyer, charges, depot_garantie,
                         date_debut, date_fin, icc, index_eau, dernier_anniversaire);
             }
         } catch (SQLException e) {
@@ -340,7 +340,7 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
             Connection cn = ConnectionDB.getInstance();
             String query = "SELECT * FROM bail WHERE id_bien_louable = ? AND YEAR(date_fin) >= YEAR(?)";
             PreparedStatement pstmt = cn.prepareStatement(query);
-            pstmt.setInt(1, new BienLouableDAO().getId(bien.getNumero_fiscal()));
+            pstmt.setInt(1, new BienLouableDAO().getId(bien.getNumeroFiscal()));
             pstmt.setDate(2, annne);
             ResultSet rs = pstmt.executeQuery();
 
@@ -354,7 +354,7 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
                 Double icc = rs.getDouble("icc");
                 Integer index_eau = rs.getInt("index_eau");
                 Date dernier_anniversaire = rs.getDate("date_dernier_anniversaire");
-                bail = new Bail((solde_de_compte == 1), bien.getNumero_fiscal(), loyer, charges, depot_garantie,
+                bail = new Bail((solde_de_compte == 1), bien.getNumeroFiscal(), loyer, charges, depot_garantie,
                         date_debut, date_fin, icc, index_eau, dernier_anniversaire);
             }
         } catch (SQLException e) {
@@ -443,7 +443,7 @@ public class BienLouableDAO implements DAO.BienLouableDAO {
             Connection cn = ConnectionDB.getInstance();
             String query = "SELECT id FROM bail WHERE id_bien_louable = ?";
             PreparedStatement pstmt = cn.prepareStatement(query);
-            pstmt.setInt(1, new BienLouableDAO().getId(bien.getNumero_fiscal()));
+            pstmt.setInt(1, new BienLouableDAO().getId(bien.getNumeroFiscal()));
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 id_beaux.add(rs.getInt("id"));

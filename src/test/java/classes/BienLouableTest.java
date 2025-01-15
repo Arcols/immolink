@@ -41,8 +41,8 @@ public class BienLouableTest {
 
     @Test
     public void testConstructeurEtGetters() {
-        assertEquals("123456789101", bienLouable.getNumero_fiscal());
-        assertEquals("Appartement 12B", bienLouable.getComplement_adresse());
+        assertEquals("123456789101", bienLouable.getNumeroFiscal());
+        assertEquals("Appartement 12B", bienLouable.getComplementAdresse());
         assertEquals("123 Rue de la Paix", bienLouable.getAdresse());
         assertEquals("Paris", bienLouable.getVille());
         assertEquals(1, bienLouable.getDiagnostic().size());

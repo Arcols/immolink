@@ -221,7 +221,7 @@ public class PageMesBiens {
                             if(type.estBienLouable()) {
                                 BienLouable bien = new BienLouableDAO().readFisc(new BienLouableDAO().getFiscFromCompl(ville, adresse, complement));
                                 frame.dispose();
-                                new PageMonBien(new BienLouableDAO().getId(bien.getNumero_fiscal()),type);
+                                new PageMonBien(new BienLouableDAO().getId(bien.getNumeroFiscal()),type);
                             }else{
                                 frame.dispose();
                                 Integer IdBat = new BatimentDAO().getIdBat(ville,adresse);

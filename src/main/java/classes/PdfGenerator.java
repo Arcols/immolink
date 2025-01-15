@@ -10,6 +10,25 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class PdfGenerator {
+
+    /**
+     * Génère un fichier PDF de régularisation des charges
+     * @param filePath le chemin du fichier PDF
+     * @param senderName le nom de l'expéditeur
+     * @param senderAddress l'adresse de l'expéditeur
+     * @param senderPhone le téléphone de l'expéditeur
+     * @param recipientName le nom du destinataire
+     * @param recipientAddress l'adresse du destinataire
+     * @param currentDate la date actuelle
+     * @param periodStart la date de début de la période
+     * @param periodEnd la date de fin de la période
+     * @param waterCharge le montant de la charge d'eau
+     * @param wasteCharge le montant de la charge des ordures ménagères
+     * @param maintenanceCharge le montant de la charge d'entretien des parties communes
+     * @param lightingCharge le montant de la charge d'éclairage des parties communes
+     * @param provisions le montant des provisions pour charges
+     * @param genre le genre du destinataire
+     */
     public static void generateChargesPdf(String filePath,
                                           String senderName, String senderAddress, String senderPhone,
                                           String recipientName, String recipientAddress,
@@ -105,6 +124,11 @@ public class PdfGenerator {
         }
     }
 
+    /**
+     * Ouvre un fichier PDF
+     * @param pdfPath
+     * @throws IOException
+     */
     public static void ouvrirPdf(String pdfPath) throws IOException {
         File pdfFile = new File(pdfPath);
         if (Desktop.isDesktopSupported()) {

@@ -12,10 +12,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import DAO.DAOException;
 import DAO.jdbc.BailDAO;
 import DAO.jdbc.BienLouableDAO;
-import DAO.jdbc.LocataireDAO;
 import DAO.jdbc.LouerDAO;
 import classes.Bail;
-import classes.Locataire;
 import ihm.PageBaux;
 import ihm.PageNouveauBail;
 
@@ -67,7 +65,7 @@ public class ModelePageBaux {
             } catch (DAOException e) {
                 throw new RuntimeException(e);
             }
-            if (bail != null && bail.getDate_fin().before(new Date(System.currentTimeMillis()))) {
+            if (bail != null && bail.getDateFin().before(new Date(System.currentTimeMillis()))) {
                 c.setBackground(Color.RED);
             } else {
                 c.setBackground(Color.WHITE);

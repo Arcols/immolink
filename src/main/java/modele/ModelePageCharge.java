@@ -9,10 +9,7 @@ import ihm.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -74,7 +71,7 @@ public class ModelePageCharge {
                 }
 
                 try {
-                    BienLouable bien = new DAO.jdbc.BienLouableDAO().readFisc(bail.getFisc_bien());
+                    BienLouable bien = new DAO.jdbc.BienLouableDAO().readFisc(bail.getFiscBien());
                     Date datedebutperiode = Date.valueOf(currentYear + "-01-01");
                     int qt = new DAO.jdbc.LouerDAO().getQuotité(pageCharge.getId_bail(), id);
                     double quotite=qt/100.0;
@@ -90,8 +87,8 @@ public class ModelePageCharge {
 
                     SimpleDateFormat fullFormatter = new SimpleDateFormat("dd MMMM yyyy", new java.util.Locale("fr", "FR"));
 
-                    if (bail.getDate_debut().getYear() - 1 == Integer.valueOf(currentYear)-1) {
-                        datedebutperiode = bail.getDate_debut();
+                    if (bail.getDateDebut().getYear() - 1 == Integer.valueOf(currentYear)-1) {
+                        datedebutperiode = bail.getDateDebut();
                     }
                     generateChargesPdf("pdfgeneres/Régularisation des charges " + l.getNom() + " " + l.getPrénom()
                                     +" "+(currentYear)+".pdf",
