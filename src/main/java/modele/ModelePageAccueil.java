@@ -1,21 +1,20 @@
 package modele;
 
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
+import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import DAO.jdbc.LocataireDAO;
+import DAO.jdbc.LouerDAO;
 import DAO.jdbc.RegimeDAO;
 import classes.Locataire;
 import ihm.PageAccueil;
+import ihm.PageDeclarationFiscale;
 import ihm.PageNouveauLocataire;
 
 public class ModelePageAccueil {
@@ -34,7 +33,7 @@ public class ModelePageAccueil {
      */
     public static DefaultTableModel loadDataLocataireToTable() throws SQLException {
         // Liste des colonnes
-        String[] columnNames = {"Nom", "Prénom", "Lieu Naissance", "Date Naissance", "Téléphone", "Mail", "Genre", "Date arrivée"};
+        String[] columnNames = {"Nom", "Prénom", "Lieu Naissance", "Date Naissance", "Téléphone", "Mail", "Genre", "Date arrivée","Statut"};
 
         // Création du modèle de table
         DefaultTableModel model = new DefaultTableModel(columnNames, 0){
@@ -49,6 +48,7 @@ public class ModelePageAccueil {
         LocataireDAO locataireDAO = new LocataireDAO();
         List<Locataire> locataires = locataireDAO.getAllLocataire();
 
+
         // Remplissage du modèle avec les données des locataires
         for (Locataire locataire : locataires) {
             Object[] rowData = {
@@ -59,12 +59,22 @@ public class ModelePageAccueil {
                     locataire.getTéléphone(),
                     locataire.getMail(),
                     locataire.getGenre(),
-                    locataire.getDateArrive()
+                    locataire.getDateArrive(),
+                    statut(locataire)
             };
             model.addRow(rowData); // Ajout de la ligne dans le modèle
         }
 
         return model; // Retourne le modèle rempli
+    }
+
+    public static String statut(Locataire locataire){
+        LouerDAO louerDAO = new LouerDAO();
+        LocataireDAO locataireDAO = new LocataireDAO();
+        if (louerDAO.getStatut(locataireDAO.getId(locataire))){
+            return "Payé";
+        }
+        return "Retard";
     }
 
     /**
@@ -122,6 +132,40 @@ public class ModelePageAccueil {
         };
     }
 
+
+    public DefaultTableCellRenderer couleurLigne() {
+        return new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value,
+                                                           boolean isSelected, boolean hasFocus,
+                                                           int row, int column) {
+                // Appeler la méthode parente pour obtenir le composant par défaut
+                Component component = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+                // Vérifier si la dernière colonne contient "Retard"
+                int lastColumnIndex = table.getColumnCount() - 1;
+                String status = table.getValueAt(row, lastColumnIndex).toString();
+
+                // Appliquer une couleur de fond si "Retard"
+                if ("Retard".equals(status)) {
+                    component.setBackground(Color.decode("#ff5454"));
+                    component.setForeground(Color.BLACK); // Contraste pour le texte
+                } else {
+                    component.setBackground(Color.decode("#7fe075")); // Couleur de fond par défaut
+                    component.setForeground(Color.BLACK); // Texte noir par défaut
+                }
+
+                // Prioriser la couleur de sélection si la ligne est sélectionnée
+                if (isSelected) {
+                    component.setBackground(table.getSelectionBackground());
+                    component.setForeground(table.getSelectionForeground());
+                }
+
+                return component;
+            }
+        };
+    }
+
     /**
      * Méthode pour récupérer la valeur actuelle du seuil microfoncier depuis la base de données.
      *
@@ -155,7 +199,6 @@ public class ModelePageAccueil {
         }
     }
 
-
     public ActionListener ouvrirNouveauLocataire(){
         return e->{
             pageAccueil.getFrame().dispose();
@@ -164,4 +207,32 @@ public class ModelePageAccueil {
         };
     }
 
+    public ActionListener choix_annee() {
+        return e -> {
+            JDialog dialog = new JDialog((Frame) null, "Saisir année de la déclaration fiscale ", true);
+            dialog.setSize(400, 200);
+            dialog.setLayout(null);
+
+            JLabel label = new JLabel("Année de la déclaration fiscale :");
+            label.setBounds(20, 30, 200, 25);
+            dialog.add(label);
+
+            JTextField choix_annee = new JTextField();
+            choix_annee.setBounds(220, 30, 100, 25);
+            dialog.add(choix_annee);
+
+            JButton validerButton = new JButton("Valider");
+            validerButton.setBounds(150, 100, 100, 30);
+            dialog.add(validerButton);
+
+            validerButton.addActionListener(event -> {
+                dialog.dispose();
+                this.pageAccueil.getFrame().dispose();
+                PageDeclarationFiscale pagedecla = new PageDeclarationFiscale(choix_annee.getText());
+            });
+
+            dialog.setLocationRelativeTo(null);
+            dialog.setVisible(true);
+        };
+    }
 }

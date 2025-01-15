@@ -5,6 +5,7 @@ import classes.BienLouable;
 import classes.Garage;
 import enumeration.TypeLogement;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -108,6 +109,14 @@ public interface BienLouableDAO {
 	 * @return le bail associé
 	 */
     Bail getBailFromBien(BienLouable bien);
+
+	/**
+	 * Récupère le Bail associé à un bien louable en fonction de l'année de fin
+	 * @param bien le bien louable
+	 * @param annne la date pour avoir l'année de la fin du bail
+	 * @return le bail associé
+	 */
+	Bail getBailFromBienAndDate(BienLouable bien, Date annne);
 
     /**
 	 * Récupère tous les compléments d'adresse de la base de données.

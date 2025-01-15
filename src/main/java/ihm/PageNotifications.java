@@ -18,6 +18,7 @@ import ihm.*;
 import modele.Menu;
 import modele.Charte;
 import modele.ModelePageNotifications;
+import modele.ResizedImage;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -152,7 +153,28 @@ public class PageNotifications {
         columnModel.getColumn(0).setMaxWidth(120);
         columnModel.getColumn(0).setMinWidth(120);
 
+        this.frame.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                ResizedImage res = new ResizedImage();
+                res.resizeImage("logo+nom.png", PageNotifications.this.frame,
+                        PageNotifications.this.logo, 3, 8);
+                int frameWidth = PageNotifications.this.frame.getWidth();
+                int frameHeight = PageNotifications.this.frame.getHeight();
+
+                int newFontSize = Math.min(frameWidth, frameHeight) / 30;
+
+                // Appliquer la nouvelle police au bouton
+                Font resizedFont = new Font("Arial", Font.PLAIN, newFontSize);
+                b_baux.setFont(resizedFont);
+                b_accueil.setFont(resizedFont);
+                b_biens.setFont(resizedFont);
+            }
+        });
+
     }
+
+
 
 
 }

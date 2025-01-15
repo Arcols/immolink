@@ -1,15 +1,11 @@
 package ihm;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.Date;
 import java.sql.SQLException;
 
 import javax.swing.JButton;
@@ -21,11 +17,17 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import DAO.DAOException;
 import DAO.db.ConnectionDB;
+import DAO.jdbc.BailDAO;
+import DAO.jdbc.BienLouableDAO;
 import DAO.jdbc.LocataireDAO;
+import classes.Bail;
+import classes.BienLouable;
+import classes.Locataire;
 import modele.Charte;
 import modele.Menu;
 import modele.ModelePageAccueil;
@@ -178,10 +180,10 @@ public class PageAccueil {
 		table = new JTable();
 		JScrollPane scrollPane = new JScrollPane(table);
 		bodyPanel.add(scrollPane, BorderLayout.CENTER);
-
+		DefaultTableModel model = null;
 		// Chargement des données dans le tableau
 		try {
-			DefaultTableModel model = ModelePageAccueil.loadDataLocataireToTable();
+			model = ModelePageAccueil.loadDataLocataireToTable();
 			table.setModel(model);
 			TableColumnModel columnModel = table.getColumnModel();
 			columnModel.getColumn(0).setPreferredWidth(100); // Nom
@@ -192,6 +194,9 @@ public class PageAccueil {
 			columnModel.getColumn(5).setPreferredWidth(150); // Mail
 			columnModel.getColumn(6).setPreferredWidth(50);  // Genre
 			columnModel.getColumn(7).setPreferredWidth(80); // Date d'arrivée
+
+			// Ajouter un renderer pour colorer les lignes en fonction de la dernière colonne
+			table.setDefaultRenderer(Object.class, modele.couleurLigne());
 		} catch (SQLException e) {
 			JOptionPane.showMessageDialog(frame, "Erreur lors du chargement des données : " + e.getMessage(),
 					"Erreur", JOptionPane.ERROR_MESSAGE);
@@ -220,6 +225,7 @@ public class PageAccueil {
 
 		JButton declaFiscaleButton = new JButton("Générer");
 		declaFidscalePanel.add(declaFiscaleButton);
+		declaFiscaleButton.addActionListener(modele.choix_annee());
 
 		JButton ajouter = new JButton("Ajouter un locataire");
 		bas_de_page.add(ajouter, BorderLayout.EAST);
@@ -229,6 +235,32 @@ public class PageAccueil {
 			public void windowClosing(WindowEvent e) {
 				// Action to perform on application close
 				performCloseAction();
+			}
+		});
+
+		DefaultTableModel finalModel = model;
+		table.addMouseListener(new java.awt.event.MouseAdapter() {
+			@Override
+			public void mouseClicked(java.awt.event.MouseEvent evt) {
+				// Vérifier s'il s'agit d'un double-clic
+				if (evt.getClickCount() == 2) {
+					// Obtenir l'index de la ligne cliquée
+					int row = table.getSelectedRow();
+
+					// Récupérer les données de la ligne sélectionnée
+					if (row != -1) {
+						String nom = (String) finalModel.getValueAt(row, 0);
+						String prenom = (String) finalModel.getValueAt(row, 1);
+						String telephone = (String) finalModel.getValueAt(row, 4);
+
+                        LocataireDAO locataireDAO = new LocataireDAO();
+                        Locataire locataire = locataireDAO.getLocataireByNomPrénomTel(nom,prenom,telephone);
+                        frame.dispose();
+                        new PageUnLocataire(locataire);
+
+                        // Ouvrir une nouvelle fenêtre avec ces données
+					}
+				}
 			}
 		});
 	}

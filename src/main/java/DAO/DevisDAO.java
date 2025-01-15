@@ -3,6 +3,7 @@ package DAO;
 import  classes.Devis;
 import enumeration.TypeLogement;
 
+import java.sql.Date;
 import java.util.List;
 
 public interface DevisDAO {
@@ -40,6 +41,15 @@ public interface DevisDAO {
      * @return la liste des devis
      */
     List<Devis> getAllDevisFromABien(String num_fiscal,TypeLogement typeLogement);
+
+    /**
+     * Retourne une liste de devis d'un bien mis en paramètre
+     * @param num_fiscal le numéro fiscal du bien
+     * @param typeLogement le type de logement
+     * @param annee Date pour avoir l'année des devis
+     * @return la liste des devis
+     */
+    List<Devis> getAllDevisFromABienAndDate(String num_fiscal, TypeLogement typeLogement, Date annee);
 
     /**
      * Récupère le montant total des devis d'un bien

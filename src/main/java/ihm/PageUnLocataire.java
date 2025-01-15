@@ -1,7 +1,17 @@
 package ihm;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
 
+import DAO.jdbc.LocataireDAO;
+import classes.Locataire;
 import modele.Menu;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -18,6 +28,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 
 import DAO.DAOException;
@@ -28,7 +40,7 @@ import classes.BienLouable;
 import enumeration.TypeLogement;
 import modele.*;
 
-public class PageMesBiens {
+public class PageUnLocataire {
 
     private JFrame frame;
     private JLabel logo;
@@ -36,31 +48,18 @@ public class PageMesBiens {
     private DefaultTableModel tableModel;
 
     /**
-     * Launch the application.
-     */
-    public static void main(String[] args) {
-        EventQueue.invokeLater(() -> {
-            try {
-                PageMesBiens window = new PageMesBiens();
-                window.frame.setVisible(true);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-    }
-    /**
      * Create the application.
      */
-    public PageMesBiens() {
-        initialize();
+    public PageUnLocataire(Locataire locataire) {
+        initialize(locataire);
     }
 
     /**
      * Initialize the contents of the frame.
      */
-    private void initialize() {
+    private void initialize(Locataire locataire) {
         // Initialisation du JFrame
-        ModelePageMesBiens modele = new ModelePageMesBiens(this);
+        ModelePageUnLocataire modele = new ModelePageUnLocataire(this);
         this.frame = new JFrame();
         this.frame.setBounds(100, 100, 750, 400);
         this.frame.getContentPane().setBackground(Charte.FOND.getCouleur());
@@ -125,12 +124,11 @@ public class PageMesBiens {
         body.setLayout(new BorderLayout(0, 0));
 
         JPanel titre = new JPanel();
-        FlowLayout fl_titre = (FlowLayout) titre.getLayout();
         body.add(titre, BorderLayout.NORTH);
 
-        JLabel titleLabel = new JLabel("Mes biens", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
-        body.add(titleLabel, BorderLayout.NORTH);
+        JLabel labelLocataire = new JLabel("");
+        labelLocataire.setText(locataire.getNom()+" "+locataire.getPrénom());
+        titre.add(labelLocataire);
 
         JPanel panel = new JPanel();
         body.add(panel, BorderLayout.CENTER);
@@ -142,8 +140,9 @@ public class PageMesBiens {
         panel.setLayout(gbl_panel);
 
         try {
-            tableModel = ModelePageMesBiens.loadDataBienImmoToTable();
+            tableModel = ModelePageUnLocataire.loadDataBauxToTable(locataire);
             table = new JTable(tableModel);
+            table.removeColumn(table.getColumnModel().getColumn(4));
         } catch (SQLException | DAOException e) {
             JOptionPane.showMessageDialog(frame, "Erreur lors du chargement des données : " + e.getMessage(),
                     "Erreur", JOptionPane.ERROR_MESSAGE);
@@ -175,21 +174,24 @@ public class PageMesBiens {
         this.frame.getContentPane().add(bas_de_page, BorderLayout.SOUTH);
         bas_de_page.setLayout(new BorderLayout(0, 0));
 
-        JButton ajouter = new JButton("Nouveau bien");
-        ajouter.setEnabled(true); // Le bouton est maintenant activé
-        ajouter.setHorizontalTextPosition(SwingConstants.LEFT);
-        ajouter.setVerticalTextPosition(SwingConstants.TOP);
-        ajouter.setVerticalAlignment(SwingConstants.BOTTOM);
-        bas_de_page.add(ajouter, BorderLayout.EAST);
+        JButton quitter = new JButton("Quitter");
+        quitter.setHorizontalTextPosition(SwingConstants.LEFT);
+        quitter.setVerticalTextPosition(SwingConstants.TOP);
+        quitter.setVerticalAlignment(SwingConstants.BOTTOM);
+        bas_de_page.add(quitter, BorderLayout.WEST);
+
+        quitter.addActionListener(modele.quitterPage());
+
+        tableModel.addTableModelListener(modele.modifPaiement(tableModel,locataire));
 
         this.frame.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
                 ResizedImage res = new ResizedImage();
-                res.resizeImage("logo+nom.png", PageMesBiens.this.frame,
-                        PageMesBiens.this.logo, 3, 8);
-                int frameWidth = PageMesBiens.this.frame.getWidth();
-                int frameHeight = PageMesBiens.this.frame.getHeight();
+                res.resizeImage("logo+nom.png", PageUnLocataire.this.frame,
+                        PageUnLocataire.this.logo, 3, 8);
+                int frameWidth = PageUnLocataire.this.frame.getWidth();
+                int frameHeight = PageUnLocataire.this.frame.getHeight();
 
                 int newFontSize = Math.min(frameWidth, frameHeight) / 30;
 
@@ -201,41 +203,9 @@ public class PageMesBiens {
             }
         });
 
-        ajouter.addActionListener(modele.ouvrirNouveauBien());
 
-        table.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                // Vérifier s'il s'agit d'un double-clic
-                if (evt.getClickCount() == 2) {
-                    // Obtenir l'index de la ligne cliquée
-                    int row = table.getSelectedRow();
 
-                    // Récupérer les données de la ligne sélectionnée
-                    if (row != -1) {
-                        String adresse = (String) tableModel.getValueAt(row, 2);
-                        String complement = (String) tableModel.getValueAt(row, 3);
-                        String ville = (String) tableModel.getValueAt(row, 1);
-                        TypeLogement type = TypeLogement.fromString((String) tableModel.getValueAt(row, 0));
-                        try {
-                            if(type.estBienLouable()) {
-                                BienLouable bien = new BienLouableDAO().readFisc(new BienLouableDAO().getFiscFromCompl(ville, adresse, complement));
-                                frame.dispose();
-                                new PageMonBien(new BienLouableDAO().getId(bien.getNumero_fiscal()),type);
-                            }else{
-                                frame.dispose();
-                                Integer IdBat = new BatimentDAO().getIdBat(ville,adresse);
-                                new PageMonBien(IdBat,type);
-                            }
-                        } catch (DAOException e) {
-                            throw new RuntimeException(e);
-                        } catch (SQLException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                }
-            }
-        });
+
 
         frame.addWindowListener(new WindowAdapter() {
             @Override
@@ -244,6 +214,7 @@ public class PageMesBiens {
                 performCloseAction();
             }
         });
+        this.frame.setVisible(true);
     }
 
     private void performCloseAction() {

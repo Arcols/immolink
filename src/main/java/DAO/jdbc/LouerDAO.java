@@ -1,9 +1,7 @@
 package DAO.jdbc;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -141,5 +139,91 @@ public class LouerDAO implements DAO.LouerDAO{
             }
         return locataires;
     }
+
+    @Override
+    public Boolean getStatut(int idLocataire) {
+        Boolean statut = null;
+
+        try {
+            Connection cn = ConnectionDB.getInstance();
+            String query = "{ ? = call check_statut(?) }";
+            CallableStatement cstmt = cn.prepareCall(query);
+            cstmt.registerOutParameter(1, Types.BOOLEAN);
+            cstmt.setInt(2, idLocataire);
+            cstmt.execute();
+            statut = cstmt.getBoolean(1);
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur lors de l'exécution de la requête", e);
+        }
+        return statut;
+    }
+
+    @Override
+    public Boolean getStatutBail(int idBail) {
+        Boolean statut = null;
+
+        try {
+            Connection cn = ConnectionDB.getInstance();
+            String query = "{ ? = call check_statut_bail(?) }";
+            CallableStatement cstmt = cn.prepareCall(query);
+            cstmt.registerOutParameter(1, Types.BOOLEAN);
+            cstmt.setInt(2, idBail);
+            cstmt.execute();
+            statut = cstmt.getBoolean(1);
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur lors de l'exécution de la requête", e);
+        }
+        return statut;
+    }
+
+    @Override
+    public Boolean getLoyerPaye(int idLocataire, int idBail) {
+        Date date = null;
+        try {
+            Connection cn = ConnectionDB.getInstance();
+            String query = "SELECT dernier_paiement FROM louer WHERE id_bail = ? and id_locataire = ?";
+            PreparedStatement pstmt = cn.prepareStatement(query);
+            pstmt.setInt(1, idBail);
+            pstmt.setInt(2, idLocataire);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                date = rs.getDate("dernier_paiement");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Vérification si la date est null
+        if (date == null) {
+            return false; // Si pas de date de paiement, on retourne false (aucun paiement effectué)
+        }
+
+        // Convertir la java.sql.Date en java.time.LocalDate pour éviter UnsupportedOperationException
+        LocalDate paymentDate = date.toLocalDate();
+
+        // Comparer avec le premier jour du mois courant
+        LocalDate firstDayOfCurrentMonth = LocalDate.now().withDayOfMonth(1);
+
+        return paymentDate.isAfter(firstDayOfCurrentMonth.minusDays(1));  // Si paiement est après ou le premier jour du mois
+    }
+
+    @Override
+    public void updatePaiement(int idBail, int idLocataire, Date date) {
+        try {
+            Connection cn = ConnectionDB.getInstance();
+            String query = "UPDATE louer SET dernier_paiement = ? WHERE id_bail = ? AND id_locataire = ?";
+            PreparedStatement pstmt = cn.prepareStatement(query);
+            pstmt.setDate(1,date);
+            pstmt.setInt(2,idBail);
+            pstmt.setInt(3,idLocataire);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 
 }

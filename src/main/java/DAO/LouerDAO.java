@@ -1,5 +1,6 @@
 package DAO;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -62,4 +63,33 @@ public interface LouerDAO {
      */
     Map<Integer,List<Integer>> getAllLocatairesDesBeaux();
 
+    /**
+     * Renvoie True si le locataire a payé tous ses loyers
+     * @param idLocataire
+     * @return true ou false
+     */
+    Boolean getStatut(int idLocataire);
+
+    /**
+     * Renvoie True si tous les locataires ont payé le loyer
+     * @param idBail
+     * @return true ou false
+     */
+    Boolean getStatutBail(int idBail);
+
+    /**
+     * Renvoie la date du dernier paiement
+     * @param idLocataire
+     * @param idBail
+     * @return Date
+     */
+    Boolean getLoyerPaye(int idLocataire, int idBail);
+
+    /**
+     * Mets a jour la date du dernier paiement
+     * @param idBail
+     * @param idLocataire
+     * @param date
+     */
+    void updatePaiement(int idBail, int idLocataire, Date date);
 }

@@ -162,6 +162,9 @@ public class PageBaux {
 		titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
 		body.add(titleLabel, BorderLayout.NORTH);
 
+		LouerDAO louerDAO =new LouerDAO();
+		BailDAO bailDAO =new BailDAO();
+
 		// Créer les données fictives pour le tableau
 		List<Bail> listBail = new DAO.jdbc.BailDAO().getAllBaux();
 
@@ -181,13 +184,15 @@ public class PageBaux {
 				Locataire loc = new DAO.jdbc.LocataireDAO().getLocFromId(id);
 				noms+=loc.getNom()+" ";
 			}
+
 			ligne = new String[]{
 					logement.getVille(),
 					logement.getAdresse(),
 					logement.getComplement_adresse(),
 					noms,
 					String.valueOf(b.getLoyer()),
-					b.getDate_debut().toString()
+					b.getDate_debut().toString(),
+					ModelePageBaux.statut(b)
 			};
 			data[i] = ligne;
 			i++;

@@ -12,7 +12,10 @@ import javax.swing.table.DefaultTableCellRenderer;
 import DAO.DAOException;
 import DAO.jdbc.BailDAO;
 import DAO.jdbc.BienLouableDAO;
+import DAO.jdbc.LocataireDAO;
+import DAO.jdbc.LouerDAO;
 import classes.Bail;
+import classes.Locataire;
 import ihm.PageBaux;
 import ihm.PageNouveauBail;
 
@@ -36,6 +39,15 @@ public class ModelePageBaux {
             PageNouveauBail.main(null);
         };
     }
+    public static String statut(Bail bail){
+        LouerDAO louerDAO = new LouerDAO();
+        BailDAO bailDAO = new BailDAO();
+        if (louerDAO.getStatutBail(bailDAO.getId(bail))){
+            return "Payé";
+        }
+        return "Retard";
+    }
+
     public static class CustomRowRenderer extends DefaultTableCellRenderer {
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
