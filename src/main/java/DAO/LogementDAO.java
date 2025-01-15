@@ -2,7 +2,6 @@ package DAO;
 
 import java.util.List;
 
-import classes.BienLouable;
 import classes.Garage;
 import classes.Logement;
 import enumeration.TypeLogement;

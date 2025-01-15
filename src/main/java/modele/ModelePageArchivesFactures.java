@@ -1,13 +1,9 @@
 package modele;
 
 import DAO.DAOException;
-import DAO.jdbc.BienLouableDAO;
 import DAO.jdbc.ChargeDAO;
-import DAO.jdbc.DiagnosticDAO;
 import DAO.jdbc.FactureDAO;
-import classes.BienLouable;
 import classes.Facture;
-import enumeration.TypeLogement;
 import ihm.PageArchivesFactures;
 import ihm.PageCharge;
 

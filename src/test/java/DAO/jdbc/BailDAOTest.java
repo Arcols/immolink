@@ -238,7 +238,7 @@ public class BailDAOTest {
         bailDAO.updateDateDernierAnniversaire(idBail, newDateDernierAnniversaire);
 
         Bail updatedBail = bailDAO.getBailFromId(idBail);
-        assertEquals(newDateDernierAnniversaire, updatedBail.getDernier_anniversaire());
+        assertEquals(newDateDernierAnniversaire, updatedBail.getDernierAnniversaire());
     }
 
     @Test

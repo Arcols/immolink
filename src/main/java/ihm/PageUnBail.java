@@ -315,7 +315,7 @@ public class PageUnBail {
         gbc_labelIndexEau.gridy = 9;
         panel_Infos.add(labelIndexEau, gbc_labelIndexEau);
 
-        this.affichageIndexEau = new JLabel(String.valueOf(bail.getIndex_eau()));
+        this.affichageIndexEau = new JLabel(String.valueOf(bail.getIndexEau()));
         GridBagConstraints gbc_affichageIndexEau = new GridBagConstraints();
         gbc_affichageIndexEau.anchor = GridBagConstraints.WEST;
         gbc_affichageIndexEau.gridx = 2;
@@ -412,7 +412,7 @@ public class PageUnBail {
         panelModifs.add(btnUpdateProvision, gbc_btnUpdateProvision);
         btnUpdateProvision.addActionListener(modele.getUpdateProvisionPourCharge(new BailDAO().getId(bail)));
 
-        if(bail.getDernier_anniversaire().before(eneleveUneAnnéeADate(new Date(System.currentTimeMillis())))){
+        if(bail.getDernierAnniversaire().before(eneleveUneAnnéeADate(new Date(System.currentTimeMillis())))){
             JButton btnModifierICC = new JButton("Modifier l'ICC (Anniversaie de votre bail)");
             GridBagConstraints gbc_btnModifierICC = new GridBagConstraints();
             gbc_btnModifierICC.insets = new Insets(0, 0, 5, 5);

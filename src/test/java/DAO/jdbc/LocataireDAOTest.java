@@ -1,7 +1,12 @@
 package DAO.jdbc;
 
+import DAO.DAOException;
 import DAO.db.ConnectionDB;
+import classes.Bail;
+import classes.Batiment;
+import classes.BienLouable;
 import classes.Locataire;
+import enumeration.TypeLogement;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,6 +14,7 @@ import org.junit.Test;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -108,5 +114,35 @@ public class LocataireDAOTest {
 
         Locataire locataireInexistant = locataireDAO.getLocFromId(-1);
         assertNull(locataireInexistant);
+    }
+
+    @Test
+    public void testGetBauxLocataire() throws DAOException, SQLException {
+        // Create a new Locataire instance
+        Locataire locataire = new Locataire("Doe", "John", "Paris", "1990-01-01", "0606060606", "ee.ee@ee.ee", Date.valueOf("2020-01-01"), "M");
+        locataireDAO.addLocataire(locataire);
+        int idLocataire = locataireDAO.getId(locataire);
+
+        Batiment batiment4 = new Batiment("123456789108", "Paris", "123 Rue de la Paix", "31000");
+        new BatimentDAO().create(batiment4);
+
+        BienLouable bienLouable = new BienLouable("BL3456789101", "Paris", "123 Rue de la Paix", "31000", new ArrayList<>(), null, TypeLogement.APPARTEMENT);
+        new BienLouableDAO().create(bienLouable, TypeLogement.APPARTEMENT, 3, 75.0);
+
+        // Create a new Bail instance
+        Bail bail = new Bail(true, "BL3456789101", 1000.0, 200.0, 500.0, Date.valueOf("2024-01-01"), Date.valueOf("2024-12-31"), 150.0, 10, Date.valueOf("2023-01-01"));
+        new BailDAO().create(bail);
+        int idBail = new BailDAO().getId(bail);
+
+        // Associate the Bail with the Locataire
+        new LouerDAO().create(locataire, bail, 100);
+
+        // Retrieve the Baux IDs using the getBauxLocataire method
+        List<Integer> bauxIds = locataireDAO.getBauxLocataire(idLocataire);
+
+        // Assert the retrieved Baux IDs are not null and contain the expected number of elements
+        assertNotNull(bauxIds);
+        assertEquals(1, bauxIds.size());
+        assertEquals(idBail, bauxIds.get(0).intValue());
     }
 }

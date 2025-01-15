@@ -3,14 +3,12 @@ package ihm;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 
-import DAO.jdbc.LocataireDAO;
 import classes.Locataire;
 import modele.Menu;
 import java.awt.event.ComponentAdapter;
@@ -28,16 +26,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 
 import DAO.DAOException;
 import DAO.db.ConnectionDB;
-import DAO.jdbc.BatimentDAO;
-import DAO.jdbc.BienLouableDAO;
-import classes.BienLouable;
-import enumeration.TypeLogement;
 import modele.*;
 
 public class PageUnLocataire {

@@ -5,7 +5,6 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.sql.Date;
 import java.sql.SQLException;
 
 import javax.swing.JButton;
@@ -17,16 +16,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import DAO.DAOException;
 import DAO.db.ConnectionDB;
-import DAO.jdbc.BailDAO;
-import DAO.jdbc.BienLouableDAO;
 import DAO.jdbc.LocataireDAO;
-import classes.Bail;
-import classes.BienLouable;
 import classes.Locataire;
 import modele.Charte;
 import modele.Menu;

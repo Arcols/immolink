@@ -8,13 +8,10 @@ import javax.swing.JFrame;
 
 
 import DAO.jdbc.BailDAO;
-import classes.Bail;
 import ihm.*;
 
 import DAO.DAOException;
 import DAO.jdbc.DiagnosticDAO;
-import modele.*;
-
 
 public class Menu implements ActionListener {
 	private JFrame frame;

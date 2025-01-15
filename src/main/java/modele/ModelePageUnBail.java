@@ -90,7 +90,7 @@ public class ModelePageUnBail {
                 page.getAffichageNbPieces().setText(String.valueOf(logement.getNbPiece()));
                 page.getAffichageLoyer().setText(String.valueOf(bail.getLoyer()));
                 page.getAffichageProvision().setText(String.valueOf(bail.getCharge()));
-                page.getAffichageGarantie().setText(String.valueOf(bail.getDepot_garantie()));
+                page.getAffichageGarantie().setText(String.valueOf(bail.getDepotGarantie()));
             }
         } catch (DAOException e) {
             throw new DAOException("Erreur lors du chargement des informations du bien : " + e.getMessage(), e);
@@ -224,7 +224,7 @@ public class ModelePageUnBail {
                     }
 
                     bailDAO.updateICC(idBail, icc);  // Met à jour l'ICC dans la base
-                    bailDAO.updateDateDernierAnniversaire(idBail,nouvelleDateAnniversaire(bail.getDernier_anniversaire()));
+                    bailDAO.updateDateDernierAnniversaire(idBail,nouvelleDateAnniversaire(bail.getDernierAnniversaire()));
                     JOptionPane.showMessageDialog(dialog,
                             "L'ICC a été mis à jour à " + icc + " €.",
                             "Confirmation",

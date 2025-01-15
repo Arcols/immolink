@@ -18,7 +18,7 @@ public class BailTest {
         assertEquals("BL3456789101", bail.getFiscBien());
         assertEquals(1000.0, bail.getLoyer(), 0.0);
         assertEquals(200.0, bail.getCharge(), 0.0);
-        assertEquals(500.0, bail.getDepot_garantie(), 0.0);
+        assertEquals(500.0, bail.getDepotGarantie(), 0.0);
         assertEquals(dateDebut, bail.getDateDebut());
         assertEquals(dateFin, bail.getDateFin());
     }
@@ -35,13 +35,13 @@ public class BailTest {
         bail.setCharge(300.0);
         bail.setDepotGarantie(600.0);
         bail.setDateDebut(Date.valueOf("2024-02-01"));
-        bail.setDate_fin(Date.valueOf("2024-11-30"));
+        bail.setDateFin(Date.valueOf("2024-11-30"));
 
         assertFalse(bail.isSoldeDeCompte());
         assertEquals("BL9876543210", bail.getFiscBien());
         assertEquals(1500.0, bail.getLoyer(), 0.0);
         assertEquals(300.0, bail.getCharge(), 0.0);
-        assertEquals(600.0, bail.getDepot_garantie(), 0.0);
+        assertEquals(600.0, bail.getDepotGarantie(), 0.0);
         assertEquals(Date.valueOf("2024-02-01"), bail.getDateDebut());
         assertEquals(Date.valueOf("2024-11-30"), bail.getDateFin());
     }

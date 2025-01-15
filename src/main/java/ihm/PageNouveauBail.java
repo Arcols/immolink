@@ -1,4 +1,3 @@
-
 package ihm;
 
 import java.awt.BorderLayout;

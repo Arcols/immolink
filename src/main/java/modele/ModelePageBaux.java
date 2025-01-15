@@ -68,7 +68,7 @@ public class ModelePageBaux {
             int lastColumnIndex = table.getColumnCount() - 1;
             String status = table.getValueAt(row, lastColumnIndex).toString();
 
-            if (bail != null && bail.getDate_fin().before(new Date(System.currentTimeMillis()))) {
+            if (bail != null && bail.getDateFin().before(new Date(System.currentTimeMillis()))) {
                 Color rouge =Color.decode("#ff5454");
                 c.setBackground(rouge);
             }else if ("Retard".equals(status)) {

@@ -1,28 +1,13 @@
 package modele;
 
-import java.awt.event.ActionListener;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import DAO.DAOException;
 import DAO.jdbc.BailDAO;
 import DAO.jdbc.DiagnosticDAO;
-import DAO.jdbc.LocataireDAO;
-import DAO.jdbc.RegimeDAO;
-import classes.Bail;
-import classes.Locataire;
-import ihm.PageAccueil;
 import ihm.PageNotifications;
-import ihm.PageNouveauLocataire;
 
 public class ModelePageNotifications {
 

@@ -1,9 +1,6 @@
 package DAO.jdbc;
 
-import DAO.DAOException;
 import DAO.db.ConnectionDB;
-import classes.Bail;
-import classes.BienLouable;
 import classes.Locataire;
 
 import java.sql.*;

@@ -1,24 +1,15 @@
 package ihm;
 
 import DAO.DAOException;
-import DAO.jdbc.*;
-import classes.*;
-import enumeration.TypeLogement;
 import modele.*;
 import modele.Menu;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.sql.Date;
-import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.LinkedList;
-import java.util.List;
 
 public class PageDeclarationFiscale {
 

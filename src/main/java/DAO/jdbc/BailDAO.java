@@ -31,12 +31,12 @@ public class BailDAO implements DAO.BailDAO {
             pstmt.setInt(2, id);
             pstmt.setDouble(3, bail.getLoyer());
             pstmt.setDouble(4, bail.getCharge());
-            pstmt.setDouble(5,bail.getDepot_garantie());
+            pstmt.setDouble(5,bail.getDepotGarantie());
             pstmt.setDate(6,bail.getDateDebut());
             pstmt.setDate(7,bail.getDateFin());
             pstmt.setDouble(8,bail.getIcc());
-            pstmt.setInt(9,bail.getIndex_eau());
-            pstmt.setDate(10,bail.getDernier_anniversaire());
+            pstmt.setInt(9,bail.getIndexEau());
+            pstmt.setDate(10,bail.getDernierAnniversaire());
             pstmt.executeUpdate();
             pstmt.close();
         } catch (SQLException e) {

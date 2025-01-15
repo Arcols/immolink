@@ -7,7 +7,7 @@ public enum Charte {
 
 	private final Color couleur;
 
-	private Charte(Color couleur) {
+	Charte(Color couleur) {
 		this.couleur = couleur;
 	}
 

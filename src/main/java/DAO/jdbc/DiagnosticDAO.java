@@ -2,10 +2,8 @@ package DAO.jdbc;
 
 import DAO.DAOException;
 import DAO.db.ConnectionDB;
-import classes.Batiment;
 import classes.BienLouable;
 import classes.Diagnostic;
-import com.mysql.cj.protocol.a.SqlDateValueEncoder;
 
 import java.io.IOException;
 import java.sql.*;

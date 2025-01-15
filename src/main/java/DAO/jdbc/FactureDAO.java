@@ -2,7 +2,6 @@ package DAO.jdbc;
 
 import DAO.DAOException;
 import DAO.db.ConnectionDB;
-import classes.Bail;
 import classes.Facture;
 
 import java.sql.*;

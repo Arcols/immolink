@@ -35,21 +35,21 @@ public class BatimentTest {
         assertEquals("123 Rue de la Paix", batiment.getAdresse());
         assertEquals("Paris", batiment.getVille());
         assertEquals("31000", batiment.getCodePostal());
-        assertTrue(batiment.getBien_louable().isEmpty());
+        assertTrue(batiment.getBienLouable().isEmpty());
     }
 
     @Test
     public void testAjouterBienLouable() {
         batiment.ajouterBienLouable(bienLouable);
-        assertEquals(1, batiment.getBien_louable().size());
-        assertEquals(bienLouable, batiment.getBien_louable().get(0));
+        assertEquals(1, batiment.getBienLouable().size());
+        assertEquals(bienLouable, batiment.getBienLouable().get(0));
     }
 
     @Test
     public void testSupprimerBienLouable() {
         batiment.ajouterBienLouable(bienLouable);
         batiment.supprimerBienLouable(bienLouable);
-        assertTrue(batiment.getBien_louable().isEmpty());
+        assertTrue(batiment.getBienLouable().isEmpty());
     }
 
     @Test
@@ -66,8 +66,8 @@ public class BatimentTest {
         List<BienLouable> bienLouables = new ArrayList<>();
         bienLouables.add(bienLouable);
         batiment.setBienLouable(bienLouables);
-        assertEquals(1, batiment.getBien_louable().size());
-        assertEquals(bienLouable, batiment.getBien_louable().get(0));
+        assertEquals(1, batiment.getBienLouable().size());
+        assertEquals(bienLouable, batiment.getBienLouable().get(0));
     }
 
     @Test

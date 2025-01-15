@@ -356,18 +356,19 @@ public class BienLouableDAOTest {
     }
 
     @Test
-    public void testGetBailFromBienEtDate() throws DAOException {
+    public void testGetBailFromBienAndDate() throws DAOException {
         // Create a new BienLouable instance
         BienLouable bienLouable = new BienLouable("BL3456789101", "Paris", "123 Rue de la Paix", "31000", new ArrayList<>(), null, TypeLogement.APPARTEMENT);
         bienLouableDAO.create(bienLouable, TypeLogement.APPARTEMENT, 3, 75.0);
 
         // Create a new Bail instance
         Date dateDebut = Date.valueOf("2024-01-01");
-        Bail bail = new Bail(true, "BL3456789101", 1000.0, 200.0, 500.0, dateDebut, Date.valueOf("2024-12-31"), 150.0, 10, Date.valueOf("2023-01-01"));
+        Date dateFin = Date.valueOf("2024-12-31");
+        Bail bail = new Bail(true, "BL3456789101", 1000.0, 200.0, 500.0, dateDebut, dateFin, 150.0, 10, Date.valueOf("2023-01-01"));
         bailDAO.create(bail);
 
-        // Retrieve the Bail using the bien and date_debut
-        Bail retrievedBail = bailDAO.getBailFromBienEtDate(bienLouable, dateDebut);
+        // Retrieve the Bail using the bien and date
+        Bail retrievedBail = bienLouableDAO.getBailFromBienAndDate(bienLouable, Date.valueOf("2024-01-01"));
 
         // Assert the retrieved Bail is not null and matches the created Bail
         assertNotNull(retrievedBail);

@@ -22,7 +22,7 @@ public class LouerDAO implements DAO.LouerDAO{
                 pstmt.setInt(1,new BailDAO().getId(bail));
                 pstmt.setInt(2, new LocataireDAO().getId(locataire));
                 pstmt.setInt(3,quotite);
-                pstmt.setDate(4,bail.getDate_debut());
+                pstmt.setDate(4,bail.getDateDebut());
                 pstmt.executeUpdate();
                 pstmt.close();
             } catch (SQLException e) {

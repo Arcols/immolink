@@ -1,6 +1,5 @@
 package DAO;
 
-import DAO.db.ConnectionDB;
 import classes.Locataire;
 
 import java.util.List;

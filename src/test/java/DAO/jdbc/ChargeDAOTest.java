@@ -5,7 +5,6 @@ import DAO.db.ConnectionDB;
 import classes.Bail;
 import classes.Batiment;
 import classes.BienLouable;
-import classes.Charge;
 import classes.Facture;
 import enumeration.TypeLogement;
 import org.junit.After;
@@ -16,7 +15,6 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.*;
 

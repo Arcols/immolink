@@ -1,13 +1,10 @@
 package DAO;
 
 import java.sql.SQLException;
-import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
 import classes.Batiment;
-import classes.BienLouable;
-import classes.Devis;
 import enumeration.TypeLogement;
 
 public interface BatimentDAO {

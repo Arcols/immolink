@@ -3,7 +3,6 @@ package DAO.jdbc;
 import DAO.DAOException;
 import DAO.db.ConnectionDB;
 import classes.Batiment;
-import classes.BienLouable;
 import classes.Devis;
 import enumeration.TypeLogement;
 
