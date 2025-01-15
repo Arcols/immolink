@@ -67,14 +67,21 @@ public class ModelePageBaux {
             } catch (DAOException e) {
                 throw new RuntimeException(e);
             }
+            int lastColumnIndex = table.getColumnCount() - 1;
+            String status = table.getValueAt(row, lastColumnIndex).toString();
+
             if (bail != null && bail.getDate_fin().before(new Date(System.currentTimeMillis()))) {
-                c.setBackground(Color.RED);
+                Color rouge =Color.decode("#ff5454");
+                c.setBackground(rouge);
+            }else if ("Retard".equals(status)) {
+                c.setBackground(Color.decode("#f5b942"));
             } else {
-                c.setBackground(Color.WHITE);
+                c.setBackground(Color.decode("#7fe075"));
             }
 
             if (isSelected) {
-                c.setBackground(new Color(38, 117, 191));
+                Color bleu= new Color(38, 117, 191);
+                c.setBackground(bleu);
                 c.setForeground(Color.WHITE);
             } else {
                 c.setForeground(Color.BLACK);
