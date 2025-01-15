@@ -170,7 +170,6 @@ public class LouerDAOTest {
         boolean isLocInBail = louerDAO.locInBail(idLocataire, idBail);
         assertTrue(isLocInBail);
 
-        // Test with a locataire not in the bail
         Locataire locataire2 = new Locataire("Smith", "Jane", "Lyon", "1992-02-02", "0707070707", "jj.jj@jj.jj", Date.valueOf("2021-01-01"), "F");
         locataireDAO.addLocataire(locataire2);
         int idLocataire2 = locataireDAO.getId(locataire2);
@@ -184,7 +183,6 @@ public class LouerDAOTest {
         louerDAO.create(locataire, bail, 100);
         boolean statut = louerDAO.getStatut(locataireDAO.getId(locataire));
         assertNotNull(statut);
-        // Assuming the initial status is false
         assertFalse(statut);
     }
 
@@ -193,7 +191,6 @@ public class LouerDAOTest {
         louerDAO.create(locataire, bail, 100);
         boolean statutBail = louerDAO.getStatutBail(bailDAO.getId(bail));
         assertNotNull(statutBail);
-        // Assuming the initial status is false
         assertFalse(statutBail);
     }
 
@@ -202,7 +199,6 @@ public class LouerDAOTest {
         louerDAO.create(locataire, bail, 100);
         Boolean loyerPaye = louerDAO.getLoyerPaye(locataireDAO.getId(locataire), bailDAO.getId(bail));
         assertNotNull(loyerPaye);
-        // Assuming the initial status is false
         assertFalse(loyerPaye);
     }
 
@@ -212,7 +208,6 @@ public class LouerDAOTest {
         Date newDate = Date.valueOf(java.time.LocalDate.now());        louerDAO.updatePaiement(bailDAO.getId(bail), locataireDAO.getId(locataire), newDate);
         Boolean loyerPaye = louerDAO.getLoyerPaye(locataireDAO.getId(locataire), bailDAO.getId(bail));
         assertNotNull(loyerPaye);
-        // Assuming the status is true after updating the payment date
         assertTrue(loyerPaye);
     }
 }

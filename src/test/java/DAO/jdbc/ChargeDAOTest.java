@@ -38,28 +38,22 @@ public class ChargeDAOTest {
         bienLouableDAO = new BienLouableDAO();
         batimentDAO = new BatimentDAO();
 
-        // Create a Batiment
         Batiment batiment = new Batiment("123456789101", "Paris", "123 Rue de la Paix", "31000");
         batimentDAO.create(batiment);
 
-        // Create a BienLouable
         BienLouable bienLouable = new BienLouable("BL3456789101", "Paris", "123 Rue de la Paix", "31000", new ArrayList<>(), null, TypeLogement.APPARTEMENT);
         bienLouableDAO.create(bienLouable, bienLouable.getTypeLogement(), 3, 75.0);
 
-        // Create a Bail
         Bail bail = new Bail(true, "BL3456789101", 1000.0, 200.0, 500.0, Date.valueOf("2024-01-01"), Date.valueOf("2024-12-31"), 150.0, 10, Date.valueOf("2023-01-01"));
         bailDAO.create(bail);
         idBail = bailDAO.getId(bail);
 
-        // Create Charges linked to the Bail
         chargeDAO.create("Electricity", idBail);
         chargeDAO.create("Water", idBail);
 
-        // Get Charge IDs
         int idChargeElectricity = chargeDAO.getId("Electricity", idBail);
         int idChargeWater = chargeDAO.getId("Water", idBail);
 
-        // Create Factures linked to the Charges
         Facture facture1 = new Facture("F123456", "Electricity", Date.valueOf("2023-10-01"), 150.0);
         Facture facture2 = new Facture("F654321", "Water", Date.valueOf("2023-11-01"), 75.0);
         factureDAO.create(facture1, idChargeElectricity);

@@ -243,18 +243,14 @@ public class BailDAOTest {
 
     @Test
     public void testGetBauxNouvelICC() throws DAOException {
-        // Create a Bail with an old ICC date
         Bail bailOldICC = new Bail(true, "BL3456789101", 1000.0, 200.0, 500.0, Date.valueOf("2022-01-01"), Date.valueOf("2022-12-31"), 150.0, 10, Date.valueOf("2021-01-01"));
         bailDAO.create(bailOldICC);
 
-        // Create a Bail with a recent ICC date
         Bail bailRecentICC = new Bail(true, "BL3456789101", 1500.0, 300.0, 600.0, Date.valueOf("2023-01-01"), Date.valueOf("2023-12-31"), 200.0, 15, Date.valueOf("2022-01-01"));
         bailDAO.create(bailRecentICC);
 
-        // Retrieve the notifications for baux that can have their ICC updated
         List<String> notifications = bailDAO.getBauxNouvelICC();
 
-        // Verify the old ICC bail is in the notifications
         assertNotNull(notifications);
         assertTrue(notifications.stream().anyMatch(n -> n.contains("2022-01-01")));
         assertFalse(notifications.stream().anyMatch(n -> n.contains("2023-01-01")));
@@ -262,22 +258,32 @@ public class BailDAOTest {
 
     @Test
     public void testUpdateProvisionPourCharge() throws SQLException, DAOException {
-        // Create a new Bail instance
         Bail bail = new Bail(true, "BL3456789101", 1000.0, 200.0, 500.0, Date.valueOf("2024-01-01"), Date.valueOf("2024-12-31"), 150.0, 10, Date.valueOf("2023-01-01"));
         bailDAO.create(bail);
 
-        // Get the ID of the created Bail
         int idBail = bailDAO.getId(bail);
 
-        // Update the provision for charges
         double newProvisionPourCharge = 250.0;
         bailDAO.updateProvisionPourCharge(idBail, newProvisionPourCharge);
 
-        // Retrieve the updated Bail
         Bail updatedBail = bailDAO.getBailFromId(idBail);
 
-        // Assert the provision for charges has been updated
         assertEquals(newProvisionPourCharge, updatedBail.getCharge(), 0.0);
+    }
+
+    @Test
+    public void testUpdateIndexeEau() throws SQLException, DAOException {
+        Bail bail = new Bail(true, "BL3456789101", 1000.0, 200.0, 500.0, Date.valueOf("2024-01-01"), Date.valueOf("2024-12-31"), 150.0, 10, Date.valueOf("2023-01-01"));
+        bailDAO.create(bail);
+
+        int idBail = bailDAO.getId(bail);
+
+        int newIndexEau = 20;
+        bailDAO.updateIndexeEau(idBail, newIndexEau);
+
+        Bail updatedBail = bailDAO.getBailFromId(idBail);
+
+        assertEquals(newIndexEau, (int) updatedBail.getIndexEau());
     }
 
 }

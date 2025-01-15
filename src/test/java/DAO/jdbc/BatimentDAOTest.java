@@ -148,16 +148,13 @@ public class BatimentDAOTest {
 
     @Test
     public void testFindAll() throws SQLException, DAOException {
-        // Create Batiment objects
         Batiment batiment1 = new Batiment("123456789101", "Paris", "123 Rue de la Paix", "31000");
         Batiment batiment2 = new Batiment("123456789102", "Lyon", "456 Rue de Lyon", "69000");
         batimentDAO.create(batiment1);
         batimentDAO.create(batiment2);
 
-        // Retrieve all Batiment objects
         List<Batiment> batiments = batimentDAO.findAll();
 
-        // Verify the results
         assertNotNull(batiments);
         assertEquals(2, batiments.size());
         assertTrue(batiments.stream().anyMatch(b -> b.getNumeroFiscal().equals("123456789101")));
@@ -166,21 +163,17 @@ public class BatimentDAOTest {
 
     @Test
     public void testGetBienTypeBat() throws DAOException {
-        // Create a Batiment instance
         Batiment batiment = new Batiment("123456789101", "Paris", "123 Rue de la Paix", "31000");
         batimentDAO.create(batiment);
         int idBat = batimentDAO.getIdBat("Paris", "123 Rue de la Paix");
 
-        // Create BienLouable instances
         BienLouable bien1 = new BienLouable("BL1234567891", "Paris", "123 Rue de la Paix", "Appartement 1", new ArrayList<>(), null, TypeLogement.APPARTEMENT);
         BienLouable bien2 = new BienLouable("BL1234567892", "Paris", "123 Rue de la Paix", "Appartement 2", new ArrayList<>(), null, TypeLogement.APPARTEMENT);
         new BienLouableDAO().create(bien1, TypeLogement.APPARTEMENT, 3, 75.0);
         new BienLouableDAO().create(bien2, TypeLogement.APPARTEMENT, 3, 75.0);
 
-        // Retrieve the BienLouable IDs using the getBienTypeBat method
         List<Integer> bienIds = new BatimentDAO().getBienTypeBat(idBat, TypeLogement.APPARTEMENT);
 
-        // Assert the retrieved BienLouable IDs are not null and contain the expected number of elements
         assertNotNull(bienIds);
         assertEquals(2, bienIds.size());
     }

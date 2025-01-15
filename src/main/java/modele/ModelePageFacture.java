@@ -41,7 +41,7 @@ public class ModelePageFacture {
                 if((String) pageFacture.getChoix_type().getSelectedItem() == "Eau"){
                     BailDAO bailDAO = new BailDAO();
                     Bail bail = bailDAO.getBailFromId(pageFacture.getId_bail());
-                    Double prix_facture = (Double.valueOf(pageFacture.getChoix_index().getText()) - bail.getIndex_eau()) * Double.valueOf(pageFacture.getChoix_prix_conso().getText());
+                    Double prix_facture = (Double.valueOf(pageFacture.getChoix_index().getText()) - bail.getIndexEau()) * Double.valueOf(pageFacture.getChoix_prix_conso().getText());
                     factureACreer = new Facture(this.pageFacture.getChoix_num_facture().getText(),
                             this.pageFacture.getChoix_type().getSelectedItem().toString(),
                             date,
