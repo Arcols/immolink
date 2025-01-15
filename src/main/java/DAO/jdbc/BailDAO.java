@@ -325,5 +325,20 @@ public class BailDAO implements DAO.BailDAO {
     }
 
 
+    @Override
+    public void updateIndexeEau(int idBail, int nouvelIndexe) {
+        try {
+        Connection cn = ConnectionDB.getInstance();
+        String query = "UPDATE bail SET index_eau = ? WHERE id = ?";
+        PreparedStatement pstmt = cn.prepareStatement(query);
+        pstmt.setInt(1, nouvelIndexe);
+        pstmt.setInt(2, idBail);
+        pstmt.executeUpdate();
+        pstmt.close();
+    } catch (SQLException e) {
+        throw new RuntimeException(e);
+    }
+    }
+
 }
 

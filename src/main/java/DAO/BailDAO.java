@@ -96,4 +96,11 @@ public interface BailDAO {
          * @param previsionPourCharge La nouvelle provision pour charge
          */
         void updateProvisionPourCharge(int idBail, double previsionPourCharge);
+
+        /**
+         * Met à jour l'icc d'un bail dans la base de données.
+         * @param idBail id du bail à modifier
+         * @param nouvelIndexe remplace l'indexe du bail
+         */
+        void updateIndexeEau(int idBail,int nouvelIndexe);
 }
