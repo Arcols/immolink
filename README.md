@@ -1,4 +1,4 @@
-# SAE-S3S4-2024-2025-IBLA-ACOL-CREV-ZREY
+# Immolink
 
 ## Description du projet
 Ce projet vise à développer une application de gestion de biens immobiliers destinée aux propriétaires privés. L'application simplifie la gestion locative en centralisant des informations importantes (coordonnées des locataires, diagnostics, relevés de compteurs, etc.), en automatisant des processus clés (régularisation des charges, déclaration fiscale).
