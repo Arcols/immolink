@@ -14,6 +14,10 @@ Ce projet vise à développer une application de gestion de biens immobiliers de
 - **Déclaration fiscale** : Automatisation de la déclaration fiscale avec les informations nécessaires (revenus locatifs, travaux, assurances).
 - **Règles de gestion des baux** : Augmentation automatique des loyers en fonction de l'indice de l'État et gestion des fins de baux.
 
+## Apperçu visuel de l'application
+![Page d'accueil !](images-for-readme/page-accueil.png)
+
+
 ## Installation
 ### Prérequis
 - Java 8
