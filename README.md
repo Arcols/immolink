@@ -137,5 +137,5 @@ Alertes sur :
 
 La licence d’utilisation est disponible à la racine du projet.
 
-> \[!INFO]
+> \[!NOTE]
 > Consultez le fichier `LICENSE` pour plus d’informations sur les droits d’utilisation.
