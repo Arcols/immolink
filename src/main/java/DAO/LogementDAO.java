@@ -9,25 +9,25 @@ import enumeration.TypeLogement;
 public interface LogementDAO {
 
 	/**
-	 * Crée un nouveau BienLouable dans la base de données.
+	 * Cree un nouveau BienLouable dans la base de donnees.
 	 *
-	 * @param logement L'objet Logement à insérer
+	 * @param logement L'objet Logement à inserer
 	 * @param typeLogement le type de logement
-	 * @throws DAOException en cas d'erreur lors de la création du bien immobilier
+	 * @throws DAOException en cas d'erreur lors de la creation du bien immobilier
 	 */
 	void create(Logement logement, TypeLogement typeLogement) throws DAOException;
 
 	/**
-	 * Récupère un BienLouable de la base de données en utilisant son identifiant.
+	 * Recupère un BienLouable de la base de donnees en utilisant son identifiant.
 	 *
 	 * @param id L'identifiant unique du bien immobilier
-	 * @return L'objet BienLouable trouvé, ou null si aucun bien n'est trouvé
+	 * @return L'objet BienLouable trouve, ou null si aucun bien n'est trouve
 	 * @throws DAOException en cas d'erreur lors de la lecture du bien immobilier
 	 */
 	Logement read(int id) throws DAOException;
 
 	/**
-	 * Supprime un BienLouable de la base de données en utilisant son identifiant.
+	 * Supprime un BienLouable de la base de donnees en utilisant son identifiant.
 	 *
 	 * @param id L'identifiant unique du bien immobilier à supprimer
 	 * @throws DAOException en cas d'erreur lors de la suppression du bien
@@ -36,7 +36,7 @@ public interface LogementDAO {
 	void delete(int id) throws DAOException;
 
 	/**
-	 * Récupère tous les biens immobiliers de la base de données.
+	 * Recupère tous les biens immobiliers de la base de donnees.
 	 *
 	 * @return Une liste de tous les objets BienLouable
 	 * @throws DAOException en cas d'erreur lors de la lecture des biens immobiliers
@@ -44,7 +44,7 @@ public interface LogementDAO {
 	List<Logement> findAll() throws DAOException;
 
 	/**
-	 *  Récupère l'id d'un logement en utilisant son numéro fiscal
+	 *  Recupère l'id d'un logement en utilisant son numero fiscal
 	 * Lier un garage à un logement
 	 * @param logement le logement
 	 * @param garage le garage
@@ -54,8 +54,8 @@ public interface LogementDAO {
 	void lierUnGarageAuBienLouable(Logement logement, Garage garage,TypeLogement typeLogement) throws DAOException;
 
 	/**
-	 * Récupère l'identifiant d'un bien louable en utilisant son numéro fiscal.
-	 * @param num_fiscal le numéro fiscal du bien louable
+	 * Recupère l'identifiant d'un bien louable en utilisant son numero fiscal.
+	 * @param num_fiscal le numero fiscal du bien louable
 	 * @param typeLogement le type de logement
 	 * @return l'identifiant du bien louable
 	 * @throws DAOException
@@ -63,11 +63,12 @@ public interface LogementDAO {
 	Integer getId(String num_fiscal,TypeLogement typeLogement) throws DAOException;
 
 	/**
-	 * Récupère le garage associé à un logement
+	 * Recupère le garage associe à un logement
 	 * @param logement le logement
 	 * @param typeLogement le type de logement
-	 * @return l'identifiant du garage associé
+	 * @return l'identifiant du garage associe
 	 */
 	Integer getGarageAssocie(Logement logement,TypeLogement typeLogement);
+
 
 }

@@ -10,10 +10,10 @@ import enumeration.TypeLogement;
 public interface BatimentDAO {
 
 	/**
-	 * Crée un nouveau Batiment dans la base de données.
+	 * Cree un nouveau Batiment dans la base de donnees.
 	 *
-	 * @param batiment L'objet Batiment à insérer
-	 * @throws DAOException             en cas d'erreur lors de la création du bien
+	 * @param batiment L'objet Batiment à inserer
+	 * @throws DAOException             en cas d'erreur lors de la creation du bien
 	 *                                  immobilier
 	 * @throws SQLException
 	 * @throws IllegalArgumentException
@@ -21,24 +21,24 @@ public interface BatimentDAO {
 	void create(Batiment batiment) throws DAOException;
 
 	/**
-	 *  Récupère l'id d'un batiment en utilisant son numéro fiscal
-	 * @param num_fisc le numéro fiscal du batiment
-	 * @return Integer id du batiment demandé
+	 *  Recupère l'id d'un batiment en utilisant son numero fiscal
+	 * @param num_fisc le numero fiscal du batiment
+	 * @return Integer id du batiment demande
 	 * @throws DAOException
 	 */
 	Batiment readFisc(String num_fisc) throws DAOException;
 
 	/**
-	 * Récupère un Batiment de la base de données en utilisant son identifiant.
+	 * Recupère un Batiment de la base de donnees en utilisant son identifiant.
 	 *
 	 * @param id L'identifiant unique du bien immobilier
-	 * @return L'objet Batiment trouvé, ou null si aucun bien n'est trouvé
+	 * @return L'objet Batiment trouve, ou null si aucun bien n'est trouve
 	 * @throws DAOException en cas d'erreur lors de la lecture du bien immobilier
 	 */
 	Batiment readId(int id) throws DAOException;
 
 	/**
-	 * Met à jour les informations d'un Batiment existant dans la base de données.
+	 * Met à jour les informations d'un Batiment existant dans la base de donnees.
 	 *
 	 * @param ville
 	 * @param adresse
@@ -48,14 +48,14 @@ public interface BatimentDAO {
 	int getIdBat(String ville, String adresse) throws DAOException;
 
 	/**
-	 *  Récupère l'id d'un batiment en utilisant son numéro fiscal
+	 *  Recupère l'id d'un batiment en utilisant son numero fiscal
 	 * @param batiment le batiment
 	 * @throws DAOException
 	 */
 	void update(Batiment batiment) throws DAOException;
 
 	/**
-	 * Supprime un Batiment de la base de données en utilisant son identifiant.
+	 * Supprime un Batiment de la base de donnees en utilisant son identifiant.
 	 *
 	 * @param num_fisc L'identifiant unique du bien immobilier à supprimer
 	 * @throws DAOException en cas d'erreur lors de la suppression du bien
@@ -64,7 +64,7 @@ public interface BatimentDAO {
 	void delete(String num_fisc) throws DAOException;
 
 	/**
-	 * Récupère tous les biens immobiliers de la base de données.
+	 * Recupère tous les biens immobiliers de la base de donnees.
 	 *
 	 * @return Une liste de tous les objets Batiment
 	 * @throws DAOException en cas d'erreur lors de la lecture des biens immobiliers
@@ -79,7 +79,7 @@ public interface BatimentDAO {
 	Map<String, List<String>> searchAllBatimentsWithCompl() throws SQLException;
 
 	/**
-	 * Récupère tous les ids des biens louables d'un batiment
+	 * Recupère tous les ids des biens louables d'un batiment
 	 * @param idBat l'id du batiment
 	 * @return la liste des ids des biens louables
 	 * @throws DAOException
@@ -87,12 +87,12 @@ public interface BatimentDAO {
 	List<Integer> getIdBienLouables(Integer idBat) throws DAOException;
 
 	/**
-	 * Récupère tous les batiments de la base de données
+	 * Recupère tous les batiments de la base de donnees
 	 * @return la liste des batiments
 	 */
     List<Batiment> findAll();
 
-	/**Récupère tous les ids des biens d'un batiment en fonction de leur type
+	/**Recupère tous les ids des biens d'un batiment en fonction de leur type
 			* @param idBat l'id du batiment
 	 		* @param type le type de bien rechercher
 			* @return la liste des ids des biens

@@ -11,7 +11,7 @@ public class RegimeDAO implements DAO.RegimeDAO {
 
     @Override
     public Float getValeur() {
-        Float valeur = 0F;
+        float valeur = 0F;
         Connection cn;
         try {
             cn = ConnectionDB.getInstance();
@@ -22,22 +22,22 @@ public class RegimeDAO implements DAO.RegimeDAO {
                 valeur = rs.getFloat("valeur");
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Erreur lors de la récupération de la valeur du régime microfoncier.", e);
+            throw new RuntimeException("Erreur lors de la recuperation de la valeur du regime microfoncier.", e);
         }
         return valeur;
     }
 
     @Override
-    public void updateValeur(Float nouvelleValeur) {
+    public void updateValeur(Float nouvelle_valeur) {
         Connection cn;
         try {
             cn = ConnectionDB.getInstance();
             PreparedStatement pstmt = cn.prepareStatement("UPDATE regimemicrofoncier SET valeur = ? WHERE id = ?");
-            pstmt.setFloat(1, nouvelleValeur);
+            pstmt.setFloat(1, nouvelle_valeur);
             pstmt.setInt(2, idRegime);
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Erreur lors de la mise à jour de la valeur du régime microfoncier.", e);
+            throw new RuntimeException("Erreur lors de la mise à jour de la valeur du regime microfoncier.", e);
         }
     }
 }

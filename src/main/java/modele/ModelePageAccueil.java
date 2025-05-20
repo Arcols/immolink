@@ -1,14 +1,28 @@
 package modele;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Frame;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
+import DAO.db.ConnectionDB;
 import DAO.jdbc.LocataireDAO;
 import DAO.jdbc.LouerDAO;
 import DAO.jdbc.RegimeDAO;
@@ -16,14 +30,14 @@ import classes.Locataire;
 import ihm.PageAccueil;
 import ihm.PageDeclarationFiscale;
 import ihm.PageNouveauLocataire;
+import ihm.PageUnLocataire;
 
 public class ModelePageAccueil {
 
+    private final PageAccueil page_accueil;
 
-    private PageAccueil pageAccueil;
-
-    public ModelePageAccueil(PageAccueil pageAccueil) {
-        this.pageAccueil = pageAccueil;
+    public ModelePageAccueil(PageAccueil page_accueil) {
+        this.page_accueil = page_accueil;
     }
     /**
      * Charge les données des locataires dans un DefaultTableModel.
@@ -33,10 +47,10 @@ public class ModelePageAccueil {
      */
     public static DefaultTableModel loadDataLocataireToTable() throws SQLException {
         // Liste des colonnes
-        String[] columnNames = {"Nom", "Prénom", "Lieu Naissance", "Date Naissance", "Téléphone", "Mail", "Genre", "Date arrivée","Statut"};
+        String[] nom_colonne = {"Nom", "Prénom", "Lieu Naissance", "Date Naissance", "Téléphone", "Mail", "Genre", "Date arrivée","Statut"};
 
         // Création du modèle de table
-        DefaultTableModel model = new DefaultTableModel(columnNames, 0){
+        DefaultTableModel model = new DefaultTableModel(nom_colonne, 0){
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false; // Toutes les cellules sont non éditables
@@ -45,18 +59,18 @@ public class ModelePageAccueil {
 
 
         // Récupération des locataires
-        LocataireDAO locataireDAO = new LocataireDAO();
-        List<Locataire> locataires = locataireDAO.getAllLocataire();
+        LocataireDAO locataire_DAO = new LocataireDAO();
+        List<Locataire> locataires = locataire_DAO.getAllLocataire();
 
 
         // Remplissage du modèle avec les données des locataires
         for (Locataire locataire : locataires) {
             Object[] rowData = {
                     locataire.getNom(),
-                    locataire.getPrénom(),
+                    locataire.getPrenom(),
                     locataire.getLieuNaissance(),
                     locataire.getDateNaissance(),
-                    locataire.getTéléphone(),
+                    locataire.getTelephone(),
                     locataire.getMail(),
                     locataire.getGenre(),
                     locataire.getDateArrive(),
@@ -69,9 +83,9 @@ public class ModelePageAccueil {
     }
 
     public static String statut(Locataire locataire){
-        LouerDAO louerDAO = new LouerDAO();
-        LocataireDAO locataireDAO = new LocataireDAO();
-        if (louerDAO.getStatut(locataireDAO.getId(locataire))){
+        LouerDAO louer_DAO = new LouerDAO();
+        LocataireDAO locataire_DAO = new LocataireDAO();
+        if (louer_DAO.getStatut(locataire_DAO.getId(locataire))){
             return "Payé";
         }
         return "Retard";
@@ -90,24 +104,24 @@ public class ModelePageAccueil {
             label.setBounds(20, 30, 200, 25);
             dialog.add(label);
 
-            JTextField seuilField = new JTextField();
-            seuilField.setBounds(220, 30, 100, 25);
+            JTextField seuil_field = new JTextField();
+            seuil_field.setBounds(220, 30, 100, 25);
 
             // Charger la valeur actuelle du seuil microfoncier
-            Float valeurActuelle = getValeurRegime();
-            if (valeurActuelle != null) {
-                seuilField.setText(String.valueOf(valeurActuelle)); // Préremplit le champ avec la valeur actuelle
+            Float valeur_actuelle = getValeurRegime();
+            if (valeur_actuelle != null) {
+                seuil_field.setText(String.valueOf(valeur_actuelle)); // Préremplit le champ avec la valeur actuelle
             }
 
-            dialog.add(seuilField);
+            dialog.add(seuil_field);
 
-            JButton validerButton = new JButton("Valider");
-            validerButton.setBounds(150, 100, 100, 30);
-            dialog.add(validerButton);
+            JButton valider_bouton = new JButton("Valider");
+            valider_bouton.setBounds(150, 100, 100, 30);
+            dialog.add(valider_bouton);
 
-            validerButton.addActionListener(event -> {
+            valider_bouton.addActionListener(event -> {
                 try {
-                    double seuil = Double.parseDouble(seuilField.getText());
+                    double seuil = Double.parseDouble(seuil_field.getText());
                     setSeuilMicrofoncier(seuil); // Appelle la méthode métier pour enregistrer le seuil
                     JOptionPane.showMessageDialog(dialog,
                             "Le seuil du régime microfoncier a été mis à jour à " + seuil + " €.",
@@ -173,8 +187,8 @@ public class ModelePageAccueil {
      */
     private static Float getValeurRegime() {
         try {
-            RegimeDAO regimeDAO = new RegimeDAO();
-            return regimeDAO.getValeur(); // Récupère la valeur depuis la DAO
+            RegimeDAO regime_DAO = new RegimeDAO();
+            return regime_DAO.getValeur(); // Récupère la valeur depuis la DAO
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null,
                     "Erreur lors de la récupération de la valeur actuelle : " + ex.getMessage(),
@@ -191,9 +205,9 @@ public class ModelePageAccueil {
      * @throws SQLException en cas d'erreur lors de l'enregistrement
      */
     private static void setSeuilMicrofoncier(double seuil) throws SQLException {
-        RegimeDAO regimeDAO = new RegimeDAO();
+        RegimeDAO regime_DAO = new RegimeDAO();
         try {
-            regimeDAO.updateValeur((float) seuil); // Utilise la DAO pour mettre à jour la valeur
+            regime_DAO.updateValeur((float) seuil); // Utilise la DAO pour mettre à jour la valeur
         } catch (Exception e) {
             throw new SQLException("Impossible de mettre à jour le seuil microfoncier.", e);
         }
@@ -201,9 +215,41 @@ public class ModelePageAccueil {
 
     public ActionListener ouvrirNouveauLocataire(){
         return e->{
-            pageAccueil.getFrame().dispose();
-            PageNouveauLocataire PageNouveauLocataire = new PageNouveauLocataire();
-            PageNouveauLocataire.main(null);
+            page_accueil.getFrame().dispose();
+            int x=page_accueil.getFrame().getX();
+            int y=page_accueil.getFrame().getY();
+            new PageNouveauLocataire(x,y);
+        };
+    }
+
+    public MouseAdapter mouseAdapter(JTable table) {
+        return new MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                super.mouseClicked(e);
+                TableModel finalModel = table.getModel();
+                // Vérifier s'il s'agit d'un double-clic
+                if (e.getClickCount() == 2) {
+                    // Obtenir l'index de la ligne cliquée
+                    int row = table.getSelectedRow();
+
+                    // Récupérer les données de la ligne sélectionnée
+                    if (row != -1) {
+                        String nom = (String) finalModel.getValueAt(row, 0);
+                        String prenom = (String) finalModel.getValueAt(row, 1);
+                        String telephone = (String) finalModel.getValueAt(row, 4);
+
+                        LocataireDAO locataireDAO = new LocataireDAO();
+                        Locataire locataire = locataireDAO.getLocataireByNomPrenom(nom, prenom, telephone);
+                        page_accueil.getFrame().dispose();
+                        int x=page_accueil.getFrame().getX();
+                        int y=page_accueil.getFrame().getY();
+
+                        new PageUnLocataire(locataire,x,y);
+
+                        // Ouvrir une nouvelle fenêtre avec ces données
+                    }
+                }
+            }
         };
     }
 
@@ -221,18 +267,34 @@ public class ModelePageAccueil {
             choix_annee.setBounds(220, 30, 100, 25);
             dialog.add(choix_annee);
 
-            JButton validerButton = new JButton("Valider");
-            validerButton.setBounds(150, 100, 100, 30);
-            dialog.add(validerButton);
+            JButton valider_bouton = new JButton("Valider");
+            valider_bouton.setBounds(150, 100, 100, 30);
+            dialog.add(valider_bouton);
 
-            validerButton.addActionListener(event -> {
+            valider_bouton.addActionListener(event -> {
                 dialog.dispose();
-                this.pageAccueil.getFrame().dispose();
-                PageDeclarationFiscale pagedecla = new PageDeclarationFiscale(choix_annee.getText());
+                this.page_accueil.getFrame().dispose();
+                int x=page_accueil.getFrame().getX();
+                int y=page_accueil.getFrame().getY();
+
+                new PageDeclarationFiscale(choix_annee.getText(),x,y);
             });
 
             dialog.setLocationRelativeTo(null);
             dialog.setVisible(true);
         };
+    }
+    public WindowListener fermerFenetre(){
+        return new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                // Action to perform on application close
+                performCloseAction();
+            }
+        };
+    }
+    private void performCloseAction() {
+        ConnectionDB.destroy(); // fermeture de la connection
+        page_accueil.getFrame().dispose();
     }
 }

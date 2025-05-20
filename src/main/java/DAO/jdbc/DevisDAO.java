@@ -12,7 +12,7 @@ import java.util.List;
 public class DevisDAO implements DAO.DevisDAO {
 
     @Override
-    public void create(Devis devis, String num_fiscal, TypeLogement typeLogement) throws DAOException {
+    public void create(Devis devis, String num_fiscal, TypeLogement type_logement) throws DAOException {
         try{
             Connection cn = ConnectionDB.getInstance();
             String requete = "INSERT INTO Devis (num_devis,num_facture, date_debut,date_facture,montant_devis,montant_travaux,nature,type,adresse_entreprise,nom_entreprise) VALUES (?,?,?,?,?,?,?,?,?,?)";
@@ -29,9 +29,9 @@ public class DevisDAO implements DAO.DevisDAO {
             pstmt.setString(10, devis.getNomEntreprise());
             pstmt.executeUpdate();
             pstmt.close();
-            TravauxAssocieDAO travauxAssocieDAO;
-            travauxAssocieDAO = new TravauxAssocieDAO();
-            travauxAssocieDAO.create(num_fiscal,devis,typeLogement);
+            TravauxAssocieDAO travaux_associe_DAO;
+            travaux_associe_DAO = new TravauxAssocieDAO();
+            travaux_associe_DAO.create(num_fiscal,devis,type_logement);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -89,7 +89,7 @@ public class DevisDAO implements DAO.DevisDAO {
 
     @Override
     public Integer getId(Devis devis){
-        Integer id = 0;
+        int id = 0;
         try{
             Connection cn = ConnectionDB.getInstance();
             String requete = "SELECT id FROM Devis WHERE num_devis = ?";
@@ -106,12 +106,12 @@ public class DevisDAO implements DAO.DevisDAO {
     }
 
     @Override
-    public List<Devis> getAllDevisFromABien(String num_fiscal, TypeLogement typeLogement){
-        TravauxAssocieDAO travauxAssocieDAO = new TravauxAssocieDAO();
+    public List<Devis> getAllDevisFromABien(String num_fiscal, TypeLogement type_logement){
+        TravauxAssocieDAO travaux_associe_DAO = new TravauxAssocieDAO();
         List<Devis> liste_devis = new ArrayList<>();
         List<Integer> liste_id_devis;
         try {
-            liste_id_devis = travauxAssocieDAO.findAll(num_fiscal,typeLogement);
+            liste_id_devis = travaux_associe_DAO.findAll(num_fiscal,type_logement);
         } catch (DAOException e) {
             throw new RuntimeException(e);
         }
@@ -123,12 +123,12 @@ public class DevisDAO implements DAO.DevisDAO {
     }
 
     @Override
-    public List<Devis> getAllDevisFromABienAndDate(String num_fiscal, TypeLogement typeLogement, Date annee) {
-        TravauxAssocieDAO travauxAssocieDAO = new TravauxAssocieDAO();
+    public List<Devis> getAllDevisFromABienAndDate(String num_fiscal, TypeLogement type_logement, Date annee) {
+        TravauxAssocieDAO travaux_associe_DAO = new TravauxAssocieDAO();
         List<Devis> liste_devis = new ArrayList<>();
         List<Integer> liste_id_devis;
         try {
-            liste_id_devis = travauxAssocieDAO.findAllWithDate(num_fiscal,typeLogement,annee);
+            liste_id_devis = travaux_associe_DAO.findAllWithDate(num_fiscal,type_logement,annee);
         } catch (DAOException e) {
             throw new RuntimeException(e);
         }
@@ -139,24 +139,17 @@ public class DevisDAO implements DAO.DevisDAO {
         return liste_devis;
     }
 
-    @Override
-    public double getMontantTotalDevis(String num_fiscal, TypeLogement typeLogement) {
-        double resultat=0.0;
-        List<Devis> liste_devis = getAllDevisFromABien(num_fiscal,typeLogement);
-        for (Devis devis : liste_devis){
-            resultat += devis.getMontantDevis();
-        }
-        return resultat;
-    }
+
 
     @Override
-    public double getMontantTotalTravaux(String num_fiscal, TypeLogement typeLogement) {
+    public double getMontantTotalTravaux(String num_fiscal, TypeLogement type_logement) {
         double resultat=0.0;
-        List<Devis> liste_devis = getAllDevisFromABien(num_fiscal,typeLogement);
+        List<Devis> liste_devis = getAllDevisFromABien(num_fiscal,type_logement);
         for (Devis devis : liste_devis){
             resultat += devis.getMontantTravaux();
         }
         return resultat;
     }
+
 
 }

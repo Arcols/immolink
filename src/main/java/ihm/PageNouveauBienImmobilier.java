@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.EventQueue;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -32,156 +31,64 @@ import enumeration.TypeLogement;
 import modele.Charte;
 import modele.Menu;
 import modele.ModelePageNouveauBienImmobilier;
-import modele.ResizedImage;
 
-public class PageNouveauBienImmobilier {
+public class PageNouveauBienImmobilier extends PageAbstraite {
 
-	private JFrame frame;
 	private JPanel tableau_diagnostic;
 	private JPanel panel_caracteristique;
-	private JLabel logo;
 	private JLabel diagnostics;
 	private JLabel surface;
 	private JLabel nombre_piece;
 	private JLabel complement_adresse;
-	private JLabel code_postal = new JLabel("Code postal");
+	private final JLabel code_postal = new JLabel("Code postal");
 	private JFormattedTextField choix_num_fiscal;
 	private JTextField choix_complement_adresse;
 	private JButton valider;
 	private JComboBox choix_adresse;
 	private JComboBox choix_ville;
 	private JComboBox choix_type_de_bien;
-	private JTextField texte_ville = new JTextField();
-	private JTextField texte_adresse = new JTextField();
+	private final JTextField texte_ville = new JTextField();
+	private final JTextField texte_adresse = new JTextField();
 	private JFormattedTextField texte_code_postal;
 	private JSpinner choix_nb_piece;
 	private JSpinner choix_surface;
-	private JButton addGarageButton = new JButton("Lier un garage");
-	private List<Diagnostic> liste_diagnostic;
+	private final JButton rajouter_garage_bouton = new JButton("Lier un garage");
 	private Map<String, Diagnostic> map_diagnostic;
-	private Set<String> setVilles;
-	private Map<String, List<String>> mapVillesAdresses;
-	private Garage garageLie = new Garage("            ", "", "", "", TypeLogement.NONE);
+    private Map<String, List<String>> map_ville_adresse;
+	private Garage garage_lie = new Garage("            ", "", "", "", TypeLogement.NONE);
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					PageNouveauBienImmobilier window = new PageNouveauBienImmobilier();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	public JFrame getFrame() {
-		return this.frame;
-	}
+	private ModelePageNouveauBienImmobilier modele;
 
 	/**
 	 * Create the application.
 	 */
-	public PageNouveauBienImmobilier() {
-		this.initialize();
+	public PageNouveauBienImmobilier(int x, int y) {
+		super(x,y);
+		this.modele = new ModelePageNouveauBienImmobilier(this);
+		this.CreerSpecific();
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		ModelePageNouveauBienImmobilier modele = new ModelePageNouveauBienImmobilier(this);
+	@Override
+	public void CreerSpecific(){
 		this.map_diagnostic = new HashMap<>();
-		initialiseMapDiagnostic();
-		this.liste_diagnostic = new ArrayList<>();
+		modele.initialiseMapDiagnostic();
 		try {
 			BatimentDAO batimentDAO = new BatimentDAO();
-			this.mapVillesAdresses = batimentDAO.searchAllBatiments();
+			this.map_ville_adresse = batimentDAO.searchAllBatiments();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// Initialisation du JFrame
-		this.frame = new JFrame();
-		this.frame.setBounds(100, 100, 750, 400);
-		this.frame.getContentPane().setBackground(Charte.FOND.getCouleur());
-		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		// Panel d'entête pour le logo et le nom de l'appli
-		JPanel entete = new JPanel();
-		this.frame.getContentPane().add(entete, BorderLayout.NORTH);
-		entete.setLayout(new BorderLayout(0, 0));
-		this.frame.getContentPane().setBackground(Charte.FOND.getCouleur());
-
-		entete.setBackground(Charte.ENTETE.getCouleur());
-		entete.setBorder(new LineBorder(Color.BLACK, 2));
-
-		this.logo = new JLabel("");
-		entete.add(this.logo, BorderLayout.WEST);
-
-		Menu m = new Menu(this.frame);
-
-		JPanel menu_bouttons = new JPanel();
-
-		entete.add(menu_bouttons, BorderLayout.CENTER);
-		menu_bouttons.setLayout(new GridLayout(0, 4, 0, 0));
-		menu_bouttons.setBackground(Charte.ENTETE.getCouleur());
-
-		JButton b_accueil = new JButton("Accueil");
-		b_accueil.setBorderPainted(false);
-		b_accueil.setBackground(Charte.ENTETE.getCouleur());
-		b_accueil.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		menu_bouttons.add(b_accueil);
-		b_accueil.addActionListener(m);
-
-		JButton b_baux = new JButton("Mes baux");
-		b_baux.setBorderPainted(false);
-		b_baux.setBackground(Charte.ENTETE.getCouleur());
-		b_baux.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		menu_bouttons.add(b_baux);
-		menu_bouttons.add(b_baux);
-		b_baux.addActionListener(m);
-
-		JButton b_biens = new JButton("Mes Biens");
-		b_biens.setBorderPainted(false);
-		b_biens.setBackground(Charte.ENTETE.getCouleur());
-		b_biens.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		menu_bouttons.add(b_biens);
-		menu_bouttons.add(b_biens);
-		b_biens.addActionListener(m);
-
-		JButton b_notifs = null;
-		try {
-			b_notifs = new JButton("Notifications ("+m.getNbNotifs()+")");
-		} catch (DAOException e) {
-			throw new RuntimeException(e);
-		}
-		b_notifs.setBorderPainted(false);
-		b_notifs.setBackground(Charte.ENTETE.getCouleur());
-		b_notifs.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		menu_bouttons.add(b_notifs);
-		menu_bouttons.add(b_notifs);
-		b_notifs.addActionListener(m);
-
-		JPanel body = new JPanel();
-		this.frame.getContentPane().add(body, BorderLayout.CENTER);
-		body.setLayout(new BorderLayout(0, 0));
 
 		JPanel titre = new JPanel();
-		FlowLayout fl_titre = (FlowLayout) titre.getLayout();
-		body.add(titre, BorderLayout.NORTH);
+		panel_body.add(titre, BorderLayout.NORTH);
 
-		JLabel titleLabel = new JLabel("Nouveau bien immobilier", SwingConstants.CENTER);
-		titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
-		body.add(titleLabel, BorderLayout.NORTH);
+		JLabel label_titre = new JLabel("Nouveau bien immobilier", SwingConstants.CENTER);
+		label_titre.setFont(new Font("Arial", Font.BOLD, 16));
+		panel_body.add(label_titre, BorderLayout.NORTH);
 
 		JPanel contenu = new JPanel();
-		body.add(contenu, BorderLayout.CENTER);
+		panel_body.add(contenu, BorderLayout.CENTER);
 		contenu.setLayout(new GridLayout(1, 2, 0, 0));
 
 		this.panel_caracteristique = new JPanel();
@@ -264,9 +171,9 @@ public class PageNouveauBienImmobilier {
 		gbc_choix_ville.gridx = 1;
 		gbc_choix_ville.gridy = 2;
 		this.panel_caracteristique.add(choix_ville, gbc_choix_ville);
-		this.setVilles = this.mapVillesAdresses.keySet();
-		if (!this.setVilles.isEmpty()) {
-			choix_ville.setModel(new DefaultComboBoxModel(this.setVilles.toArray(new String[0])));
+		Set<String> set_ville = this.map_ville_adresse.keySet();
+		if (!set_ville.isEmpty()) {
+			choix_ville.setModel(new DefaultComboBoxModel(set_ville.toArray(new String[0])));
 		} else {
 			choix_ville.setModel(new DefaultComboBoxModel());
 		}
@@ -286,11 +193,11 @@ public class PageNouveauBienImmobilier {
 		gbc_choix_adresse.gridx = 1;
 		gbc_choix_adresse.gridy = 3;
 		this.panel_caracteristique.add(this.choix_adresse, gbc_choix_adresse);
-		if (this.setVilles.isEmpty()) {
+		if (set_ville.isEmpty()) {
 			this.choix_adresse.setModel(new DefaultComboBoxModel());
 		} else {
 			this.choix_adresse.setModel(new DefaultComboBoxModel(
-					this.mapVillesAdresses.get(this.choix_ville.getSelectedItem()).toArray(new String[0])));
+					this.map_ville_adresse.get(this.choix_ville.getSelectedItem()).toArray(new String[0])));
 		}
 
 		this.complement_adresse = new JLabel("Complément d'adresse");
@@ -356,10 +263,10 @@ public class PageNouveauBienImmobilier {
 		this.choix_nb_piece.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		this.choix_nb_piece
 				.setModel(new SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
-		this.addGarageButton.addActionListener(new ActionListener() {
+		this.rajouter_garage_bouton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				showGaragePopup();
+				modele.showGaragePopup();
 			}
 		});
 		GridBagConstraints gbc_check_garage = new GridBagConstraints();
@@ -368,9 +275,9 @@ public class PageNouveauBienImmobilier {
 		gbc_check_garage.insets = new Insets(10, 0, 0, 0);
 		gbc_check_garage.gridx = 0;
 		gbc_check_garage.gridy = 7;
-		this.panel_caracteristique.add(this.addGarageButton, gbc_check_garage);
-		this.addGarageButton.setAlignmentY(Component.BOTTOM_ALIGNMENT);
-		this.addGarageButton.setAlignmentX(Component.RIGHT_ALIGNMENT);
+		this.panel_caracteristique.add(this.rajouter_garage_bouton, gbc_check_garage);
+		this.rajouter_garage_bouton.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+		this.rajouter_garage_bouton.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
 		JPanel panel_diagnostic = new JPanel();
 		contenu.add(panel_diagnostic);
@@ -414,10 +321,6 @@ public class PageNouveauBienImmobilier {
 		JScrollPane scrollPane = new JScrollPane(this.tableau_diagnostic);
 		panel_diagnostic.add(scrollPane, BorderLayout.CENTER);
 
-		JPanel bas_de_page = new JPanel();
-		this.frame.getContentPane().add(bas_de_page, BorderLayout.SOUTH);
-		bas_de_page.setLayout(new BorderLayout(0, 0));
-
 		this.valider = new JButton("Valider");
 		this.valider.setEnabled(false);
 		this.valider.setHorizontalTextPosition(SwingConstants.LEFT);
@@ -432,25 +335,7 @@ public class PageNouveauBienImmobilier {
 		bas_de_page.add(quitter, BorderLayout.WEST);
 
 		this.valider.addActionListener(modele.getValidateActionListener());
-		this.frame.addComponentListener(new ComponentAdapter() {
-			@Override
-			public void componentResized(ComponentEvent e) {
-				ResizedImage res = new ResizedImage();
-				res.resizeImage("logo+nom.png", PageNouveauBienImmobilier.this.frame,
-						PageNouveauBienImmobilier.this.logo, 3, 8);
-				int frameWidth = PageNouveauBienImmobilier.this.frame.getWidth();
-				int frameHeight = PageNouveauBienImmobilier.this.frame.getHeight();
-
-				int newFontSize = Math.min(frameWidth, frameHeight) / 30;
-
-				// Appliquer la nouvelle police au bouton
-				Font resizedFont = new Font("Arial", Font.PLAIN, newFontSize);
-				b_baux.setFont(resizedFont);
-				b_accueil.setFont(resizedFont);
-				b_biens.setFont(resizedFont);
-			}
-		});
-		this.choix_ville.addActionListener(modele.getVilleActionListener(mapVillesAdresses));
+		this.choix_ville.addActionListener(modele.getVilleActionListener(map_ville_adresse));
 		this.choix_type_de_bien.addActionListener(modele.getChoixTypeBienListener());
 		this.choix_type_de_bien.addActionListener(modele.getCheckFieldsActionListener());
 		this.choix_num_fiscal.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
@@ -458,18 +343,8 @@ public class PageNouveauBienImmobilier {
 		this.texte_ville.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
 		this.texte_adresse.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
 		quitter.addActionListener(modele.quitterPage());
-		frame.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				// Action to perform on application close
-				performCloseAction();
-			}
-		});
-	}
 
-	private void performCloseAction() {
-		ConnectionDB.destroy(); // fermeture de la connection
-		frame.dispose();
+		frame.addWindowListener(modele.fermerFenetre());
 	}
 
 	public JComboBox getChoix_adresse() {
@@ -517,7 +392,7 @@ public class PageNouveauBienImmobilier {
 	}
 
 	public JButton getAddGarageButton() {
-		return this.addGarageButton;
+		return this.rajouter_garage_bouton;
 	}
 
 	public JSpinner getChoix_nb_piece() {
@@ -556,56 +431,12 @@ public class PageNouveauBienImmobilier {
 		return code_postal;
 	}
 
-	public Garage getGarageLie() {return this.garageLie;}
-
-	public void initialiseMapDiagnostic() {
-		for (NomsDiags diag : NomsDiags.values()) {
-			this.map_diagnostic.put(diag.name(), null);
-		}
-	}
-
-	public boolean isMapDiagnosticFull() {
-		for (Map.Entry<String, Diagnostic> entry : this.map_diagnostic.entrySet()) {
-			if (!entry.getKey().equals("GAZ") && entry.getValue() == null) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	public void checkFields() {
-		// Vérifier le type de bien sélectionné
-		String selectedType = (String) this.getChoix_type_de_bien().getSelectedItem();
-
-		// Définir les critères de validation en fonction du type sélectionné
-		boolean isFilled;
-
-		if ("Bâtiment".equals(selectedType)) {
-			// Critères pour "Bâtiment" : vérifier que texte_ville et texte_adresse sont
-			// remplis
-			isFilled = !this.getTexte_ville().getText().trim().isEmpty()
-					&& !this.getTexte_adresse().getText().trim().isEmpty();
-		} else if ("Appartement".equals(selectedType) || "Maison".equals(selectedType)) {
-			// Critères pour les autres types de bien : vérifier choix_complement_adresse et
-			// choix_num_fiscal
-			isFilled = !this.getChoix_complement_adresse().getText().trim().isEmpty()
-					&& !this.getChoix_num_fiscal().getText().trim().isEmpty() && isMapDiagnosticFull();
-		} else {
-			isFilled = !this.getChoix_complement_adresse().getText().trim().isEmpty()
-					&& !this.getChoix_num_fiscal().getText().trim().isEmpty();
-		}
-
-		// Active ou désactive le bouton "Valider"
-		this.getValider().setEnabled(isFilled);
-	}
+	public Garage getGarageLie() {return this.garage_lie;}
 
 	public void addGarage(Garage garage) {
-		this.garageLie = garage;
+		this.garage_lie = garage;
 	}
 
-	private void showGaragePopup() {
-		PopUpCreationGarageLieBL popup = new PopUpCreationGarageLieBL(this);
-		popup.getFrame().setVisible(true);
-	}
+
 
 }

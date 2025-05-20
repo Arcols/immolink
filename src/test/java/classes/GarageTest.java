@@ -97,26 +97,26 @@ public class GarageTest {
         Garage garage6 = new Garage("123456789101", "Paris", "124 Rue de la Paix", "Garage 1", TypeLogement.GARAGE_PAS_ASSOCIE);
         Garage garage7 = new Garage("123456789101", "Paris", "123 Rue de la Paix", "Garage 1", TypeLogement.GARAGE_ASSOCIE);
 
-        assertTrue(garage1.equals(garage2));
-        assertFalse(garage1.equals(garage3));
-        assertFalse(garage1.equals(garage4));
-        assertFalse(garage1.equals(garage5));
-        assertFalse(garage1.equals(garage6));
-        assertFalse(garage1.equals(garage7));
+        assertEquals(garage1, garage2);
+        assertNotEquals(garage1, garage3);
+        assertNotEquals(garage1, garage4);
+        assertNotEquals(garage1, garage5);
+        assertNotEquals(garage1, garage6);
+        assertNotEquals(garage1, garage7);
     }
 
     @Test
     public void testEqualsWithSelf() {
-        assertTrue(garage.equals(garage));
+        assertEquals(garage, garage);
     }
 
     @Test
     public void testEqualsWithNull() {
-        assertFalse(garage.equals(null));
+        assertNotEquals(null, garage);
     }
 
     @Test
     public void testEqualsWithDifferentClass() {
-        assertFalse(garage.equals(new Object()));
+        assertNotEquals(garage, new Object());
     }
 }

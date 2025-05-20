@@ -33,27 +33,27 @@ public class DiagnosticTest {
 
     @Test
     public void testGettersAndConstructeur() throws IOException, SQLException {
-        Diagnostic diagnostic = new Diagnostic("RéfTest", tempFile.getAbsolutePath());
-        assertEquals("RéfTest", diagnostic.getReference());
+        Diagnostic diagnostic = new Diagnostic("RfTest", tempFile.getAbsolutePath());
+        assertEquals("RfTest", diagnostic.getReference());
         assertEquals(tempFile.getAbsolutePath(), diagnostic.getPdfPath());
     }
 
     @Test
     public void testOuvrirPdf() throws IOException, SQLException {
-        Diagnostic diagnostic = new Diagnostic("RéfTest", tempFile.getAbsolutePath());
+        Diagnostic diagnostic = new Diagnostic("RfTest", tempFile.getAbsolutePath());
 
         try {
             diagnostic.ouvrirPdf();
         } catch (Exception e) {
-            fail("La méthode ouvrirPdf a levé une exception : " + e.getMessage());
+            fail("La mthode ouvrirPdf a lev une exception : " + e.getMessage());
         }
     }
 
     @Test
     public void testChargementFichierEnOctets_CheminInvalide() throws SQLException {
         try {
-            new Diagnostic("RéfTest", "chemin_invalide.pdf");
-            fail("Une exception aurait dû être levée pour un chemin de fichier invalide.");
+            new Diagnostic("RfTest", "chemin_invalide.pdf");
+            fail("Une exception aurait dû être leve pour un chemin de fichier invalide.");
         } catch (IOException e) {
             assertTrue(e.getMessage().contains("Invalid file path"));
         }
@@ -61,8 +61,8 @@ public class DiagnosticTest {
 
     @Test
     public void testIsSameRef() throws IOException, SQLException {
-        Diagnostic diagnostic1 = new Diagnostic("RéfTest", tempFile.getAbsolutePath());
-        Diagnostic diagnostic2 = new Diagnostic("RéfTest", tempFile.getAbsolutePath());
+        Diagnostic diagnostic1 = new Diagnostic("RfTest", tempFile.getAbsolutePath());
+        Diagnostic diagnostic2 = new Diagnostic("RfTest", tempFile.getAbsolutePath());
         Diagnostic diagnostic3 = new Diagnostic("AutreRef", tempFile.getAbsolutePath());
 
         assertTrue(diagnostic1.isSameRef(diagnostic2));
@@ -71,8 +71,8 @@ public class DiagnosticTest {
 
     @Test
     public void testMiseAJourDiagnostic() throws IOException, SQLException {
-        Diagnostic diagnostic1 = new Diagnostic("RéfTest", tempFile.getAbsolutePath());
-        Diagnostic diagnostic2 = new Diagnostic("RéfTest", tempFile2.getAbsolutePath());
+        Diagnostic diagnostic1 = new Diagnostic("RfTest", tempFile.getAbsolutePath());
+        Diagnostic diagnostic2 = new Diagnostic("RfTest", tempFile2.getAbsolutePath());
 
         diagnostic1.miseAJourDiagnostic(diagnostic2);
 
@@ -82,16 +82,16 @@ public class DiagnosticTest {
     @Test
     public void testConstructeurAvecDateInvalidite() throws IOException, SQLException {
         Date dateInvalidite = new Date(System.currentTimeMillis());
-        Diagnostic diagnostic = new Diagnostic("RéfTest", tempFile.getAbsolutePath(), dateInvalidite);
+        Diagnostic diagnostic = new Diagnostic("RfTest", tempFile.getAbsolutePath(), dateInvalidite);
 
-        assertEquals("RéfTest", diagnostic.getReference());
+        assertEquals("RfTest", diagnostic.getReference());
         assertEquals(tempFile.getAbsolutePath(), diagnostic.getPdfPath());
         assertEquals(dateInvalidite, diagnostic.getDateInvalidite());
     }
 
     @Test
     public void testEstExpireSansDateInvalidite() throws IOException, SQLException {
-        Diagnostic diagnostic = new Diagnostic("RéfTest", tempFile.getAbsolutePath());
+        Diagnostic diagnostic = new Diagnostic("RfTest", tempFile.getAbsolutePath());
         assertFalse(diagnostic.estExpire()); // Diagnostic without invalidity date cannot be expired
     }
 
@@ -101,7 +101,7 @@ public class DiagnosticTest {
         calendar.add(Calendar.DAY_OF_MONTH, 5); // 5 days in the future
         Date dateInvalidite = new Date(calendar.getTimeInMillis());
 
-        Diagnostic diagnostic = new Diagnostic("RéfTest", tempFile.getAbsolutePath(), dateInvalidite);
+        Diagnostic diagnostic = new Diagnostic("RfTest", tempFile.getAbsolutePath(), dateInvalidite);
         assertFalse(diagnostic.estExpire());
     }
 
@@ -111,7 +111,7 @@ public class DiagnosticTest {
         calendar.add(Calendar.DAY_OF_MONTH, -5); // 5 days in the past
         Date dateInvalidite = new Date(calendar.getTimeInMillis());
 
-        Diagnostic diagnostic = new Diagnostic("RéfTest", tempFile.getAbsolutePath(), dateInvalidite);
+        Diagnostic diagnostic = new Diagnostic("RfTest", tempFile.getAbsolutePath(), dateInvalidite);
         assertTrue(diagnostic.estExpire());
     }
 
@@ -119,8 +119,8 @@ public class DiagnosticTest {
     public void testConstructeurAvecDateInvaliditeCheminInvalide() {
         Date dateInvalidite = new Date(System.currentTimeMillis());
         try {
-            new Diagnostic("RéfTest", "chemin_invalide.pdf", dateInvalidite);
-            fail("Une exception aurait dû être levée pour un chemin de fichier invalide.");
+            new Diagnostic("RfTest", "chemin_invalide.pdf", dateInvalidite);
+            fail("Une exception aurait dû être leve pour un chemin de fichier invalide.");
         } catch (IOException e) {
             assertTrue(e.getMessage().contains("Invalid file path"));
         }

@@ -4,16 +4,16 @@ import java.sql.Date;
 
 public class Devis {
 
-	private String num_devis;
-	private String num_facture;
-	private float montant_devis;
-	private float montant_travaux;
-	private String nature;
-	private Date date_debut;
-	private Date date_facture;
-	private String type;
-	private String adresse_entreprise;
-	private String nom_entreprise;
+	private final String num_devis;
+	private final String num_facture;
+	private final float montant_devis;
+	private final float montant_travaux;
+	private final String nature;
+	private final Date date_debut;
+	private final Date date_facture;
+	private final String type;
+	private final String adresse_entreprise;
+	private final String nom_entreprise;
 
 	/**
 	 * Constructeur de la classe Devis

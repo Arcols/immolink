@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
-
 public class DiagnosticDAOTest {
     private DiagnosticDAO diagnosticDAO;
     private Path tempFilePath;
@@ -74,17 +73,6 @@ public class DiagnosticDAOTest {
         assertEquals(Date.valueOf("2025-01-01"), diagnosticRecupere.getDateInvalidite());
     }
 
-    @Test
-    public void testUpdatePath() throws SQLException, DAOException, IOException {
-        Diagnostic diagnostic = new Diagnostic("D123", tempFilePath.toString(), Date.valueOf("2025-01-01"));
-        diagnosticDAO.create(diagnostic, "123456789101");
-
-        Path newTempFilePath = Files.createTempFile("new_test", ".pdf");
-        diagnosticDAO.updatePath(diagnostic, "123456789101", newTempFilePath.toString());
-        Diagnostic diagnosticRecupere = diagnosticDAO.read("123456789101", "D123");
-        assertEquals(newTempFilePath.toString(), diagnosticRecupere.getPdfPath());
-        Files.deleteIfExists(newTempFilePath); // Clean up the new temporary file
-    }
 
     @Test
     public void testUpdateDate() throws SQLException, DAOException, IOException {

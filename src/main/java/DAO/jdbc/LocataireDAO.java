@@ -1,12 +1,17 @@
 package DAO.jdbc;
 
-import DAO.db.ConnectionDB;
-import classes.Locataire;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
+import DAO.db.ConnectionDB;
+import classes.Locataire;
 
 public class LocataireDAO implements DAO.LocataireDAO {
     @Override
@@ -14,13 +19,13 @@ public class LocataireDAO implements DAO.LocataireDAO {
         try {
             Connection cn = ConnectionDB.getInstance();
             Statement st = cn.createStatement();
-            String query = "INSERT INTO locataire (nom, prenom, lieu_naissance, date_naissance, téléphone, date_arrive,mail,loc_actuel,genre) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO locataire (nom, prenom, lieu_naissance, date_naissance, telephone, date_arrive,mail,loc_actuel,genre) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement pstmt = cn.prepareStatement(query);
             pstmt.setString(1, locataire.getNom());
-            pstmt.setString(2, locataire.getPrénom());
+            pstmt.setString(2, locataire.getPrenom());
             pstmt.setString(3,locataire.getLieuNaissance());
             pstmt.setString(4,locataire.getDateNaissance());
-            pstmt.setString(5, locataire.getTéléphone());
+            pstmt.setString(5, locataire.getTelephone());
             pstmt.setDate(6, locataire.getDateArrive());
             pstmt.setString(7, locataire.getMail());
             pstmt.setInt(8, 1); // requette pour la loc actuelle ?
@@ -34,76 +39,16 @@ public class LocataireDAO implements DAO.LocataireDAO {
     }
 
     @Override
-    public void updateLocataireTel(Locataire locataire, String tel) {
-        try {
-            Connection cn = ConnectionDB.getInstance();
-            Statement st = cn.createStatement();
-            String query = "UPDATE locataire SET téléphone = ? WHERE nom = ? AND prenom = ? AND téléphone = ?";
-            PreparedStatement pstmt = cn.prepareStatement(query);
-            pstmt.setString(1, tel);
-            pstmt.setString(2, locataire.getNom());
-            pstmt.setString(3, locataire.getPrénom());
-            pstmt.setString(4, locataire.getTéléphone());
-            pstmt.executeUpdate();
-            pstmt.close();
-            st.close();
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public void updateLocataireMail(Locataire locataire, String mail) {
-        try {
-            Connection cn = ConnectionDB.getInstance();
-            Statement st = cn.createStatement();
-            String query = "UPDATE locataire SET mail = ? WHERE nom = ? AND prenom = ? AND téléphone = ?";
-            PreparedStatement pstmt = cn.prepareStatement(query);
-            pstmt.setString(1, mail);
-            pstmt.setString(2, locataire.getNom());
-            pstmt.setString(3, locataire.getPrénom());
-            pstmt.setString(4, locataire.getTéléphone());
-            pstmt.executeUpdate();
-            pstmt.close();
-            st.close();
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public void updateLocataireGenre(Locataire locataire, String genre) {
-        try {
-            Connection cn = ConnectionDB.getInstance();
-            Statement st = cn.createStatement();
-            String query = "UPDATE locataire SET genre = ? WHERE nom = ? AND prenom = ? AND téléphone = ?";
-            PreparedStatement pstmt = cn.prepareStatement(query);
-            pstmt.setString(1, genre);
-            pstmt.setString(2, locataire.getNom());
-            pstmt.setString(3, locataire.getPrénom());
-            pstmt.setString(4, locataire.getTéléphone());
-            pstmt.executeUpdate();
-            pstmt.close();
-            st.close();
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public Locataire getLocataireByNomPrénomTel(String nom, String prénom, String téléphone) {
+    public Locataire getLocataireByNomPrenom(String nom, String prenom, String telephone) {
         try {
             Connection cn = ConnectionDB.getInstance();
             Locataire locataire = null;
             ResultSet rs;
-            String query = "SELECT * FROM locataire WHERE nom = ? AND prenom = ? AND téléphone = ?";
+            String query = "SELECT * FROM locataire WHERE nom = ? AND prenom = ? AND telephone = ?";
             PreparedStatement pstmt = cn.prepareStatement(query);
             pstmt.setString(1, nom);
-            pstmt.setString(2, prénom);
-            pstmt.setString(3, téléphone);
+            pstmt.setString(2, prenom);
+            pstmt.setString(3, telephone);
             rs = pstmt.executeQuery();
             if (rs.next()) {
                 String lieuNaissance = rs.getString("lieu_naissance");
@@ -111,7 +56,7 @@ public class LocataireDAO implements DAO.LocataireDAO {
                 String genre = rs.getString("genre");
                 String mail = rs.getString("mail");
                 Date date_arrive = rs.getDate("date_arrive");
-                locataire = new Locataire(nom, prénom, lieuNaissance, dateNaissance, téléphone, mail, date_arrive, genre);
+                locataire = new Locataire(nom, prenom, lieuNaissance, dateNaissance, telephone, mail, date_arrive, genre);
             }
             rs.close();
             pstmt.close();
@@ -122,6 +67,8 @@ public class LocataireDAO implements DAO.LocataireDAO {
         }
     }
 
+
+
     @Override
     public List<Locataire> getAllLocataire() {
         try {
@@ -131,15 +78,15 @@ public class LocataireDAO implements DAO.LocataireDAO {
             ResultSet rs = stmt.executeQuery("SELECT * FROM locataire");
             while (rs.next()) {
                 String nom = rs.getString("nom");
-                String prénom = rs.getString("prenom");
+                String prenom = rs.getString("prenom");
                 String lieu_naissance = rs.getString("lieu_naissance");
                 String date_naissance = rs.getString("date_naissance");
-                String téléphone = rs.getString("téléphone");
+                String telephone = rs.getString("telephone");
                 String genre = rs.getString("genre");
                 String mail = rs.getString("mail");
                 Date date_arrive = rs.getDate("date_arrive");
 
-                Locataire locataire = new Locataire(nom, prénom,lieu_naissance,date_naissance, téléphone, mail, date_arrive, genre);
+                Locataire locataire = new Locataire(nom, prenom,lieu_naissance,date_naissance, telephone, mail, date_arrive, genre);
                 locataires.add(locataire);
             }
             rs.close();
@@ -149,40 +96,19 @@ public class LocataireDAO implements DAO.LocataireDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-
     }
 
-    @Override
-    public void deleteLocataire(Locataire locataire) {
-        try {
-            Connection cn = ConnectionDB.getInstance();
-            Statement st = cn.createStatement();
-            String query = "DELETE FROM locataire WHERE nom = ? AND prenom = ? AND téléphone = ?";
-            PreparedStatement pstmt = cn.prepareStatement(query);
-            pstmt.setString(1, locataire.getNom());
-            pstmt.setString(2, locataire.getPrénom());
-            pstmt.setString(3, locataire.getTéléphone());
-            pstmt.executeUpdate();
-            pstmt.close();
-            st.close();
-
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     @Override
     public int getId(Locataire locataire) {
-        Integer idloc = (Integer) null;
+        Integer idloc = null;
         try {
             Connection cn = ConnectionDB.getInstance();
-            String query = "SELECT id_loc FROM locataire WHERE prenom = ? AND nom = ? AND téléphone = ? ";
+            String query = "SELECT id_loc FROM locataire WHERE prenom = ? AND nom = ? AND telephone = ? ";
             PreparedStatement pstmt = cn.prepareStatement(query);
-            pstmt.setString(1, locataire.getPrénom());
+            pstmt.setString(1, locataire.getPrenom());
             pstmt.setString(2, locataire.getNom());
-            pstmt.setString(3, locataire.getTéléphone());
+            pstmt.setString(3, locataire.getTelephone());
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 idloc = rs.getInt("id_loc");
@@ -206,14 +132,14 @@ public class LocataireDAO implements DAO.LocataireDAO {
             rs = pstmt.executeQuery();
             if (rs.next()) {
                 String nom = rs.getString("nom");
-                String prénom = rs.getString("prenom");
+                String prenom = rs.getString("prenom");
                 String lieu_naissance = rs.getString("lieu_naissance");
                 String date_naissance = rs.getString("date_naissance");
-                String téléphone = rs.getString("téléphone");
+                String telephone = rs.getString("telephone");
                 String genre = rs.getString("genre");
                 String mail = rs.getString("mail");
                 Date date_arrive = rs.getDate("date_arrive");
-                locataire = new Locataire(nom, prénom, lieu_naissance, date_naissance, téléphone, mail, date_arrive, genre);
+                locataire = new Locataire(nom, prenom, lieu_naissance, date_naissance, telephone, mail, date_arrive, genre);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -240,6 +166,4 @@ public class LocataireDAO implements DAO.LocataireDAO {
         }
         return idBaux;
     }
-
-
 }

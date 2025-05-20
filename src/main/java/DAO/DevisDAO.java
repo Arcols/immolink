@@ -9,24 +9,24 @@ import java.util.List;
 public interface DevisDAO {
 
     /**
-     * Crée un nouveau devis dans la base de données.
-     * @param devis L'objet devis à insérer
-     * @param num_fiscal Le numéro fiscal du bien associé au devis
-     * @param typeLogement Le type de logement associé au devis
-     * @throws DAOException en cas d'erreur lors de la création du devis
+     * Cree un nouveau devis dans la base de donnees.
+     * @param devis L'objet devis à inserer
+     * @param num_fiscal Le numero fiscal du bien associe au devis
+     * @param typeLogement Le type de logement associe au devis
+     * @throws DAOException en cas d'erreur lors de la creation du devis
      */
     void create(Devis devis, String num_fiscal, TypeLogement typeLogement) throws DAOException;
 
     /**
-     * Trouve un devis dans la base de données à l'aide de son num_devis.
-     * @param num_devis Le numéro du devis à trouver
-     * @return L'objet devis trouvé
+     * Trouve un devis dans la base de donnees à l'aide de son num_devis.
+     * @param num_devis Le numero du devis à trouver
+     * @return L'objet devis trouve
      * @throws DAOException en cas d'erreur lors de la recherche du devis
      */
     Devis read(String num_devis) throws DAOException;
 
     /**
-     * Récupère l'identifiant d'un devis dans la base de données.
+     * Recupère l'identifiant d'un devis dans la base de donnees.
      * @param devis L'objet devis à rechercher
      * @return L'identifiant du devis
      */
@@ -34,7 +34,7 @@ public interface DevisDAO {
 
     /**
      * Retourne une liste de devis d'un bien mis en paramètre
-     * @param num_fiscal le numéro fiscal du bien
+     * @param num_fiscal le numero fiscal du bien
      * @param typeLogement le type de logement
      * @return la liste des devis
      */
@@ -42,23 +42,17 @@ public interface DevisDAO {
 
     /**
      * Retourne une liste de devis d'un bien mis en paramètre
-     * @param num_fiscal le numéro fiscal du bien
+     * @param num_fiscal le numero fiscal du bien
      * @param typeLogement le type de logement
-     * @param annee Date pour avoir l'année des devis
+     * @param annee Date pour avoir l'annee des devis
      * @return la liste des devis
      */
     List<Devis> getAllDevisFromABienAndDate(String num_fiscal, TypeLogement typeLogement, Date annee);
 
-    /**
-     * Récupère le montant total des devis d'un bien
-     * @param num_fiscal
-     * @param typeLogement
-     * @return
-     */
-    double getMontantTotalDevis(String num_fiscal, TypeLogement typeLogement);
+
 
     /**
-     * Récupère le montant total des travaux d'un bien
+     * Recupère le montant total des travaux d'un bien
      * @param num_fiscal
      * @param typeLogement
      * @return
@@ -66,14 +60,14 @@ public interface DevisDAO {
     double getMontantTotalTravaux(String num_fiscal, TypeLogement typeLogement);
 
     /**
-     * Récupère un devis à partir de son identifiant
+     * Recupère un devis à partir de son identifiant
      * @param id l'identifiant du devis
      * @return le devis
      */
     Devis readId(Integer id);
 
     /**
-     * Supprime un devis de la base de données en utilisant son identifiant.
+     * Supprime un devis de la base de donnees en utilisant son identifiant.
      * @param id L'identifiant unique du devis à supprimer
      */
     void delete(Integer id);

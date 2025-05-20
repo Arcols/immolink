@@ -3,10 +3,10 @@ package classes;
 import java.sql.Date;
 
 public class Facture {
-    private String numero;
-    private String type;
-    private Date date;
-    private double montant;
+    private final String numero;
+    private final String type;
+    private final Date date;
+    private final double montant;
 
     public Facture(String numero,String type, Date date, double montant) {
         this.numero = numero;

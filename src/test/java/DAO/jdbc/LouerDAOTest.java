@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
-
 public class LouerDAOTest {
 
     private BailDAO bailDAO;
@@ -81,7 +80,7 @@ public class LouerDAOTest {
         louerDAO.create(locataire, bail, 1);
         try {
             louerDAO.create(locataire, bail, 100);
-            fail("Aucune exception levée, mais une exception était attendue.");
+            fail("Aucune exception leve, mais une exception tait attendue.");
         } catch (RuntimeException e) {
             assertTrue(e instanceof RuntimeException);
         }
@@ -137,7 +136,7 @@ public class LouerDAOTest {
         int newQuotite = 75;
         louerDAO.updateQuotite(idBail, idLocataire, newQuotite);
 
-        int updatedQuotite = louerDAO.getQuotité(idBail, idLocataire);
+        int updatedQuotite = louerDAO.getQuotite(idBail, idLocataire);
 
         assertEquals(newQuotite, updatedQuotite);
     }
@@ -156,7 +155,7 @@ public class LouerDAOTest {
 
         louerDAO.create(locataire, bail, 50);
 
-        int quotite = louerDAO.getQuotité(idBail, idLocataire);
+        int quotite = louerDAO.getQuotite(idBail, idLocataire);
 
         assertEquals(50, quotite);
     }

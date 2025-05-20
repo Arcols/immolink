@@ -1,107 +1,40 @@
 package ihm;
-
-import DAO.DAOException;
-import DAO.jdbc.ChargeDAO;
-import modele.*;
-import modele.Menu;
-
-import javax.swing.*;
-import javax.swing.border.LineBorder;
-import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.sql.Date;
+import java.awt.BorderLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.time.LocalDate;
 
-public class PageCharge {
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
-    private JFrame frame;
-    private JLabel logo;
-    private int id_bail;
+import modele.ModelePageCharge;
+
+public class PageCharge extends PageAbstraite {
+    private ModelePageCharge modele;
+    private final int id_bail;
     private JPanel contenu;
 
-    public PageCharge(Integer idBail) {
-        this.id_bail = idBail;
-        this.initialize(idBail);
+    public PageCharge(Integer id_bail,int x,int y) {
+        super(x,y);
+        this.id_bail = id_bail;
+        modele=new ModelePageCharge(this);
+        this.CreerSpecific();
     }
 
-    private void initialize(Integer idBail) {
-        this.frame = new JFrame();
-        ModelePageCharge modele = new ModelePageCharge(this);
-        this.frame.setBounds(100, 100, 750, 400);
-        this.frame.getContentPane().setBackground(Charte.FOND.getCouleur());
-        this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        // Panel d'entête pour le logo et le nom de l'appli
-        JPanel entete = new JPanel();
-        this.frame.getContentPane().add(entete, BorderLayout.NORTH);
-        entete.setLayout(new BorderLayout(0, 0));
-        this.frame.getContentPane().setBackground(Charte.FOND.getCouleur());
-
-        entete.setBackground(Charte.ENTETE.getCouleur());
-        entete.setBorder(new LineBorder(Color.BLACK, 2));
-
-        this.logo = new JLabel("");
-        entete.add(this.logo, BorderLayout.WEST);
-
-        Menu m = new Menu(this.frame);
-
-        JPanel menu_bouttons = new JPanel();
-
-        entete.add(menu_bouttons, BorderLayout.CENTER);
-        menu_bouttons.setLayout(new GridLayout(0, 4, 0, 0));
-        menu_bouttons.setBackground(Charte.ENTETE.getCouleur());
-
-        JButton b_accueil = new JButton("Accueil");
-        b_accueil.setBorderPainted(false);
-        b_accueil.setBackground(Charte.ENTETE.getCouleur());
-        b_accueil.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        menu_bouttons.add(b_accueil);
-        b_accueil.addActionListener(m);
-
-        JButton b_baux = new JButton("Mes baux");
-        b_baux.setBorderPainted(false);
-        b_baux.setBackground(Charte.ENTETE.getCouleur());
-        b_baux.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        menu_bouttons.add(b_baux);
-        menu_bouttons.add(b_baux);
-        b_baux.addActionListener(m);
-
-        JButton b_biens = new JButton("Mes Biens");
-        b_biens.setBorderPainted(false);
-        b_biens.setBackground(Charte.ENTETE.getCouleur());
-        b_biens.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        menu_bouttons.add(b_biens);
-        menu_bouttons.add(b_biens);
-        b_biens.addActionListener(m);
-
-        JButton b_notifs = null;
-        try {
-            b_notifs = new JButton("Notifications ("+m.getNbNotifs()+")");
-        } catch (DAOException e) {
-            throw new RuntimeException(e);
-        }
-        b_notifs.setBorderPainted(false);
-        b_notifs.setBackground(Charte.ENTETE.getCouleur());
-        b_notifs.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        menu_bouttons.add(b_notifs);
-        menu_bouttons.add(b_notifs);
-        b_notifs.addActionListener(m);
-
-        JPanel body = new JPanel();
-        this.frame.getContentPane().add(body, BorderLayout.CENTER);
-        body.setLayout(new BorderLayout(0, 0));
-
+    public void CreerSpecific(){
         JPanel titre = new JPanel();
-        FlowLayout fl_titre = (FlowLayout) titre.getLayout();
-        body.add(titre, BorderLayout.NORTH);
+        panel_body.add(titre, BorderLayout.NORTH);
 
-        JLabel titleLabel = new JLabel("Liste des charges", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
-        body.add(titleLabel, BorderLayout.NORTH);
+        JLabel label_titre = new JLabel("Liste des charges", SwingConstants.CENTER);
+        label_titre.setFont(new Font("Arial", Font.BOLD, 16));
+        panel_body.add(label_titre, BorderLayout.NORTH);
 
         contenu = new JPanel();
-        body.add(contenu, BorderLayout.CENTER);
+        panel_body.add(contenu, BorderLayout.CENTER);
         contenu.setLayout(new BorderLayout(0, 0));
 
         int annee_actuelle=LocalDate.now().getYear();
@@ -109,19 +42,15 @@ public class PageCharge {
         createInfoCharge(annee_actuelle,BorderLayout.CENTER);
         createInfoCharge(annee_actuelle-1,BorderLayout.SOUTH);
 
-        JPanel panelbouton = new JPanel();
-        body.add(panelbouton, BorderLayout.SOUTH);
+        JPanel panel_bouton = new JPanel();
+        panel_body.add(panel_bouton, BorderLayout.SOUTH);
 
-        JButton archivage = new JButton("Données archivées");
-        panelbouton.add(archivage);
-        archivage.addActionListener(modele.Archivage(idBail));
+        JButton archivage = new JButton("Historique des factures");
+        panel_bouton.add(archivage);
+        archivage.addActionListener(modele.Archivage());
         JButton facture = new JButton("Ajouter une facture");
-        panelbouton.add(facture);
+        panel_bouton.add(facture);
         facture.addActionListener(modele.ouvrirPageFacture());
-
-        JPanel bas_de_page = new JPanel();
-        this.frame.getContentPane().add(bas_de_page, BorderLayout.SOUTH);
-        bas_de_page.setLayout(new BorderLayout(0, 0));
 
         JButton regularisation = new JButton("Régularisation des charges");
         regularisation.setHorizontalTextPosition(SwingConstants.LEFT);
@@ -136,29 +65,8 @@ public class PageCharge {
         quitter.setVerticalAlignment(SwingConstants.BOTTOM);
         bas_de_page.add(quitter, BorderLayout.WEST);
         quitter.addActionListener(modele.quitterPage());
-        this.frame.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                ResizedImage res = new ResizedImage();
-                res.resizeImage("logo+nom.png", PageCharge.this.frame,
-                        PageCharge.this.logo, 3, 8);
-                int frameWidth = PageCharge.this.frame.getWidth();
-                int frameHeight = PageCharge.this.frame.getHeight();
 
-                int newFontSize = Math.min(frameWidth, frameHeight) / 30;
-
-                // Appliquer la nouvelle police au bouton
-                Font resizedFont = new Font("Arial", Font.PLAIN, newFontSize);
-                b_baux.setFont(resizedFont);
-                b_accueil.setFont(resizedFont);
-                b_biens.setFont(resizedFont);
-            }
-        });
-        this.frame.setVisible(true);
-    }
-
-    public Frame getFrame() {
-        return this.frame;
+        frame.addWindowListener(modele.fermerFenetre());
     }
 
     public int getId_bail() {
@@ -183,14 +91,8 @@ public class PageCharge {
         gbl_donnee.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
         donnee.setLayout(gbl_donnee);
 
-        ChargeDAO charge = new DAO.jdbc.ChargeDAO();
-        Date date_actuelle = Date.valueOf(annee + "-01-01");
-        double prix;
-        try {
-            prix=charge.getMontant(date_actuelle,charge.getId("Eau",this.id_bail));
-        } catch (DAOException e) {
-            throw new RuntimeException(e);
-        }
+
+        double prix = modele.getPrixDe("Eau",annee);
         JLabel Eau = new JLabel("Eau : ");
         GridBagConstraints gbc_Eau = new GridBagConstraints();
         gbc_Eau.insets = new Insets(0, 0, 5, 5);
@@ -205,11 +107,7 @@ public class PageCharge {
         gbc_prixEau.gridy = 1;
         donnee.add(prixEau, gbc_prixEau);
 
-        try {
-            prix=charge.getMontant(date_actuelle,charge.getId("Electricité",this.id_bail));
-        } catch (DAOException e) {
-            throw new RuntimeException(e);
-        }
+        prix = modele.getPrixDe("Electricité",annee);
         JLabel Electricite = new JLabel("Electricité : ");
         GridBagConstraints gbc_Electricite = new GridBagConstraints();
         gbc_Electricite.insets = new Insets(0, 0, 5, 5);
@@ -225,11 +123,8 @@ public class PageCharge {
         gbc_prixElectricite.gridy = 1;
         donnee.add(prixElectricite, gbc_prixElectricite);
 
-        try {
-            prix=charge.getMontant(date_actuelle,charge.getId("Ordures",this.id_bail));
-        } catch (DAOException e) {
-            throw new RuntimeException(e);
-        }
+        prix = modele.getPrixDe("Ordures",annee);
+
         JLabel Ordure = new JLabel("Ordures : ");
         GridBagConstraints gbc_Ordure = new GridBagConstraints();
         gbc_Ordure.insets = new Insets(0, 0, 5, 5);
@@ -244,11 +139,7 @@ public class PageCharge {
         gbc_prixOrdures.gridy = 3;
         donnee.add(prixOrdures, gbc_prixOrdures);
 
-        try {
-            prix=charge.getMontant(date_actuelle,charge.getId("Entretien",this.id_bail));
-        } catch (DAOException e) {
-            throw new RuntimeException(e);
-        }
+        prix = modele.getPrixDe("Entretien",annee);
         JLabel Entretien = new JLabel("Entretien : ");
         GridBagConstraints gbc_Entretien = new GridBagConstraints();
         gbc_Entretien.insets = new Insets(0, 0, 5, 5);

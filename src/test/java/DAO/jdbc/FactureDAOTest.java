@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
-
 public class FactureDAOTest {
 
     private FactureDAO factureDAO;
@@ -105,4 +104,20 @@ public class FactureDAOTest {
         assertTrue(factures.stream().anyMatch(f -> f.getNumero().equals("F111111")));
         assertTrue(factures.stream().anyMatch(f -> f.getNumero().equals("F222222")));
     }
+
+    @Test
+    public void testGetAllId() throws DAOException {
+        chargeDAO.create("Gas", idBail);
+        int idChargeGas = chargeDAO.getId("Gas", idBail);
+        Facture facture1 = new Facture("F789012", "Gas", Date.valueOf("2023-12-01"), 100.0);
+        Facture facture2 = new Facture("F890123", "Gas", Date.valueOf("2023-12-15"), 150.0);
+        factureDAO.create(facture1, idChargeGas);
+        factureDAO.create(facture2, idChargeGas);
+
+        List<Integer> ids = factureDAO.getAllId(idChargeGas);
+
+        assertNotNull(ids);
+        assertEquals(2, ids.size());
+    }
+
 }

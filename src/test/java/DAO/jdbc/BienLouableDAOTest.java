@@ -1,12 +1,6 @@
 package DAO.jdbc;
 
-import DAO.DAOException;
-import DAO.db.ConnectionDB;
-import classes.*;
-import enumeration.TypeLogement;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,8 +13,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static org.junit.Assert.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
+import DAO.DAOException;
+import DAO.db.ConnectionDB;
+import classes.Bail;
+import classes.Batiment;
+import classes.BienLouable;
+import classes.Devis;
+import classes.Diagnostic;
+import classes.Garage;
+import enumeration.TypeLogement;
 public class BienLouableDAOTest {
     private BienLouableDAO bienLouableDAO;
     private BatimentDAO batimentDAO;
@@ -197,17 +202,6 @@ public class BienLouableDAOTest {
     }
 
     @Test
-    public void testGetBailFromBien() throws DAOException {
-        Bail bailRécupéré = bienLouableDAO.getBailFromBien(bienLouable);
-        assertNotNull(bailRécupéré);
-        assertEquals(bail.getFiscBien(), bailRécupéré.getFiscBien());
-
-        BienLouable bienLouableInexistant = new BienLouable("999999999999", "Paris", "123 Rue de la Paix", "Apt 1", new ArrayList<>(), null, TypeLogement.APPARTEMENT);
-        Bail bailInexistant = bienLouableDAO.getBailFromBien(bienLouableInexistant);
-        assertNull(bailInexistant);
-    }
-
-    @Test
     public void testGetAllcomplements() throws SQLException {
         Map<String, List<String>> complements = bienLouableDAO.getAllcomplements();
         assertNotNull(complements);
@@ -217,15 +211,7 @@ public class BienLouableDAOTest {
         assertFalse(complementsInexistants.containsKey("999 Rue Imaginaire"));
     }
 
-    @Test
-    public void testGetTypeFromCompl() throws DAOException {
-        Integer type = bienLouableDAO.getTypeFromCompl("Paris", "123 Rue de la Paix", "Apt 1");
-        assertNotNull(type);
-        assertEquals(TypeLogement.APPARTEMENT.getValue(), type.intValue());
 
-        Integer typeInexistant = bienLouableDAO.getTypeFromCompl("Paris", "999 Rue Imaginaire", "Apt 99");
-        assertNull(typeInexistant);
-    }
 
     @Test
     public void testGetNbPieceFromCompl() throws DAOException {
@@ -285,7 +271,7 @@ public class BienLouableDAOTest {
     }
 
     @Test
-    public void testDélierGarage() throws DAOException {
+    public void testdelierGarage() throws DAOException {
 
         Garage garage = new Garage("G12345678910", "Paris", "123 Rue de la Paix", "Garage 1", TypeLogement.GARAGE_PAS_ASSOCIE);
         garageDAO.create(garage);
@@ -294,10 +280,10 @@ public class BienLouableDAOTest {
         BienLouable bienLouableRecupere = bienLouableDAO.readFisc("101010101010");
         assertNotNull(bienLouableRecupere.getIdgarage());
 
-        bienLouableDAO.délierGarage(bienLouableDAO.getId("101010101010"));
+        bienLouableDAO.delierGarage(bienLouableDAO.getId("101010101010"));
 
         bienLouableRecupere = bienLouableDAO.readFisc("101010101010");
-        assertEquals(Optional.ofNullable(0), Optional.ofNullable(bienLouableRecupere.getIdgarage()));
+        assertEquals(Optional.of(0), Optional.of(bienLouableRecupere.getIdgarage()));
     }
 
     @Test

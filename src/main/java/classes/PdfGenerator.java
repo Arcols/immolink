@@ -6,39 +6,40 @@ import com.itextpdf.text.pdf.*;
 
 import java.awt.*;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class PdfGenerator {
 
     /**
      * Génère un fichier PDF de régularisation des charges
      * @param filePath le chemin du fichier PDF
-     * @param senderName le nom de l'expéditeur
-     * @param senderAddress l'adresse de l'expéditeur
-     * @param senderPhone le téléphone de l'expéditeur
-     * @param recipientName le nom du destinataire
-     * @param recipientAddress l'adresse du destinataire
-     * @param currentDate la date actuelle
-     * @param periodStart la date de début de la période
-     * @param periodEnd la date de fin de la période
-     * @param waterCharge le montant de la charge d'eau
-     * @param wasteCharge le montant de la charge des ordures ménagères
-     * @param maintenanceCharge le montant de la charge d'entretien des parties communes
-     * @param lightingCharge le montant de la charge d'éclairage des parties communes
+     * @param nom_expediteur le nom de l'expéditeur
+     * @param adresse_expediteur l'adresse de l'expéditeur
+     * @param tel_expediteur le téléphone de l'expéditeur
+     * @param nom_destinataire le nom du destinataire
+     * @param adresse_destinataire l'adresse du destinataire
+     * @param date_actuelle la date actuelle
+     * @param debut_periode la date de début de la période
+     * @param fin_periode la date de fin de la période
+     * @param charge_eau le montant de la charge d'eau
+     * @param charge_ordure le montant de la charge des ordures ménagères
+     * @param charge_maintenance le montant de la charge d'entretien des parties communes
+     * @param charge_electricite le montant de la charge d'éclairage des parties communes
      * @param provisions le montant des provisions pour charges
      * @param genre le genre du destinataire
      */
     public static void generateChargesPdf(String filePath,
-                                          String senderName, String senderAddress, String senderPhone,
-                                          String recipientName, String recipientAddress,
-                                          String currentDate, String periodStart, String periodEnd,
-                                          double waterCharge, double wasteCharge, double maintenanceCharge,
-                                          double lightingCharge, double provisions,String genre) {
+                                          String nom_expediteur, String adresse_expediteur, String tel_expediteur,
+                                          String nom_destinataire, String adresse_destinataire,
+                                          String date_actuelle, String debut_periode, String fin_periode,
+                                          double charge_eau, double charge_ordure, double charge_maintenance,
+                                          double charge_electricite, double provisions,String genre) {
         try {
             // Création du document PDF
             Document document = new Document();
-            PdfWriter.getInstance(document, new FileOutputStream(filePath));
+            PdfWriter.getInstance(document, Files.newOutputStream(Paths.get(filePath)));
             document.open();
 
             // Titre
@@ -49,24 +50,24 @@ public class PdfGenerator {
             document.add(Chunk.NEWLINE);
 
             // Informations de l'expéditeur
-            document.add(new Paragraph(senderName, new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD)));
-            document.add(new Paragraph(senderAddress));
-            document.add(new Paragraph("Tél : " + senderPhone));
+            document.add(new Paragraph(nom_expediteur, new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD)));
+            document.add(new Paragraph(adresse_expediteur));
+            document.add(new Paragraph("Tél : " + tel_expediteur));
             document.add(Chunk.NEWLINE);
 
             // Informations du destinataire
             document.add(new Paragraph("à"));
-            document.add(new Paragraph(recipientName, new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD)));
-            document.add(new Paragraph(recipientAddress));
+            document.add(new Paragraph(nom_destinataire, new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD)));
+            document.add(new Paragraph(adresse_destinataire));
             document.add(Chunk.NEWLINE);
 
             // Date et objet
-            document.add(new Paragraph("Toulouse, le " + currentDate));
+            document.add(new Paragraph("Toulouse, le " + date_actuelle));
             document.add(new Paragraph("Objet : Régularisation des charges", new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD)));
             document.add(Chunk.NEWLINE);
 
             // Corps principal
-            document.add(new Paragraph("Je vous prie de bien vouloir trouver, ci-dessous, le détail des charges qui vous incombent. Ces charges portent sur une période allant du " + periodStart + " au " + periodEnd + "."));
+            document.add(new Paragraph("Je vous prie de bien vouloir trouver, ci-dessous, le détail des charges qui vous incombent. Ces charges portent sur une période allant du " + debut_periode + " au " + fin_periode + "."));
             document.add(Chunk.NEWLINE);
 
             // Tableau des charges
@@ -81,20 +82,20 @@ public class PdfGenerator {
 
             // Charges
             table.addCell("Eau");
-            table.addCell(String.format("%.2f", waterCharge));
+            table.addCell(String.format("%.2f", charge_eau));
             table.addCell("Ordures ménagères");
-            table.addCell(String.format("%.2f", wasteCharge));
+            table.addCell(String.format("%.2f", charge_ordure));
             table.addCell("Entretien des parties communes");
-            table.addCell(String.format("%.2f", maintenanceCharge));
+            table.addCell(String.format("%.2f", charge_maintenance));
             table.addCell("Éclairage parties communes");
-            table.addCell(String.format("%.2f", lightingCharge));
+            table.addCell(String.format("%.2f", charge_electricite));
 
             // Total charges
             document.add(table);
 
-            document.add(new Paragraph("Soit un total de : " + String.format("%.2f euros", waterCharge + wasteCharge + maintenanceCharge + lightingCharge)));
+            document.add(new Paragraph("Soit un total de : " + String.format("%.2f euros", charge_eau + charge_ordure + charge_maintenance + charge_electricite)));
             document.add(new Paragraph("A déduire les provisions pour charges : " + String.format("%.2f euros", provisions)));
-            double resregu=(waterCharge + wasteCharge + maintenanceCharge + lightingCharge)-provisions;
+            double resregu=(charge_eau + charge_ordure + charge_maintenance + charge_electricite)-provisions;
             if (resregu>0) {
                 document.add(new Paragraph("Vous restez nous devoir : " + String.format("%.2f euros", resregu)));
             } else {
@@ -126,11 +127,11 @@ public class PdfGenerator {
 
     /**
      * Ouvre un fichier PDF
-     * @param pdfPath
+     * @param pdf_path
      * @throws IOException
      */
-    public static void ouvrirPdf(String pdfPath) throws IOException {
-        File pdfFile = new File(pdfPath);
+    public static void ouvrirPdf(String pdf_path) throws IOException {
+        File pdfFile = new File(pdf_path);
         if (Desktop.isDesktopSupported()) {
             Desktop.getDesktop().open(pdfFile);
         } else {

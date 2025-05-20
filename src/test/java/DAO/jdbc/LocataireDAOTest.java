@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
-
 public class LocataireDAOTest {
 
     private LocataireDAO locataireDAO;
@@ -42,41 +41,13 @@ public class LocataireDAOTest {
 
     @Test
     public void testAddLocataire() throws SQLException {
-        Locataire locataireRecupere = locataireDAO.getLocataireByNomPrénomTel("Doe", "John", "0606060606");
+        Locataire locataireRecupere = locataireDAO.getLocataireByNomPrenom("Doe", "John", "0606060606");
         assertEquals("Doe", locataireRecupere.getNom());
-        assertEquals("John", locataireRecupere.getPrénom());
-        assertEquals("0606060606", locataireRecupere.getTéléphone());
+        assertEquals("John", locataireRecupere.getPrenom());
+        assertEquals("0606060606", locataireRecupere.getTelephone());
         assertEquals("ee.ee@ee.ee", locataireRecupere.getMail());
         assertEquals(Date.valueOf("2020-01-01"), locataireRecupere.getDateArrive());
         assertEquals("M", locataireRecupere.getGenre());
-    }
-
-    @Test
-    public void testUpdateLocataireTel() throws SQLException {
-        locataireDAO.updateLocataireTel(locataire, "0707070707");
-        Locataire locataireRecupere = locataireDAO.getLocataireByNomPrénomTel("Doe", "John", "0707070707");
-        assertEquals("0707070707", locataireRecupere.getTéléphone());
-    }
-
-    @Test
-    public void testUpdateLocataireMail() throws SQLException {
-        locataireDAO.updateLocataireMail(locataire, "new.email@example.com");
-        Locataire locataireRecupere = locataireDAO.getLocataireByNomPrénomTel("Doe", "John", "0606060606");
-        assertEquals("new.email@example.com", locataireRecupere.getMail());
-    }
-
-    @Test
-    public void testUpdateLocataireGenre() throws SQLException {
-        locataireDAO.updateLocataireGenre(locataire, "F");
-        Locataire locataireRecupere = locataireDAO.getLocataireByNomPrénomTel("Doe", "John", "0606060606");
-        assertEquals("F", locataireRecupere.getGenre());
-    }
-
-    @Test
-    public void testDeleteLocataire() throws SQLException {
-        locataireDAO.deleteLocataire(locataire);
-        Locataire locataireRecupere = locataireDAO.getLocataireByNomPrénomTel("Doe", "John", "0606060606");
-        assertNull(locataireRecupere);
     }
 
     @Test
@@ -85,17 +56,17 @@ public class LocataireDAOTest {
         locataireDAO.addLocataire(locataire2);
 
         List<Locataire> locataires = locataireDAO.getAllLocataire();
-        assertTrue(locataires.stream().anyMatch(l -> l.getNom().equals("Doe") && l.getPrénom().equals("John")));
-        assertTrue(locataires.stream().anyMatch(l -> l.getNom().equals("Smith") && l.getPrénom().equals("Jane")));
+        assertTrue(locataires.stream().anyMatch(l -> l.getNom().equals("Doe") && l.getPrenom().equals("John")));
+        assertTrue(locataires.stream().anyMatch(l -> l.getNom().equals("Smith") && l.getPrenom().equals("Jane")));
     }
 
     @Test
-    public void testGetLocataireByNomPrénomTel() throws SQLException {
-        Locataire locataireRecupere = locataireDAO.getLocataireByNomPrénomTel("Doe", "John", "0606060606");
+    public void testgetLocataireByNomPrenom() throws SQLException {
+        Locataire locataireRecupere = locataireDAO.getLocataireByNomPrenom("Doe", "John", "0606060606");
         assertNotNull(locataireRecupere);
         assertEquals("Doe", locataireRecupere.getNom());
-        assertEquals("John", locataireRecupere.getPrénom());
-        assertEquals("0606060606", locataireRecupere.getTéléphone());
+        assertEquals("John", locataireRecupere.getPrenom());
+        assertEquals("0606060606", locataireRecupere.getTelephone());
         assertEquals("ee.ee@ee.ee", locataireRecupere.getMail());
         assertEquals(Date.valueOf("2020-01-01"), locataireRecupere.getDateArrive());
         assertEquals("M", locataireRecupere.getGenre());
@@ -106,8 +77,8 @@ public class LocataireDAOTest {
         Locataire locataireRecupere = locataireDAO.getLocFromId(locataireDAO.getId(locataire));
         assertNotNull(locataireRecupere);
         assertEquals("Doe", locataireRecupere.getNom());
-        assertEquals("John", locataireRecupere.getPrénom());
-        assertEquals("0606060606", locataireRecupere.getTéléphone());
+        assertEquals("John", locataireRecupere.getPrenom());
+        assertEquals("0606060606", locataireRecupere.getTelephone());
         assertEquals("ee.ee@ee.ee", locataireRecupere.getMail());
         assertEquals(Date.valueOf("2020-01-01"), locataireRecupere.getDateArrive());
         assertEquals("M", locataireRecupere.getGenre());

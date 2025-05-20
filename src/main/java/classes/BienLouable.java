@@ -5,41 +5,41 @@ import enumeration.TypeLogement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BienLouable extends BienImmobilier {
+public class BienLouable {
 
-	private String numero_fiscal;
-	private String complement_adresse;
-	private List<Devis> travaux;
-	private List<Diagnostic> diagnostic;
-	private String adresse;
-	private String ville;
-	private Integer id_garage_asosscie;
-	private TypeLogement typeLogement;
+	private final String numero_fiscal;
+	private final String complement_adresse;
+	private final List<Devis> travaux;
+	private final List<Diagnostic> diagnostic;
+	private final String adresse;
+	private final String ville;
+	private final Integer id_garage_asosscie;
+	private final TypeLogement type_logement;
 
 	/**
 	 * Constructeur de la classe BienLouable
-	 * @param numero_fiscal le numéro fiscal du bien
+	 * @param numero_fiscal le numero fiscal du bien
 	 * @param ville la ville du bien
 	 * @param adresse l'adresse du bien
-	 * @param complement_adresse le complément d'adresse du bien
+	 * @param complement_adresse le complement d'adresse du bien
 	 * @param diagnostic la liste des diagnostics du bien
-	 * @param id_garage_associe l'identifiant du garage associé
-	 * @param typeLogement le type de logement
-	 * @throws IllegalArgumentException si le numéro fiscal n'est pas valide
+	 * @param id_garage_associe l'identifiant du garage associe
+	 * @param type_logement le type de logement
+	 * @throws IllegalArgumentException si le numero fiscal n'est pas valide
 	 */
 	public BienLouable(String numero_fiscal, String ville, String adresse, String complement_adresse,
-					   List<Diagnostic> diagnostic, Integer id_garage_associe,TypeLogement typeLogement) throws IllegalArgumentException {
+					   List<Diagnostic> diagnostic, Integer id_garage_associe,TypeLogement type_logement) throws IllegalArgumentException {
 		if (numero_fiscal.length() != 12) {
-			throw new IllegalArgumentException("Numéro fiscal invalide");
+			throw new IllegalArgumentException("Numero fiscal invalide");
 		}
 		this.numero_fiscal = numero_fiscal;
 		this.complement_adresse = complement_adresse;
 		this.diagnostic = diagnostic;
 		this.adresse = adresse;
 		this.ville = ville;
-		this.travaux = new ArrayList<Devis>();
-		this.id_garage_asosscie = (id_garage_associe != null) ? id_garage_associe : null;
-		this.typeLogement = typeLogement;
+		this.travaux = new ArrayList<>();
+		this.id_garage_asosscie = id_garage_associe;
+		this.type_logement = type_logement;
 	}
 
 	public String getNumeroFiscal() {
@@ -79,7 +79,7 @@ public class BienLouable extends BienImmobilier {
 	 *  @return le type de logement
 	 */
 	public TypeLogement getTypeLogement(){
-		return typeLogement;
+		return type_logement;
 	}
 
 	/**

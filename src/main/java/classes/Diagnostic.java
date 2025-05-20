@@ -7,41 +7,41 @@ import java.sql.Date;
 
 public class Diagnostic {
 
-	private String reference;
-	private String pdfPath;
-	private Date dateInvalidite;
+	private final String reference;
+	private String pdf_path;
+	private final Date date_invalidite;
 
 	/**
-	 * Constructor without dateInvalidite
+	 * Constructor without date_invalidite
 	 * @param reference the reference of the diagnostic
-	 * @param pdfPath the path to the PDF file
+	 * @param pdf_path the path to the PDF file
 	 * @throws IOException if the file path is invalid
 	 */
-	public Diagnostic(String reference, String pdfPath) throws IOException {
+	public Diagnostic(String reference, String pdf_path) throws IOException {
 		this.reference = reference;
-		File file = new File(pdfPath);
+		File file = new File(pdf_path);
 		if (!file.exists()) {
-			throw new IOException("Invalid file path: " + pdfPath);
+			throw new IOException("Invalid file path: " + pdf_path);
 		}
-		this.pdfPath = file.getAbsolutePath();
-		this.dateInvalidite = null;
+		this.pdf_path = file.getAbsolutePath();
+		this.date_invalidite = null;
 	}
 
 	/**
-	 * Constructor with dateInvalidite
+	 * Constructor with date_invalidite
 	 * @param reference the reference of the diagnostic
-	 * @param pdfPath the path to the PDF file
-	 * @param dateInvalidite the date of invalidity
+	 * @param pdf_path the path to the PDF file
+	 * @param date_invalidite the date of invalidity
 	 * @throws IOException if the file path is invalid
 	 */
-	public Diagnostic(String reference, String pdfPath, Date dateInvalidite) throws IOException {
+	public Diagnostic(String reference, String pdf_path, Date date_invalidite) throws IOException {
 		this.reference = reference;
-		File file = new File(pdfPath);
+		File file = new File(pdf_path);
 		if (!file.exists()) {
-			throw new IOException("Invalid file path: " + pdfPath);
+			throw new IOException("Invalid file path: " + pdf_path);
 		}
-		this.pdfPath = file.getAbsolutePath();
-		this.dateInvalidite = dateInvalidite;
+		this.pdf_path = file.getAbsolutePath();
+		this.date_invalidite = date_invalidite;
 	}
 
 	/**
@@ -49,7 +49,7 @@ public class Diagnostic {
 	 * @param diagnostic the new diagnostic
 	 */
 	public void miseAJourDiagnostic(Diagnostic diagnostic) {
-		this.pdfPath = diagnostic.getPdfPath();
+		this.pdf_path = diagnostic.getPdfPath();
 	}
 
 	/**
@@ -62,7 +62,7 @@ public class Diagnostic {
 	}
 
 	public String getPdfPath() {
-		return this.pdfPath;
+		return this.pdf_path;
 	}
 
 	public String getReference() {
@@ -70,7 +70,7 @@ public class Diagnostic {
 	}
 
 	public Date getDateInvalidite() {
-		return this.dateInvalidite;
+		return this.date_invalidite;
 	}
 
 	/**
@@ -78,11 +78,11 @@ public class Diagnostic {
 	 * @return true if the diagnostic is expired, false otherwise
 	 */
 	public boolean estExpire() {
-		if (this.dateInvalidite == null) {
+		if (this.date_invalidite == null) {
 			return false;
 		}
 		Date currentDate = new Date(System.currentTimeMillis());
-		return currentDate.after(this.dateInvalidite); // Returns true if the current date is after dateInvalidite
+		return currentDate.after(this.date_invalidite); // Returns true if the current date is after date_invalidite
 	}
 
 	/**
@@ -90,7 +90,7 @@ public class Diagnostic {
 	 * @throws IOException if the file does not exist
 	 */
 	public void ouvrirPdf() throws IOException {
-		File pdfFile = new File(this.pdfPath);
+		File pdfFile = new File(this.pdf_path);
 		if (Desktop.isDesktopSupported()) {
 			Desktop.getDesktop().open(pdfFile);
 		} else {

@@ -1,21 +1,13 @@
 package ihm;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
-import modele.Menu;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -32,30 +24,23 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 import com.toedter.calendar.JDateChooser;
 
-import DAO.DAOException;
-import DAO.db.ConnectionDB;
-import DAO.jdbc.BatimentDAO;
-import DAO.jdbc.BienLouableDAO;
 import modele.Charte;
+import modele.Menu;
 import modele.ModelePageNouveauBail;
-import modele.ResizedImage;
 
-public class PageNouveauBail {
+public class PageNouveauBail extends PageAbstraite {
 
-    private JFrame frame;
-    private JLabel logo;
     private JLabel choix_surface;
     private JLabel choix_nb_piece;
     private JTextField choix_loyer;
     private JTextField choix_prevision;
     private JTextField choix_depot_garantie;
-    private JTextField choixIcc;
-    private JTextField choixIndexEau;
+    private JTextField choix_icc;
+    private JTextField choix_index_eau;
     private JDateChooser choix_date_debut;
     private JDateChooser choix_date_fin;
     private JComboBox choix_complement;
@@ -64,136 +49,55 @@ public class PageNouveauBail {
     private JButton valider;
     private JCheckBox solde_tout_compte;
     private JTable table;
-    private DefaultTableModel tableModel;
-    private Map<String, List<String>> mapVillesAdresses;
-    private Map<String, List<String>> mapAdressesComplement;
-    private Set<String> setVilles;
-    private Set<String> setAdresse;
+    private Set<String> set_adresse;
+    private Map<String, List<String>> map_adresse_complement;
+    private DefaultTableModel modele_table;
+    private Map<String, List<String>> map_ville_adresse;
 
-    /**
-     * Launch the application.
-     */
-    public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    PageNouveauBail window = new PageNouveauBail();
-                    window.frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
+    private ModelePageNouveauBail modele;
 
     /**
      * Create the application.
      */
-    public PageNouveauBail() throws SQLException {
-        initialize();
+    public PageNouveauBail(int x, int y) throws SQLException {
+        super(x,y);
+        this.modele = new ModelePageNouveauBail(this);
+        this.CreerSpecific();
     }
 
-    /**
-     * Initialize the contents of the frame.
-     */
-    private void initialize() throws SQLException {
+    @Override
+    public void CreerSpecific(){
 
         try {
-            this.mapVillesAdresses = new BatimentDAO().searchAllBatimentsWithCompl();
+            this.map_ville_adresse = modele.getVIlles();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        this.setVilles = this.mapVillesAdresses.keySet();
+        Set<String> set_ville = this.map_ville_adresse.keySet();
 
-        this.mapAdressesComplement =new BienLouableDAO().getAllcomplements();
-        this.setAdresse = this.mapAdressesComplement.keySet();
-
-        ModelePageNouveauBail modele = new ModelePageNouveauBail(this);
-
-        this.frame = new JFrame();
-        this.frame.setBounds(100, 100, 750, 500);
-        this.frame.getContentPane().setBackground(Charte.FOND.getCouleur());
-        this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        // Panel d'entête pour le logo et le nom de l'appli
-        JPanel entete = new JPanel();
-        this.frame.getContentPane().add(entete, BorderLayout.NORTH);
-        entete.setLayout(new BorderLayout(0, 0));
-        this.frame.getContentPane().setBackground(Charte.FOND.getCouleur());
-
-        entete.setBackground(Charte.ENTETE.getCouleur());
-        entete.setBorder(new LineBorder(Color.BLACK, 2));
-
-        this.logo = new JLabel("");
-        entete.add(this.logo, BorderLayout.WEST);
-
-        Menu m = new Menu(this.frame);
-
-        JPanel menu_bouttons = new JPanel();
-
-        entete.add(menu_bouttons, BorderLayout.CENTER);
-        menu_bouttons.setLayout(new GridLayout(0, 4, 0, 0));
-        menu_bouttons.setBackground(Charte.ENTETE.getCouleur());
-
-        JButton b_accueil = new JButton("Accueil");
-        b_accueil.setBorderPainted(false);
-        b_accueil.setBackground(Charte.ENTETE.getCouleur());
-        b_accueil.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        menu_bouttons.add(b_accueil);
-        b_accueil.addActionListener(m);
-
-        JButton b_baux = new JButton("Mes baux");
-        b_baux.setBorderPainted(false);
-        b_baux.setBackground(Charte.ENTETE.getCouleur());
-        b_baux.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        menu_bouttons.add(b_baux);
-        menu_bouttons.add(b_baux);
-        b_baux.addActionListener(m);
-
-        JButton b_biens = new JButton("Mes Biens");
-        b_biens.setBorderPainted(false);
-        b_biens.setBackground(Charte.ENTETE.getCouleur());
-        b_biens.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        menu_bouttons.add(b_biens);
-        menu_bouttons.add(b_biens);
-        b_biens.addActionListener(m);
-
-        JButton b_notifs = null;
         try {
-            b_notifs = new JButton("Notifications ("+m.getNbNotifs()+")");
-        } catch (DAOException e) {
+            this.map_adresse_complement = modele.getComplement();
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        b_notifs.setBorderPainted(false);
-        b_notifs.setBackground(Charte.ENTETE.getCouleur());
-        b_notifs.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        menu_bouttons.add(b_notifs);
-        menu_bouttons.add(b_notifs);
-        b_notifs.addActionListener(m);
-
-        JPanel body = new JPanel();
-        frame.getContentPane().add(body, BorderLayout.CENTER);
-        body.setLayout(new BorderLayout(0, 0));
+        this.set_adresse = this.map_adresse_complement.keySet();
 
         JPanel titre = new JPanel();
-        FlowLayout fl_titre = (FlowLayout) titre.getLayout();
-        body.add(titre, BorderLayout.NORTH);
+        panel_body.add(titre, BorderLayout.NORTH);
 
         JLabel titleLabel = new JLabel("Nouveau bail", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
-        body.add(titleLabel, BorderLayout.NORTH);
+        panel_body.add(titleLabel, BorderLayout.NORTH);
 
         JPanel panel_bien = new JPanel();
-        body.add(panel_bien, BorderLayout.WEST);
+        panel_body.add(panel_bien, BorderLayout.WEST);
         GridBagLayout gbl_panel_bien = new GridBagLayout();
         gbl_panel_bien.columnWidths = new int[] {0, 0, 30};
         gbl_panel_bien.rowHeights = new int[] {30, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 60};
         gbl_panel_bien.columnWeights = new double[]{0.0, 0.0};
         gbl_panel_bien.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
         panel_bien.setLayout(gbl_panel_bien);
-
 
         JLabel ville = new JLabel("Ville");
         GridBagConstraints gbc_ville = new GridBagConstraints();
@@ -210,19 +114,19 @@ public class PageNouveauBail {
         gbc_choix_ville.gridx = 1;
         gbc_choix_ville.gridy = 1;
         panel_bien.add(choix_ville, gbc_choix_ville);
-        if (!this.setVilles.isEmpty()) {
-            choix_ville.setModel(new DefaultComboBoxModel(this.setVilles.toArray(new String[0])));
+        if (!set_ville.isEmpty()) {
+            choix_ville.setModel(new DefaultComboBoxModel(set_ville.toArray(new String[0])));
         } else {
             choix_ville.setModel(new DefaultComboBoxModel());
         }
 
-        JLabel Adresse = new JLabel("Adresse");
+        JLabel adresse = new JLabel("adresse");
         GridBagConstraints gbc_Adresse = new GridBagConstraints();
         gbc_Adresse.fill = GridBagConstraints.BOTH;
         gbc_Adresse.insets = new Insets(0, 0, 5, 5);
         gbc_Adresse.gridx = 0;
         gbc_Adresse.gridy = 2;
-        panel_bien.add(Adresse, gbc_Adresse);
+        panel_bien.add(adresse, gbc_Adresse);
 
         this.choix_adresse = new JComboBox();
         GridBagConstraints gbc_choix_adresse = new GridBagConstraints();
@@ -231,11 +135,11 @@ public class PageNouveauBail {
         gbc_choix_adresse.gridx = 1;
         gbc_choix_adresse.gridy = 2;
         panel_bien.add(choix_adresse, gbc_choix_adresse);
-        if (this.setVilles.isEmpty()) {
+        if (set_ville.isEmpty()) {
             choix_adresse.setModel(new DefaultComboBoxModel());
         } else {
             choix_adresse.setModel(new DefaultComboBoxModel(
-                    this.mapVillesAdresses.get(choix_ville.getSelectedItem()).toArray(new String[0])));
+                    this.map_ville_adresse.get(choix_ville.getSelectedItem()).toArray(new String[0])));
         }
 
         JLabel complement = new JLabel("Complément");
@@ -253,11 +157,11 @@ public class PageNouveauBail {
         gbc_choix_complement.gridx = 1;
         gbc_choix_complement.gridy = 3;
         panel_bien.add(choix_complement, gbc_choix_complement);
-        if (this.setAdresse.isEmpty()) {
+        if (set_adresse.isEmpty()) {
             choix_complement.setModel(new DefaultComboBoxModel());
         } else {
             choix_complement.setModel(new DefaultComboBoxModel(
-                    this.mapAdressesComplement.get(choix_adresse.getSelectedItem()).toArray(new String[0])));
+                    this.map_adresse_complement.get(choix_adresse.getSelectedItem()).toArray(new String[0])));
         }
 
         JLabel surface = new JLabel("Surface habitable");
@@ -346,39 +250,39 @@ public class PageNouveauBail {
         choix_depot_garantie.setColumns(7);
 
         // ICC
-        JLabel labelIcc = new JLabel("ICC");
+        JLabel label_icc = new JLabel("ICC");
         GridBagConstraints gbc_labelIcc = new GridBagConstraints();
         gbc_labelIcc.fill = GridBagConstraints.HORIZONTAL;
         gbc_labelIcc.insets = new Insets(10, 0, 5, 5);
         gbc_labelIcc.gridx = 0;
         gbc_labelIcc.gridy = 9;
-        panel_bien.add(labelIcc, gbc_labelIcc);
+        panel_bien.add(label_icc, gbc_labelIcc);
 
-        choixIcc = new JTextField();
+        choix_icc = new JTextField();
         GridBagConstraints gbc_choixIcc = new GridBagConstraints();
         gbc_choixIcc.fill = GridBagConstraints.HORIZONTAL;
         gbc_choixIcc.anchor = GridBagConstraints.WEST;
         gbc_choixIcc.gridx = 1;
         gbc_choixIcc.gridy = 9;
-        panel_bien.add(choixIcc, gbc_choixIcc);
-        choixIcc.setColumns(7);
+        panel_bien.add(choix_icc, gbc_choixIcc);
+        choix_icc.setColumns(7);
 
         // INDEX EAU
-        JLabel labelIndexEau = new JLabel("Index Eau");
+        JLabel label_index_eau = new JLabel("Index Eau");
         GridBagConstraints gbc_labelIndexEau = new GridBagConstraints();
         gbc_labelIndexEau.fill = GridBagConstraints.HORIZONTAL;
         gbc_labelIndexEau.insets = new Insets(0, 0, 5, 5);
         gbc_labelIndexEau.gridx = 0;
         gbc_labelIndexEau.gridy = 10;
-        panel_bien.add(labelIndexEau, gbc_labelIndexEau);
+        panel_bien.add(label_index_eau, gbc_labelIndexEau);
 
-        choixIndexEau = new JTextField();
+        choix_index_eau = new JTextField();
         GridBagConstraints gbc_choixIndexEau = new GridBagConstraints();
         gbc_choixIndexEau.fill = GridBagConstraints.HORIZONTAL;
         gbc_choixIndexEau.anchor = GridBagConstraints.WEST;
         gbc_choixIndexEau.gridx = 1;
         gbc_choixIndexEau.gridy = 10;
-        panel_bien.add(choixIndexEau, gbc_choixIndexEau);
+        panel_bien.add(choix_index_eau, gbc_choixIndexEau);
 
 
         this.solde_tout_compte = new JCheckBox("Solde de tout compte");
@@ -391,7 +295,7 @@ public class PageNouveauBail {
         panel_bien.add(solde_tout_compte, gbc_solde_tout_compte);
 
         JPanel panel_east = new JPanel();
-        body.add(panel_east, BorderLayout.CENTER);
+        panel_body.add(panel_east, BorderLayout.CENTER);
         GridBagLayout gbl_panel_east = new GridBagLayout();
         gbl_panel_east.columnWidths = new int[]{551, 0};
         gbl_panel_east.rowHeights = new int[] {100, 0, 30};
@@ -399,10 +303,10 @@ public class PageNouveauBail {
         gbl_panel_east.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
         panel_east.setLayout(gbl_panel_east);
 
-        tableModel = new DefaultTableModel(new String[] { "Prénom", "Nom", "Téléphone","Quotité" }, 0){
-        @Override
-        public boolean isCellEditable(int row, int column) {
-            return false; // Toutes les cellules sont non éditables
+        modele_table = new DefaultTableModel(new String[] { "Prénom", "Nom", "Téléphone","Quotité" }, 0){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Toutes les cellules sont non éditables
             }
         };
 
@@ -419,7 +323,7 @@ public class PageNouveauBail {
         gbl_panel_locataire.columnWeights = new double[]{0.0, Double.MIN_VALUE};
         gbl_panel_locataire.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
         panel_locataire.setLayout(gbl_panel_locataire);
-        table = new JTable(tableModel);
+        table = new JTable(modele_table);
         JScrollPane scrollPane = new JScrollPane(table);
         GridBagConstraints gbc_scrollPane = new GridBagConstraints();
         gbc_scrollPane.anchor = GridBagConstraints.NORTH;
@@ -470,10 +374,6 @@ public class PageNouveauBail {
         choix_date_fin.setPreferredSize(new Dimension(100, 22));
         panel_date.add(choix_date_fin);
 
-        JPanel bas_de_page = new JPanel();
-        this.frame.getContentPane().add(bas_de_page, BorderLayout.SOUTH);
-        bas_de_page.setLayout(new BorderLayout(0, 0));
-
         this.valider = new JButton("Valider");
         valider.setEnabled(false);
         valider.setHorizontalTextPosition(SwingConstants.LEFT);
@@ -487,25 +387,6 @@ public class PageNouveauBail {
         quitter.setVerticalAlignment(SwingConstants.BOTTOM);
         bas_de_page.add(quitter, BorderLayout.WEST);
 
-        this.frame.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                ResizedImage res = new ResizedImage();
-                res.resizeImage("logo+nom.png", PageNouveauBail.this.frame,
-                        PageNouveauBail.this.logo, 3, 8);
-                int frameWidth = PageNouveauBail.this.frame.getWidth();
-                int frameHeight = PageNouveauBail.this.frame.getHeight();
-
-                int newFontSize = Math.min(frameWidth, frameHeight) / 30;
-
-                // Appliquer la nouvelle police au bouton
-                Font resizedFont = new Font("Arial", Font.PLAIN, newFontSize);
-                b_baux.setFont(resizedFont);
-                b_accueil.setFont(resizedFont);
-                b_biens.setFont(resizedFont);
-            }
-        });
-
 
         this.choix_date_fin.getDateEditor().addPropertyChangeListener("date", evt -> modele.getTextFieldDocumentListener().insertUpdate(null));
         this.choix_date_debut.getDateEditor().addPropertyChangeListener("date", evt -> modele.getTextFieldDocumentListener().insertUpdate(null));
@@ -515,38 +396,28 @@ public class PageNouveauBail {
         this.choix_prevision.addFocusListener(modele.getFocus());
         this.choix_depot_garantie.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
         this.choix_depot_garantie.addFocusListener(modele.getFocus());
-        this.choixIcc.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
-        this.choixIcc.addFocusListener(modele.getFocus());
-        this.choixIndexEau.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
-        this.choixIndexEau.addFocusListener(modele.getFocus());
+        this.choix_icc.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
+        this.choix_icc.addFocusListener(modele.getFocus());
+        this.choix_index_eau.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
+        this.choix_index_eau.addFocusListener(modele.getFocus());
         this.valider.addActionListener(modele.CreationBail());
         this.choix_complement.addActionListener(modele.getSurfaceEtPiece());
         this.choix_ville.addActionListener(modele.getSurfaceEtPiece());
         this.choix_adresse.addActionListener(modele.getSurfaceEtPiece());
         modele.getSurfaceEtPiece().actionPerformed(null);
-        this.choix_ville.addActionListener(modele.getVilleActionListener(mapVillesAdresses));
-        this.choix_adresse.addActionListener(modele.getAdresseActionListener(mapAdressesComplement));
+        this.choix_ville.addActionListener(modele.getVilleActionListener(map_ville_adresse));
+        this.choix_adresse.addActionListener(modele.getAdresseActionListener(this.map_adresse_complement));
         quitter.addActionListener(modele.quitterPage());
-        frame.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                // Action to perform on application close
-                performCloseAction();
-            }
-        });
+        frame.addWindowListener(modele.fermerFenetre());
     }
 
-    private void performCloseAction() {
-        ConnectionDB.destroy(); // fermeture de la connection
-        frame.dispose();
-    }
 
     public JFrame getFrame() {
         return frame;
     }
 
     public DefaultTableModel getTableModel() {
-        return tableModel;
+        return modele_table;
     }
 
     public JComboBox getChoix_complement() {
@@ -598,11 +469,11 @@ public class PageNouveauBail {
     }
 
     public JTextField getChoixIcc() {
-        return choixIcc;
+        return choix_icc;
     }
 
     public JTextField getChoixIndexEau() {
-        return choixIndexEau;
+        return choix_index_eau;
     }
 
 }

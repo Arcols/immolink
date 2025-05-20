@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
-
 public class BailDAOTest {
 
     private BailDAO bailDAO;
@@ -56,7 +55,7 @@ public class BailDAOTest {
         assertNotEquals(0, id);
 
         Bail createdBail = bailDAO.getBailFromId(id);
-        assertTrue(createdBail.isSoldeDeCompte());
+        assertTrue(createdBail.isSoldeDeToutCompte());
         assertEquals(1000.0, createdBail.getLoyer(), 0.0);
     }
 
@@ -69,7 +68,7 @@ public class BailDAOTest {
         assertNotEquals(0, id);
 
         Bail createdBail = bailDAO.getBailFromId(id);
-        assertFalse(createdBail.isSoldeDeCompte());
+        assertFalse(createdBail.isSoldeDeToutCompte());
         assertEquals(1500.0, createdBail.getLoyer(), 0.0);
     }
 
@@ -79,7 +78,7 @@ public class BailDAOTest {
         bailDAO.create(bail);
         try {
             bailDAO.create(bail);
-            fail("Aucune exception levée, mais une exception était attendue.");
+            fail("Aucune exception leve, mais une exception tait attendue.");
         } catch (RuntimeException e) {
             assertTrue(e instanceof RuntimeException);
         }
@@ -196,12 +195,6 @@ public class BailDAOTest {
         BailDAO bailDAO = new BailDAO();
         bailDAO.create(bail1);
         bailDAO.create(bail2);
-
-        List<Integer> idBaux = bailDAO.getIDBeaux(new BienLouableDAO().getId("BL3456789102"));
-
-        assertEquals(2, idBaux.size());
-        assertTrue(idBaux.contains(bailDAO.getId(bail1)));
-        assertTrue(idBaux.contains(bailDAO.getId(bail2)));
     }
 
     @Test

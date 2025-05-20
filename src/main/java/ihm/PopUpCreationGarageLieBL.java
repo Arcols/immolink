@@ -14,21 +14,17 @@ import java.sql.SQLException;
 
 public class    PopUpCreationGarageLieBL {
     private JFrame frame;
-    private PageNouveauBienImmobilier mainPage;
+    private final PageNouveauBienImmobilier page_principale;
     private DefaultTableModel tableModel;
     private JTable table;
 
-    public PopUpCreationGarageLieBL(PageNouveauBienImmobilier mainPage) {
-        this.mainPage = mainPage;
+    public PopUpCreationGarageLieBL(PageNouveauBienImmobilier page_principale) {
+        this.page_principale = page_principale;
         this.initialize();
     }
 
     public JFrame getFrame() {
         return this.frame;
-    }
-
-    public PopUpCreationGarageLieBL() {
-        this.initialize();
     }
 
     private void initialize(){
@@ -44,22 +40,21 @@ public class    PopUpCreationGarageLieBL {
         body.setLayout(new BorderLayout(0, 0));
 
         JPanel titre = new JPanel();
-        FlowLayout fl_titre = (FlowLayout) titre.getLayout();
         this.frame.getContentPane().add(titre, BorderLayout.NORTH);
 
-        JLabel titrePage = new JLabel("Garage à lier au bien louable");
-        titrePage.setFont(new Font("Arial", Font.PLAIN, 25));
-        titrePage.setAlignmentY(0.0f);
-        titrePage.setAlignmentX(0.5f);
-        titre.add(titrePage);
+        JLabel titre_page = new JLabel("Garage à lier au bien louable");
+        titre_page.setFont(new Font("Arial", Font.PLAIN, 25));
+        titre_page.setAlignmentY(0.0f);
+        titre_page.setAlignmentX(0.5f);
+        titre.add(titre_page);
 
         JPanel panel = new JPanel();
         this.frame.getContentPane().add(panel, BorderLayout.CENTER);
         GridBagLayout gbl_panel = new GridBagLayout();
-        gbl_panel.columnWidths = new int[] { 30, 0, 30 };
-        gbl_panel.rowHeights = new int[] { 30, 170, 40, 30 };
-        gbl_panel.columnWeights = new double[] { 0.0, 1.0 };
-        gbl_panel.rowWeights = new double[] { 0.0, 1.0, 1.0 };
+        gbl_panel.columnWidths = new int[]{30, 0, 30};
+        gbl_panel.rowHeights = new int[]{30, 170, 40, 30};
+        gbl_panel.columnWeights = new double[]{0.0, 1.0};
+        gbl_panel.rowWeights = new double[]{0.0, 1.0, 1.0};
         panel.setLayout(gbl_panel);
 
         try {
@@ -86,10 +81,10 @@ public class    PopUpCreationGarageLieBL {
         gbc_panel_1.gridy = 2;
         panel.add(panel_1, gbc_panel_1);
         GridBagLayout gbl_panel_1 = new GridBagLayout();
-        gbl_panel_1.columnWidths = new int[] { 0 };
-        gbl_panel_1.rowHeights = new int[] { 0 };
-        gbl_panel_1.columnWeights = new double[] { 0.0, 0.0, 0.0 };
-        gbl_panel_1.rowWeights = new double[] { 0.0, 0.0 };
+        gbl_panel_1.columnWidths = new int[]{0};
+        gbl_panel_1.rowHeights = new int[]{0};
+        gbl_panel_1.columnWeights = new double[]{0.0, 0.0, 0.0};
+        gbl_panel_1.rowWeights = new double[]{0.0, 0.0};
         panel_1.setLayout(gbl_panel_1);
 
 
@@ -104,38 +99,16 @@ public class    PopUpCreationGarageLieBL {
         bas_de_page.add(quitter, BorderLayout.WEST);
         quitter.addActionListener(modele.quitterPage());
 
-        table.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                handleTableDoubleClick(evt);
-            }
-        });
         this.frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    }
-    private void handleTableDoubleClick(java.awt.event.MouseEvent evt) {
-        // Vérifier s'il s'agit d'un double-clic
-        if (evt.getClickCount() == 2) {
-            // Obtenir l'index de la ligne cliquée
-            int row = table.getSelectedRow();
 
-            // Récupérer les données de la ligne sélectionnée
-            if (row != -1) {
-                String num_fisc = (String) tableModel.getValueAt(row, 0);
-                Integer Id_garage = -1;
-                try {
-                    Id_garage = new GarageDAO().getIdGarage(num_fisc, TypeLogement.GARAGE_PAS_ASSOCIE);
-                } catch (DAOException e) {
-                    throw new RuntimeException(e);
-                }
-                Garage garage = null;
-                try {
-                    garage = new GarageDAO().read(Id_garage);
-                } catch (DAOException e) {
-                    throw new RuntimeException(e);
-                }
-                mainPage.addGarage(garage);
-                this.frame.dispose();
-            }
-        }
+        table.addMouseListener(modele.doubleClick());
+    }
+
+    public JTable getTable() {
+        return table;
+    }
+
+    public PageNouveauBienImmobilier getMainPage() {
+        return page_principale;
     }
 }

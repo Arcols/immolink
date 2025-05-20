@@ -85,4 +85,5 @@ public class ChargeDAOTest {
         int idCharge = chargeDAO.getId("Water", idBail);
         assertTrue(idCharge > 0);
     }
+
 }

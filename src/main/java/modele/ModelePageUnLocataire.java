@@ -2,16 +2,19 @@
 package modele;
 
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
-import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 
 import DAO.DAOException;
+import DAO.db.ConnectionDB;
 import DAO.jdbc.*;
 import classes.BienLouable;
 import classes.Locataire;
@@ -19,23 +22,13 @@ import ihm.*;
 
 
 public class ModelePageUnLocataire {
-
-
-    private PageUnLocataire pageUnLocataire;
-
-
-    public ModelePageUnLocataire(PageUnLocataire pageUnLocataire) {
-        this.pageUnLocataire = pageUnLocataire;
+    
+    private final PageUnLocataire page_un_locataire;
+    
+    public ModelePageUnLocataire(PageUnLocataire page_un_locataire) {
+        this.page_un_locataire = page_un_locataire;
     }
-
-    public ActionListener ouvrirNouveauBien(){
-        return e->{
-            pageUnLocataire.getFrame().dispose();
-            PageNouveauBienImmobilier pageNouveauBienImmobilier = new PageNouveauBienImmobilier();
-            PageNouveauBienImmobilier.main(null);
-        };
-    }
-
+    
     /**
      * Charge les données des locataires dans un DefaultTableModel.
      *
@@ -44,13 +37,13 @@ public class ModelePageUnLocataire {
      */
     public static DefaultTableModel loadDataBauxToTable(Locataire locataire) throws SQLException, DAOException {
         // Définition des colonnes avec une colonne "Payé" qui contiendra des cases à cocher
-        String[] columns = {"Ville", "Adresse", "Complément", "Payé", "idBail"};
+        String[] colonnes = {"Ville", "Adresse", "Complément", "Payé", "id_bail"};
 
         // Création du modèle avec surcharge pour empêcher l'édition des cellules, sauf la colonne "Payé"
-        DefaultTableModel model = new DefaultTableModel(columns, 0) {
+        DefaultTableModel model = new DefaultTableModel(colonnes, 0) {
             @Override
-            public boolean isCellEditable(int row, int column) {
-                return column == 3; // Seule la colonne "Payé" est éditable
+            public boolean isCellEditable(int ligne, int colonne) {
+                return colonne == 3; // Seule la colonne "Payé" est éditable
             }
 
             @Override
@@ -62,50 +55,47 @@ public class ModelePageUnLocataire {
             }
         };
 
-        LocataireDAO locataireDAO = new LocataireDAO();
-        List<Integer> idBaux = locataireDAO.getBauxLocataire(locataireDAO.getId(locataire));
-        Object[] rowData = new Object[4];
+        LocataireDAO locataire_DAO = new LocataireDAO();
+        List<Integer> id_baux = locataire_DAO.getBauxLocataire(locataire_DAO.getId(locataire));
+        Object[] donnee_ligne;
 
         // Remplissage du modèle avec les données des biens louables
-        for (Integer idBail : idBaux) {
-            BienLouable bienLouable = new BienLouableDAO().readId(new BailDAO().getIdBienLouable(idBail));
+        for (Integer id_bail : id_baux) {
+            BienLouable bien_louable = new BienLouableDAO().readId(new BailDAO().getIdBienLouable(id_bail));
 
-            rowData = new Object[]{
-                    bienLouable.getVille(),
-                    bienLouable.getAdresse(),
-                    bienLouable.getComplementAdresse(),
-                    new LouerDAO().getLoyerPaye(locataireDAO.getId(locataire),idBail),
-                    idBail
+            donnee_ligne = new Object[]{
+                    bien_louable.getVille(),
+                    bien_louable.getAdresse(),
+                    bien_louable.getComplementAdresse(),
+                    new LouerDAO().getLoyerPaye(locataire_DAO.getId(locataire),id_bail),
+                    id_bail
             };
-            model.addRow(rowData);
+            model.addRow(donnee_ligne);
         }
 
         return model; // Retourne le modèle rempli
     }
 
-    public TableModelListener modifPaiement(DefaultTableModel tableModel, Locataire locataire) {
-        return new TableModelListener() {
-            @Override
-            public void tableChanged(TableModelEvent e) {
-                int row = e.getFirstRow();
-                int column = e.getColumn();
+    public TableModelListener modifPaiement(DefaultTableModel modele_table, Locataire locataire) {
+        return e -> {
+            int ligne = e.getFirstRow();
+            int colonne = e.getColumn();
 
-                // Vérifie si c'est la colonne "Payé"
-                if (column == 3) { // Colonne 3 correspond à "Payé"
-                    Boolean paiement = (Boolean) tableModel.getValueAt(row, column);
-                    Integer idBail = (Integer) tableModel.getValueAt(row, 4);
-                    LouerDAO louerDAO=new LouerDAO();
+            // Vérifie si c'est la colonne "Payé"
+            if (colonne == 3) { // Colonne 3 correspond à "Payé"
+                Boolean paiement = (Boolean) modele_table.getValueAt(ligne, colonne);
+                Integer id_bail = (Integer) modele_table.getValueAt(ligne, 4);
+                LouerDAO louer_DAO=new LouerDAO();
 
-                    // Action à effectuer
-                    if (paiement != null) {
-                        if (paiement) {
-                            louerDAO.updatePaiement(idBail,new LocataireDAO().getId(locataire), Date.valueOf(LocalDate.now()));
-                        } else {
-                            louerDAO.updatePaiement(idBail,new LocataireDAO().getId(locataire), Date.valueOf(LocalDate.now().minusMonths(1)));
-                        }
+                // Action à effectuer
+                if (paiement != null) {
+                    if (paiement) {
+                        louer_DAO.updatePaiement(id_bail,new LocataireDAO().getId(locataire), Date.valueOf(LocalDate.now()));
                     } else {
-                        System.err.println("Erreur : La valeur de paiement est nulle.");
+                        louer_DAO.updatePaiement(id_bail,new LocataireDAO().getId(locataire), Date.valueOf(LocalDate.now().minusMonths(1)));
                     }
+                } else {
+                    System.err.println("Erreur : La valeur de paiement est nulle.");
                 }
             }
         };
@@ -113,10 +103,22 @@ public class ModelePageUnLocataire {
 
     public ActionListener quitterPage(){
         return e -> {
-            pageUnLocataire.getFrame().dispose();
+            page_un_locataire.getFrame().dispose();
             PageAccueil.main(null);
         };
     }
 
-
+    public WindowListener fermerFenetre(){
+        return new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                // Action to perform on application close
+                performCloseAction();
+            }
+        };
+    }
+    private void performCloseAction() {
+        ConnectionDB.destroy(); // fermeture de la connection
+        page_un_locataire.getFrame().dispose();
+    }
 }

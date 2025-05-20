@@ -1,11 +1,13 @@
 package modele;
 
 import DAO.DAOException;
+import DAO.db.ConnectionDB;
 import DAO.jdbc.BailDAO;
 import DAO.jdbc.ChargeDAO;
 import DAO.jdbc.FactureDAO;
 import classes.Bail;
 import classes.Facture;
+import com.toedter.calendar.JDateChooser;
 import ihm.PageCharge;
 import ihm.PageFacture;
 
@@ -13,49 +15,77 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
 public class ModelePageFacture {
-    private PageFacture pageFacture;
+    private final PageFacture page_facture;
 
-    public ModelePageFacture(PageFacture pageFacture) {
-        this.pageFacture= pageFacture;
+    public ModelePageFacture(PageFacture page_facture) {
+        this.page_facture= page_facture;
     }
 
 
     public ActionListener quitterPage() {
         return e -> {
-            pageFacture.getFrame().dispose();
-            new PageCharge(pageFacture.getId_bail());
+            page_facture.getFrame().dispose();
+            int x=page_facture.getFrame().getX();
+            int y=page_facture.getFrame().getY();
+            new PageCharge(page_facture.getId_bail(),x,y);
         };
     }
 
     public ActionListener ajouterFacture(){
         return e ->
             {
-                FactureDAO daofacture = new FactureDAO();
-                java.sql.Date date = new java.sql.Date(this.pageFacture.getDateChooser().getDate().getTime());
-                Facture factureACreer = null;
+                FactureDAO facture_DAO = new FactureDAO();
+                java.sql.Date date = new java.sql.Date(this.page_facture.getDateChooser().getDate().getTime());
+                Facture facture_a_creer;
+                boolean validite_facture_eau =true;
 
-                if((String) pageFacture.getChoix_type().getSelectedItem() == "Eau"){
-                    BailDAO bailDAO = new BailDAO();
-                    Bail bail = bailDAO.getBailFromId(pageFacture.getId_bail());
-                    Double prix_facture = (Double.valueOf(pageFacture.getChoix_index().getText()) - bail.getIndexEau()) * Double.valueOf(pageFacture.getChoix_prix_conso().getText());
-                    factureACreer = new Facture(this.pageFacture.getChoix_num_facture().getText(),
-                            this.pageFacture.getChoix_type().getSelectedItem().toString(),
-                            date,
-                            prix_facture);
-                    bailDAO.updateIndexeEau(pageFacture.getId_bail(), Integer.valueOf(pageFacture.getChoix_index().getText()));
+                if(page_facture.getChoix_type().getSelectedItem() == "Eau"){
+                    BailDAO bail_DAO = new BailDAO();
+                    Bail bail = bail_DAO.getBailFromId(page_facture.getId_bail());
+                    int nouveau_index_eau = Integer.valueOf(page_facture.getChoix_index().getText());
+
+                    if(nouveau_index_eau>bail.getIndexEau()) {
+                        double prix_facture = (nouveau_index_eau - bail.getIndexEau()) * Double.valueOf(page_facture.getChoix_prix_conso().getText());
+                        facture_a_creer = new Facture(this.page_facture.getChoix_num_facture().getText(),
+                                this.page_facture.getChoix_type().getSelectedItem().toString(),
+                                date,
+                                prix_facture);
+                        bail_DAO.updateIndexeEau(page_facture.getId_bail(), nouveau_index_eau);
+                    } else {
+                        validite_facture_eau=false;
+                        facture_a_creer=null;
+                    }
                 } else {
-                    factureACreer = new Facture(this.pageFacture.getChoix_num_facture().getText(),
-                            this.pageFacture.getChoix_type().getSelectedItem().toString(),
+
+                    try {
+                        // Vérification si le montant est un float
+                        Float.parseFloat(page_facture.getChoix_montant().getText());
+                    } catch (NumberFormatException ex) {
+                        JOptionPane.showMessageDialog(null, "Le montant de la facture doit être un nombre.", "Erreur", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    if (Double.valueOf(this.page_facture.getChoix_montant().getText())<0.0){
+                        JOptionPane.showMessageDialog(null, "Le montant de la facture doit être positive.", "Erreur", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    facture_a_creer = new Facture(this.page_facture.getChoix_num_facture().getText(),
+                            this.page_facture.getChoix_type().getSelectedItem().toString(),
                             date,
-                            Double.valueOf(this.pageFacture.getChoix_montant().getText()));
+                            Double.valueOf(this.page_facture.getChoix_montant().getText()));
                 }
                 try {
-                    int id_charge = new ChargeDAO().getId(this.pageFacture.getChoix_type().getSelectedItem().toString(),this.pageFacture.getId_bail());
-                    daofacture.create(factureACreer,id_charge);
+                    if(validite_facture_eau) {
+                        int id_charge = new ChargeDAO().getId(this.page_facture.getChoix_type().getSelectedItem().toString(), this.page_facture.getId_bail());
+                        facture_DAO.create(facture_a_creer, id_charge);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "L'index d'eau doit être supérieur au précédent.", "Erreur", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
                 } catch (DAOException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -64,39 +94,39 @@ public class ModelePageFacture {
     }
 
     private void refreshPage(ActionEvent e) {
-        JFrame ancienneFenetre = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
-        ancienneFenetre.dispose();
-        PageFacture nouvellePage = new PageFacture(pageFacture.getId_bail());
-        nouvellePage.getFrame().setVisible(true);
+        JFrame ancienne_fenetre = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
+        ancienne_fenetre.dispose();
+        int x=ancienne_fenetre.getX();
+        int y=ancienne_fenetre.getY();
+        PageFacture nouvelle_page = new PageFacture(page_facture.getId_bail(),x,y);
+        nouvelle_page.getFrame().setVisible(true);
     }
 
     public DocumentListener getTextFieldDocumentListener() {
         return new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                pageFacture.checkFields();
+                checkFields();
             }
 
             @Override
-            public void removeUpdate(DocumentEvent e) {
-                pageFacture.checkFields();
-            }
+            public void removeUpdate(DocumentEvent e) { checkFields(); }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-                pageFacture.checkFields();
+                checkFields();
             }
         };
     }
 
     public ActionListener eauSelected() {
         return e -> {
-            String selectedItem = (String) pageFacture.getChoix_type().getSelectedItem();
+            String choix_type_facture = (String) page_facture.getChoix_type().getSelectedItem();
 
-            boolean isEau = (selectedItem == "Eau");
+            boolean isEau = (choix_type_facture == "Eau");
 
-            this.pageFacture.getLabelMontant().setVisible(!isEau);
-            this.pageFacture.getChoix_montant().setVisible(!isEau);
+            this.page_facture.getLabelMontant().setVisible(!isEau);
+            this.page_facture.getChoix_montant().setVisible(!isEau);
 
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -105,72 +135,105 @@ public class ModelePageFacture {
             if(isEau){
                 gbc.gridx = 1;
                 gbc.gridy = 2;
-                this.pageFacture.getContenu()
-                        .add(this.pageFacture.getLabel_index(), gbc);
+                this.page_facture.getContenu()
+                        .add(this.page_facture.getLabel_index(), gbc);
             } else{
-                this.pageFacture.getContenu()
-                        .remove(this.pageFacture.getLabel_index());
+                this.page_facture.getContenu()
+                        .remove(this.page_facture.getLabel_index());
             }
             if(isEau){
                 gbc.gridx = 2;
                 gbc.gridy = 2;
-                this.pageFacture.getContenu()
-                        .add(this.pageFacture.getChoix_index(), gbc);
+                this.page_facture.getContenu()
+                        .add(this.page_facture.getChoix_index(), gbc);
             } else{
-                this.pageFacture.getContenu()
-                        .remove(this.pageFacture.getChoix_index());
+                this.page_facture.getContenu()
+                        .remove(this.page_facture.getChoix_index());
             }
 
             if(isEau){
                 gbc.gridx = 1;
                 gbc.gridy = 3;
-                this.pageFacture.getContenu()
-                        .add(this.pageFacture.getLabel_prix_conso(), gbc);
+                this.page_facture.getContenu()
+                        .add(this.page_facture.getLabel_prix_conso(), gbc);
             } else{
-                this.pageFacture.getContenu()
-                        .remove(this.pageFacture.getLabel_prix_conso());
+                this.page_facture.getContenu()
+                        .remove(this.page_facture.getLabel_prix_conso());
             }
             if(isEau){
                 gbc.gridx = 2;
                 gbc.gridy = 3;
-                this.pageFacture.getContenu()
-                        .add(this.pageFacture.getChoix_prix_conso(), gbc);
+                this.page_facture.getContenu()
+                        .add(this.page_facture.getChoix_prix_conso(), gbc);
             } else{
-                this.pageFacture.getContenu()
-                        .remove(this.pageFacture.getChoix_prix_conso());
+                this.page_facture.getContenu()
+                        .remove(this.page_facture.getChoix_prix_conso());
             }
 
             if(isEau){
-                this.pageFacture.getContenu()
-                        .remove(this.pageFacture.getDate());
+                this.page_facture.getContenu()
+                        .remove(this.page_facture.getDate());
                 gbc.gridx = 1;
                 gbc.gridy = 4;
-                this.pageFacture.getContenu()
-                        .add(this.pageFacture.getDate(), gbc);
+                this.page_facture.getContenu()
+                        .add(this.page_facture.getDate(), gbc);
             } else{
-                this.pageFacture.getContenu()
-                        .remove(this.pageFacture.getDate());
+                this.page_facture.getContenu()
+                        .remove(this.page_facture.getDate());
                 gbc.gridx = 1;
                 gbc.gridy = 3;
-                this.pageFacture.getContenu()
-                        .add(this.pageFacture.getDate(), gbc);
+                this.page_facture.getContenu()
+                        .add(this.page_facture.getDate(), gbc);
             }
 
             if(isEau){
-                this.pageFacture.getContenu()
-                        .remove(this.pageFacture.getDateChooser());
+                this.page_facture.getContenu()
+                        .remove(this.page_facture.getDateChooser());
                 gbc.gridx = 2;
                 gbc.gridy = 4;
-                this.pageFacture.getContenu()
-                        .add(this.pageFacture.getDateChooser(), gbc);
+                this.page_facture.getContenu()
+                        .add(this.page_facture.getDateChooser(), gbc);
             } else{
-                this.pageFacture.getContenu()
-                        .remove(this.pageFacture.getDateChooser());
+                this.page_facture.getContenu()
+                        .remove(this.page_facture.getDateChooser());
                 gbc.gridx = 2;
                 gbc.gridy = 3;
-                this.pageFacture.getContenu()
-                        .add(this.pageFacture.getDateChooser(), gbc);
+                this.page_facture.getContenu()
+                        .add(this.page_facture.getDateChooser(), gbc);
             }
         };
+    }
+
+    public WindowListener fermerFenetre(){
+        return new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                // Action to perform on application close
+                performCloseAction();
+            }
+        };
+    }
+    private void performCloseAction() {
+        ConnectionDB.destroy(); // fermeture de la connection
+        page_facture.getFrame().dispose();
+    }
+
+    public ActionListener getCheckFieldsActionListener() {
+        return e -> checkFields();
+    }
+
+    public void checkFields() {
+        // Vérification si tous les champs sont remplis
+        boolean isFilled = false;
+        if(page_facture.getChoix_type().getSelectedItem() == "Eau") {
+            isFilled = (!page_facture.getChoix_num_facture().getText().trim().isEmpty() && page_facture.getDateChooser().getDate() != null
+                    && !page_facture.getChoix_index().getText().trim().isEmpty() && !page_facture.getChoix_prix_conso().getText().trim().isEmpty());
+        } else {
+            isFilled =(!page_facture.getChoix_num_facture().getText().trim().isEmpty() && !page_facture.getChoix_montant().getText().trim().isEmpty()
+                    && page_facture.getDateChooser().getDate() != null);
+        }
+
+        // Active ou désactive le bouton "Valider"
+        page_facture.getValider().setEnabled(isFilled);
     }
 }

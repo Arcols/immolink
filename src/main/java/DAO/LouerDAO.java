@@ -10,17 +10,17 @@ import classes.Locataire;
 public interface LouerDAO {
 
     /**
-     * Crée une nouvelle location dans la base de données.
+     * Cree une nouvelle location dans la base de donnees.
      * 
-     * @param locataire L'objet locataire à insérer
-     * @param bail      L'objet bail à insérer
-     * @param quotite   La quotité de la location
-     * @throws DAOException en cas d'erreur lors de la création de la location
+     * @param locataire L'objet locataire à inserer
+     * @param bail      L'objet bail à inserer
+     * @param quotite   La quotite de la location
+     * @throws DAOException en cas d'erreur lors de la creation de la location
      */
     void create(Locataire locataire, Bail bail, int quotite) throws DAOException;
 
     /**
-     * Vrai si le locataire est déjà dans le bail.
+     * Vrai si le locataire est dejà dans le bail.
      * @param idloc
      * @param idBail
      * @return Boolean
@@ -28,50 +28,50 @@ public interface LouerDAO {
     boolean locInBail(int idloc, int idBail);
 
     /**
-     * Récupère la liste des id d'un locataire d'un bail dans la base de données.
+     * Recupère la liste des id d'un locataire d'un bail dans la base de donnees.
      * @param idBail l'id du bail
      * @return l'id des locations
      */
     List<Integer> getIdLoc(int idBail);
 
     /**
-     * Récupère la quotité d'un locataire dans un bail.
+     * Recupère la quotite d'un locataire dans un bail.
      * @param idBail
      * @param idLocataire
-     * @return la quotité de la location
+     * @return la quotite de la location
      */
-    Integer getQuotité(int idBail, int idLocataire);
+    Integer getQuotite(int idBail, int idLocataire);
 
     /**
-     * Supprime une location dans la base de données.
+     * Supprime une location dans la base de donnees.
      * @param idBail
      * @param idLocataire
      */
     void delete(int idBail, int idLocataire);
 
     /**
-     * Récupère la quotité d'une location dans la base de données.
-     * @param idBail L'identifiant du bail à récupérer
-     * @param idLocataire L'identifiant du locataire à récupérer
-     * @param quotite La quotité de la location
+     * Recupère la quotite d'une location dans la base de donnees.
+     * @param idBail L'identifiant du bail à recuperer
+     * @param idLocataire L'identifiant du locataire à recuperer
+     * @param quotite La quotite de la location
      */
     void updateQuotite(int idBail,int idLocataire, int quotite);
 
     /**
-     * Récupère une map IdBail : liste des locataires de tous les beaux dans la base de données.
+     * Recupère une map IdBail : liste des locataires de tous les beaux dans la base de donnees.
      * @return la liste des locataires pour chaque bail (Map<IdBail, List<IdLocataire>>)
      */
     Map<Integer,List<Integer>> getAllLocatairesDesBeaux();
 
     /**
-     * Renvoie True si le locataire a payé tous ses loyers
+     * Renvoie True si le locataire a paye tous ses loyers
      * @param idLocataire
      * @return true ou false
      */
     Boolean getStatut(int idLocataire);
 
     /**
-     * Renvoie True si tous les locataires ont payé le loyer
+     * Renvoie True si tous les locataires ont paye le loyer
      * @param idBail
      * @return true ou false
      */

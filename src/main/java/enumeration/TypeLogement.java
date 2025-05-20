@@ -1,8 +1,8 @@
 package enumeration;
 
 public enum TypeLogement {
-	APPARTEMENT(0),MAISON(1),GARAGE_PAS_ASSOCIE(2),GARAGE_ASSOCIE(3), BATIMENT(4),NONE(-1); ;
-	// je veux que avec APPARTEMENT on puisse accéder à "Appartement" et avec MAISON à "Maison" etc...
+	APPARTEMENT(0),MAISON(1),GARAGE_PAS_ASSOCIE(2),GARAGE_ASSOCIE(3), BATIMENT(4),NONE(-1);
+    // je veux que avec APPARTEMENT on puisse acceder à "Appartement" et avec MAISON à "Maison" etc...
 
 	private final int value;
 
@@ -40,7 +40,7 @@ public enum TypeLogement {
 	}
 
 	/**
-	 * Retourne le string du logement correspondant au type du logement rentré en paramètre
+	 * Retourne le string du logement correspondant au type du logement rentre en paramètre
 	 * @param typeLogement
 	 * @return
 	 */
@@ -60,7 +60,7 @@ public enum TypeLogement {
 	}
 
 	/**
-	 * Retourne le type de logement correspondant au string rentré en paramètre
+	 * Retourne le type de logement correspondant au string rentre en paramètre
 	 * @param name
 	 * @return
 	 */

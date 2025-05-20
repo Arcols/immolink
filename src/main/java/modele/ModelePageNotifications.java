@@ -7,15 +7,9 @@ import javax.swing.table.DefaultTableModel;
 import DAO.DAOException;
 import DAO.jdbc.BailDAO;
 import DAO.jdbc.DiagnosticDAO;
-import ihm.PageNotifications;
 
 public class ModelePageNotifications {
-
-    private PageNotifications pageNotifications;
-
-    public ModelePageNotifications(PageNotifications pageNotifications) {
-        this.pageNotifications = pageNotifications;
-    }
+    
     /**
      * Charge les notifications dans un DefaultTableModel.
      *
@@ -23,19 +17,19 @@ public class ModelePageNotifications {
      * @throws DAOException si une erreur survient lors de la récupération des données.
      */
     public static DefaultTableModel getNotifications() throws DAOException {
-        String[] columnNames = {"Type", "Intitulé"};
+        String[] nom_colonne = {"Type", "Intitulé"};
 
         // Création du modèle de table
-        DefaultTableModel model = new DefaultTableModel(columnNames, 0){
+        DefaultTableModel model = new DefaultTableModel(nom_colonne, 0){
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false; // Toutes les cellules sont non éditables
             }
         };
 
-        DiagnosticDAO diagnosticDAO = new DiagnosticDAO();
-        List<String> notifsDiag = diagnosticDAO.readDiagPerimes();
-        for (String diag : notifsDiag) {
+        DiagnosticDAO diagnostic_DAO = new DiagnosticDAO();
+        List<String> notifs_diag = diagnostic_DAO.readDiagPerimes();
+        for (String diag : notifs_diag) {
             Object[] rowData = {
                     "Diagnostique périmé",
                     diag
@@ -43,18 +37,15 @@ public class ModelePageNotifications {
             model.addRow(rowData); // Ajout de la ligne dans le modèle
         }
 
-        BailDAO bailDAO = new BailDAO();
-        List<String> notifsICC = bailDAO.getBauxNouvelICC();
-        for (String bail : notifsICC) {
+        BailDAO bail_DAO = new BailDAO();
+        List<String> notifs_ICC = bail_DAO.getBauxNouvelICC();
+        for (String bail : notifs_ICC) {
             Object[] rowData = {
                     "Anniversaire bail",
                     bail
             };
             model.addRow(rowData); // Ajout de la ligne dans le modèle
         }
-
         return model;
     }
-
-
 }

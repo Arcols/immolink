@@ -5,16 +5,16 @@ import enumeration.TypeLogement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Batiment extends BienImmobilier {
+public class Batiment {
 	private String adresse;
 	private String numero_fiscal;
 	private String ville;
-	private String code_postal;
+	private final String code_postal;
 	public List<BienLouable> bien_louable;
 
 	/**
 	 *  Constructeur de la classe Batiment
-	 * @param numero_fiscal le numéro fiscal du bien
+	 * @param numero_fiscal le numero fiscal du bien
 	 * @param ville la ville du bien
 	 * @param adresse l'adresse du bien
 	 * @param code_postal le code postal du bien
@@ -24,13 +24,13 @@ public class Batiment extends BienImmobilier {
 			throw new IllegalArgumentException("Code postal invalide");
 		}
 		if (numero_fiscal.length() != 12) {
-			throw new IllegalArgumentException("Numéro fiscal invalide");
+			throw new IllegalArgumentException("Numero fiscal invalide");
 		}
 		this.adresse = adresse;
 		this.code_postal = code_postal;
 		this.ville = ville;
 		this.numero_fiscal = numero_fiscal;
-		this.bien_louable = new ArrayList<BienLouable>();
+		this.bien_louable = new ArrayList<>();
 	}
 
     public String getAdresse() {
@@ -76,7 +76,7 @@ public class Batiment extends BienImmobilier {
 	public String getCodePostal() {return this.code_postal;}
 
 	/**
-	 * Méthode permettant de récupérer le type de logement
+	 * Methode permettant de recuperer le type de logement
 	 * @return le type de logement
 	 */
 	public TypeLogement getTypeLogement(){

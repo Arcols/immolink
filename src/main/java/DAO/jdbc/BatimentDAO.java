@@ -98,10 +98,10 @@ public class BatimentDAO implements DAO.BatimentDAO {
 	@Override
 	public void delete(String num_fisc) throws DAOException {
 		Batiment bat = readFisc(num_fisc);
-		List<Integer> listIdBienLouables = getIdBienLouables(getIdBat(bat.getVille(), bat.getAdresse()));
+		List<Integer> liste_id_bien_louable = getIdBienLouables(getIdBat(bat.getVille(), bat.getAdresse()));
 		try {
 			Connection cn = ConnectionDB.getInstance();
-			for (Integer id : listIdBienLouables) {
+			for (Integer id : liste_id_bien_louable) {
 				new BienLouableDAO().delete(id);
 			}
 			String query = "DELETE FROM batiment WHERE numero_fiscal = ?";
@@ -110,7 +110,6 @@ public class BatimentDAO implements DAO.BatimentDAO {
 			pstmt.executeUpdate();
 			pstmt.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			throw new RuntimeException(e);
 		}
 	}
@@ -143,13 +142,13 @@ public class BatimentDAO implements DAO.BatimentDAO {
 		try {
 			Connection cn = ConnectionDB.getInstance();
 			String query_id_batiment = "SELECT id FROM batiment WHERE adresse = ? AND ville = ?";
-			PreparedStatement pstmt_id_batiment = null;
-			ResultSet rs = null;
+			PreparedStatement pstmt_id_batiment;
+			ResultSet rs;
 			pstmt_id_batiment = cn.prepareStatement(query_id_batiment);
-			pstmt_id_batiment.setString(1, adresse); // Utilisation des paramètres passés
+			pstmt_id_batiment.setString(1, adresse); // Utilisation des paramètres passes
 			pstmt_id_batiment.setString(2, ville);
 			rs = pstmt_id_batiment.executeQuery();
-			if (rs.next()) { // Vérifie s'il y a un résultat
+			if (rs.next()) { // Verifie s'il y a un resultat
 				id = rs.getInt("id");
 			}
 		} catch (SQLException e) {
@@ -182,7 +181,7 @@ public class BatimentDAO implements DAO.BatimentDAO {
 	}
 
 	@Override
-	public List<Integer> getIdBienLouables(Integer idBat) throws DAOException {
+	public List<Integer> getIdBienLouables(Integer idBat) {
 		List<Integer> idBienLouables = new ArrayList<>();
 		try {
 			Connection cn = ConnectionDB.getInstance();

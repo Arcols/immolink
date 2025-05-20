@@ -18,20 +18,20 @@ public class Bail {
 
     private Date date_fin;
 
-    private double icc;
+    private final double icc;
 
-    private Integer index_eau;
+    private final Integer index_eau;
 
-    private Date dernier_anniversaire;
+    private final Date dernier_anniversaire;
 
     /**
      * Constructeur de la classe Bail
      * @param solde_de_compte le solde de compte
-     * @param fisc_bien le numéro fiscal du bien
+     * @param fisc_bien le numero fiscal du bien
      * @param loyer le loyer
      * @param charge les charges
-     * @param depot_garantie le dépôt de garantie
-     * @param date_debut la date de début
+     * @param depot_garantie le depôt de garantie
+     * @param date_debut la date de debut
      * @param date_fin la date de fin
      * @param icc l'indice de coût de la construction
      * @param index_eau l'index de l'eau
@@ -50,7 +50,7 @@ public class Bail {
         this.dernier_anniversaire = dernier_anniversaire;
     }
 
-    public boolean isSoldeDeCompte() {
+    public boolean isSoldeDeToutCompte() {
         return solde_de_compte;
     }
 
@@ -119,9 +119,9 @@ public class Bail {
     }
 
     /**
-     * Méthode permettant de comparer deux objets de type Bail
+     * Methode permettant de comparer deux objets de type Bail
      * @param o l'objet à comparer
-     * @return true si les deux objets sont égaux, false sinon
+     * @return true si les deux objets sont egaux, false sinon
      */
     @Override
     public boolean equals(Object o) {
@@ -138,7 +138,7 @@ public class Bail {
     }
 
     /**
-     * Méthode permettant de générer un code de hachage pour un objet de type Bail
+     * Methode permettant de generer un code de hachage pour un objet de type Bail
      * @return le code de hachage
      */
     @Override

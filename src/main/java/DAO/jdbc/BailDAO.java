@@ -22,7 +22,7 @@ public class BailDAO implements DAO.BailDAO {
             Connection cn = ConnectionDB.getInstance();
             String query = "INSERT INTO bail (solde_de_compte,id_bien_louable, loyer,charges, depot_garantie,date_debut,date_fin,icc,index_eau,date_dernier_anniversaire ) VALUES (?,?,?,?,?,?,?,?,?,?)";
             PreparedStatement pstmt = cn.prepareStatement(query);
-            if(bail.isSoldeDeCompte()){
+            if(bail.isSoldeDeToutCompte()){
                 pstmt.setInt(1, 1);
             } else {
                 pstmt.setInt(1, 0);
@@ -65,7 +65,7 @@ public class BailDAO implements DAO.BailDAO {
 
     @Override
     public int getId(Bail bail){
-        Integer idBail = -1;
+        int idBail = -1;
         try {
             Connection cn = ConnectionDB.getInstance();
             String query = "SELECT id FROM bail WHERE date_debut = ? AND date_fin = ? AND id_bien_louable = ? ";
@@ -79,33 +79,12 @@ public class BailDAO implements DAO.BailDAO {
                 idBail = rs.getInt("id");
             }
             pstmt.close();
-        } catch (DAOException e) {
-            throw new RuntimeException(e);
-        } catch (SQLException e) {
+        } catch (DAOException | SQLException e) {
             throw new RuntimeException(e);
         }
         return idBail;
     }
 
-    @Override
-    public List<Integer> getIDBeaux(Integer id_bien) {
-        List<Integer> idBaux = new ArrayList<>();
-        try {
-            Connection cn = ConnectionDB.getInstance();
-            String query = "SELECT id FROM bail WHERE id_bien_louable = ?";
-            PreparedStatement pstmt = cn.prepareStatement(query);
-            pstmt.setInt(1, id_bien);
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                idBaux.add(rs.getInt("id"));
-            }
-            rs.close();
-            pstmt.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return idBaux;
-    }
 
     @Override
     public List<Bail> getAllBaux() {
@@ -118,47 +97,51 @@ public class BailDAO implements DAO.BailDAO {
             while (rs.next()) {
                 int solde_de_compte = rs.getInt("solde_de_compte");
                 int id_bien_louable = rs.getInt("id_bien_louable");
-                Double loyer = rs.getDouble("loyer");
-                Double charges = rs.getDouble("charges");
-                Double depot_garantie = rs.getDouble("depot_garantie");
+                double loyer = rs.getDouble("loyer");
+                double charges = rs.getDouble("charges");
+                double depot_garantie = rs.getDouble("depot_garantie");
                 java.sql.Date date_debut = rs.getDate("date_debut");
                 Date date_fin = rs.getDate("date_fin");
-                Double icc = rs.getDouble("icc");
+                double icc = rs.getDouble("icc");
                 Integer index_eau = rs.getInt("index_eau");
                 Date date_dernier_anniversaire = rs.getDate("date_dernier_anniversaire");
                 baux.add(new Bail((solde_de_compte==1),new LogementDAO().read(id_bien_louable).getNumeroFiscal(),loyer,charges,depot_garantie,date_debut,date_fin,icc,index_eau,date_dernier_anniversaire));
             }
             rs.close();
             pstmt.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (DAOException e) {
+        } catch (SQLException | DAOException e) {
             throw new RuntimeException(e);
         }
         return baux;
     }
 
     @Override
-    public void delete(int idBail) {
+    public void delete(int idBail) throws DAOException {
+        List<Integer> idCharges = new ChargeDAO().getAllId(idBail);
         List<Integer> idLocataires = new LouerDAO().getIdLoc(idBail);
         try {
+            Connection cn = ConnectionDB.getInstance();
+            for (int idCharge : idCharges) {
+                new ChargeDAO().delete(idCharge);
+            }
             for(int idLocataire : idLocataires){
                 new LouerDAO().delete(idBail,idLocataire);
             }
-            Connection cn = ConnectionDB.getInstance();
+
             String query = "DELETE FROM bail WHERE id = ?";
             PreparedStatement pstmt = cn.prepareStatement(query);
             pstmt.setInt(1, idBail);
             pstmt.executeUpdate();
             pstmt.close();
-        } catch (SQLException e) {
+
+        } catch (SQLException | DAOException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
     public Integer getIdBienLouable(int idBail) {
-        Integer idBienLouable = 0;
+        int idBienLouable = 0;
         try {
             Connection cn = ConnectionDB.getInstance();
             String query = "SELECT id_bien_louable FROM bail WHERE id = ?";
@@ -187,20 +170,18 @@ public class BailDAO implements DAO.BailDAO {
             if (rs.next()){
                 int solde_de_compte = rs.getInt("solde_de_compte");
                 int id_bien_louable = rs.getInt("id_bien_louable");
-                Double loyer = rs.getDouble("loyer");
-                Double charges = rs.getDouble("charges");
-                Double depot_garantie = rs.getDouble("depot_garantie");
+                double loyer = rs.getDouble("loyer");
+                double charges = rs.getDouble("charges");
+                double depot_garantie = rs.getDouble("depot_garantie");
                 java.sql.Date date_debut = rs.getDate("date_debut");
                 Date date_fin = rs.getDate("date_fin");
-                Double icc = rs.getDouble("icc");
+                double icc = rs.getDouble("icc");
                 Integer index_eau = rs.getInt("index_eau");
                 Date date_dernier_anniversaire = rs.getDate("date_dernier_anniversaire");
                 bail = new Bail((solde_de_compte==1),new LogementDAO().read(id_bien_louable).getNumeroFiscal(),loyer,charges,depot_garantie,date_debut,date_fin,icc,index_eau,date_dernier_anniversaire);
             }
             pstmt.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (DAOException e) {
+        } catch (SQLException | DAOException e) {
             throw new RuntimeException(e);
         }
         return bail;
@@ -218,20 +199,18 @@ public class BailDAO implements DAO.BailDAO {
             ResultSet rs = pstmt.executeQuery();
 
             if(rs.next()){
-                Integer solde_de_compte = rs.getInt("solde_de_compte");
-                Double loyer = rs.getDouble("loyer");
-                Double charges = rs.getDouble("charges");
-                Double depot_garantie = rs.getDouble("depot_garantie");
+                int solde_de_compte = rs.getInt("solde_de_compte");
+                double loyer = rs.getDouble("loyer");
+                double charges = rs.getDouble("charges");
+                double depot_garantie = rs.getDouble("depot_garantie");
                 Date date_debut = rs.getDate("date_debut");
                 Date date_fin = rs.getDate("date_fin");
-                Double icc = rs.getDouble("icc");
+                double icc = rs.getDouble("icc");
                 Integer index_eau = rs.getInt("index_eau");
                 Date date_dernier_anniversaire = rs.getDate("date_dernier_anniversaire");
                 bail = new Bail((solde_de_compte==1),bien.getNumeroFiscal(),loyer,charges,depot_garantie,date_debut,date_fin,icc,index_eau,date_dernier_anniversaire);
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (DAOException e) {
+        } catch (SQLException | DAOException e) {
             throw new RuntimeException(e);
         }
         return bail;
@@ -298,7 +277,7 @@ public class BailDAO implements DAO.BailDAO {
     }
 
     public List<String> getBauxNouvelICC() {
-        List<String> lNotifs = new LinkedList<>();
+        List<String> liste_notifs = new LinkedList<>();
         try {
             Connection cn = ConnectionDB.getInstance();
             String query = "SELECT bat.adresse, bat.ville ,bl.complement_adresse, bail.loyer, bail.ICC, bail.date_dernier_anniversaire " +
@@ -309,19 +288,19 @@ public class BailDAO implements DAO.BailDAO {
             PreparedStatement pstmt = cn.prepareStatement(query);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                Double loyer = rs.getDouble("loyer");
+                double loyer = rs.getDouble("loyer");
                 String adresse= rs.getString("adresse");
                 String ville= rs.getString("ville");
                 String complement= rs.getString("complement_adresse");
                 Date date_dernier_anniversaire = rs.getDate("date_dernier_anniversaire");
-                lNotifs.add("<html>Le loyer du logement <b>"+adresse+ " "+ville+" " +complement + "</b> peut etre modifié, il est actuellement à "+ loyer+ "son anniversaire était le <b>"+date_dernier_anniversaire+"</b></html>");
+                liste_notifs.add("<html>Le loyer du logement <b>"+adresse+ " "+ville+" " +complement + "</b> peut etre modifie, il est actuellement à "+ loyer+ "€, son anniversaire etait le <b>"+date_dernier_anniversaire+"</b></html>");
             }
             rs.close();
             pstmt.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return lNotifs;
+        return liste_notifs;
     }
 
 
@@ -338,6 +317,12 @@ public class BailDAO implements DAO.BailDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public List<Integer> getIDBeaux(Integer id_bien) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getIDBeaux'");
     }
 
 }

@@ -1,22 +1,22 @@
 package DAO.jdbc;
 
-import DAO.DAOException;
-import DAO.db.ConnectionDB;
-import classes.Batiment;
-import classes.Garage;
-import classes.Logement;
-import enumeration.TypeLogement;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
+import DAO.DAOException;
+import DAO.db.ConnectionDB;
+import classes.Batiment;
+import classes.Garage;
+import classes.Logement;
+import enumeration.TypeLogement;
 public class LogementDAOTest {
     private LogementDAO logementDAO;
     private BatimentDAO batimentDAO;
@@ -84,18 +84,22 @@ public class LogementDAOTest {
 
     @Test
     public void testLierUnGarageAuBienLouable() throws SQLException, DAOException {
+        // Create a new Logement
+        Logement logement = new Logement(3, 75.0, "101010101010", "Paris", "123 Rue de la Paix", "Apt 1", new ArrayList<>(), TypeLogement.APPARTEMENT);
+        logementDAO.create(logement, TypeLogement.APPARTEMENT);
+        Integer idLogement = logementDAO.getId("101010101010", TypeLogement.APPARTEMENT);
 
-        Logement logement = new Logement(3, 75.0, "101010101010", "Paris", "123 Rue de la Paix", "Apt 1", new ArrayList<>(),TypeLogement.APPARTEMENT);
-        logementDAO.create(logement,TypeLogement.APPARTEMENT);
-
-        Garage garage = new Garage("G12345678910", "Paris", "123 Rue de la Paix", "Garage 1",TypeLogement.GARAGE_PAS_ASSOCIE);
+        // Create a new Garage
+        Garage garage = new Garage("202020202020", "Paris", "123 Rue de la Paix", "31000",TypeLogement.GARAGE_PAS_ASSOCIE);
         garageDAO.create(garage);
-        logementDAO.lierUnGarageAuBienLouable(logement, garage,TypeLogement.APPARTEMENT);
+        Integer idGarage = garageDAO.getIdGarage("202020202020", TypeLogement.GARAGE_PAS_ASSOCIE);
 
-        Logement logementRecupere = logementDAO.read(logementDAO.getId(logement.getNumeroFiscal(),TypeLogement.APPARTEMENT));
-        Integer idGarage = logementDAO.getGarageAssocie(logementRecupere,TypeLogement.APPARTEMENT);
-        assertNotNull(logementRecupere);
-        assertEquals((Integer) garageDAO.getIdGarage(garage.getNumeroFiscal(),TypeLogement.GARAGE_ASSOCIE),idGarage);
+        // Link the Garage to the Logement
+        logementDAO.lierUnGarageAuBienLouable(logement, garage, TypeLogement.APPARTEMENT);
+
+        // Verify that the Garage is linked to the Logement
+        Integer idGarageAssocie = logementDAO.getGarageAssocie(logement, TypeLogement.APPARTEMENT);
+        assertEquals(idGarage, idGarageAssocie);
     }
 
-}
+} 

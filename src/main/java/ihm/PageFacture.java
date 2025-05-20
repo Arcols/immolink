@@ -1,119 +1,57 @@
 package ihm;
 
-import DAO.DAOException;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+
 import com.toedter.calendar.JDateChooser;
-import modele.Charte;
-import modele.Menu;
+
 import modele.ModelePageFacture;
-import modele.ResizedImage;
 
-import javax.swing.*;
-import javax.swing.border.LineBorder;
-import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
+public class PageFacture extends PageAbstraite {
 
-public class PageFacture {
-
-    private JFrame frame;
-    private JLabel logo;
     private JComboBox choix_type;
     private JTextField choix_num_facture;
     private  JTextField choix_montant;
-    private  JDateChooser dateChooser;
+    private  JDateChooser date_chooser;
     private  JPanel contenu;
     private  JLabel montant;
     private JLabel date;
-    private int id_bail;
-    private JLabel label_index=new JLabel("Index d'eau");
-    private JTextField choix_index=new JTextField();
-    private JLabel label_prix_conso=new JLabel("Prix m³ d'eau");
-    private JTextField choix_prix_conso=new JTextField();
+    private ModelePageFacture modele;
+    private final int id_bail;
+    private final JLabel label_index=new JLabel("Index d'eau");
+    private final JTextField choix_index=new JTextField();
+    private final JLabel label_prix_conso=new JLabel("Prix m³ d'eau");
+    private final JTextField choix_prix_conso=new JTextField();
     private JButton valider;
     private GridBagConstraints gbc_montant;
-    public PageFacture(int id_bail) {
-        this.initialize();
+
+
+    public PageFacture(int id_bail,int x,int y) {
+        super(x,y);
+        this.modele = new ModelePageFacture(this);
         this.id_bail = id_bail;
+        CreerSpecific();
     }
 
-    private void initialize() {
-        ModelePageFacture modele = new ModelePageFacture(this);
-        this.frame = new JFrame();
-        this.frame.setBounds(100, 100, 750, 400);
-        this.frame.getContentPane().setBackground(Charte.FOND.getCouleur());
-        this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        // Panel d'entête pour le logo et le nom de l'appli
-        JPanel entete = new JPanel();
-        this.frame.getContentPane().add(entete, BorderLayout.NORTH);
-        entete.setLayout(new BorderLayout(0, 0));
-        this.frame.getContentPane().setBackground(Charte.FOND.getCouleur());
-
-        entete.setBackground(Charte.ENTETE.getCouleur());
-        entete.setBorder(new LineBorder(Color.BLACK, 2));
-
-        this.logo = new JLabel("");
-        entete.add(this.logo, BorderLayout.WEST);
-
-        Menu m = new Menu(this.frame);
-
-        JPanel menu_bouttons = new JPanel();
-
-        entete.add(menu_bouttons, BorderLayout.CENTER);
-        menu_bouttons.setLayout(new GridLayout(0, 4, 0, 0));
-        menu_bouttons.setBackground(Charte.ENTETE.getCouleur());
-
-        JButton b_accueil = new JButton("Accueil");
-        b_accueil.setBorderPainted(false);
-        b_accueil.setBackground(Charte.ENTETE.getCouleur());
-        b_accueil.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        menu_bouttons.add(b_accueil);
-        b_accueil.addActionListener(m);
-
-        JButton b_baux = new JButton("Mes baux");
-        b_baux.setBorderPainted(false);
-        b_baux.setBackground(Charte.ENTETE.getCouleur());
-        b_baux.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        menu_bouttons.add(b_baux);
-        menu_bouttons.add(b_baux);
-        b_baux.addActionListener(m);
-
-        JButton b_biens = new JButton("Mes Biens");
-        b_biens.setBorderPainted(false);
-        b_biens.setBackground(Charte.ENTETE.getCouleur());
-        b_biens.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        menu_bouttons.add(b_biens);
-        menu_bouttons.add(b_biens);
-        b_biens.addActionListener(m);
-
-        JButton b_notifs = null;
-        try {
-            b_notifs = new JButton("Notifications ("+m.getNbNotifs()+")");
-        } catch (DAOException e) {
-            throw new RuntimeException(e);
-        }
-        b_notifs.setBorderPainted(false);
-        b_notifs.setBackground(Charte.ENTETE.getCouleur());
-        b_notifs.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        menu_bouttons.add(b_notifs);
-        menu_bouttons.add(b_notifs);
-        b_notifs.addActionListener(m);
-
-        JPanel body = new JPanel();
-        this.frame.getContentPane().add(body, BorderLayout.CENTER);
-        body.setLayout(new BorderLayout(0, 0));
-
-        JPanel titre = new JPanel();
-        FlowLayout fl_titre = (FlowLayout) titre.getLayout();
-        body.add(titre, BorderLayout.NORTH);
-
-        JLabel titrePage = new JLabel("Ajout de facture");
-        titrePage.setAlignmentY(0.0f);
-        titrePage.setAlignmentX(0.5f);
-        titre.add(titrePage);
+    @Override
+    public void CreerSpecific() {
+        JLabel titre_page = new JLabel("Ajout de facture");
+        titre_page.setAlignmentY(0.0f);
+        titre_page.setAlignmentX(0.5f);
+        panel_body.add(titre_page);
 
         contenu = new JPanel();
-        body.add(contenu, BorderLayout.CENTER);
+        panel_body.add(contenu, BorderLayout.CENTER);
         GridBagLayout gbl_contenu = new GridBagLayout();
         gbl_contenu.rowHeights = new int[] {0, 0, 0, 0};
         gbl_contenu.columnWidths = new int[] {200, 0, 50, 200};
@@ -129,17 +67,17 @@ public class PageFacture {
         contenu.add(type, gbc_type);
 
         choix_type = new JComboBox();
-        choix_type.addItem((Object) "Entretien");
-        choix_type.addItem((Object) "Electricité");
-        choix_type.addItem((Object) "Ordures");
-        choix_type.addItem((Object) "Eau");
+        choix_type.addItem("Entretien");
+        choix_type.addItem("Electricité");
+        choix_type.addItem("Ordures");
+        choix_type.addItem("Eau");
         GridBagConstraints gbc_choix_type = new GridBagConstraints();
         gbc_choix_type.insets = new Insets(0, 0, 5, 5);
         gbc_choix_type.fill = GridBagConstraints.HORIZONTAL;
         gbc_choix_type.gridx = 2;
         gbc_choix_type.gridy = 0;
         contenu.add(choix_type, gbc_choix_type);
-        choix_type.addActionListener(modele.eauSelected());
+
 
         JLabel numero = new JLabel("Numéro de facture");
         GridBagConstraints gbc_numero = new GridBagConstraints();
@@ -182,19 +120,14 @@ public class PageFacture {
         gbc_date.gridy = 3;
         contenu.add(date, gbc_date);
 
-        dateChooser = new JDateChooser();
-        dateChooser.setPreferredSize(new Dimension(100, 22));
+        date_chooser = new JDateChooser();
+        date_chooser.setPreferredSize(new Dimension(100, 22));
         GridBagConstraints gbc_a_REMPLACER_POUR_DATE = new GridBagConstraints();
         gbc_a_REMPLACER_POUR_DATE.insets = new Insets(0, 0, 5, 5);
         gbc_a_REMPLACER_POUR_DATE.fill = GridBagConstraints.HORIZONTAL;
         gbc_a_REMPLACER_POUR_DATE.gridx = 2;
         gbc_a_REMPLACER_POUR_DATE.gridy = 3;
-        contenu.add(dateChooser, gbc_a_REMPLACER_POUR_DATE);
-
-
-        JPanel bas_de_page = new JPanel();
-        this.frame.getContentPane().add(bas_de_page, BorderLayout.SOUTH);
-        bas_de_page.setLayout(new BorderLayout(0, 0));
+        contenu.add(date_chooser, gbc_a_REMPLACER_POUR_DATE);
 
         JButton quitter = new JButton("Quitter");
         quitter.setHorizontalTextPosition(SwingConstants.LEFT);
@@ -209,32 +142,15 @@ public class PageFacture {
         valider.addActionListener(modele.ajouterFacture());
         frame.setVisible(true);
 
-        this.frame.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                ResizedImage res = new ResizedImage();
-                res.resizeImage("logo+nom.png", PageFacture.this.frame,
-                        PageFacture.this.logo, 3, 8);
-                int frameWidth = PageFacture.this.frame.getWidth();
-                int frameHeight = PageFacture.this.frame.getHeight();
-
-                int newFontSize = Math.min(frameWidth, frameHeight) / 30;
-
-                // Appliquer la nouvelle police au bouton
-                Font resizedFont = new Font("Arial", Font.PLAIN, newFontSize);
-                b_baux.setFont(resizedFont);
-                b_accueil.setFont(resizedFont);
-                b_biens.setFont(resizedFont);
-            }
-        });
-
+        choix_type.addActionListener(modele.eauSelected());
+        choix_type.addActionListener(modele.getCheckFieldsActionListener());
+        choix_index.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
+        choix_prix_conso.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
         choix_num_facture.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
         choix_montant.getDocument().addDocumentListener(modele.getTextFieldDocumentListener());
-        dateChooser.getDateEditor().addPropertyChangeListener("date", evt -> modele.getTextFieldDocumentListener().insertUpdate(null));
-    }
+        date_chooser.getDateEditor().addPropertyChangeListener("date", evt -> modele.getTextFieldDocumentListener().insertUpdate(null));
 
-    public Frame getFrame() {
-        return this.frame;
+        frame.addWindowListener(modele.fermerFenetre());
     }
 
     public JComboBox getChoix_type() {
@@ -250,7 +166,7 @@ public class PageFacture {
     }
 
     public JDateChooser getDateChooser() {
-        return dateChooser;
+        return date_chooser;
     }
 
     public int getId_bail() {
@@ -263,20 +179,6 @@ public class PageFacture {
 
     public JLabel getLabelMontant() {
         return montant;
-    }
-
-    public GridBagConstraints getGbc_montant() {
-        return gbc_montant;
-    }
-
-    public void checkFields() {
-        // Vérification si tous les champs sont remplis
-        boolean isFilled = (!choix_num_facture.getText().trim().isEmpty() && !choix_montant.getText().trim().isEmpty()
-                && dateChooser.getDate() != null) || (!choix_num_facture.getText().trim().isEmpty()  && dateChooser.getDate() != null
-                && !choix_index.getText().trim().isEmpty() && !choix_prix_conso.getText().trim().isEmpty());
-
-        // Active ou désactive le bouton "Valider"
-        valider.setEnabled(isFilled);
     }
 
     public JLabel getDate() {
@@ -298,4 +200,9 @@ public class PageFacture {
     public JTextField getChoix_prix_conso() {
         return choix_prix_conso;
     }
+
+    public JButton getValider() {
+        return valider;
+    }
+
 }

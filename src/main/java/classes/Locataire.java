@@ -3,65 +3,63 @@ package classes;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Locataire {
 
     private String nom;
-    private String prénom;
-    private String lieuNaissance;
-    private String dateNaissance;
-    private String téléphone;
+    private String prenom;
+    private String lieu_naissance;
+    private String date_naissance;
+    private String telephone;
     private String genre;
     private String mail;
     private Date date_arrive;
-    public List<Bail> beaux = new ArrayList<>();
-    public List<Charge> charges;
+    public List<Bail> baux = new ArrayList<>();
 
     /**
      * Constructeur de la classe Locataire
      * @param nom le nom
-     * @param prénom le prénom
-     * @param lieuNaissance le lieu de naissance
-     * @param dateNaissance la date de naissance
-     * @param téléphone le téléphone
+     * @param prenom le prenom
+     * @param lieu_naissance le lieu de naissance
+     * @param date_naissance la date de naissance
+     * @param telephone le telephone
      * @param mail le mail
-     * @param date_arrive la date d'arrivée
+     * @param date_arrive la date d'arrivee
      * @param genre le genre
      */
-    public Locataire(String nom, String prénom, String lieuNaissance, String dateNaissance, String téléphone, String mail, Date date_arrive, String genre) {
+    public Locataire(String nom, String prenom, String lieu_naissance, String date_naissance, String telephone, String mail, Date date_arrive, String genre) {
         this.setNom(nom);
-        this.setPrénom(prénom);
-        this.setLieuNaissance(lieuNaissance);
-        this.setDateNaissance(dateNaissance);
-        this.setTéléphone(téléphone);
+        this.setPrenom(prenom);
+        this.setLieuNaissance(lieu_naissance);
+        this.setDateNaissance(date_naissance);
+        this.setTelephone(telephone);
         this.setMail(mail);
         this.setDateArrive(date_arrive);
         this.setGenre(genre);
-        this.charges = new ArrayList<>();
-        this.beaux= new ArrayList<>();
+        this.baux= new ArrayList<>();
     }
 
     /**
      * Constructeur de la classe Locataire
      * @param nom le nom
-     * @param prénom le prénom
-     * @param lieuNaissance le lieu de naissance
-     * @param dateNaissance la date de naissance
-     * @param téléphone le téléphone
-     * @param date_arrive la date d'arrivée
+     * @param prenom le prenom
+     * @param lieu_naissance le lieu de naissance
+     * @param date_naissance la date de naissance
+     * @param telephone le telephone
+     * @param date_arrive la date d'arrivee
      * @param genre le genre
      */
-    public Locataire(String nom, String prénom, String lieuNaissance, String dateNaissance, String téléphone, Date date_arrive, String genre) {
+    public Locataire(String nom, String prenom, String lieu_naissance, String date_naissance, String telephone, Date date_arrive, String genre) {
         this.setNom(nom);
-        this.setPrénom(prénom);
-        this.setLieuNaissance(lieuNaissance);
-        this.setDateNaissance(dateNaissance);
-        this.setTéléphone(téléphone);
+        this.setPrenom(prenom);
+        this.setLieuNaissance(lieu_naissance);
+        this.setDateNaissance(date_naissance);
+        this.setTelephone(telephone);
         this.setDateArrive(date_arrive);
         this.setGenre(genre);
         this.mail = null;
-        this.charges = new ArrayList<>();
-        this.beaux= new ArrayList<>();
+        this.baux= new ArrayList<>();
     }
 
     public String getNom() {
@@ -72,36 +70,36 @@ public class Locataire {
         this.nom = nom;
     }
 
-    public String getPrénom() {
-        return this.prénom;
+    public String getPrenom() {
+        return this.prenom;
     }
 
-    public void setPrénom(String prénom) {
-        this.prénom = prénom;
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
     }
 
     public String getLieuNaissance() {
-        return this.lieuNaissance;
+        return this.lieu_naissance;
     }
 
-    public void setLieuNaissance(String lieuNaissance) {
-        this.lieuNaissance = lieuNaissance;
+    public void setLieuNaissance(String lieu_naissance) {
+        this.lieu_naissance = lieu_naissance;
     }
 
     public String getDateNaissance() {
-        return this.dateNaissance;
+        return this.date_naissance;
     }
 
-    public void setDateNaissance(String dateNaissance) {
-        this.dateNaissance = dateNaissance;
+    public void setDateNaissance(String date_naissance) {
+        this.date_naissance = date_naissance;
     }
 
-    public String getTéléphone() {
-        return this.téléphone;
+    public String getTelephone() {
+        return this.telephone;
     }
 
-    public void setTéléphone(String téléphone) {
-        this.téléphone = téléphone;
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
     }
 
     public String getMail() {
@@ -128,28 +126,16 @@ public class Locataire {
         this.genre = genre;
     }
 
-    public List<Bail> getBeaux() {
-        return this.beaux;
+    public List<Bail> getbaux() {
+        return this.baux;
     }
-
-    public List<Charge> getCharges() {
-        return this.charges;
-    }
-
-    /**
-     * Ajoute une charge à la liste des charges
-     * @param charge la charge à ajouter
-     */
-    public void addCharge(Charge charge) {
-        this.charges.add(charge);
-    }
-
+    
     /**
      * Ajoute un bail à la liste des baux
      * @param bail le bail à ajouter
      */
     public void addBail(Bail bail) {
-        this.beaux.add(bail);
+        this.baux.add(bail);
     }
 
     @Override
@@ -158,12 +144,12 @@ public class Locataire {
         if (obj == null || getClass() != obj.getClass()) return false;
         Locataire locataire = (Locataire) obj;
         return nom.equals(locataire.nom) &&
-                prénom.equals(locataire.prénom) &&
-                lieuNaissance.equals(locataire.lieuNaissance) &&
-                dateNaissance.equals(locataire.dateNaissance) &&
-                téléphone.equals(locataire.téléphone) &&
+                prenom.equals(locataire.prenom) &&
+                lieu_naissance.equals(locataire.lieu_naissance) &&
+                date_naissance.equals(locataire.date_naissance) &&
+                telephone.equals(locataire.telephone) &&
                 genre.equals(locataire.genre) &&
-                (mail != null ? mail.equals(locataire.mail) : locataire.mail == null) &&
+                (Objects.equals(mail, locataire.mail)) &&
                 date_arrive.equals(locataire.date_arrive);
     }
 }
